@@ -2,9 +2,9 @@
 
 namespace Kiwilan\LaravelSteward;
 
+use Kiwilan\LaravelSteward\Commands\LaravelStewardCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Kiwilan\LaravelSteward\Commands\LaravelStewardCommand;
 
 class LaravelStewardServiceProvider extends PackageServiceProvider
 {
