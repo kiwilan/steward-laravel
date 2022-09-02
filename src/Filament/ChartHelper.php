@@ -2,9 +2,9 @@
 
 namespace Kiwilan\Filament;
 
-use Kiwilan\Enums\PublishStatusEnum;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
+use Kiwilan\Enums\PublishStatusEnum;
 
 class ChartHelper
 {
@@ -24,8 +24,7 @@ class ChartHelper
             ->selectRaw("
                 count(id) as total,
                 date_format({$field}, '%Y') as year
-            ")
-        ;
+            ");
 
         if ($published) {
             $models_db = $models_db->where('status', '=', PublishStatusEnum::published->value);
@@ -36,8 +35,7 @@ class ChartHelper
 
         $models_db = $models_db->groupBy('year')
             ->get()
-            ->keyBy('year')
-        ;
+            ->keyBy('year');
 
         $models_db = $models_db->toArray();
         ksort($models_db);
@@ -62,8 +60,7 @@ class ChartHelper
             ->selectRaw("
                 count(id) as total,
                 {$field} as year
-            ")
-        ;
+            ");
 
         if ($published) {
             $models_db = $models_db->where('status', '=', PublishStatusEnum::published->value);
@@ -74,8 +71,7 @@ class ChartHelper
 
         $models_db = $models_db->groupBy('year')
             ->get()
-            ->keyBy('year')
-        ;
+            ->keyBy('year');
 
         $models_db = $models_db->toArray();
         ksort($models_db);
@@ -108,8 +104,7 @@ class ChartHelper
             ->whereYear('published_at', '=', $year)
             ->groupBy('period')
             ->get()
-            ->keyBy('period')
-        ;
+            ->keyBy('period');
 
         $periods = collect([]);
         foreach (CarbonPeriod::create("{$year}-01-01", '1 month', "{$year}-12-01") as $period) {
@@ -136,8 +131,7 @@ class ChartHelper
             ')
             ->get()
             ->map(fn ($row) => $row->presentation_year)
-            ->sort()
-        ;
+            ->sort();
         $current_year = date('Y');
         $limit_year = $current_year - 20;
 
@@ -150,8 +144,7 @@ class ChartHelper
             // ->whereYear('published_at', '=', $year)
             ->groupBy('period')
             ->get()
-            ->keyBy('period')
-        ;
+            ->keyBy('period');
 
         $periods = collect([]);
         foreach (CarbonPeriod::create("{$limit_year}-01-01", '1 year', now()->subYear().'-12-01') as $period) {

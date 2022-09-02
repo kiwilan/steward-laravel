@@ -2,16 +2,16 @@
 
 namespace Kiwilan\Console\Commands;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class MediaCleanCommand extends Command
 {
     /** @var string[] */
     public const EXTENSIONS = [
-        'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'avif'
+        'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'avif',
     ];
 
     /**
@@ -51,8 +51,7 @@ class MediaCleanCommand extends Command
             /** Parse all entries in database */
             $rows = DB::table($table)
                 ->select('*')
-                ->get()
-            ;
+                ->get();
 
             /** Extract all entries with media */
             foreach ($rows as $row) {

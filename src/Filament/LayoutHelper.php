@@ -18,8 +18,7 @@ class LayoutHelper
             ->columns([
                 'sm' => 2,
                 'lg' => null,
-            ])
-        ;
+            ]);
     }
 
     public static function fullColumn(array|Closure $firstPart = [], array|Closure $secondPart = [], array|Closure $thirdPart = [])
@@ -50,8 +49,7 @@ class LayoutHelper
             ])
             ->columnSpan([
                 'sm' => 2,
-            ])
-        ;
+            ]);
     }
 
     public static function columns(Form $form, mixed $columns = null)
@@ -63,8 +61,7 @@ class LayoutHelper
             ->columns([
                 'sm' => 3,
                 'lg' => null,
-            ])
-        ;
+            ]);
     }
 
     public static function mainColumn(array|Closure $firstPart = [], array|Closure $secondPart = [], array|Closure $thirdPart = [])
@@ -95,8 +92,7 @@ class LayoutHelper
             ])
             ->columnSpan([
                 'sm' => 2,
-            ])
-        ;
+            ]);
     }
 
     public static function sideColumn(array|Closure $firstPart = [], array|Closure $secondPart = [], array|Closure $thirdPart = [])
@@ -120,8 +116,7 @@ class LayoutHelper
                 : Forms\Components\Group::make(),
 
             ])
-            ->columnSpan(1)
-        ;
+            ->columnSpan(1);
     }
 
     public static function card(string $title, array|Closure $card = [], int $columns = 2)
@@ -133,7 +128,6 @@ class LayoutHelper
                     ->columnSpan(2),
                 ...$card,
             ])
-            ->columns($columns)
-        ;
+            ->columns($columns);
     }
 }

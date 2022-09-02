@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Kiwilan\Traits\HasAttachment;
-use Kiwilan\Traits\Mediable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kiwilan\Traits\HasAttachment;
+use Kiwilan\Traits\Mediable;
 
 class Submission extends Model
 {

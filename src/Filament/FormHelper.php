@@ -2,8 +2,6 @@
 
 namespace Kiwilan\Filament;
 
-use Kiwilan\Enums\MediaTypeEnum;
-use Kiwilan\Enums\UserRole;
 use App\Models\User;
 use Closure;
 use Filament\Forms;
@@ -12,6 +10,8 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Kiwilan\Enums\MediaTypeEnum;
+use Kiwilan\Enums\UserRole;
 
 class FormHelper
 {
@@ -29,13 +29,11 @@ class FormHelper
 
                 $set('slug', Str::slug($state));
                 $set('meta_title', $state);
-            })
-        ;
+            });
     }
 
     /**
-     * @param string $current_action 'create' or 'edit'
-     *
+     * @param  string  $current_action 'create' or 'edit'
      * @return Closure
      */
     public static function disabledOn(string $current_action)
@@ -43,7 +41,7 @@ class FormHelper
         return function (mixed $livewire) use ($current_action) {
             $class = get_class($livewire);
             $class = explode('\\', $class);
-            $action = $class[sizeof($class) - 1];
+            $action = $class[count($class) - 1];
 
             if (str_contains(strtolower($action), $current_action)) {
                 return true;
@@ -54,8 +52,7 @@ class FormHelper
     /**
      * Update field on context type.
      *
-     * @param "create"|"edit" $context_type
-     *
+     * @param  "create"|"edit"  $context_type
      * @return Closure
      */
     public static function afterStateUpdated(string|array $field, string $context_type = 'edit')
@@ -127,8 +124,7 @@ class FormHelper
                         $data['created_until'],
                         fn (Builder $query, $date): Builder => $query->whereDate($field, '<=', $date),
                     )
-            )
-        ;
+            );
     }
 
     public static function checkRole(UserRole $role = UserRole::super_admin)
@@ -159,8 +155,7 @@ class FormHelper
             ->acceptedFileTypes($fileTypes)
             ->image()
             ->maxSize(1024)
-            ->directory($type->name)
-        ;
+            ->directory($type->name);
     }
 
     public static function showAction()
@@ -170,7 +165,6 @@ class FormHelper
             ->icon('heroicon-o-eye')
             ->openUrlInNewTab()
             ->color('warning')
-            ->label('Voir')
-        ;
+            ->label('Voir');
     }
 }

@@ -3,8 +3,8 @@
 namespace Kiwilan\Console\Commands;
 
 use App\Models\Tag;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class TagCleanCommand extends Command
 {

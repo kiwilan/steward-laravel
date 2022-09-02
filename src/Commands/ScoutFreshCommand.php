@@ -2,9 +2,9 @@
 
 namespace Kiwilan\Console\Commands;
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Artisan;
 use ReflectionClass;
 
 class ScoutFreshCommand extends Command

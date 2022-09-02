@@ -2,10 +2,10 @@
 
 namespace Kiwilan\Console\Commands;
 
-use Kiwilan\Enums\PublishStatusEnum;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
+use Kiwilan\Enums\PublishStatusEnum;
 
 class PublishScheduledCommand extends Command
 {
@@ -43,8 +43,7 @@ class PublishScheduledCommand extends Command
             $models_udpated = $model::query()
                 ->where('status', '=', PublishStatusEnum::scheduled)
                 ->where($date_column, '<', Carbon::now())
-                ->get()
-            ;
+                ->get();
 
             $models_udpated->each(function ($model_updated) {
                 $model_updated->update(['status' => PublishStatusEnum::published]);
