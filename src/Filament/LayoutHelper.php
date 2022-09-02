@@ -12,9 +12,7 @@ class LayoutHelper
     public static function column(Form $form, mixed $columns = null)
     {
         return $form
-            ->schema([
-                ...$columns,
-            ])
+            ->schema($columns)
             ->columns([
                 'sm' => 2,
                 'lg' => null,
