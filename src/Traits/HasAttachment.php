@@ -13,7 +13,7 @@ trait HasAttachment
     /**
      * Save attachment.
      *
-     * @param string[] $fields
+     * @param  string[]  $fields
      */
     public function saveAttachments(array $fields, Model $model, Request $request, string $field_name = null, MediaTypeEnum $type = MediaTypeEnum::media)
     {

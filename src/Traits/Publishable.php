@@ -22,7 +22,6 @@ trait Publishable
         return $builder
             ->where('status', PublishStatusEnum::published)
             ->where('published_at', '<=', Carbon::now())
-            ->orderBy('published_at', 'desc')
-        ;
+            ->orderBy('published_at', 'desc');
     }
 }

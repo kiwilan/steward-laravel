@@ -40,6 +40,7 @@ trait HasSlug
         if (static::where($slug_field, Str::slug($updated_name))->exists()) {
             return $this->generateUniqueUsername($name, $counter + 1, $slug_field);
         }
+
         return Str::slug($updated_name);
     }
 }

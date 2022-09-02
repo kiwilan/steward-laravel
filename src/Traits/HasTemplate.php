@@ -60,6 +60,7 @@ trait HasTemplate
 
         $regex = preg_replace_callback('"cms"', function ($replaced) {
             $media_disk = MediaDiskEnum::cms->value;
+
             return config('app.url')."/storage/{$media_disk}";
         }, $json);
 

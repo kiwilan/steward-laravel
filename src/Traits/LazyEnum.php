@@ -15,6 +15,7 @@ trait LazyEnum
     public static function tryFromCase(string $caseName): ?self
     {
         $rc = new ReflectionEnum(self::class);
+
         return $rc->hasCase($caseName) ? $rc->getConstant($caseName) : null;
     }
 
