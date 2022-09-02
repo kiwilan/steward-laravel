@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Traits;
 
-use App\Enums\MediaDiskEnum;
 use App\Enums\MediaTypeEnum;
 use App\Enums\TemplateEnum;
 

@@ -2,8 +2,8 @@
 
 namespace Kiwilan\Traits;
 
-use ReflectionClass;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 trait HasShowRoute
 {

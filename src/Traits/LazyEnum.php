@@ -6,9 +6,9 @@ use BackedEnum;
 use Closure;
 use Exception;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionEnum;
-use Illuminate\Support\Str;
 
 trait LazyEnum
 {
