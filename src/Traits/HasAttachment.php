@@ -5,8 +5,8 @@ namespace App\Traits;
 use App\Enums\MediaTypeEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 trait HasAttachment
 {
