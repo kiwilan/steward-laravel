@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Traits;
+namespace Kiwilan\Steward\Traits;
 
 trait HasSeo
 {

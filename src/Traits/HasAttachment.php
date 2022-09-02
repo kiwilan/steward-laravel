@@ -1,12 +1,12 @@
 <?php
 
-namespace Kiwilan\Traits;
+namespace Kiwilan\Steward\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Kiwilan\Enums\MediaTypeEnum;
+use Kiwilan\Steward\Enums\MediaTypeEnum;
 
 trait HasAttachment
 {

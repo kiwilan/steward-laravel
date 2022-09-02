@@ -1,8 +1,8 @@
 <?php
 
-namespace Kiwilan\Enums;
+namespace Kiwilan\Steward\Enums;
 
-use Kiwilan\Traits\LazyEnum;
+use Kiwilan\Steward\Traits\LazyEnum;
 
 enum SpatieMediaMethodEnum: string
 {

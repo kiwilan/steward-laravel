@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\LaravelSteward;
+namespace Kiwilan\Steward;
 
 use Kiwilan\LaravelSteward\Commands\LaravelStewardCommand;
 use Spatie\LaravelPackageTools\Package;

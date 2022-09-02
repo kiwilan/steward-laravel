@@ -2,8 +2,8 @@
 
 namespace Kiwilan\Console\Commands;
 
-use App\Models\Submission;
 use Illuminate\Console\Command;
+use Kiwilan\Steward\Models\Submission;
 
 class SubmissionRgpdVerificationCommand extends Command
 {

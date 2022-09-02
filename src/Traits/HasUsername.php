@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Traits;
+namespace Kiwilan\Steward\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;

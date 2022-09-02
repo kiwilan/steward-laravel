@@ -1,10 +1,10 @@
 <?php
 
-namespace Kiwilan\Traits;
+namespace Kiwilan\Steward\Traits;
 
-use App\Enums\PublishStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Kiwilan\Steward\Enums\PublishStatusEnum;
 
 trait Publishable
 {

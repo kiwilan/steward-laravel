@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Filament;
+namespace Kiwilan\Steward\Filament;
 
 use App\Models\User;
 use Closure;
@@ -10,8 +10,8 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
-use Kiwilan\Enums\MediaTypeEnum;
-use Kiwilan\Enums\UserRole;
+use Kiwilan\Steward\Enums\MediaTypeEnum;
+use Kiwilan\Steward\Enums\UserRole;
 
 class FormHelper
 {

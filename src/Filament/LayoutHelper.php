@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Filament;
+namespace Kiwilan\Steward\Filament;
 
 use Closure;
 use Filament\Forms;

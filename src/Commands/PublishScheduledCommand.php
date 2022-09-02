@@ -5,7 +5,7 @@ namespace Kiwilan\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
-use Kiwilan\Enums\PublishStatusEnum;
+use Kiwilan\Steward\Enums\PublishStatusEnum;
 
 class PublishScheduledCommand extends Command
 {

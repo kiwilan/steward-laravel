@@ -1,9 +1,9 @@
 <?php
 
-namespace Kiwilan\Traits;
+namespace Kiwilan\Steward\Traits;
 
-use App\Enums\MediaTypeEnum;
-use App\Enums\TemplateEnum;
+use Kiwilan\Steward\Enums\MediaTypeEnum;
+use Kiwilan\Steward\Enums\TemplateEnum;
 
 trait HasTemplate
 {
