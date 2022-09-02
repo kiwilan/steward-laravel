@@ -3,8 +3,8 @@
 namespace Kiwilan\LaravelSteward\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
 use Kiwilan\LaravelSteward\LaravelStewardServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
