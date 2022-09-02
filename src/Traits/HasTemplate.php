@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Enums\MediaDiskEnum;
+use App\Enums\MediaTypeEnum;
 use App\Enums\TemplateEnum;
 
 trait HasTemplate
@@ -59,7 +60,7 @@ trait HasTemplate
         $json = json_encode($data);
 
         $regex = preg_replace_callback('"cms"', function ($replaced) {
-            $media_disk = MediaDiskEnum::cms->value;
+            $media_disk = MediaTypeEnum::media->value;
 
             return config('app.url')."/storage/{$media_disk}";
         }, $json);

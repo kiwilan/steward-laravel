@@ -5,10 +5,10 @@ namespace App\Traits;
 use BackedEnum;
 use Closure;
 use Exception;
-use Lang;
+use Illuminate\Support\Facades\Lang;
 use ReflectionClass;
 use ReflectionEnum;
-use Str;
+use Illuminate\Support\Str;
 
 trait LazyEnum
 {

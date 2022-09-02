@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use ReflectionClass;
-use Str;
+use Illuminate\Support\Str;
 
 trait HasShowRoute
 {
