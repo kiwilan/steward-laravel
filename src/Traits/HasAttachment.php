@@ -5,8 +5,8 @@ namespace Kiwilan\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Kiwilan\Enums\MediaTypeEnum;
 use Illuminate\Support\Str;
+use Kiwilan\Enums\MediaTypeEnum;
 
 trait HasAttachment
 {
