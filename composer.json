@@ -39,13 +39,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Kiwilan\\LaravelSteward\\": "src",
-            "Kiwilan\\LaravelSteward\\Database\\Factories\\": "database/factories"
+            "Kiwilan\\Steward\\": "src",
+            "Kiwilan\\Steward\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Kiwilan\\LaravelSteward\\Tests\\": "tests"
+            "Kiwilan\\Steward\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -64,10 +64,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Kiwilan\\LaravelSteward\\LaravelStewardServiceProvider"
+                "Kiwilan\\Steward\\LaravelStewardServiceProvider"
             ],
             "aliases": {
-                "LaravelSteward": "Kiwilan\\LaravelSteward\\Facades\\LaravelSteward"
+                "Steward": "Kiwilan\\Steward\\Facades\\LaravelSteward"
             }
         }
     },

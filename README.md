@@ -44,8 +44,8 @@ php artisan vendor:publish --tag="laravel-steward-views"
 ## Usage
 
 ```php
-$laravelSteward = new Kiwilan\LaravelSteward();
-echo $laravelSteward->echoPhrase('Hello, Kiwilan!');
+$steward = new Kiwilan\Steward\LaravelSteward();
+echo $steward->echoPhrase('Hello, Kiwilan!');
 ```
 
 ## Testing

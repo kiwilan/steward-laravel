@@ -1,6 +1,6 @@
 <?php
 
-// config for Kiwilan/LaravelSteward
+// config for Kiwilan/Steward
 return [
 
 ];

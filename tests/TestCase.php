@@ -1,9 +1,9 @@
 <?php
 
-namespace Kiwilan\LaravelSteward\Tests;
+namespace Kiwilan\Steward\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Kiwilan\LaravelSteward\LaravelStewardServiceProvider;
+use Kiwilan\Steward\LaravelStewardServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -13,7 +13,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Kiwilan\\LaravelSteward\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Kiwilan\\Steward\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
