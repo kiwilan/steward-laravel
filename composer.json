@@ -1,6 +1,7 @@
 {
     "name": "kiwilan/laravel-steward",
     "description": "This is my package laravel-steward",
+    "version": "0.0.1",
     "keywords": [
         "kiwilan",
         "laravel",
