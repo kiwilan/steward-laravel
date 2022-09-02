@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace Kiwilan\Traits;
 
 use App\Enums\MediaDiskEnum;
 use App\Enums\MediaTypeEnum;

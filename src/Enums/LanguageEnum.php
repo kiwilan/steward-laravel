@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Enums;
+namespace Kiwilan\Enums;
 
-use App\Traits\LazyEnum;
+use Kiwilan\Traits\LazyEnum;
 
 enum LanguageEnum: string
 {

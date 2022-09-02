@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace Kiwilan\Enums;
 
 enum MediaTypeEnum
 {

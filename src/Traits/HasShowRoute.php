@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace Kiwilan\Traits;
 
 use ReflectionClass;
 use Illuminate\Support\Str;
