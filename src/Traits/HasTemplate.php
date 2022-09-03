@@ -12,6 +12,8 @@ trait HasTemplate
     {
         $this->fillable[] = 'template';
 
+        $this->appends[] = 'builder';
+
         $this->casts['template'] = TemplateEnum::class;
     }
 
@@ -20,7 +22,7 @@ trait HasTemplate
         return $this->template_column ?? $this->default_template_column;
     }
 
-    public function getTemplateTransformAttribute(): ?array
+    public function getBuilderAttribute(): ?array
     {
         if (is_array($this->{$this->getTemplateColumn()})) {
             $data = [];
