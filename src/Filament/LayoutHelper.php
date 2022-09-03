@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class LayoutHelper
 {
-    public static function container(Form $form, int $width = 3, mixed $columns = null)
+    public static function container(mixed $columns = null, Form $form, int $width = 3)
     {
         return $form
             ->schema($columns)
@@ -19,7 +19,7 @@ class LayoutHelper
             ]);
     }
 
-    public static function column(int $width = 2, array|Closure $firstPart = [], array|Closure $secondPart = [], array|Closure $thirdPart = [])
+    public static function column(array|Closure $firstPart = [], array|Closure $secondPart = [], array|Closure $thirdPart = [], int $width = 2)
     {
         return Forms\Components\Group::make()
             ->schema([
