@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Filament;
 
-use App\Models\User;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components;

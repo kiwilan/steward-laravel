@@ -5,8 +5,8 @@ namespace Kiwilan\Steward\Engines;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Collection;
-use ReflectionClass;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 /**
  * Search Engine with laravel/scout
@@ -47,6 +47,7 @@ class SearchEngine
             ];
         }
         $engine = new SearchEngine(q: $q, relevant: $relevant, opds: $opds, types: $types);
+
         return $engine->searchEngine();
     }
 
