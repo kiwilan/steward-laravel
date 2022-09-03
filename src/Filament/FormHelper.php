@@ -9,6 +9,7 @@ use Filament\Forms\Components;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Kiwilan\Steward\Enums\MediaTypeEnum;
 use Kiwilan\Steward\Enums\UserRoleEnum;
@@ -130,10 +131,13 @@ class FormHelper
     public static function checkRole(UserRoleEnum $role = UserRoleEnum::super_admin)
     {
         return function () use ($role) {
-            /** @var User */
+            /** @var Model $user */
             $user = auth()->user();
+            if (property_exists($user, 'role')) {
+                return $user->role?->value !== $role->value;
+            }
 
-            return $user->role->value !== $role->value;
+            return false;
         };
     }
 

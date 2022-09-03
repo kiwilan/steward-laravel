@@ -17,17 +17,16 @@ class Submission extends Model
         'name',
         'email',
         'message',
-        'file',
     ];
 
-    protected $appends = [
-        'attachment_file',
-    ];
+    // protected $appends = [
+    //     'attachment_file',
+    // ];
 
-    public function getAttachmentFileAttribute()
-    {
-        return $this->file
-            ? config('app.url')."/storage{$this->file}"
-            : null;
-    }
+    // public function getAttachmentFileAttribute()
+    // {
+    //     return $this->file
+    //         ? config('app.url')."/storage{$this->file}"
+    //         : null;
+    // }
 }

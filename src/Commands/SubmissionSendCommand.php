@@ -36,8 +36,12 @@ class SubmissionSendCommand extends Command
         /** @var Submission */
         $submission = $submission->first();
 
-        $submission->name = 'Test Submission';
-        $submission->created_at = now();
+        if (property_exists($submission, 'name')) {
+            $submission->name = 'Test Submission';
+        }
+        if (property_exists($submission, 'created_at')) {
+            $submission->created_at = now();
+        }
         $submission->save();
 
         $this->info('Notification sent.');
