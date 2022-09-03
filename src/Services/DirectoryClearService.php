@@ -24,8 +24,11 @@ class DirectoryClearService
     ) {
     }
 
-    public static function create(array $paths, array $ignore = ['.gitignore']): DirectoryClearService
+    public static function create(array|string $paths, array $ignore = ['.gitignore']): DirectoryClearService
     {
+        if (is_string($paths)) {
+            $paths = [$paths];
+        }
         $service = new DirectoryClearService($paths, $ignore);
         foreach ($paths as $path) {
             $service->clear($path);
