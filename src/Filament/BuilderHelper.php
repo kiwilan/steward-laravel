@@ -6,13 +6,12 @@ use Filament\Forms;
 
 class BuilderHelper
 {
-    public static function container(array $content, string $field = 'content', int $maxItems = 1)
+    public static function container(array $content, string $field = 'content')
     {
         return Forms\Components\Builder::make($field)
             ->blocks([
                 ...$content,
             ])
-            ->maxItems($maxItems)
             ->collapsed()
             ->collapsible()
             ->columnSpan(2);
