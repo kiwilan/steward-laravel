@@ -13,6 +13,8 @@ trait HasTemplate
     {
         $this->fillable[] = 'template';
 
+        $this->appends[] = 'template_transform';
+
         $this->casts['template'] = TemplateEnum::class;
     }
 
