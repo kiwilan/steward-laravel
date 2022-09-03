@@ -26,7 +26,6 @@ trait HasTemplate
             $data = [];
             foreach ($this->{$this->getTemplateColumn()} as $builder) {
                 $this->transformData($builder, $data);
-                dump($data);
             }
 
             return $this->setMedia($data);
