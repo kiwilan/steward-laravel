@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Enums;
 
 use Kiwilan\Steward\Traits\LazyEnum;
 
-enum UserRole: string
+enum UserRoleEnum: string
 {
     use LazyEnum;
 
