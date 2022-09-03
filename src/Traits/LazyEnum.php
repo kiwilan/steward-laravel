@@ -81,6 +81,7 @@ trait LazyEnum
         $class = $class->getShortName();
         $class_slug = Str::kebab($class);
         $class_slug = str_replace('-enum', '', $class_slug);
+        $class_slug = str_replace('-', '_', $class_slug);
 
         foreach (static::cases() as $definition) {
             $locale = "enums.{$class_slug}.{$definition->value}";
