@@ -4,8 +4,8 @@ namespace Kiwilan\Steward\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Kiwilan\Traits\HasAttachment;
-use Kiwilan\Traits\Mediable;
+use Kiwilan\Steward\Traits\HasAttachment;
+use Kiwilan\Steward\Traits\Mediable;
 
 class Submission extends Model
 {

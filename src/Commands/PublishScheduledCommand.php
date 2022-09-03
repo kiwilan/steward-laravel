@@ -34,7 +34,7 @@ class PublishScheduledCommand extends Command
         $this->warn($this->description);
         $this->newLine();
 
-        $models = [];
+        $models = config('steward.publishable');
 
         foreach ($models as $model) {
             $instance = new $model();

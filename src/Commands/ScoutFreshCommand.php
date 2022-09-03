@@ -3,7 +3,6 @@
 namespace Kiwilan\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Artisan;
 use ReflectionClass;
 
@@ -35,9 +34,9 @@ class ScoutFreshCommand extends Command
         $this->alert($this->signature);
         $this->warn($this->description);
 
-        $list = [];
-        foreach ($list as $value) {
-            $this->getScoutName($value);
+        $list = config('steward.scoutable');
+        foreach ($list as $model) {
+            $this->getScoutName($model);
         }
 
         try {
@@ -56,8 +55,9 @@ class ScoutFreshCommand extends Command
         return 0;
     }
 
-    public function getScoutName(Model $instance)
+    public function getScoutName(string $model)
     {
+        $instance = new $model();
         $class = new ReflectionClass($instance);
         $name = str_replace('\\', '\\\\', $class->getName());
         // @phpstan-ignore-next-line

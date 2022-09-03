@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Console\Commands;
 
-use App\Models\Tag;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -41,7 +40,7 @@ class TagCleanCommand extends Command
                 $this->warn("Deleted taggable entry: {$row->taggable_type} #{$row->taggable_id}");
             }
 
-            $tag = Tag::find($row->tag_id);
+            $tag = DB::table('tags')->find($row->tag_id);
             if (null === $tag) {
                 DB::table('taggables')->where('id', $row->id)->delete();
                 $this->warn("Deleted taggable entry: Tag #{$row->id}");
