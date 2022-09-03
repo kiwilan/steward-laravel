@@ -2,9 +2,9 @@
 
 namespace Kiwilan\Steward\Enums;
 
-enum MediaTypeEnum
+enum MediaTypeEnum: string
 {
-    case media;
-    case pages;
-    case submissions;
+    case media = 'media';
+    case pages = 'pages';
+    case submissions = 'submissions';
 }
