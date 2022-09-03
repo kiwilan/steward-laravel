@@ -18,6 +18,6 @@ trait HasRole
 
     public function getRoleColumn(): string
     {
-        return $this->slug_column ?? $this->default_slug_column;
+        return $this->role_column ?? $this->default_role_column;
     }
 }
