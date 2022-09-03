@@ -34,8 +34,11 @@ trait HasSlug
         });
     }
 
-    protected function generateUniqueSlug(string $name, int $counter = 0, string $slug_field = 'slug'): string
+    protected function generateUniqueSlug(?string $name = null, int $counter = 0, string $slug_field = 'slug'): string
     {
+        if ($name === null) {
+            $name = uniqid();
+        }
         $updated_name = 0 == $counter ? $name : $name.'-'.$counter;
         if (static::where($slug_field, Str::slug($updated_name))->exists()) {
             return $this->generateUniqueSlug($name, $counter + 1, $slug_field);
