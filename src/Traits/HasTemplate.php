@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Traits;
 
-use Kiwilan\Steward\Enums\MediaTypeEnum;
 use Kiwilan\Steward\Enums\TemplateEnum;
 
 trait HasTemplate
@@ -12,8 +11,6 @@ trait HasTemplate
     public function initializeHasTemplate()
     {
         $this->fillable[] = 'template';
-
-        $this->appends[] = 'template_transform';
 
         $this->casts['template'] = TemplateEnum::class;
     }
@@ -27,8 +24,9 @@ trait HasTemplate
     {
         if (is_array($this->{$this->getTemplateColumn()})) {
             $data = [];
-            foreach ($this->{$this->getTemplateColumn()} as $value) {
-                $this->transformData($value, $data);
+            foreach ($this->{$this->getTemplateColumn()} as $builder) {
+                $this->transformData($builder, $data);
+                dump($data);
             }
 
             return $this->setMedia($data);
@@ -37,35 +35,36 @@ trait HasTemplate
         return [];
     }
 
-    private function transformData(mixed $data, array &$page_data)
+    private function transformData(mixed $builder, array &$data)
     {
-        if (is_array($data)) {
-            foreach ($data as $key => $value) {
+        if (is_array($builder) && array_key_exists('data', $builder)) {
+            foreach ($builder['data'] as $key => $value) {
                 $is_list = false;
                 if ('list' === $key) {
                     $is_list = true;
                 }
 
-                if (! $is_list && is_array($value) && array_key_exists(0, $value)) {
-                    $value = $value[0];
-                    $page_data[$key] = $value;
+                if (! $is_list) {
+                    $data[$key] = $value;
                 }
 
-                $this->transformData($value, $page_data);
+                $this->transformData($value, $data);
             }
         }
     }
 
-    private function setMedia(array $data)
+    private function setMedia(?array $data = [])
     {
-        $json = json_encode($data);
+        $extensions = config('steward.media_extensions');
+        foreach ($data as $key => $value) {
+            foreach ($extensions as $extension) {
+                if (str_contains($value, $extension)) {
+                    $media_url = config('app.url')."/storage/{$value}";
+                    $data[$key] = $media_url;
+                }
+            }
+        }
 
-        $regex = preg_replace_callback('"cms"', function ($replaced) {
-            $media_disk = MediaTypeEnum::media->value;
-
-            return config('app.url')."/storage/{$media_disk}";
-        }, $json);
-
-        return json_decode($regex, true);
+        return $data;
     }
 }

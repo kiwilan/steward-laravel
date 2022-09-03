@@ -11,4 +11,5 @@ return [
     'mediable' => [
         // \App\Models\Example::class,
     ],
+    'media_extensions' => ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'],
 ];
