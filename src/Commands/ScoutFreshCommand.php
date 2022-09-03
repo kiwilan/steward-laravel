@@ -60,7 +60,8 @@ class ScoutFreshCommand extends Command
         $instance = new $model();
         $class = new ReflectionClass($instance);
         $name = str_replace('\\', '\\\\', $class->getName());
-        // @phpstan-ignore-next-line
-        $this->models[$name] = $instance->searchableAs();
+        if (method_exists($this, 'searchableAs')) {
+            $this->models[$name] = $instance->searchableAs();
+        }
     }
 }

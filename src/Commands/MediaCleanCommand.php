@@ -39,7 +39,7 @@ class MediaCleanCommand extends Command
         $this->warn($this->description);
         $this->newLine();
 
-        $models_list = [];
+        $models_list = config('steward.mediable');
         $media_path = public_path('storage');
 
         $media_entries = [];

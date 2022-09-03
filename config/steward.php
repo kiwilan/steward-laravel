@@ -8,4 +8,7 @@ return [
     'scoutable' => [
         // \App\Models\Example::class,
     ],
+    'mediable' => [
+        // \App\Models\Example::class,
+    ],
 ];
