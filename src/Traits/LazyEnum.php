@@ -84,7 +84,7 @@ trait LazyEnum
         $class_slug = str_replace('-', '_', $class_slug);
 
         foreach (static::cases() as $definition) {
-            $locale = "enums.{$class_slug}.{$definition->value}";
+            $locale = "laravel-steward::enums.{$class_slug}.{$definition->value}";
             $array[$definition->name] = Lang::has($locale)
                 ? __($locale)
                 : $definition->value;
