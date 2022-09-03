@@ -2,7 +2,7 @@
 
 namespace Kiwilan\Steward\Traits;
 
-use Kiwilan\Steward\Enums\UserRole;
+use Kiwilan\Steward\Enums\UserRoleEnum;
 
 trait HasRole
 {
@@ -13,7 +13,7 @@ trait HasRole
         $this->fillable[] = $this->getRoleColumn();
         $this->fillable[] = 'is_blocked';
 
-        $this->casts[$this->getRoleColumn()] = UserRole::class;
+        $this->casts[$this->getRoleColumn()] = UserRoleEnum::class;
         $this->casts['is_blocked'] = 'boolean';
     }
 
@@ -29,21 +29,21 @@ trait HasRole
 
     protected function getIsSuperAdminAttribute(): bool
     {
-        return $this->role->value === UserRole::super_admin->value;
+        return $this->role->value === UserRoleEnum::super_admin->value;
     }
 
     protected function getIsAdminAttribute(): bool
     {
-        return $this->role->value === UserRole::admin->value;
+        return $this->role->value === UserRoleEnum::admin->value;
     }
 
     protected function getIsEditorAttribute(): bool
     {
-        return $this->role->value === UserRole::editor->value;
+        return $this->role->value === UserRoleEnum::editor->value;
     }
 
     protected function getIsUserAttribute(): bool
     {
-        return $this->role->value === UserRole::user->value;
+        return $this->role->value === UserRoleEnum::user->value;
     }
 }

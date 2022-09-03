@@ -11,7 +11,7 @@ use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Kiwilan\Steward\Enums\MediaTypeEnum;
-use Kiwilan\Steward\Enums\UserRole;
+use Kiwilan\Steward\Enums\UserRoleEnum;
 
 class FormHelper
 {
@@ -127,7 +127,7 @@ class FormHelper
             );
     }
 
-    public static function checkRole(UserRole $role = UserRole::super_admin)
+    public static function checkRole(UserRoleEnum $role = UserRoleEnum::super_admin)
     {
         return function () use ($role) {
             /** @var User */
