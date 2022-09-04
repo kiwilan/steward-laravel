@@ -15,12 +15,11 @@ use Kiwilan\Steward\Enums\UserRoleEnum;
 
 class FormHelper
 {
-    public static function getTitle(
+    public static function getName(
         string $field = 'name',
         string $label = 'Name',
         bool $slug = true,
         bool $meta_title = true,
-        bool $only_create = true,
         string $helper = null,
         string $context_custom = 'edit',
     ) {
@@ -28,7 +27,8 @@ class FormHelper
             $trans_generate = __('steward::filament.form_helper.generate');
             $trans_slug = $slug ? ' '.__('steward::filament.form_helper.slug') : '';
             $trans_meta_title = $meta_title ? ' '.__('steward::filament.form_helper.meta_title') : '';
-            $trans_only_create = $only_create ? ', '.__('steward::filament.form_helper.only_create') : '';
+            $trans_meta_title .= $meta_title && $slug ? ' and ' : '';
+            $trans_only_create = $context_custom === 'edit' ? ', '.__('steward::filament.form_helper.only_create') : '';
             $helper = "{$trans_generate}{$trans_slug}{$trans_meta_title}{$trans_only_create}.";
         }
         return Forms\Components\TextInput::make($field)
@@ -36,11 +36,11 @@ class FormHelper
             ->helperText($helper)
             ->required()
             ->reactive()
-            ->afterStateUpdated(function (string $context, Closure $set, $state) use ($slug, $meta_title, $only_create, $context_custom) {
-                if ($only_create && $context_custom === 'edit') {
+            ->afterStateUpdated(function (string $context, Closure $set, $state) use ($slug, $meta_title, $context_custom) {
+                if ($context_custom && $context === $context_custom) {
                     return;
                 } else {
-                    if ($context === $context_custom) {
+                    if ($context === 'edit') {
                         return;
                     }
                 }
