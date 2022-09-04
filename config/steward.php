@@ -1,6 +1,5 @@
 <?php
 
-// config for Kiwilan/Steward
 return [
     'publishable' => [
         // \App\Models\Example::class,

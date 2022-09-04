@@ -92,16 +92,16 @@ abstract class BaseQuery
             return $this->collection();
         }
 
-        if (request()->get('export')) {
-            $fileName = Str::slug(trans_choice("crud.{$this->resource}.name", 10));
-            $date = date('Ymd-His');
+        // if (request()->get('export')) {
+        //     $fileName = Str::slug(trans_choice("crud.{$this->resource}.name", 10));
+        //     $date = date('Ymd-His');
 
-            if (class_exists('Excel')) {
-                return Excel::download($this->export, "export-{$fileName}-{$date}.xlsx"); // @phpstan-ignore-line
-            }
+        //     if (class_exists(Excel::class)) {
+        //         return Excel::download($this->export, "export-{$fileName}-{$date}.xlsx");
+        //     }
 
-            return null;
-        }
+        //     return null;
+        // }
 
         return $response($this->get());
     }
