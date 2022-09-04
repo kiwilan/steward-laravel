@@ -15,20 +15,42 @@ use Kiwilan\Steward\Enums\UserRoleEnum;
 
 class FormHelper
 {
-    public static function getTitle(string $field = 'title', string $label = 'Titre')
-    {
+    public static function getTitle(
+        string $field = 'name',
+        string $label = 'Name',
+        bool $slug = true,
+        bool $meta_title = true,
+        bool $only_create = true,
+        string $helper = null,
+        string $context_custom = 'edit',
+    ) {
+        if ($helper === null) {
+            $trans_generate = __('steward::filament.form_helper.generate');
+            $trans_slug = $slug ? ' '.__('steward::filament.form_helper.slug') : '';
+            $trans_meta_title = $meta_title ? ' '.__('steward::filament.form_helper.meta_title') : '';
+            $trans_only_create = $only_create ? ', '.__('steward::filament.form_helper.only_create') : '';
+            $helper = "{$trans_generate}{$trans_slug}{$trans_meta_title}{$trans_only_create}.";
+        }
         return Forms\Components\TextInput::make($field)
             ->label($label)
-            ->helperText('Génère le titre en SEO et le métalien, uniquement à la création.')
+            ->helperText($helper)
             ->required()
             ->reactive()
-            ->afterStateUpdated(function (string $context, Closure $set, $state) {
-                if ('edit' === $context) {
+            ->afterStateUpdated(function (string $context, Closure $set, $state) use ($slug, $meta_title, $only_create, $context_custom) {
+                if ($only_create && $context_custom === 'edit') {
                     return;
+                } else {
+                    if ($context === $context_custom) {
+                        return;
+                    }
                 }
 
-                $set('slug', Str::slug($state));
-                $set('meta_title', $state);
+                if ($slug) {
+                    $set('slug', Str::slug($state));
+                }
+                if ($meta_title) {
+                    $set('meta_title', $state);
+                }
             });
     }
 
