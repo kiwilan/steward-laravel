@@ -31,6 +31,7 @@ class FormHelper
             $trans_only_create = $only_create ? ', '.__('steward::filament.form_helper.only_create') : '';
             $helper = "{$trans_generate}{$trans_slug}{$trans_meta_title}{$trans_only_create}.";
         }
+
         return Forms\Components\TextInput::make($field)
             ->label($label)
             ->helperText($helper)
