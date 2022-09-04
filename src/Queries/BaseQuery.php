@@ -97,7 +97,7 @@ abstract class BaseQuery
             $date = date('Ymd-His');
 
             if (class_exists('Excel')) {
-                return Excel::download($this->export, "export-{$fileName}-{$date}.xlsx");
+                return Excel::download($this->export, "export-{$fileName}-{$date}.xlsx"); // @phpstan-ignore-line
             }
 
             return null;
