@@ -35,7 +35,7 @@ class ScoutFreshCommand extends Command
         $this->warn($this->description);
 
         $list = config('steward.scoutable');
-        $this->info('Models to search engine:'.implode(', ', $list));
+        $this->info('Models to search engine: '.implode(', ', $list));
         $this->newLine();
         foreach ($list as $model) {
             $this->getScoutName($model);
@@ -43,22 +43,23 @@ class ScoutFreshCommand extends Command
 
         try {
             $this->warn('Clean all models in search engine.');
+            $this->newLine();
             foreach ($this->models as $key => $value) {
                 Artisan::call('scout:flush "'.$key.'"', [], $this->getOutput());
                 Artisan::call('scout:delete-index "'.$value.'"', [], $this->getOutput());
+                $this->newLine();
             }
-            $this->newLine();
 
-            $this->info('Import all models in search engine.');
+            $this->warn('Import all models in search engine.');
+            $this->newLine();
             foreach ($this->models as $key => $value) {
                 Artisan::call('scout:import "'.$key.'"', [], $this->getOutput());
+                $this->newLine();
             }
-            $this->newLine();
         } catch (\Throwable $th) {
             $this->error($th->getMessage());
         }
 
-        $this->newLine();
         $this->info('Done.');
 
         return 0;
@@ -68,8 +69,10 @@ class ScoutFreshCommand extends Command
     {
         $instance = new $model();
         $class = new ReflectionClass($instance);
-        $name = str_replace('\\', '\\\\', $class->getName());
-        if (method_exists($this, 'searchableAs')) {
+        $name = $class->getName();
+        $name = str_replace('\\', '\\\\', $name);
+
+        if (method_exists($instance, 'searchableAs')) {
             $this->models[$name] = $instance->searchableAs();
         }
     }
