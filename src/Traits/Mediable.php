@@ -16,7 +16,7 @@ trait Mediable
         if ($field) {
             $path = $get_path ? $field : $this->{$field};
 
-            return config('app.url')."/storage{$path}";
+            return config('app.url')."/storage/{$path}";
         }
 
         return null;
