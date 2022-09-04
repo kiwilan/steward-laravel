@@ -30,7 +30,7 @@ trait Mediable
     {
         if ($field) {
             if (null === $this->{$field}) {
-                return null;
+                return config('steward.media.default') ? config('steward.media.default') : null;
             }
             $path = $get_path ? $field : $this->{$field};
 

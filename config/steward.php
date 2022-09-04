@@ -50,6 +50,7 @@ return [
     */
 
     'media' => [
+        'default' => false,
         'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'],
     ],
 
