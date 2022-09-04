@@ -67,5 +67,15 @@ return [
             'default' => env('FILAMENT_LOGO_DEFAULT', 'images/logo.svg'),
             'dark' => env('FILAMENT_LOGO_DARK', 'images/logo-dark.svg'),
         ],
+        'logo-inline' => [
+            'default' => env('FILAMENT_LOGO_INLINE_DEFAULT', 'images/logo-inline.svg'),
+            'dark' => env('FILAMENT_LOGO_INLINE_DARK', 'images/logo-inline-dark.svg'),
+        ],
+        'widgets' => [
+            'welcome' => [
+                'url' => 'https://filamentphp.com/docs',
+                'label' => 'filament::widgets/filament-info-widget.buttons.visit_documentation.label',
+            ]
+        ]
     ],
 ];

@@ -17,7 +17,7 @@
 
       <div class="flex space-x-2 text-sm rtl:space-x-reverse">
         <a
-          href="https://filamentphp.com/docs"
+          href="{{ config('steward.filament.widgets.welcome.url') }}"
           target="_blank"
           rel="noopener noreferrer"
           @class([
@@ -27,7 +27,7 @@
               ),
           ])
         >
-          {{ __('filament::widgets/filament-info-widget.buttons.visit_documentation.label') }}
+          {{ __(config('steward.filament.widgets.welcome.label')) }}
         </a>
 
         {{-- <span>
