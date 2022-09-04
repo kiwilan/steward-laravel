@@ -72,9 +72,9 @@ class FormHelper
         };
     }
 
-    public static function getTimestamps()
+    public static function getTimestamps(bool $card = false)
     {
-        return [
+        $timestamps = [
             Forms\Components\Placeholder::make('id')
                 ->label('ID')
                 ->content(fn ($record): ?string => $record?->id),
@@ -85,22 +85,26 @@ class FormHelper
                 ->label('Updated at')
                 ->content(fn ($record): ?string => $record?->updated_at?->diffForHumans()),
         ];
+
+        return $card ? LayoutHelper::card('Timestamps', $timestamps) : Forms\Components\Group::make($timestamps);
     }
 
-    public static function getSeo(string $model)
+    public static function getSeo(bool $card = false)
     {
-        return [
+        $seo = [
             Forms\Components\Placeholder::make('seo')
                 ->label('SEO'),
             Forms\Components\TextInput::make('slug')
                 ->label('Metalien')
                 ->required()
-                ->unique($model, 'slug', fn ($record) => $record),
+                ->unique(column: 'slug'),
             Forms\Components\TextInput::make('meta_title')
                 ->label('Titre'),
             Forms\Components\Textarea::make('meta_description')
                 ->label('Description'),
         ];
+
+        return $card ? LayoutHelper::card('SEO', $seo) : Forms\Components\Group::make($seo);
     }
 
     public static function getDateFilter(string $field = 'created_at')
