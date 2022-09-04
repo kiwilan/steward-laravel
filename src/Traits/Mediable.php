@@ -19,7 +19,7 @@ trait Mediable
         $class = new ReflectionClass($instance);
         $static = $class->getName();
 
-        $static::macro('concatenate', function (... $strings) {
+        $static::macro('concatenate', function (...$strings) {
             return implode('-', $strings);
         });
     }
