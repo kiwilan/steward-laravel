@@ -18,10 +18,10 @@ trait HasSeo
     {
         static::creating(function ($model) {
             if (empty($model->meta_title)) {
-                $model->meta_title = $model->{$model->getMetaTitle()};
+                $model->meta_title = $this->limitStringSize($model->{$model->getMetaTitle()});
             }
             if (empty($model->meta_description)) {
-                $model->meta_description = $model->{$model->getMetaDescription()};
+                $model->meta_description = $this->limitStringSize($model->{$model->getMetaDescription()});
             }
         });
     }
@@ -34,6 +34,15 @@ trait HasSeo
     public function getMetaDescription(): string
     {
         return $this->meta_description_from ?? $this->default_meta_description_from;
+    }
+
+    private function limitStringSize(string $string, int $limit = 250): string
+    {
+        if (strlen($string) > $limit) {
+            return substr($string, 0, $limit) . '...';
+        }
+
+        return $string;
     }
 
     public function getSeoAttribute(): array
