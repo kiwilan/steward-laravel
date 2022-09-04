@@ -11,7 +11,7 @@ trait Mediable
     //     return $this->slug_with ?? $this->default_slug_with;
     // }
 
-    public function getMediable(?string $field = 'image', bool $get_path = false): ?string
+    public function getMediable(?string $field = 'media', bool $get_path = false): ?string
     {
         if ($field) {
             $path = $get_path ? $field : $this->{$field};
