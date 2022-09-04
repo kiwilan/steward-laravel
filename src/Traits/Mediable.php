@@ -2,31 +2,36 @@
 
 namespace Kiwilan\Steward\Traits;
 
-use ReflectionClass;
+use stdClass;
 
 trait Mediable
 {
-    protected array $mediable = [];
+    protected array $default_mediables = ['picture'];
 
-    // public function getMediableAttribute(): string
-    // {
-    //     return $this->slug_with ?? $this->default_slug_with;
-    // }
-
-    public function initializeMediable()
+    public function getMediablesAttribute(): array
     {
-        $instance = new $this();
-        $class = new ReflectionClass($instance);
-        $static = $class->getName();
-
-        $static::macro('concatenate', function (... $strings) {
-            return implode('-', $strings);
-        });
+        return $this->mediables ?? $this->default_mediables;
     }
 
-    public function getMediable(?string $field = 'media', bool $get_path = false): ?string
+    /**
+     * @return object
+     */
+    public function getMediableAttribute()
+    {
+        $mediable = new stdClass();
+        foreach ($this->mediables as $field) {
+            $mediable->{$field} = $this->mediable($field);
+        }
+
+        return $mediable;
+    }
+
+    public function mediable(?string $field = 'picture', bool $get_path = false): ?string
     {
         if ($field) {
+            if (null === $this->{$field}) {
+                return null;
+            }
             $path = $get_path ? $field : $this->{$field};
 
             return config('app.url')."/storage/{$path}";
