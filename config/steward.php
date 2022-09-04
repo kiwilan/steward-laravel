@@ -75,7 +75,7 @@ return [
             'welcome' => [
                 'url' => 'https://filamentphp.com/docs',
                 'label' => 'filament::widgets/filament-info-widget.buttons.visit_documentation.label',
-            ]
-        ]
+            ],
+        ],
     ],
 ];
