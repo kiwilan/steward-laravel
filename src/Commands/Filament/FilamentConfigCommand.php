@@ -3,8 +3,6 @@
 namespace Kiwilan\Steward\Commands\Filament;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Commands\CommandSteward;
@@ -43,7 +41,7 @@ class FilamentConfigCommand extends CommandSteward
             }
         }
 
-        if (!$exists) {
+        if (! $exists) {
             Artisan::call('vendor:publish', [
                 '--tag' => 'filament-config',
             ], $this->getOutput());
