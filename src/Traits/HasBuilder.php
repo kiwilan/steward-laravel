@@ -60,7 +60,7 @@ trait HasBuilder
 
     private function setMedia(mixed $value = null)
     {
-        $extensions = config('steward.media_extensions');
+        $extensions = config('steward.media.extensions');
         // foreach ($data as $key => $value) {
         foreach ($extensions as $extension) {
             if (str_contains($value, $extension)) {

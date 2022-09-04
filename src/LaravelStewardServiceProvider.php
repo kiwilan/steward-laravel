@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward;
 
+use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\LaravelStewardCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
 use Kiwilan\Steward\Commands\PublishScheduledCommand;
@@ -28,6 +29,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([
+                FilamentConfigCommand::class,
                 LaravelStewardCommand::class,
                 MediaCleanCommand::class,
                 PublishScheduledCommand::class,

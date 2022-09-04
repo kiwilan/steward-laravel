@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\File;
 
 class MediaCleanCommand extends Command
 {
-    /** @var string[] */
-    public const EXTENSIONS = [
-        'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'avif',
-    ];
-
     /**
      * The name and signature of the console command.
      *
@@ -56,7 +51,7 @@ class MediaCleanCommand extends Command
             /** Extract all entries with media */
             foreach ($rows as $row) {
                 foreach ($row as $entry) {
-                    foreach (self::EXTENSIONS as $extension) {
+                    foreach (config('steward.media.extensions') as $extension) {
                         if (str_contains($entry, ".{$extension}")) {
                             $media_entries[] = $entry;
                         }
