@@ -2,6 +2,8 @@
 
 namespace Kiwilan\Steward\Traits;
 
+use ReflectionClass;
+
 trait Mediable
 {
     protected array $mediable = [];
@@ -10,6 +12,17 @@ trait Mediable
     // {
     //     return $this->slug_with ?? $this->default_slug_with;
     // }
+
+    public function initializeMediable()
+    {
+        $instance = new $this();
+        $class = new ReflectionClass($instance);
+        $static = $class->getName();
+
+        $static::macro('concatenate', function (... $strings) {
+            return implode('-', $strings);
+        });
+    }
 
     public function getMediable(?string $field = 'media', bool $get_path = false): ?string
     {
