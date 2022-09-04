@@ -23,7 +23,7 @@ trait HasSearchableName
     {
         $instance = new $this();
         $class = new ReflectionClass($instance);
-        $name = $class->getShortName();
+        $name = Str::snake($class->getShortName());
 
         $appname = config('app.name');
 
