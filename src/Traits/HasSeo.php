@@ -39,7 +39,7 @@ trait HasSeo
     private function limitStringSize(string $string, int $limit = 250): string
     {
         if (strlen($string) > $limit) {
-            return substr($string, 0, $limit) . '...';
+            return substr($string, 0, $limit).'...';
         }
 
         return $string;
