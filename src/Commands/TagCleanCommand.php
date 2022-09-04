@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Console\Commands;
+namespace Kiwilan\Steward\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;

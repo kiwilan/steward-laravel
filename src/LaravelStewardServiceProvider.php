@@ -2,12 +2,12 @@
 
 namespace Kiwilan\Steward;
 
-use Kiwilan\Console\Commands\MediaCleanCommand;
-use Kiwilan\Console\Commands\PublishScheduledCommand;
-use Kiwilan\Console\Commands\ScoutFreshCommand;
-use Kiwilan\Console\Commands\SubmissionRgpdVerificationCommand;
-use Kiwilan\Console\Commands\SubmissionSendCommand;
-use Kiwilan\Console\Commands\TagCleanCommand;
+use Kiwilan\Steward\Commands\MediaCleanCommand;
+use Kiwilan\Steward\Commands\PublishScheduledCommand;
+use Kiwilan\Steward\Commands\ScoutFreshCommand;
+use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
+use Kiwilan\Steward\Commands\SubmissionSendCommand;
+use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Commands\LaravelStewardCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;

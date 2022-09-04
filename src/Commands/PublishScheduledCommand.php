@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Console\Commands;
+namespace Kiwilan\Steward\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
