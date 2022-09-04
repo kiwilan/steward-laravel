@@ -22,6 +22,7 @@ class FormHelper
         bool $meta_title = true,
         string $helper = null,
         string $context_custom = 'edit',
+        int $width = 1,
     ) {
         if ($helper === null) {
             $trans_generate = __('steward::filament.form_helper.generate');
@@ -51,7 +52,8 @@ class FormHelper
                 if ($meta_title) {
                     $set('meta_title', $state);
                 }
-            });
+            })
+            ->columnSpan($width);
     }
 
     /**
