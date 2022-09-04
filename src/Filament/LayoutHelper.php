@@ -27,21 +27,21 @@ class LayoutHelper
                     ? Forms\Components\Card::make()
                         ->schema($firstPart)
                         ->columns([
-                            'sm' => 2,
+                            'sm' => $width,
                         ])
                     : Forms\Components\Group::make(),
                 ! empty($secondPart)
                     ? Forms\Components\Card::make()
                         ->schema($secondPart)
                         ->columns([
-                            'sm' => 2,
+                            'sm' => $width,
                         ])
                     : Forms\Components\Group::make(),
                 ! empty($thirdPart)
                 ? Forms\Components\Card::make()
                     ->schema($thirdPart)
                     ->columns([
-                        'sm' => 2,
+                        'sm' => $width,
                     ])
                 : Forms\Components\Group::make(),
             ])
