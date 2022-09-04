@@ -96,7 +96,11 @@ abstract class BaseQuery
             $fileName = Str::slug(trans_choice("crud.{$this->resource}.name", 10));
             $date = date('Ymd-His');
 
-            return Excel::download($this->export, "export-{$fileName}-{$date}.xlsx");
+            if (class_exists('Excel')) {
+                return Excel::download($this->export, "export-{$fileName}-{$date}.xlsx");
+            }
+
+            return null;
         }
 
         return $response($this->get());
