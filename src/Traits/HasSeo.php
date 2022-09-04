@@ -18,10 +18,10 @@ trait HasSeo
     {
         static::creating(function ($model) {
             if (empty($model->meta_title)) {
-                $model->meta_title = $this->limitStringSize($model->{$model->getMetaTitle()});
+                $model->meta_title = $model->limitStringSize($model->{$model->getMetaTitle()});
             }
             if (empty($model->meta_description)) {
-                $model->meta_description = $this->limitStringSize($model->{$model->getMetaDescription()});
+                $model->meta_description = $model->limitStringSize($model->{$model->getMetaDescription()});
             }
         });
     }
