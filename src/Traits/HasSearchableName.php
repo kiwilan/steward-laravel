@@ -29,4 +29,9 @@ trait HasSearchableName
 
         return Str::slug("{$appname} {$name}", '_');
     }
+
+    public function isSearchable()
+    {
+        return method_exists($this, 'searchableAs');
+    }
 }
