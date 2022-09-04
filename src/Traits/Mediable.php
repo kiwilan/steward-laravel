@@ -8,7 +8,7 @@ trait Mediable
 {
     protected array $default_mediables = ['picture'];
 
-    public function getMediablesAttribute(): array
+    public function getMediablesListAttribute(): array
     {
         return $this->mediables ?? $this->default_mediables;
     }
@@ -19,7 +19,7 @@ trait Mediable
     public function getMediableAttribute()
     {
         $mediable = new stdClass();
-        foreach ($this->mediables as $field) {
+        foreach ($this->getMediablesListAttribute() as $field) {
             $mediable->{$field} = $this->mediable($field);
         }
 
