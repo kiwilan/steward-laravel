@@ -3,10 +3,11 @@
 namespace Kiwilan\Steward\Services;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class QueryService
 {
-    public static function boot(Builder $query, string $model, array $config, array $filters)
+    public static function boot(Builder $query, array $filters, array $config)
     {
         $service = new QueryService();
         return $query->where(

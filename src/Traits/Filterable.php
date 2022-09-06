@@ -8,19 +8,21 @@ use ReflectionClass;
 
 trait Filterable
 {
-    // protected $default_role_column = 'role';
+    protected array $default_filter_config = [
+        'name' => 'partial',
+    ];
 
-    // public function initializeHasRole()
-    // {
-    //     $this->fillable[] = $this->getRoleColumn();
-    //     $this->fillable[] = 'is_blocked';
-
-    //     $this->casts[$this->getRoleColumn()] = UserRoleEnum::class;
-    //     $this->casts['is_blocked'] = 'boolean';
-    // }
-
-    public function scopeFilter(Builder $query, array $filters)
+    public function getFilterConfig(): string
     {
+        return $this->filter_config ?? $this->default_filter_config;
+    }
+
+    public function scopeFilter(Builder $query, array $filters, ?array $configuration = [])
+    {
+        if (empty($configuration)) {
+            $configuration = $this->getFilterConfig();
+        }
+
         // $queryAll = null;
         // foreach ($filters as $field => $value) {
         //     $queryAll[$field] = $query->where($field, $value);
@@ -28,11 +30,6 @@ trait Filterable
         // // dd($queryAll);
         // // return $query->where('status', '=', $status);
         // return $queryAll;
-
-        $queryConfig = [
-            'name' => 'partial',
-            'status' => 'exact',
-        ];
         // dump($filters);
 
         // $manual = ModelsMiniature::where(
@@ -47,10 +44,10 @@ trait Filterable
         //     ->get()
         // ;
         // dump($manual);
-        $instance = new $this();
-        $class = new ReflectionClass($instance);
+        // $instance = new $this();
+        // $class = new ReflectionClass($instance);
 
-        $service = QueryService::boot($query, $class->getName(), $queryConfig, $filters);
+        $service = QueryService::boot($query, $filters, $configuration);
 
         return $service;
     }
