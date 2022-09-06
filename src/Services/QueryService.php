@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Services;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 class QueryService
 {
