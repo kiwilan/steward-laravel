@@ -12,7 +12,7 @@ trait Filterable
         'name' => 'partial',
     ];
 
-    public function getFilterConfig(): string
+    public function getFilterConfig(): array
     {
         return $this->filter_config ?? $this->default_filter_config;
     }
