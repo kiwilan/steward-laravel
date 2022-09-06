@@ -10,6 +10,7 @@ class QueryService
     public static function boot(Builder $query, array $filters, array $config)
     {
         $service = new QueryService();
+
         return $query->where(
             function (Builder $query) use ($filters, $config, $service) {
                 foreach ($filters as $field => $value) {

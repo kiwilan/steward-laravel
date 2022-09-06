@@ -2,8 +2,8 @@
 
 namespace Kiwilan\Steward\Traits;
 
-use Kiwilan\Steward\Services\QueryService;
 use Illuminate\Database\Eloquent\Builder;
+use Kiwilan\Steward\Services\QueryService;
 use ReflectionClass;
 
 trait Filterable
