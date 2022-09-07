@@ -17,7 +17,7 @@ trait Filterable
         return $this->filter_config ?? $this->default_filter_config;
     }
 
-    public function scopeFilter(Builder $query, array $filters, ?array $configuration = [])
+    public function scopeFilter(Builder $query, array $filters, ?array $configuration = []): Builder
     {
         if (empty($configuration)) {
             $configuration = $this->getFilterConfig();
@@ -46,9 +46,15 @@ trait Filterable
         // dump($manual);
         // $instance = new $this();
         // $class = new ReflectionClass($instance);
+        return QueryService::boot($query, $filters, $configuration);
+    }
 
-        $service = QueryService::boot($query, $filters, $configuration);
+    public function scopeOrder(Builder $query, string $field, bool $reverse = false): Builder
+    {
+        // $direction = str_starts_with($field, '-') ? 'desc' : 'asc';
+        $direction = $reverse ? 'desc' : 'asc';
+        // $field = str_starts_with($field, '-') ? substr($field, 1) : $field;
 
-        return $service;
+        return $query->orderBy($field, $direction);
     }
 }

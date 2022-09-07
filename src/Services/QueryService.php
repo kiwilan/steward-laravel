@@ -3,10 +3,11 @@
 namespace Kiwilan\Steward\Services;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class QueryService
 {
-    public static function boot(Builder $query, array $filters, array $config)
+    public static function boot(Builder $query, array $filters, array $config): Builder|Model
     {
         $service = new QueryService();
 
@@ -14,10 +15,12 @@ class QueryService
             function (Builder $query) use ($filters, $config, $service) {
                 foreach ($filters as $field => $value) {
                     $mode = array_key_exists($field, $config) ? $config[$field] : 'exact';
-                    $query = match ($mode) {
-                        'partial' => $service->wherePartial($query, $field, $value),
-                        default => $service->whereExact($query, $field, $value),
-                    };
+                    if ($value) {
+                        $query = match ($mode) {
+                            'partial' => $service->wherePartial($query, $field, $value),
+                            default => $service->whereExact($query, $field, $value),
+                        };
+                    }
                 }
             }
         );
