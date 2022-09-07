@@ -40,6 +40,7 @@ class QueryService
     private function whereScope(Builder $query, string $field, string $value, array $scope)
     {
         $scope = $scope[1];
+
         return $query->{$scope}($value);
     }
 }
