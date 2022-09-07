@@ -18,7 +18,8 @@ class QueryService
                     if ($value) {
                         $query = match ($mode) {
                             'partial' => $service->wherePartial($query, $field, $value),
-                            default => $service->whereExact($query, $field, $value),
+                            'exact' => $service->whereExact($query, $field, $value),
+                            default => $service->whereScope($query, $field, $value, $mode),
                         };
                     }
                 }
@@ -34,5 +35,11 @@ class QueryService
     private function whereExact(Builder $query, string $field, string $value)
     {
         return $query->where($field, '=', $value);
+    }
+
+    private function whereScope(Builder $query, string $field, string $value, array $scope)
+    {
+        $scope = $scope[1];
+        return $query->{$scope}($value);
     }
 }
