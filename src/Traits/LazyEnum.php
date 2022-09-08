@@ -74,23 +74,41 @@ trait LazyEnum
         return $array;
     }
 
-    public static function toArray()
+    public static function getLocaleBaseName(): string
     {
-        $array = [];
         $class = new ReflectionClass(static::class);
+        $namespace = 'App\\Enums' === $class->getNamespaceName() ? '' : 'steward::';
         $class = $class->getShortName();
         $class_slug = Str::kebab($class);
         $class_slug = str_replace('-enum', '', $class_slug);
         $class_slug = str_replace('-', '_', $class_slug);
 
+        $locale = "{$namespace}enums.{$class_slug}.";
+
+        return $locale;
+    }
+
+    public static function toArray()
+    {
+        $array = [];
+        $base = static::getLocaleBaseName();
+
         foreach (static::cases() as $definition) {
-            $locale = "steward::enums.{$class_slug}.{$definition->value}";
+            $locale = "{$base}{$definition->value}";
             $array[$definition->name] = Lang::has($locale)
                 ? __($locale)
                 : $definition->value;
         }
 
         return $array;
+    }
+
+    public function trans(): string
+    {
+        $base = static::getLocaleBaseName();
+        $locale = "{$base}{$this->value}";
+
+        return __($locale);
     }
 
     public function equals(...$others): bool
