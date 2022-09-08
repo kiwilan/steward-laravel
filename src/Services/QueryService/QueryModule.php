@@ -30,7 +30,6 @@ class QueryModule
         return new QueryService('scope', $field, $scope);
     }
 
-
     public function wherePartial(Builder $query)
     {
         return $query->where($this->field, 'like', "%{$this->value}%");

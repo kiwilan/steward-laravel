@@ -10,7 +10,7 @@ use Kiwilan\Steward\Services\QueryService\QueryModule;
 class QueryService
 {
     /**
-     * @param QueryModule[] $config
+     * @param  QueryModule[]  $config
      *
      * @throws InvalidArgumentException
      */
