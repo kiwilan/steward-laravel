@@ -8,19 +8,15 @@ use ReflectionClass;
 
 trait Filterable
 {
-    protected array $default_filter_config = [
-        'name' => 'partial',
-    ];
-
-    public function getFilterConfig(): array
+    public function getFilterable(): array
     {
-        return $this->filter_config ?? $this->default_filter_config;
+        return $this->filterable() ?? [];
     }
 
     public function scopeFilter(Builder $query, array $filters, ?array $configuration = []): Builder
     {
         if (empty($configuration)) {
-            $configuration = $this->getFilterConfig();
+            $configuration = $this->getFilterable();
         }
 
         // $queryAll = null;
