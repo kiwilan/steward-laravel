@@ -15,19 +15,19 @@ class QueryModule
     ) {
     }
 
-    public static function partial(string $field): QueryService
+    public static function partial(string $field): QueryModule
     {
-        return new QueryService('partial', $field);
+        return new QueryModule('partial', $field);
     }
 
-    public static function exact(string $field): QueryService
+    public static function exact(string $field): QueryModule
     {
-        return new QueryService('exact', $field);
+        return new QueryModule('exact', $field);
     }
 
-    public static function scope(string $field, string $scope): QueryService
+    public static function scope(string $field, string $scope): QueryModule
     {
-        return new QueryService('scope', $field, $scope);
+        return new QueryModule('scope', $field, $scope);
     }
 
 
