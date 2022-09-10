@@ -53,11 +53,8 @@ trait Filterable
 
         $direction = $reverse ? 'desc' : 'asc';
         $current = $sortable[$field];
-        if (! is_string($current)) {
-            return $query->{$current->scope}($direction);
-        }
 
-        return $query->orderBy($field, $direction);
+        return $current->orderBy($direction);
     }
 
     /**
