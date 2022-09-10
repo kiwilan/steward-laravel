@@ -26,7 +26,10 @@ trait Mediable
         return $mediable;
     }
 
-    public function mediable(?string $field = 'picture', bool $get_path = false): ?string
+    /**
+     * @return string|array|null
+     */
+    public function mediable(?string $field = 'picture', bool $get_path = false)
     {
         if ($field) {
             if (null === $this->{$field}) {
