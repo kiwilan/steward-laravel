@@ -19,10 +19,11 @@ class SortModule
     public static function make(string $field, ?string $label = null): SortModule
     {
         $label ??= $field;
+
         return new SortModule('make', $field, $label);
     }
 
-    public static function scope(string $field, ?string $label = null, string $scope): SortModule
+    public static function scope(string $field, ?string $label, string $scope): SortModule
     {
         return new SortModule('scope', $field, $label, $scope);
     }
@@ -40,6 +41,7 @@ class SortModule
     public function orderBy(Builder $query, string $direction = 'asc')
     {
         $type = ucfirst($this->type);
+
         return $this->{"where{$type}"}($query, $direction);
     }
 }
