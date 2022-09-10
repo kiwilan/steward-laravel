@@ -58,11 +58,25 @@ trait Filterable
     }
 
     /**
-     * @return (string|\Kiwilan\Steward\Services\QueryService\SortModule)[]
+     * @return \Kiwilan\Steward\Services\QueryService\SortModule[]
      */
     public static function sortable()
     {
+        // @return (string|\Kiwilan\Steward\Services\QueryService\SortModule)[]
         return [];
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getSortable()
+    {
+        $list = [];
+        foreach (self::sortable() as $sort_module) {
+            $list[$sort_module->field] = $sort_module->label;
+        }
+
+        return $list;
     }
 
     /**
