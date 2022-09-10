@@ -45,11 +45,22 @@ trait Filterable
         return QueryService::boot($query, $filters, $configuration);
     }
 
-    public function scopeOrder(Builder $query, string $field, bool $reverse = false): Builder
+    public function scopeSort(Builder $query, string $field, bool $reverse = false): Builder
     {
-        // $direction = str_starts_with($field, '-') ? 'desc' : 'asc';
+        $class = new ReflectionClass($this);
+        $instance = $class->getName();
+        if (method_exists($instance, 'sortable')) {
+            $sortable = $instance::sortable();
+        }
+        if (! array_key_exists($field, $sortable)) {
+            return $query;
+        }
+
         $direction = $reverse ? 'desc' : 'asc';
-        // $field = str_starts_with($field, '-') ? substr($field, 1) : $field;
+        $current = $sortable[$field];
+        if (! is_string($current)) {
+            return $query->{$current->scope}($direction);
+        }
 
         return $query->orderBy($field, $direction);
     }
