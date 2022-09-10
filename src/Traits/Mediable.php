@@ -34,6 +34,15 @@ trait Mediable
             }
             $path = $get_path ? $field : $this->{$field};
 
+            if (is_array($this->{$field})) {
+                $list = [];
+                foreach ($this->{$field} as $media) {
+                    $list[] =  config('app.url')."/storage/{$media}";
+                }
+
+                return $list;
+            }
+
             return config('app.url')."/storage/{$path}";
         }
 
