@@ -8,15 +8,10 @@ use ReflectionClass;
 
 trait Filterable
 {
-    public function getFilterable(): array
-    {
-        return $this->filterable() ?? [];
-    }
-
     public function scopeFilter(Builder $query, array $filters, ?array $configuration = []): Builder
     {
         if (empty($configuration)) {
-            $configuration = $this->getFilterable();
+            $configuration = $this->filterable();
         }
 
         // $queryAll = null;
@@ -63,5 +58,21 @@ trait Filterable
         }
 
         return $query->orderBy($field, $direction);
+    }
+
+    /**
+     * @return (string|\Kiwilan\Steward\Services\QueryService\SortModule)[]
+     */
+    public static function sortable()
+    {
+        return [];
+    }
+
+    /**
+     * @return \Kiwilan\Steward\Services\QueryService\FilterModule[]
+     */
+    public static function filterable()
+    {
+        return [];
     }
 }
