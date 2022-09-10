@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Services\QueryService;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class QueryModule
+class FilterModule
 {
     public function __construct(
         public string $type,
@@ -15,19 +15,19 @@ class QueryModule
     ) {
     }
 
-    public static function partial(string $field): QueryModule
+    public static function partial(string $field): FilterModule
     {
-        return new QueryModule('partial', $field);
+        return new FilterModule('partial', $field);
     }
 
-    public static function exact(string $field): QueryModule
+    public static function exact(string $field): FilterModule
     {
-        return new QueryModule('exact', $field);
+        return new FilterModule('exact', $field);
     }
 
-    public static function scope(string $field, string $scope): QueryModule
+    public static function scope(string $field, string $scope): FilterModule
     {
-        return new QueryModule('scope', $field, $scope);
+        return new FilterModule('scope', $field, $scope);
     }
 
     public function wherePartial(Builder $query)

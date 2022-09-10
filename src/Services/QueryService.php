@@ -5,12 +5,12 @@ namespace Kiwilan\Steward\Services;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
-use Kiwilan\Steward\Services\QueryService\QueryModule;
+use Kiwilan\Steward\Services\QueryService\FilterModule;
 
 class QueryService
 {
     /**
-     * @param  QueryModule[]  $config
+     * @param  FilterModule[]  $config
      *
      * @throws InvalidArgumentException
      */
@@ -34,7 +34,7 @@ class QueryService
                      * If filter is allowed, apply config method.
                      */
                     if (array_key_exists($name, $list)) {
-                        /** @var QueryModule */
+                        /** @var FilterModule */
                         $module = $list[$name];
                         $module->value = $filter;
                         $query = match ($module->type) {
