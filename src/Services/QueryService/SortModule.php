@@ -30,7 +30,7 @@ class SortModule
 
     public function whereMake(Builder $query, string $direction = 'asc')
     {
-        return $query->orderBy($this->value, $direction);
+        return $query->orderBy($this->field, $direction);
     }
 
     public function whereScope(Builder $query, string $direction = 'asc')

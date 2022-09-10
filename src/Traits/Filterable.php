@@ -4,6 +4,7 @@ namespace Kiwilan\Steward\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Kiwilan\Steward\Services\QueryService;
+use Kiwilan\Steward\Services\QueryService\SortModule;
 use ReflectionClass;
 
 trait Filterable
@@ -47,14 +48,16 @@ trait Filterable
         if (method_exists($instance, 'sortable')) {
             $sortable = $instance::sortable();
         }
-        if (! array_key_exists($field, $sortable)) {
+
+        $sortable = array_filter($sortable, fn (SortModule $sort) => $sort->field === $field);
+        if (empty($sortable)) {
             return $query;
         }
+        $current = array_shift($sortable);
 
         $direction = $reverse ? 'desc' : 'asc';
-        $current = $sortable[$field];
 
-        return $current->orderBy($direction);
+        return $current->orderBy($query, $direction);
     }
 
     /**
