@@ -2,17 +2,17 @@
 
 return [
     'gender' => [
-        'unknown' => 'Inconnu',
-        'woman' => 'Femme',
-        'nonbinary' => 'Non binaire',
-        'genderfluid' => 'Gender fluide',
-        'agender' => 'Agenre',
-        'man' => 'Homme',
+        'unknown' => 'Unknown',
+        'woman' => 'Woman,',
+        'nonbinary' => 'Nonbinary',
+        'genderfluid' => 'Genderfluid',
+        'agender' => 'Agender',
+        'man' => 'Man',
     ],
     'user_role' => [
         'super_admin' => 'Superadmin',
         'admin' => 'Admin',
-        'editor' => 'Editeur',
-        'user' => 'Utilisateur',
+        'editor' => 'Editor',
+        'user' => 'User',
     ],
 ];
