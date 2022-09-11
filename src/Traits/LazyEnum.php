@@ -108,7 +108,7 @@ trait LazyEnum
         $base = static::getLocaleBaseName();
         $locale = "{$base}{$this->value}";
 
-        return $lower ? __($locale) : strtolower(__($locale));
+        return $lower ? strtolower(__($locale)) : __($locale);
     }
 
     public function equals(...$others): bool
