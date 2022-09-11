@@ -3,7 +3,7 @@
 return [
     'gender' => [
         'unknown' => 'Unknown',
-        'woman' => 'Woman,',
+        'woman' => 'Woman',
         'nonbinary' => 'Nonbinary',
         'genderfluid' => 'Genderfluid',
         'agender' => 'Agender',

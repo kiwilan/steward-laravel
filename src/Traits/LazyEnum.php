@@ -103,12 +103,12 @@ trait LazyEnum
         return $array;
     }
 
-    public function trans(): string
+    public function trans(bool $lower = false): string
     {
         $base = static::getLocaleBaseName();
         $locale = "{$base}{$this->value}";
 
-        return __($locale);
+        return $lower ? __($locale) : strtolower(__($locale));
     }
 
     public function equals(...$others): bool
