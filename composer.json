@@ -28,6 +28,7 @@
     },
     "require-dev": {
         "filament/filament": "^2.15",
+        "knuckleswtf/scribe": "^4.0",
         "laravel/pint": "^1.0",
         "maatwebsite/excel": "^3.1",
         "nunomaduro/collision": "^6.0",
