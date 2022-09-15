@@ -2,11 +2,11 @@
 
 namespace Kiwilan\Steward\Docs\Strategies;
 
+use Illuminate\Support\Str;
 use Knuckles\Camel\Extraction\ExtractedEndpointData;
 use Knuckles\Scribe\Extracting\ParamHelpers;
 use Knuckles\Scribe\Extracting\Strategies\Strategy;
 use ReflectionClass;
-use Illuminate\Support\Str;
 
 class ApplicationParameter extends Strategy
 {
@@ -26,9 +26,9 @@ class ApplicationParameter extends Strategy
     /**
      * @see https://scribe.knuckles.wtf/laravel/advanced/plugins
      *
-     * @param ExtractedEndpointData $endpointData The endpoint we are currently processing.
+     * @param  ExtractedEndpointData  $endpointData The endpoint we are currently processing.
      *                                            Contains details about httpMethods, controller, method, route, url, etc, as well as already extracted data.
-     * @param array                 $routeRules   Array of rules for the ruleset which this route belongs to.
+     * @param  array  $routeRules   Array of rules for the ruleset which this route belongs to.
      *
      * See the documentation linked above for more details about writing custom strategies.
      */
