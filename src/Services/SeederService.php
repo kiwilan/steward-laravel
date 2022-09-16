@@ -204,15 +204,17 @@ class SeederService
         return SeederService::createMedia($media, $category);
     }
 
-    public static function timestamps(): array
+    public static function timestamps(string $minimum = '-20 years'): array
     {
         $faker = Factory::create();
 
         $created_at = Carbon::createFromTimeString(
-            $faker->dateTimeBetween('-20 years')->format('Y-m-d H:i:s')
+            $faker->dateTimeBetween($minimum)
+            ->format('Y-m-d H:i:s')
         )->format('Y-m-d H:i:s');
         $updated_at = Carbon::createFromTimeString(
-            $faker->dateTimeBetween($created_at)->format('Y-m-d H:i:s')
+            $faker->dateTimeBetween($created_at)
+            ->format('Y-m-d H:i:s')
         )->format('Y-m-d H:i:s');
 
         return [
