@@ -21,6 +21,7 @@ trait HasSlug
         if ($default === null) {
             $default = 'title';
         }
+
         return $this->slug_with ?? $default;
     }
 

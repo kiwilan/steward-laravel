@@ -32,6 +32,7 @@ trait HasSeo
         if ($default === null) {
             $default = 'title';
         }
+
         return $this->meta_title_from ?? $default;
     }
 
