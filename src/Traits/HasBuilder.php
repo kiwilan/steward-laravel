@@ -13,7 +13,7 @@ trait HasBuilder
     {
         $this->fillable[] = 'builder';
 
-        $this->casts['builder'] = BuilderEnum::class;
+        // $this->casts['builder'] = BuilderEnum::class;
     }
 
     public function getBuilderColumn(): string
