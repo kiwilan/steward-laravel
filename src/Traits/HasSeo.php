@@ -28,6 +28,10 @@ trait HasSeo
 
     public function getMetaTitle(): string
     {
+        $default = $this->default_meta_title_from;
+        if ($default === null) {
+            $default = 'title';
+        }
         return $this->meta_title_from ?? $this->default_meta_title_from;
     }
 
@@ -36,9 +40,9 @@ trait HasSeo
         return $this->meta_description_from ?? $this->default_meta_description_from;
     }
 
-    private function limitStringSize(string $string, int $limit = 250): string
+    private function limitStringSize(?string $string = null, int $limit = 250): ?string
     {
-        if (strlen($string) > $limit) {
+        if ($string && strlen($string) > $limit) {
             return substr($string, 0, $limit).'...';
         }
 
