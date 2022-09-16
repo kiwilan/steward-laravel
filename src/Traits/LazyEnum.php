@@ -42,16 +42,6 @@ trait LazyEnum
         return $list;
     }
 
-    // public static function toArray()
-    // {
-    //     $list = [];
-    //     foreach (self::cases() as $enum) {
-    //         $list[$enum->name] = $enum->value;
-    //     }
-
-    //     return $list;
-    // }
-
     public static function toNames()
     {
         $array = [];
@@ -88,6 +78,9 @@ trait LazyEnum
         return $locale;
     }
 
+    /**
+     * Get Enum list [case] => [locale].
+     */
     public static function toArray()
     {
         $array = [];
@@ -97,7 +90,7 @@ trait LazyEnum
             $locale = "{$base}{$definition->value}";
             $array[$definition->name] = Lang::has($locale)
                 ? __($locale)
-                : $definition->value;
+                : ucfirst($definition->value);
         }
 
         return $array;
@@ -107,6 +100,7 @@ trait LazyEnum
     {
         $base = static::getLocaleBaseName();
         $locale = "{$base}{$this->value}";
+        $locale = Lang::has($locale) ? $locale : ucfirst($this->value);
 
         return $lower ? strtolower(__($locale)) : __($locale);
     }
