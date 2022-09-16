@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Services;
 
-use App\Enums\MediaSeederCategoryEnum;
 use App\Models\Collector;
 use Faker\Factory;
 use Faker\Generator;
@@ -31,21 +30,21 @@ class SeederService
         /*
          * Generate 1 title + block
          */
-        for ($i = 0; $i < $faker->numberBetween(1, 1); ++$i) {
+        for ($i = 0; $i < $faker->numberBetween(1, 1); $i++) {
             $title = Str::title($faker->words($faker->numberBetween(5, 10), true));
             $html .= "<h2>{$title}</h2>";
 
             /*
              * Generate 1 subtitle + block
              */
-            for ($j = 0; $j < $faker->numberBetween(1, 2); ++$j) {
+            for ($j = 0; $j < $faker->numberBetween(1, 2); $j++) {
                 $title = Str::title($faker->words($faker->numberBetween(5, 10), true));
                 $html .= "<h3>{$title}</h3>";
 
                 /*
                  *  Generate many paragraphs
                  */
-                for ($k = 0; $k < $faker->numberBetween(2, 5); ++$k) {
+                for ($k = 0; $k < $faker->numberBetween(2, 5); $k++) {
                     $paragraph = $faker->paragraph(5);
                     $html .= "<p>{$paragraph}</p>";
 
