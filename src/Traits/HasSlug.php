@@ -17,7 +17,11 @@ trait HasSlug
 
     public function getSlugWith(): string
     {
-        return $this->slug_with ?? $this->default_slug_with;
+        $default = $this->default_slug_with;
+        if ($default === null) {
+            $default = 'title';
+        }
+        return $this->slug_with ?? $default;
     }
 
     public function getSlugColumn(): string
