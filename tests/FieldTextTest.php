@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
-use Kiwilan\Steward\Components\Button;
 use Kiwilan\Steward\Components\FieldText;
 use Kiwilan\Steward\Tests\TestCase;
 
