@@ -151,6 +151,18 @@ echo $steward->echoPhrase('Hello, Kiwilan!');
 composer test
 ```
 
+Coverage
+
+```bash
+composer test-coverage
+```
+
+Watch tests
+
+```bash
+composer test:watch
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
