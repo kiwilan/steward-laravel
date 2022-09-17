@@ -25,7 +25,8 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
         $package
             ->name('steward')
             ->hasConfigFile()
-            ->hasViews('steward')
+            ->hasViews()
+            ->hasViewComponents('steward')
             ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([
