@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward;
 
+use App\View\Component\Text;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\LaravelStewardCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
@@ -26,7 +27,8 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
-            ->hasViewComponents('steward')
+            ->hasViewComponent('steward', Text::class)
+            // ->hasViewComponents('steward')
             ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([
