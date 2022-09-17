@@ -44,14 +44,14 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([
-            FilamentConfigCommand::class,
-            LaravelStewardCommand::class,
-            MediaCleanCommand::class,
-            PublishScheduledCommand::class,
-            ScoutFreshCommand::class,
-            SubmissionRgpdVerificationCommand::class,
-            SubmissionSendCommand::class,
-            TagCleanCommand::class,
+                FilamentConfigCommand::class,
+                LaravelStewardCommand::class,
+                MediaCleanCommand::class,
+                PublishScheduledCommand::class,
+                ScoutFreshCommand::class,
+                SubmissionRgpdVerificationCommand::class,
+                SubmissionSendCommand::class,
+                TagCleanCommand::class,
             ]);
     }
 }
