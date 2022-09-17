@@ -5,8 +5,6 @@ namespace Tests;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Kiwilan\Steward\Components\Button;
 use Kiwilan\Steward\Tests\TestCase;
-use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
-use Spatie\Snapshots\MatchesSnapshots;
 
 class ButtonTest extends TestCase
 {
@@ -46,7 +44,7 @@ class ButtonTest extends TestCase
     public function can_be_button()
     {
         $component = $this->blade(
-            "<x-steward-button>Submit</x-steward-button>",
+            '<x-steward-button>Submit</x-steward-button>',
         );
 
         $component->assertSee('button');
