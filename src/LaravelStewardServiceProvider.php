@@ -10,12 +10,12 @@ use Kiwilan\Steward\Commands\ScoutFreshCommand;
 use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
 use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
+use Kiwilan\Steward\Components\AppName;
 use Kiwilan\Steward\Components\Field\Checkbox;
 use Kiwilan\Steward\Components\Field\Select;
 use Kiwilan\Steward\Components\Field\Text;
 use Kiwilan\Steward\Components\Field\Toggle;
 use Kiwilan\Steward\Components\Field\UploadFile;
-use Kiwilan\Steward\Components\AppName;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
