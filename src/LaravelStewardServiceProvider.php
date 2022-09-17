@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward;
 
-use App\View\Component\Text;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\LaravelStewardCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
@@ -11,6 +10,7 @@ use Kiwilan\Steward\Commands\ScoutFreshCommand;
 use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
 use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
+use Kiwilan\Steward\Components\Text;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

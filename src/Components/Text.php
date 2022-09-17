@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Component;
+namespace Kiwilan\Steward\Components;
 
 use Illuminate\View\Component;
 
