@@ -58,6 +58,7 @@
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
+        "coverage": "vendor/bin/pest --coverage --min=1",
         "format": "vendor/bin/pint",
         "test:watch": [
             "Composer\\Config::disableProcessTimeout",

@@ -19,6 +19,9 @@ jobs:
         include:
           - laravel: 9.*
             testbench: 7.*
+        coverage-driver:
+          - "pcov"
+          - "xdebug3"
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
@@ -31,7 +34,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-          coverage: 30
+          coverage: none
 
       - name: Setup problem matchers
         run: |
@@ -45,3 +48,8 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest
+
+      - name: Send code coverage report to Codecov.io
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
