@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1663412187">
-  <project timestamp="1663412187">
+<coverage generated="1663414310">
+  <project timestamp="1663414310">
     <file name="/home/runner/work/laravel-steward/laravel-steward/src/Commands/CommandSteward.php">
       <class name="Kiwilan\Steward\Commands\CommandSteward" namespace="global">
         <metrics complexity="7" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="0" elements="25" coveredelements="0"/>
@@ -256,12 +256,12 @@
     </file>
     <file name="/home/runner/work/laravel-steward/laravel-steward/src/Components/FieldText.php">
       <class name="Kiwilan\Steward\Components\FieldText" namespace="global">
-        <metrics complexity="2" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="4" coveredelements="0"/>
+        <metrics complexity="2" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="4" coveredelements="4"/>
       </class>
-      <line num="12" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
-      <line num="32" type="method" name="render" visibility="public" complexity="1" crap="2" count="0"/>
-      <line num="34" type="stmt" count="0"/>
-      <metrics loc="37" ncloc="29" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="4" coveredelements="0"/>
+      <line num="12" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="32" type="method" name="render" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="34" type="stmt" count="1"/>
+      <metrics loc="37" ncloc="29" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="4" coveredelements="4"/>
     </file>
     <file name="/home/runner/work/laravel-steward/laravel-steward/src/Components/FieldToggle.php">
       <class name="Kiwilan\Steward\Components\FieldToggle" namespace="global">
@@ -737,14 +737,14 @@
       <class name="Kiwilan\Steward\LaravelStewardServiceProvider" namespace="global">
         <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="8" coveredelements="8"/>
       </class>
-      <line num="24" type="method" name="configurePackage" visibility="public" complexity="1" crap="1" count="7"/>
-      <line num="32" type="stmt" count="7"/>
-      <line num="33" type="stmt" count="7"/>
-      <line num="34" type="stmt" count="7"/>
-      <line num="35" type="stmt" count="7"/>
-      <line num="44" type="stmt" count="7"/>
-      <line num="45" type="stmt" count="7"/>
-      <line num="46" type="stmt" count="7"/>
+      <line num="24" type="method" name="configurePackage" visibility="public" complexity="1" crap="1" count="8"/>
+      <line num="32" type="stmt" count="8"/>
+      <line num="33" type="stmt" count="8"/>
+      <line num="34" type="stmt" count="8"/>
+      <line num="35" type="stmt" count="8"/>
+      <line num="44" type="stmt" count="8"/>
+      <line num="45" type="stmt" count="8"/>
+      <line num="46" type="stmt" count="8"/>
       <metrics loc="58" ncloc="53" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="8" coveredelements="8"/>
     </file>
     <file name="/home/runner/work/laravel-steward/laravel-steward/src/Models/Submission.php">
@@ -1613,6 +1613,6 @@
       <line num="18" type="stmt" count="0"/>
       <metrics loc="21" ncloc="21" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="5" coveredelements="0"/>
     </file>
-    <metrics files="66" loc="3828" ncloc="3289" classes="57" methods="176" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="1079" coveredstatements="9" elements="1255" coveredelements="12"/>
+    <metrics files="66" loc="3828" ncloc="3289" classes="57" methods="176" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="1079" coveredstatements="11" elements="1255" coveredelements="16"/>
   </project>
 </coverage>
