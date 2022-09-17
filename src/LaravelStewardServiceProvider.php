@@ -10,7 +10,12 @@ use Kiwilan\Steward\Commands\ScoutFreshCommand;
 use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
 use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
-use Kiwilan\Steward\Components\Text;
+use Kiwilan\Steward\Components\Field\Checkbox;
+use Kiwilan\Steward\Components\Field\Select;
+use Kiwilan\Steward\Components\Field\Text;
+use Kiwilan\Steward\Components\Field\Toggle;
+use Kiwilan\Steward\Components\Field\UploadFile;
+use Kiwilan\Steward\Components\AppName;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -27,8 +32,14 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
-            ->hasViewComponent('steward', Text::class)
-            // ->hasViewComponents('steward')
+            ->hasViewComponents('steward', [
+                Checkbox::class,
+                Select::class,
+                Text::class,
+                Toggle::class,
+                UploadFile::class,
+                AppName::class,
+            ])
             ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([

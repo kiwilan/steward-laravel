@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Components;
 
 use Illuminate\View\Component;
 
-class Text extends Component
+class AppName extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class Text extends Component
      */
     public function render()
     {
-        return view('steward::components.text');
+        return view('steward::components.app-name');
     }
 }
