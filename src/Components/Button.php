@@ -4,16 +4,15 @@ namespace Kiwilan\Steward\Components;
 
 use Illuminate\View\Component;
 
-class FieldSelect extends Component
+class Button extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $name = 'select',
-        public string $label = '',
-        public ?string $default = null,
-        public array $options = [],
+        public bool $button = false,
+        public ?string $route = '/',
+        public bool $external = false
     ) {
     }
 
@@ -24,10 +23,6 @@ class FieldSelect extends Component
      */
     public function render()
     {
-        if ($this->default) {
-            array_unshift($this->options, $this->default);
-        }
-
-        return view('steward::components.field.select');
+        return view('steward::components.button');
     }
 }

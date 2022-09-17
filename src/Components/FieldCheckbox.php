@@ -23,6 +23,6 @@ class FieldCheckbox extends Component
      */
     public function render()
     {
-        return view('components.field.checkbox');
+        return view('steward::components.field.checkbox');
     }
 }

@@ -23,6 +23,6 @@ class FieldToggle extends Component
      */
     public function render()
     {
-        return view('components.field.toggle');
+        return view('steward::components.field.toggle');
     }
 }

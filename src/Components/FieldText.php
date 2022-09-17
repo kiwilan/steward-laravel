@@ -31,6 +31,6 @@ class FieldText extends Component
      */
     public function render()
     {
-        return view('components.field.text');
+        return view('steward::components.field.text');
     }
 }
