@@ -32,25 +32,26 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
-            ->hasViewComponents('steward', [
+            ->hasViewComponents(
+                'steward',
                 Checkbox::class,
                 Select::class,
                 Text::class,
                 Toggle::class,
                 UploadFile::class,
                 AppName::class,
-            ])
+            )
             ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([
-                FilamentConfigCommand::class,
-                LaravelStewardCommand::class,
-                MediaCleanCommand::class,
-                PublishScheduledCommand::class,
-                ScoutFreshCommand::class,
-                SubmissionRgpdVerificationCommand::class,
-                SubmissionSendCommand::class,
-                TagCleanCommand::class,
+            FilamentConfigCommand::class,
+            LaravelStewardCommand::class,
+            MediaCleanCommand::class,
+            PublishScheduledCommand::class,
+            ScoutFreshCommand::class,
+            SubmissionRgpdVerificationCommand::class,
+            SubmissionSendCommand::class,
+            TagCleanCommand::class,
             ]);
     }
 }
