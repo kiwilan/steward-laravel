@@ -2,6 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kiwilan/laravel-steward.svg?style=flat-square)](https://packagist.org/packages/kiwilan/laravel-steward)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/kiwilan/laravel-steward/run-tests?label=tests&style=flat-square)](https://github.com/kiwilan/laravel-steward/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![codecov](https://codecov.io/gh/kiwilan/laravel-steward/branch/main/graph/badge.svg)](https://codecov.io/gh/kiwilan/laravel-steward)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/kiwilan/laravel-steward/Fix%20PHP%20code%20style%20issues?label=code%20style&style=flat-square)](https://github.com/kiwilan/laravel-steward/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/kiwilan/laravel-steward.svg?style=flat-square)](https://packagist.org/packages/kiwilan/laravel-steward)
 
