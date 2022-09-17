@@ -1,18 +1,19 @@
 <?php
 
-namespace Kiwilan\Steward\Components\Field;
+namespace Kiwilan\Steward\Components;
 
 use Illuminate\View\Component;
 
-class Toggle extends Component
+class FieldSelect extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $name = 'toggle',
-        public ?string $hint = null,
+        public string $name = 'select',
         public string $label = '',
+        public ?string $default = null,
+        public array $options = [],
     ) {
     }
 
@@ -23,6 +24,10 @@ class Toggle extends Component
      */
     public function render()
     {
-        return view('components.field.toggle');
+        if ($this->default) {
+            array_unshift($this->options, $this->default);
+        }
+
+        return view('components.field.select');
     }
 }

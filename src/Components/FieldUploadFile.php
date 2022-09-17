@@ -1,10 +1,10 @@
 <?php
 
-namespace Kiwilan\Steward\Components\Field;
+namespace Kiwilan\Steward\Components;
 
 use Illuminate\View\Component;
 
-class UploadFile extends Component
+class FieldUploadFile extends Component
 {
     /**
      * Create a new component instance.
