@@ -1,3 +1,4 @@
+# php ./vendor/bin/grumphp git:init --config=grumphp.yml
 grumphp:
   fixer:
     enabled: false
