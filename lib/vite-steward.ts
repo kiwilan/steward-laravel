@@ -3,15 +3,23 @@ import type { Plugin } from 'vite'
 
 interface Options {
   /**
-   * Where JS files will be copied
+   * Where JS scripts will be copied
    * @default './public/vendor/js'
    */
-  outputDir?: string
+  outputDirScripts?: string
+  /**
+   * Where JS libraries will be copied
+   * @default './resources/js'
+   */
+  outputDirLibraries?: string
 }
 
-const outputDir = './public/vendor/js'
+const outputDirScripts = './public/vendor/js'
+const outputDirLibraries = './resources/js'
+
 const DEFAULT_OPTIONS: Options = {
-  outputDir,
+  outputDirScripts,
+  outputDirLibraries,
 }
 
 function plugin(userOptions: Options = {}): Plugin {
@@ -23,23 +31,28 @@ function plugin(userOptions: Options = {}): Plugin {
       const filesToCopy: {
         name: string
         path: string
+        library: boolean
       }[] = [
         {
           name: 'color-mode.js',
           path: 'resources/js/color-mode.js',
+          library: false,
         },
         {
           name: 'tiptap.js',
           path: 'dist/tiptap.cjs',
+          library: true,
         },
       ]
 
       const path = `${process.cwd()}/vendor/kiwilan/laravel-steward`
 
-      await fs.promises.mkdir(opts.outputDir ?? outputDir, { recursive: true }).catch(console.error)
+      await fs.promises.mkdir(opts.outputDirScripts ?? outputDirScripts, { recursive: true }).catch(console.error)
+      await fs.promises.mkdir(opts.outputDirLibraries ?? outputDirLibraries, { recursive: true }).catch(console.error)
 
       for (const file of filesToCopy) {
-        fs.copyFile(`${path}/${file.path}`, `${opts.outputDir}/${file.name}`, (err) => {
+        const outputDir = file.library ? opts.outputDirLibraries : opts.outputDirScripts as string
+        fs.copyFile(`${path}/${file.path}`, `${outputDir}/${file.name}`, (err) => {
           if (err)
             throw err
         })
