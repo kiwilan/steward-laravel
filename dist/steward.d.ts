@@ -2,10 +2,15 @@ import { Plugin } from 'vite';
 
 interface Options {
     /**
-     * Where JS files will be copied
+     * Where JS scripts will be copied
      * @default './public/vendor/js'
      */
-    outputDir?: string;
+    outputDirScripts?: string;
+    /**
+     * Where JS libraries will be copied
+     * @default './resources/js'
+     */
+    outputDirLibraries?: string;
 }
 declare function plugin(userOptions?: Options): Plugin;
 

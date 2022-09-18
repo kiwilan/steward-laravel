@@ -6,6 +6,12 @@ grumphp:
     enabled: true
     max_workers: 32
   tasks:
+    npm_script:
+      script: 'build'
+      triggered_by: [js, ts, scss]
+      working_directory: "./"
+      is_run_task: false
+      silent: false
     eslint:
         bin: node_modules/.bin/eslint
         triggered_by: [js, ts]
