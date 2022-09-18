@@ -12,6 +12,7 @@ use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Components\Button;
 use Kiwilan\Steward\Components\FieldCheckbox;
+use Kiwilan\Steward\Components\FieldEditor;
 use Kiwilan\Steward\Components\FieldSelect;
 use Kiwilan\Steward\Components\FieldText;
 use Kiwilan\Steward\Components\FieldToggle;
@@ -36,6 +37,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 'steward',
                 Button::class,
                 FieldCheckbox::class,
+                FieldEditor::class,
                 FieldSelect::class,
                 FieldText::class,
                 FieldToggle::class,
