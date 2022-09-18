@@ -4,16 +4,13 @@ import * as fs from 'fs'
 interface Options {
   /**
    * Where `color-mode.js` will be copied
-   * @default './public/js'
+   * @default './public/vendor/js'
    */
   outputDir?: string
 }
 
-export const nodeModulesPathDefault = './node_modules/markdoc-content'
-export const contentPathDefault = './content/'
-
 const DEFAULT_OPTIONS: Options = {
-  outputDir: './public/js',
+  outputDir: './public/vendor/js',
 }
 
 function plugin(userOptions: Options = {}) {
