@@ -17,6 +17,6 @@ class Editor extends Component
 
     public function render()
     {
-        return view('livewire.editor');
+        return view('steward::livewire.editor');
     }
 }
