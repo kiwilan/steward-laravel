@@ -36,10 +36,6 @@ function plugin(userOptions: Options = {}): Plugin {
           throw err
       })
     },
-    // handleHotUpdate({ file, server }) {
-    //   if (file.endsWith('.md'))
-    //     server.restart()
-    // },
   }
 }
 

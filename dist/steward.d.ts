@@ -3,7 +3,7 @@ import { ChainedCommands } from '@tiptap/core';
 
 interface Options {
     /**
-     * Where `color-mode.js` will be copied
+     * Where JS files will be copied
      * @default './public/vendor/js'
      */
     outputDir?: string;

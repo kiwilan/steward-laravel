@@ -7,4 +7,5 @@ export default defineConfig({
   },
   format: ['esm', 'cjs'],
   dts: true,
+  minify: true,
 })
