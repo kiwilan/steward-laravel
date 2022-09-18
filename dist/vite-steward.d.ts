@@ -14,4 +14,4 @@ interface Options {
 }
 declare function plugin(userOptions?: Options): Plugin;
 
-export { plugin as steward };
+export { Options, plugin as default };
