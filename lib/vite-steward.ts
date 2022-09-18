@@ -26,22 +26,23 @@ function plugin(userOptions: Options = {}): Plugin {
       }[] = [
         {
           name: 'color-mode.js',
-          path: 'vendor/kiwilan/laravel-steward/resources/js/color-mode.js',
+          path: 'resources/js/color-mode.js',
         },
         {
           name: 'tiptap.js',
-          path: 'vendor/kiwilan/laravel-steward/dist/tiptap.cjs',
+          path: 'dist/tiptap.cjs',
         },
       ]
 
-      const path = process.cwd()
+      const path = `${process.cwd()}/vendor/kiwilan/laravel-steward`
 
       await fs.promises.mkdir(opts.outputDir ?? outputDir, { recursive: true }).catch(console.error)
 
       for (const file of filesToCopy) {
-        await fs.promises
-          .copyFile(`${path}/${file.path}`, `${opts.outputDir ?? outputDir}/${file.name}`)
-          .catch(console.error)
+        fs.copyFile(`${path}/${file.path}`, `${opts.outputDir}/${file.name}`, (err) => {
+          if (err)
+            throw err
+        })
       }
     },
   }
