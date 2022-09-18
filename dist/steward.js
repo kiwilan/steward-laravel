@@ -40,5 +40,5 @@ function plugin(userOptions = {}) {
 }
 var vite_steward_lib_default = plugin;
 export {
-  vite_steward_lib_default as ViteSteward
+  vite_steward_lib_default as steward
 };

@@ -1,5 +1,5 @@
-import ViteSteward from './vite-steward-lib'
+import steward from './vite-steward-lib'
 
 export {
-  ViteSteward,
+  steward,
 }

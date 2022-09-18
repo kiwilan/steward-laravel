@@ -26,7 +26,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // lib/vite-steward.ts
 var vite_steward_exports = {};
 __export(vite_steward_exports, {
-  ViteSteward: () => vite_steward_lib_default
+  steward: () => vite_steward_lib_default
 });
 module.exports = __toCommonJS(vite_steward_exports);
 
@@ -73,5 +73,5 @@ function plugin(userOptions = {}) {
 var vite_steward_lib_default = plugin;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  ViteSteward
+  steward
 });
