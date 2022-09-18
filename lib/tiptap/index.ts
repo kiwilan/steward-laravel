@@ -19,7 +19,7 @@ let editor: Editor
  *
  * Helped with: https://github.com/ueberdosis/tiptap/issues/1515#issuecomment-903095273
  */
-const Tiptap = () => ({
+export const Tiptap = () => ({
   content: '<p>This is where the content goes</p>',
   actions: [] as ActionButton[],
   updatedAt: Date.now(),
@@ -97,4 +97,3 @@ const Tiptap = () => ({
   },
 })
 
-export default Tiptap

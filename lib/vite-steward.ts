@@ -54,7 +54,6 @@ function plugin(userOptions: Options = {}): Plugin {
 
       for (const file of filesToCopy) {
         const outputDir = file.library ? outputDirLibraries : outputDirScripts
-        console.log(`${outputDir}/${file.name}`)
         fs.copyFile(`${path}/${file.path}`, `${outputDir}/${file.name}`, (err) => {
           if (err)
             throw err
