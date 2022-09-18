@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Livewire;
+namespace Kiwilan\Steward\Http\Livewire;
 
 use Livewire\Component;
 

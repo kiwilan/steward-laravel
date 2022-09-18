@@ -17,11 +17,8 @@ use Kiwilan\Steward\Components\FieldSelect;
 use Kiwilan\Steward\Components\FieldText;
 use Kiwilan\Steward\Components\FieldToggle;
 use Kiwilan\Steward\Components\FieldUploadFile;
-use Kiwilan\Steward\Livewire\Editor;
-use Livewire\Component;
+use Kiwilan\Steward\Http\Livewire\Editor;
 use Livewire\Livewire;
-use Livewire\LivewireManager;
-use Livewire\Response;
 use Livewire\Testing\TestableLivewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -35,7 +32,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
          *
          * More info: https://github.com/spatie/laravel-package-tools
          */
-        // Livewire::component('steward::editor', Editor::class);
+
         $package
             ->name('steward')
             ->hasConfigFile()
@@ -62,12 +59,5 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
             ]);
-    }
-
-    public function packageBooted(): void
-    {
-        Livewire::component('editor', Editor::class);
-
-        // TestableLivewire::mixin(new TestsNotifications());
     }
 }
