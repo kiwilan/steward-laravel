@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1663488530">
-  <project timestamp="1663488530">
+<coverage generated="1663489567">
+  <project timestamp="1663489567">
     <file name="/home/runner/work/laravel-steward/laravel-steward/src/Commands/CommandSteward.php">
       <class name="Kiwilan\Steward\Commands\CommandSteward" namespace="global">
         <metrics complexity="7" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="0" elements="25" coveredelements="0"/>
