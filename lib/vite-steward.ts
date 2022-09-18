@@ -14,12 +14,12 @@ interface Options {
   outputDirLibraries?: string
 }
 
-const outputDirScripts = './public/vendor/js'
-const outputDirLibraries = './resources/js'
+const outputDirScriptsDefault = './public/vendor/js'
+const outputDirLibrariesDefault = './resources/libs'
 
 const DEFAULT_OPTIONS: Options = {
-  outputDirScripts,
-  outputDirLibraries,
+  outputDirScripts: outputDirScriptsDefault,
+  outputDirLibraries: outputDirLibrariesDefault,
 }
 
 function plugin(userOptions: Options = {}): Plugin {
@@ -27,6 +27,8 @@ function plugin(userOptions: Options = {}): Plugin {
     name: 'vite-plugin-markdoc-content',
     async buildStart() {
       const opts: Options = Object.assign({}, DEFAULT_OPTIONS, userOptions)
+      const outputDirScripts = opts.outputDirScripts as string
+      const outputDirLibraries = opts.outputDirLibraries as string
 
       const filesToCopy: {
         name: string
@@ -47,11 +49,11 @@ function plugin(userOptions: Options = {}): Plugin {
 
       const path = `${process.cwd()}/vendor/kiwilan/laravel-steward`
 
-      await fs.promises.mkdir(opts.outputDirScripts ?? outputDirScripts, { recursive: true }).catch(console.error)
-      await fs.promises.mkdir(opts.outputDirLibraries ?? outputDirLibraries, { recursive: true }).catch(console.error)
+      await fs.promises.mkdir(outputDirScripts, { recursive: true }).catch(console.error)
+      await fs.promises.mkdir(outputDirLibraries, { recursive: true }).catch(console.error)
 
       for (const file of filesToCopy) {
-        const outputDir = file.library ? opts.outputDirLibraries : opts.outputDirScripts as string
+        const outputDir = file.library ? outputDirLibraries : outputDirScripts
         fs.copyFile(`${path}/${file.path}`, `${outputDir}/${file.name}`, (err) => {
           if (err)
             throw err
