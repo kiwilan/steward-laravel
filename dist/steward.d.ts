@@ -67,4 +67,4 @@ declare const Tiptap: () => {
     countWords(): any;
 };
 
-export { plugin as colorMode, Tiptap as tiptap };
+export { plugin as steward, Tiptap as tiptap };
