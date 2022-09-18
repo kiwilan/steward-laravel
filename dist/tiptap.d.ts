@@ -57,4 +57,4 @@ declare const Tiptap: () => {
     countWords(): any;
 };
 
-export { Tiptap as default };
+export { Tiptap };
