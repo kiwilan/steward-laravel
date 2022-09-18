@@ -1,18 +1,22 @@
-import type { Plugin } from 'vite'
 import fs from 'fs'
+import type { Plugin } from 'vite'
 
 interface Options {
   outputDir?: string
 }
+
+export const nodeModulesPathDefault = './node_modules/markdoc-content'
+export const contentPathDefault = './content/'
+
 const DEFAULT_OPTIONS: Options = {
-  outputDir: './public/vendor/js',
+  outputDir: './public/js',
 }
 
-const colorMode = (options: Options = {}): Plugin => {
+function plugin(userOptions: Options = {}): Plugin {
   return {
-    name: 'vite-color-mode',
+    name: 'vite-plugin-markdoc-content',
     async buildStart() {
-      const opts: Options = Object.assign({}, DEFAULT_OPTIONS, options)
+      const opts: Options = Object.assign({}, DEFAULT_OPTIONS, userOptions)
 
       const pathColorMode = 'vendor/kiwilan/laravel-steward/resources/js/color-mode.js'
       const path = process.cwd()
@@ -25,7 +29,12 @@ const colorMode = (options: Options = {}): Plugin => {
           throw err
       })
     },
+    // handleHotUpdate({ file, server }) {
+    //   if (file.endsWith('.md'))
+    //     server.restart()
+    // },
   }
 }
 
-export default colorMode
+export type { Options }
+export default plugin
