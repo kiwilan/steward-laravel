@@ -17,7 +17,6 @@ use Kiwilan\Steward\Components\FieldSelect;
 use Kiwilan\Steward\Components\FieldText;
 use Kiwilan\Steward\Components\FieldToggle;
 use Kiwilan\Steward\Components\FieldUploadFile;
-use Livewire\LivewireManager;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
