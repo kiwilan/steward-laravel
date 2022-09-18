@@ -20,8 +20,6 @@ use Kiwilan\Steward\Components\FieldUploadFile;
 use Kiwilan\Steward\Livewire\Editor;
 use Livewire\Component;
 use Livewire\Livewire;
-use Livewire\LivewireManager;
-use Livewire\Response;
 use Livewire\Testing\TestableLivewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
