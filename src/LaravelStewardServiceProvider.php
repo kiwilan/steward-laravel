@@ -67,6 +67,6 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
 
     public function registerLivewireComponents()
     {
-        Livewire::component('editor', Editor::class);
+        Livewire::component('stw-editor', Editor::class);
     }
 }
