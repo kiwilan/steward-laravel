@@ -1,4 +1,4 @@
-// lib/vite-steward.ts
+// lib/vite-steward-lib/index.ts
 import fs from "fs";
 var outputDirScriptsDefault = "./public/vendor/js";
 var outputDirLibrariesDefault = "./resources/libs";
@@ -38,7 +38,7 @@ function plugin(userOptions = {}) {
     }
   };
 }
-var vite_steward_default = plugin;
+var vite_steward_lib_default = plugin;
 export {
-  vite_steward_default as default
+  vite_steward_lib_default as ViteSteward
 };

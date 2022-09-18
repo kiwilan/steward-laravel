@@ -26,9 +26,11 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // lib/vite-steward.ts
 var vite_steward_exports = {};
 __export(vite_steward_exports, {
-  default: () => vite_steward_default
+  ViteSteward: () => vite_steward_lib_default
 });
 module.exports = __toCommonJS(vite_steward_exports);
+
+// lib/vite-steward-lib/index.ts
 var import_fs = __toESM(require("fs"), 1);
 var outputDirScriptsDefault = "./public/vendor/js";
 var outputDirLibrariesDefault = "./resources/libs";
@@ -68,6 +70,8 @@ function plugin(userOptions = {}) {
     }
   };
 }
-var vite_steward_default = plugin;
+var vite_steward_lib_default = plugin;
 // Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {});
+0 && (module.exports = {
+  ViteSteward
+});

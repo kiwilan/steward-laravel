@@ -14,4 +14,4 @@ interface Options {
 }
 declare function plugin(userOptions?: Options): Plugin;
 
-export { Options, plugin as default };
+export { plugin as ViteSteward };
