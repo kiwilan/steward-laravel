@@ -60,13 +60,13 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ]);
     }
 
-    public function bootingPackage()
-    {
-        $this->registerLivewireComponents();
-    }
+    // public function bootingPackage()
+    // {
+    //     $this->registerLivewireComponents();
+    // }
 
-    public function registerLivewireComponents()
-    {
-        Livewire::component('stw-editor', Editor::class);
-    }
+    // public function registerLivewireComponents()
+    // {
+    //     Livewire::component('stw-editor', Editor::class);
+    // }
 }

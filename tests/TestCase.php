@@ -44,7 +44,7 @@ class TestCase extends Orchestra
 
     private function registerLivewireComponents(): self
     {
-        Livewire::component('editor', Editor::class);
+        Livewire::component('stw-editor', Editor::class);
 
         return $this;
     }

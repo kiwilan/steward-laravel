@@ -16,8 +16,8 @@
     "build": "tsup --clean",
     "watch": "tsup --watch",
     "dev": "npm run build -- --watch",
-    "lint": "eslint . --ignore-path .gitignore",
-    "lint:fix": "eslint . --fix --ignore-path .gitignore"
+    "lint": "eslint . --ignore-path .eslintignore",
+    "lint:fix": "eslint . --fix --ignore-path .eslintignore"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.26.3",

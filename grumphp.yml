@@ -7,25 +7,27 @@ grumphp:
     max_workers: 32
   tasks:
     npm_script:
-      script: 'build'
+      script: build
       triggered_by: [js, ts, scss]
-      working_directory: "./"
-      is_run_task: false
+      working_directory: ./
+      is_run_task: true
       silent: false
     eslint:
-        bin: node_modules/.bin/eslint
-        triggered_by: [js, ts]
-        config: .eslintrc
-        ignore_path: .gitignore
-        debug: false
-        format: ~
-        max_warnings: ~
-        no_eslintrc: false
-        quiet: false
+      bin: node_modules/.bin/eslint
+      triggered_by: [js, ts]
+      whitelist_patterns:
+        - /^dist\/js\/(.*)/
+      config: .eslintrc
+      ignore_path: .eslintignore
+      debug: false
+      format: ~
+      max_warnings: ~
+      no_eslintrc: false
+      quiet: false
     composer_script:
-        script: 'format'
-        triggered_by: [php, phtml]
-        working_directory: ~
+      script: format
+      triggered_by: [php, phtml]
+      working_directory: ~
     # phpcsfixer:
     #   config: .php-cs-fixer.dist.php
     pest: ~
