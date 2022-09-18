@@ -1,7 +1,7 @@
-import colorMode from './vite-steward'
+import steward from './vite-steward'
 import tiptap from './tiptap'
 
 export {
-  colorMode,
+  steward,
   tiptap,
 }
