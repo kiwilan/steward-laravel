@@ -37,6 +37,7 @@
     "pestphp/pest": "^1.21",
     "pestphp/pest-plugin-laravel": "^1.1",
     "pestphp/pest-plugin-mock": "^1.0",
+    "phpro/grumphp": "^1.13",
     "phpstan/extension-installer": "^1.1",
     "phpstan/phpstan-deprecation-rules": "^1.0",
     "phpstan/phpstan-phpunit": "^1.0",
@@ -63,13 +64,15 @@
     "test:watch": [
       "Composer\\Config::disableProcessTimeout",
       "phpunit-watcher watch < /dev/tty"
-    ]
+    ],
+    "grumphp": "./vendor/bin/grumphp run"
   },
   "config": {
     "sort-packages": true,
     "allow-plugins": {
       "pestphp/pest-plugin": true,
-      "phpstan/extension-installer": true
+      "phpstan/extension-installer": true,
+      "phpro/grumphp": true
     }
   },
   "extra": {

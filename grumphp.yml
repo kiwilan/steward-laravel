@@ -1,0 +1,27 @@
+grumphp:
+  fixer:
+    enabled: false
+    fix_by_default: true
+  parallel:
+    enabled: true
+    max_workers: 32
+  tasks:
+    eslint:
+        bin: node_modules/.bin/eslint
+        triggered_by: [js, ts]
+        config: .eslintrc
+        ignore_path: .gitignore
+        debug: false
+        format: ~
+        max_warnings: ~
+        no_eslintrc: false
+        quiet: false
+    composer_script:
+        script: 'format'
+        triggered_by: [php, phtml]
+        working_directory: ~
+    # phpcsfixer:
+    #   config: .php-cs-fixer.dist.php
+    pest: ~
+    phpstan:
+      use_grumphp_paths: false
