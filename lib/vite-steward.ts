@@ -20,21 +20,35 @@ function plugin(userOptions: Options = {}): Plugin {
     async buildStart() {
       const opts: Options = Object.assign({}, DEFAULT_OPTIONS, userOptions)
 
-      const pathColorMode = 'vendor/kiwilan/laravel-steward/resources/js/color-mode.js'
-      const pathLibrary = 'vendor/kiwilan/laravel-steward/dist/steward.cjs'
+      const filesToCopy: {
+        name: string
+        path: string
+      } = [
+        {
+          name: 'color-mode.js',
+          path: 'vendor/kiwilan/laravel-steward/resources/js/color-mode.js',
+        },
+        {
+          name: 'tiptap.js',
+          path: 'vendor/kiwilan/laravel-steward/dist/tiptap.cjs',
+        },
+      ]
 
       const path = process.cwd()
 
       await fs.promises.mkdir(opts.outputDir ?? outputDir, { recursive: true }).catch(console.error)
 
-      fs.copyFile(`${path}/${pathColorMode}`, `${opts.outputDir}/color-mode.js`, (err) => {
-        if (err)
-          throw err
+      Object.entries(filesToCopy).forEach((el) => {
+        fs.copyFile(`${path}/${el[0]}`, `${opts.outputDir}/${el[1]}`, (err) => {
+          if (err)
+            throw err
+        })
       })
-      fs.copyFile(`${path}/${pathLibrary}`, `${opts.outputDir}/steward.js`, (err) => {
-        if (err)
-          throw err
-      })
+      // for (const file of filesToCopy) {
+      //   await fs.promises
+      //     .copyFile(`${path}/${file.path}`, `${opts.outputDir ?? outputDir}/${file.name}`)
+      //     .catch(console.error)
+      // }
     },
   }
 }
