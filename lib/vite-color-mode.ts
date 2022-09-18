@@ -1,5 +1,5 @@
-import * as fs from 'fs'
-// import type { Plugin } from 'vite'
+import fs from 'fs'
+import type { Plugin } from 'vite'
 
 interface Options {
   /**
@@ -9,11 +9,12 @@ interface Options {
   outputDir?: string
 }
 
+const outputDir = './public/vendor/js'
 const DEFAULT_OPTIONS: Options = {
-  outputDir: './public/vendor/js',
+  outputDir,
 }
 
-function plugin(userOptions: Options = {}) {
+function plugin(userOptions: Options = {}): Plugin {
   return {
     name: 'vite-plugin-markdoc-content',
     async buildStart() {
@@ -23,7 +24,7 @@ function plugin(userOptions: Options = {}) {
       const path = process.cwd()
       const fullPath = `${path}/${pathColorMode}`
 
-      await fs.promises.mkdir(opts.outputDir, { recursive: true }).catch(console.error)
+      await fs.promises.mkdir(opts.outputDir ?? outputDir, { recursive: true }).catch(console.error)
 
       fs.copyFile(fullPath, `${opts.outputDir}/color-mode.js`, (err) => {
         if (err)
