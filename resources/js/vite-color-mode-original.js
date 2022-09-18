@@ -1,5 +1,4 @@
-import type { Plugin } from 'vite'
-import fs from 'fs'
+const fs = require('fs')
 
 const DEFAULT_OPTIONS = {
   outputDir: './public/vendor/js',

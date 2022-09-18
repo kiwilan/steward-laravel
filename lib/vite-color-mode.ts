@@ -1,7 +1,11 @@
-import fs from 'fs'
-import type { Plugin } from 'vite'
+import * as fs from 'fs'
+// import type { Plugin } from 'vite'
 
 interface Options {
+  /**
+   * Where `color-mode.js` will be copied
+   * @default './public/js'
+   */
   outputDir?: string
 }
 
@@ -12,7 +16,7 @@ const DEFAULT_OPTIONS: Options = {
   outputDir: './public/js',
 }
 
-function plugin(userOptions: Options = {}): Plugin {
+function plugin(userOptions: Options = {}) {
   return {
     name: 'vite-plugin-markdoc-content',
     async buildStart() {
