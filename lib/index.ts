@@ -1,4 +1,4 @@
-import colorMode from './vite-color-mode'
+import colorMode from './vite-steward'
 import tiptap from './tiptap'
 
 export {
