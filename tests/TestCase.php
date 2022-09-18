@@ -5,14 +5,14 @@ namespace Kiwilan\Steward\Tests;
 use DOMDocument;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
+use Kiwilan\Steward\Http\Livewire\Editor;
 use Kiwilan\Steward\LaravelStewardServiceProvider;
 use Livewire\Livewire;
 use Livewire\LivewireServiceProvider;
 use Livewire\Testing\TestableLivewire;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Illuminate\Support\Str;
-use Kiwilan\Steward\Http\Livewire\Editor;
 
 class TestCase extends Orchestra
 {
@@ -26,7 +26,7 @@ class TestCase extends Orchestra
 
         parent::setUp();
 
-        View::addNamespace('test', __DIR__ . '/resources/views');
+        View::addNamespace('test', __DIR__.'/resources/views');
 
         $this
             ->registerLivewireComponents()
