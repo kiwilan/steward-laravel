@@ -23,7 +23,7 @@ function plugin(userOptions: Options = {}): Plugin {
       const filesToCopy: {
         name: string
         path: string
-      } = [
+      }[] = [
         {
           name: 'color-mode.js',
           path: 'vendor/kiwilan/laravel-steward/resources/js/color-mode.js',
@@ -38,17 +38,11 @@ function plugin(userOptions: Options = {}): Plugin {
 
       await fs.promises.mkdir(opts.outputDir ?? outputDir, { recursive: true }).catch(console.error)
 
-      Object.entries(filesToCopy).forEach((el) => {
-        fs.copyFile(`${path}/${el[0]}`, `${opts.outputDir}/${el[1]}`, (err) => {
-          if (err)
-            throw err
-        })
-      })
-      // for (const file of filesToCopy) {
-      //   await fs.promises
-      //     .copyFile(`${path}/${file.path}`, `${opts.outputDir ?? outputDir}/${file.name}`)
-      //     .catch(console.error)
-      // }
+      for (const file of filesToCopy) {
+        await fs.promises
+          .copyFile(`${path}/${file.path}`, `${opts.outputDir ?? outputDir}/${file.name}`)
+          .catch(console.error)
+      }
     },
   }
 }
