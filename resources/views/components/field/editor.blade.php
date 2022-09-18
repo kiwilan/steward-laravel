@@ -67,15 +67,3 @@
     </div>
   </div>
 </div>
-
-<script type="module">
-    import { Editor } from 'https://cdn.skypack.dev/@tiptap/core?min'
-    import StarterKit from 'https://cdn.skypack.dev/@tiptap/starter-kit?min'
-    const editor = new Editor({
-      element: document.querySelector('.element'),
-      extensions: [
-        StarterKit,
-      ],
-      content: '<p>Hello World!</p>',
-    })
-</script>
