@@ -17,6 +17,8 @@ use Kiwilan\Steward\Components\FieldSelect;
 use Kiwilan\Steward\Components\FieldText;
 use Kiwilan\Steward\Components\FieldToggle;
 use Kiwilan\Steward\Components\FieldUploadFile;
+use Kiwilan\Steward\Livewire\Editor;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -29,6 +31,8 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
          *
          * More info: https://github.com/spatie/laravel-package-tools
          */
+        Livewire::component('steward::editor', Editor::class);
+
         $package
             ->name('steward')
             ->hasConfigFile()
