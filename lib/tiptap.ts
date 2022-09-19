@@ -1,5 +1,11 @@
-import Tiptap from './tiptap-lib'
+import type { ChainedCommands } from './tiptap-lib'
+import { CharacterCount, Editor, Link, StarterKit, Typography } from './tiptap-lib'
 
 export {
-  Tiptap,
+  ChainedCommands,
+  CharacterCount,
+  Editor,
+  Link,
+  StarterKit,
+  Typography,
 }
