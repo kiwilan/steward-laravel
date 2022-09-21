@@ -1,0 +1,13 @@
+{
+  "type": "project",
+  "name": "kiwilan/laravel-steward",
+  "license": "MIT",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "scripts": {
+    "post-create-project-cmd": [
+      "rm -rf composer.json vendor",
+      "composer install -d composer/composer.json"
+    ]
+  }
+}
