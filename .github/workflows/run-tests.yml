@@ -50,7 +50,9 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: ./composer/vendor/bin/pest
+        run: |
+          cd ./composer
+          ./vendor/bin/pest
 
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v2
