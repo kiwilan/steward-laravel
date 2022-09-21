@@ -28,6 +28,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        working-directory: ./composer
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -35,21 +36,26 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
+        working-directory: ./composer
 
       - name: Setup problem matchers
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+        working-directory: ./composer
 
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+        working-directory: ./composer
 
       - name: Execute tests
         run: vendor/bin/pest
+        working-directory: ./composer
 
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+        working-directory: ./composer

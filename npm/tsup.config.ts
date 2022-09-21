@@ -3,7 +3,7 @@ import { defineConfig } from 'tsup'
 export default defineConfig({
   name: 'steward',
   entryPoints: {
-    vite: 'lib/vite.ts',
+    vite: 'src/vite.ts',
     tiptap: 'lib/tiptap.ts',
     // editor: 'lib/editor.ts',
   },

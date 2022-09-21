@@ -1,4 +1,4 @@
-import type { ChainedCommands } from '../tiptap'
+import type { ChainedCommands } from '../../dist/tiptap'
 import { CharacterCount, Editor, Link, StarterKit, Typography } from '../tiptap'
 import type { ActionButton } from './tiptap-actions'
 import { ExecuteCommand, Extras, Marks, Nodes } from './tiptap-actions'
