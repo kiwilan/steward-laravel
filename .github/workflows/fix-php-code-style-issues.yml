@@ -5,20 +5,19 @@ on: [push]
 jobs:
   php-code-styling:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./composer
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-        working-directory: ./composer
 
       - name: Fix PHP code style issues
         uses: aglipanci/laravel-pint-action@1.0.0
-        working-directory: ./composer
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Fix styling
-        working-directory: ./composer
