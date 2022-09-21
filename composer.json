@@ -1,13 +1,91 @@
 {
-  "type": "project",
   "name": "kiwilan/laravel-steward",
+  "description": "This is my package laravel-steward",
+  "version": "0.0.101",
+  "keywords": [
+    "kiwilan",
+    "laravel",
+    "laravel-steward"
+  ],
+  "homepage": "https://github.com/kiwilan/laravel-steward",
   "license": "MIT",
-  "minimum-stability": "stable",
-  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "Ewilan Rivière",
+      "email": "ewilan.riviere@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "guzzlehttp/guzzle": "^7.0",
+    "illuminate/contracts": "^9.0",
+    "illuminate/database": "^9.18",
+    "illuminate/support": "^7.0|^8.0|^9.0",
+    "livewire/livewire": "^2.10",
+    "maatwebsite/excel": "^3.1",
+    "psr/simple-cache": "^1.0",
+    "spatie/laravel-package-tools": "^1.9.2",
+    "spatie/laravel-query-builder": "^5.0"
+  },
+  "require-dev": {
+    "filament/filament": "^2.15",
+    "knuckleswtf/scribe": "^4.0",
+    "laravel/pint": "^1.0",
+    "nunomaduro/collision": "^6.0",
+    "nunomaduro/larastan": "^2.0.1",
+    "orchestra/testbench": "^7.0",
+    "pestphp/pest": "^1.21",
+    "pestphp/pest-plugin-laravel": "^1.1",
+    "pestphp/pest-plugin-mock": "^1.0",
+    "phpro/grumphp": "^1.13",
+    "phpstan/extension-installer": "^1.1",
+    "phpstan/phpstan-deprecation-rules": "^1.0",
+    "phpstan/phpstan-phpunit": "^1.0",
+    "phpunit/phpunit": "^9.5",
+    "spatie/laravel-ray": "^1.26"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kiwilan\\Steward\\": "src",
+      "Kiwilan\\Steward\\Database\\Factories\\": "database/factories"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kiwilan\\Steward\\Tests\\": "tests"
+    }
+  },
   "scripts": {
-    "post-create-project-cmd": [
-      "rm -rf composer.json vendor",
-      "composer install -d composer/composer.json"
-    ]
-  }
+    "analyse": "vendor/bin/phpstan analyse",
+    "test": "vendor/bin/pest",
+    "test-coverage": "vendor/bin/pest --coverage",
+    "coverage": "vendor/bin/pest --coverage --min=1",
+    "format": "vendor/bin/pint",
+    "test:watch": [
+      "Composer\\Config::disableProcessTimeout",
+      "phpunit-watcher watch < /dev/tty"
+    ],
+    "grumphp": "./vendor/bin/grumphp run"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "phpstan/extension-installer": true,
+      "phpro/grumphp": true
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Kiwilan\\Steward\\LaravelStewardServiceProvider"
+      ],
+      "aliases": {
+        "Steward": "Kiwilan\\Steward\\Facades\\LaravelSteward"
+      }
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

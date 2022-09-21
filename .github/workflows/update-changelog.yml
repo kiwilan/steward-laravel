@@ -7,8 +7,6 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./composer
 
     steps:
       - name: Checkout code

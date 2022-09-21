@@ -10,8 +10,6 @@ jobs:
   phpstan:
     name: phpstan
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./composer
     steps:
       - uses: actions/checkout@v3
 

@@ -9,8 +9,6 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
-    env:
-      working-directory: ./composer
     strategy:
       fail-fast: true
       matrix:
@@ -45,13 +43,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd ./composer
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Execute tests
         run: |
-          cd ./composer
           ./vendor/bin/pest
 
       - name: Send code coverage report to Codecov.io
