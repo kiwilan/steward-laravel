@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    env:
+      working-directory: ./composer
     strategy:
       fail-fast: true
       matrix:
@@ -22,8 +24,6 @@ jobs:
         coverage-driver:
           - pcov
           - xdebug3
-    env:
-      working-directory: ./composer
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
