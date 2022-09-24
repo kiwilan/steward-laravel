@@ -1,5 +1,5 @@
 <div
-  x-data="tiptap"
+  x-data="editor"
   x-cloak
   wire:ignore
   {{ $attributes->whereDoesntStartWith('wire:model') }}
