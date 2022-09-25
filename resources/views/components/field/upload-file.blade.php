@@ -29,7 +29,7 @@
       </div>
       <div class="mt-2 sm:col-span-2">
         <div
-          class="relative flex cursor-pointer justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6 transition-colors hover:bg-gray-50 hover:dark:bg-gray-800"
+          class="relative flex cursor-pointer justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
           x-on:click="$refs.fileInput.click()"
           x-on:drop="dropHandler(event)"
           x-on:dragover="dragOverHandler(event)"
