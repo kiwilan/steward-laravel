@@ -1,3 +1,8 @@
+<style>
+  [x-cloak] {
+    display: none !important;
+  }
+</style>
 <div class="tiptap">
   <div
     x-data="editor"
