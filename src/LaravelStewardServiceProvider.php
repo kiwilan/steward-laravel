@@ -10,6 +10,15 @@ use Kiwilan\Steward\Commands\ScoutFreshCommand;
 use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
 use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
+use Kiwilan\Steward\Components\Button;
+use Kiwilan\Steward\Components\FieldCheckbox;
+use Kiwilan\Steward\Components\FieldEditor;
+use Kiwilan\Steward\Components\FieldSelect;
+use Kiwilan\Steward\Components\FieldText;
+use Kiwilan\Steward\Components\FieldToggle;
+use Kiwilan\Steward\Components\FieldUploadFile;
+use Kiwilan\Steward\Http\Livewire\Editor;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -22,10 +31,21 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
          *
          * More info: https://github.com/spatie/laravel-package-tools
          */
+
         $package
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
+            ->hasViewComponents(
+                'steward',
+                Button::class,
+                FieldCheckbox::class,
+                FieldEditor::class,
+                FieldSelect::class,
+                FieldText::class,
+                FieldToggle::class,
+                FieldUploadFile::class,
+            )
             ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([
@@ -39,4 +59,14 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 TagCleanCommand::class,
             ]);
     }
+
+    // public function bootingPackage()
+    // {
+    //     $this->registerLivewireComponents();
+    // }
+
+    // public function registerLivewireComponents()
+    // {
+    //     Livewire::component('stw-editor', Editor::class);
+    // }
 }

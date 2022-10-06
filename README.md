@@ -2,10 +2,11 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kiwilan/laravel-steward.svg?style=flat-square)](https://packagist.org/packages/kiwilan/laravel-steward)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/kiwilan/laravel-steward/run-tests?label=tests&style=flat-square)](https://github.com/kiwilan/laravel-steward/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![codecov](https://codecov.io/gh/kiwilan/laravel-steward/branch/main/graph/badge.svg?token=CBWSPNZSRA)](https://codecov.io/gh/kiwilan/laravel-steward)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/kiwilan/laravel-steward/Fix%20PHP%20code%20style%20issues?label=code%20style&style=flat-square)](https://github.com/kiwilan/laravel-steward/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/kiwilan/laravel-steward.svg?style=flat-square)](https://packagist.org/packages/kiwilan/laravel-steward)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Laravel package to allow you to use some useful traits and methods in your Laravel application, works with [vite-plugin-laravel-steward](https://github.com/kiwilan/vite-plugin-laravel-steward) for front assets.
 
 ## Installation
 
@@ -149,6 +150,18 @@ echo $steward->echoPhrase('Hello, Kiwilan!');
 
 ```bash
 composer test
+```
+
+Coverage
+
+```bash
+composer test-coverage
+```
+
+Watch tests
+
+```bash
+composer test:watch
 ```
 
 ## Changelog
