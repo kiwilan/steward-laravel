@@ -24,7 +24,6 @@ class HttpQuery extends BaseQuery
     {
         $query = new HttpQuery();
         $query->metadata = ClassMetadata::create($class);
-        $query->resource = $query->metadata->class_plural_snake;
         $query->request = $request;
 
         $query->defaultSort = 'id';

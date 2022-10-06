@@ -34,7 +34,7 @@ abstract class BaseQuery
 
     protected ?string $export = null;
 
-    protected string $resource;
+    protected ?string $resource = null;
 
     protected int $size = 15;
 
@@ -51,7 +51,7 @@ abstract class BaseQuery
         return [
             'sort' => request()->get('sort', $this->defaultSort),
             'filter' => request()->get('filter'),
-            $this->resource => fn () => $this->collection(),
+            $this->metadata->class_plural_snake => fn () => $this->collection(),
         ];
     }
 
