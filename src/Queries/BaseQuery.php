@@ -5,16 +5,34 @@ namespace Kiwilan\Steward\Queries;
 use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
+use Kiwilan\Steward\Queries\Options\ClassMetadata;
 use Maatwebsite\Excel\Facades\Excel;
 use ReflectionClass;
 use Spatie\QueryBuilder\QueryBuilder;
 
 abstract class BaseQuery
 {
-    public QueryOption $option;
+    public ?ClassMetadata $metadata = null;
+
+    public ?Request $request = null;
+    public array $with = [];
+    public array $withCount = [];
+
+    public bool $exportable = false;
+
+    public string $orderBy = 'id';
+    public bool $orderAsc = true;
+
+    /** Sort options */
+    public string $sortDefault = '';
+    public bool $sortAsc = true;
+
+    public array $allowFilters = [];
+    public array $allowSorts = [];
 
     protected Builder|QueryBuilder $query;
 
@@ -27,43 +45,42 @@ abstract class BaseQuery
     public static function setup(
         string $instance,
         ?string $defaultResource,
-        ?QueryOption $defaultOption,
         array $defaultWith = [],
-    ): BaseQuery|false {
-        $class = new ReflectionClass($instance);
-        $short_name = $class->getShortName();
-        $model_name = str_replace('query', '', $short_name);
+    ) {
+        // $class = new ReflectionClass($instance);
+        // $short_name = $class->getShortName();
+        // $model_name = str_replace('query', '', $short_name);
 
-        $query_class = 'App\Http\Queries\\'.ucfirst($model_name).'Query';
-        if (! class_exists($query_class)) {
-            return false;
-        }
+        // $query_class = 'App\Http\Queries\\'.ucfirst($model_name).'Query';
+        // if (! class_exists($query_class)) {
+        //     return false;
+        // }
 
-        /** @var BaseQuery $query */
-        $query = new $query_class();
+        // /** @var BaseQuery $query */
+        // $query = new $query_class();
 
-        if ($defaultOption === null) {
-            $defaultOption = new QueryOption();
-        }
+        // if (null === $defaultOption) {
+        //     $defaultOption = new QueryOption();
+        // }
 
-        $query->option = $defaultOption;
-        if (! $query->option->resource) {
-            $query->option->resource = $defaultResource;
-        }
-        $query->option->with = $defaultWith;
+        // $query->option = $defaultOption;
+        // if (! $query->option->resource) {
+        //     $query->option->resource = $defaultResource;
+        // }
+        // $query->option->with = $defaultWith;
 
-        $export_class = 'App\Exports\\'.ucfirst($model_name).'Export';
-        if ($defaultOption->exportable && class_exists($export_class)) {
-            $query->export = new $export_class($query->query);
-        }
-        if (! $query->option->resourceName) {
-            $slug = preg_split('/(?=[A-Z])/', $model_name);
-            $slug = implode('-', $slug);
-            $query->option->resourceName = Str::plural(Str::slug($slug));
-        }
-        $query->resource = $query->option->resourceName;
+        // $export_class = 'App\Exports\\'.ucfirst($model_name).'Export';
+        // if ($defaultOption->exportable && class_exists($export_class)) {
+        //     $query->export = new $export_class($query->query);
+        // }
+        // if (! $query->option->resourceName) {
+        //     $slug = preg_split('/(?=[A-Z])/', $model_name);
+        //     $slug = implode('-', $slug);
+        //     $query->option->resourceName = Str::plural(Str::slug($slug));
+        // }
+        // $query->resource = $query->option->resourceName;
 
-        return $query;
+        return null;
     }
 
     // public static function setup(?QueryOption $baseOption = null, ?string $defaultResource, array $with = [], ?string $export = null): QueryOption
@@ -109,8 +126,9 @@ abstract class BaseQuery
     public function getCollection()
     {
         /** @var JsonResource $resource */
-        $resource = $this->option->resource;
-        $response = $this->option->full ? $this->query->get() : $this->paginate();
+        $resource = $this->resource;
+        // $response = $this->full ? $this->query->get() : $this->paginate();
+        $response = $this->paginate();
 
         return $resource::collection($response);
     }
