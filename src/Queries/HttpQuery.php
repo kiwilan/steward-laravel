@@ -154,7 +154,9 @@ class HttpQuery extends BaseQuery
                 $this->exportable($instance->getQueryExport());
             }
 
-            $this->resource($instance->getQueryResource());
+            if ($instance->getQueryResource()) {
+                $this->resource($instance->getQueryResource());
+            }
         }
     }
 
