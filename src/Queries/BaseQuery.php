@@ -107,7 +107,6 @@ abstract class BaseQuery
             }
         }
 
-
         return $this;
     }
 
