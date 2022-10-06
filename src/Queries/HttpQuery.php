@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Queries;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Kiwilan\Steward\Traits\Queryable;
@@ -31,6 +32,7 @@ class HttpQuery extends BaseQuery
         $query->size = 15;
 
         $query->query = QueryBuilder::for($query->metadata->class);
+        $query->setDefault();
 
         return $query;
     }
@@ -40,9 +42,6 @@ class HttpQuery extends BaseQuery
      */
     public function resource(string $resource): self
     {
-        if ($this->isQueryable()) {
-            $this->resource = $resource;
-        }
         $this->resource = $resource;
 
         return $this;
@@ -65,7 +64,7 @@ class HttpQuery extends BaseQuery
 
     /**
      * Set allowed filters
-     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/filtering
+     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/filtering.
      */
     public function filters(array $filters): self
     {
@@ -77,7 +76,7 @@ class HttpQuery extends BaseQuery
 
     /**
      * Set allowed sorts
-     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/sorting
+     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/sorting.
      */
     public function sorts(array $sorts): self
     {
@@ -89,7 +88,7 @@ class HttpQuery extends BaseQuery
 
     /**
      * Set relationships
-     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/including-relationships
+     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/including-relationships.
      */
     public function with(array $with = []): self
     {
@@ -101,7 +100,7 @@ class HttpQuery extends BaseQuery
 
     /**
      * Set relationships count
-     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/including-relationships
+     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/including-relationships.
      */
     public function withCount(array $withCount = []): self
     {
@@ -112,7 +111,7 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set default pagination size
+     * Set default pagination size.
      */
     public function size(int $size = 32): self
     {
@@ -132,18 +131,46 @@ class HttpQuery extends BaseQuery
         return $this;
     }
 
+    /**
+     * Set default query from `Queryable` trait.
+     */
+    private function setDefault(): void
+    {
+        if ($this->isQueryable()) {
+            $instance = $this->getInstance();
+
+            $this->with($instance->getQueryWith());
+            $this->withCount($instance->getQueryWithCount());
+            $this->filters($instance->getQueryAllowedFilters());
+            $this->sorts($instance->getQueryAllowedSorts());
+            $this->defaultSort($instance->getQueryDefaultSort(), $instance->getQueryDefaultSortDirection());
+            $this->size($instance->getQuerySize());
+
+            $this->exportable($instance->getQueryExport());
+
+            $this->resource($instance->getQueryResource());
+        }
+    }
+
+    /**
+     * Get instance of current class.
+     */
+    private function getInstance(): object
+    {
+        return new $this->metadata->class_namespaced();
+    }
+
+    /**
+     * Check if current class uses `Queryable` trait.
+     */
     private function isQueryable(): bool
     {
-        $trait = new ReflectionClass(Queryable::class);
-
         $instance = new $this->metadata->class_namespaced();
         $class = new ReflectionClass($instance);
 
-        $usingTrait = in_array(
+        return in_array(
             Queryable::class,
             array_keys($class->getTraits())
         );
-
-        return $usingTrait;
     }
 }
