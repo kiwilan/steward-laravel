@@ -30,8 +30,7 @@ abstract class BaseQuery
 
     public bool $orderAsc = true;
 
-    /** Sort options */
-    public string $sortDefault = '';
+    public string $sortDefault = 'id';
 
     public bool $sortAsc = true;
 
