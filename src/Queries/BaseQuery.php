@@ -90,16 +90,23 @@ abstract class BaseQuery
     }
 
     /**
-     * Guess API Resource from `App\Http\Resources\{ClassName}\{ClassName}CollectionResource`.
+     * Guess API Resource from `App\Http\Resources\{ClassName}\{ClassName}CollectionResource`
+     * or from `App\Http\Resources\{ClassName}`.
      */
     public function resourceGuess(): self
     {
         $name = $this->metadata->class_name;
         $resource_class = "App\\Http\\Resources\\{$name}\\{$name}CollectionResource";
+        $resource_alternative_class = "App\\Http\\Resources\\{$name}Resource";
 
-        if (! $this->resource && class_exists($resource_class)) {
-            $this->resource = $resource_class;
+        if (! $this->resource) {
+            if (class_exists($resource_class)) {
+                $this->resource = $resource_class;
+            } elseif (class_exists($resource_alternative_class)) {
+                $this->resource = $resource_alternative_class;
+            }
         }
+
 
         return $this;
     }
