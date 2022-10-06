@@ -147,7 +147,9 @@ class HttpQuery extends BaseQuery
             $this->defaultSort($instance->getQueryDefaultSort(), $instance->getQueryDefaultSortDirection());
             $this->size($instance->getQuerySize());
 
-            $this->exportable($instance->getQueryExport());
+            if ($instance->getQueryExport()) {
+                $this->exportable($instance->getQueryExport());
+            }
 
             $this->resource($instance->getQueryResource());
         }
