@@ -29,6 +29,7 @@ class HttpQuery extends BaseQuery
 
         $query->defaultSort = 'id';
         $query->size = 15;
+        $query->resourceGuess();
 
         $query->query = QueryBuilder::for($query->metadata->class);
         $query->setDefault();
@@ -37,7 +38,7 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set a resource like `PostResource::class`.
+     * Set a resource like `PostResource::class`, default is `$query_resource` into model.
      */
     public function resource(string $resource): self
     {
@@ -47,7 +48,8 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set default sort colunm.
+     * Set default sort colunm, default is `$query_default_sort`
+     * and `$query_default_sort_direction` for direction into model.
      *
      * @param  string  $defaultSort Any `fillable`, default is `id`
      * @param  string  $direction   `asc` | `desc`
@@ -62,10 +64,10 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set allowed filters
+     * Set allowed filters, default is `$query_allowed_filters` into model.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/filtering.
      */
-    public function filters(array $filters): self
+    public function filters(array $filters = []): self
     {
         $this->allowFilters = $filters;
         $this->query = $this->query->allowedFilters($filters);
@@ -74,10 +76,10 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set allowed sorts
+     * Set allowed sorts, default is `$query_allowed_sorts` into model.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/sorting.
      */
-    public function sorts(array $sorts): self
+    public function sorts(array $sorts = []): self
     {
         $this->allowSorts = $sorts;
         $this->query = $this->query->allowedSorts($sorts);
@@ -86,7 +88,7 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set relationships
+     * Set relationships, default is `$query_with` into model.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/including-relationships.
      */
     public function with(array $with = []): self
@@ -98,7 +100,7 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set relationships count
+     * Set relationships count, default is `$query_with_count` into model.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/including-relationships.
      */
     public function withCount(array $withCount = []): self
@@ -110,7 +112,7 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set default pagination size.
+     * Set default pagination size, default is `$query_size` into model.
      */
     public function size(int $size = 32): self
     {
@@ -120,7 +122,7 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set Export class like `PostExport::class`.
+     * Set Export class like `PostExport::class`, default is `$query_export` into model.
      * If class is not set, it will be guessed from `App\Export\{ClassName}Export`.
      */
     public function exportable(string $export): self

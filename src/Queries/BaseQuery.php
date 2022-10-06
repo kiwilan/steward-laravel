@@ -89,6 +89,24 @@ abstract class BaseQuery
         return $resource::collection($response);
     }
 
+    /**
+     * Guess API Resource from `App\Http\Resources\{ClassName}\{ClassName}CollectionResource`.
+     */
+    public function resourceGuess(): self
+    {
+        $name = $this->metadata->class_name;
+        $resource_class = "App\\Http\\Resources\\{$name}\\{$name}CollectionResource";
+
+        if (! $this->resource && class_exists($resource_class)) {
+            $this->resource = $resource_class;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Guess export class from `App\Exports\{ClassName}Export`.
+     */
     public function exportGuess(): self
     {
         $name = $this->metadata->class_name;

@@ -48,9 +48,4 @@ trait Queryable
     {
         return $this->query_resource ?? null;
     }
-
-    public function getQueryPagination(): int
-    {
-        return $this->query_pagination ?? 15;
-    }
 }
