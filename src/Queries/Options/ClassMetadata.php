@@ -2,9 +2,8 @@
 
 namespace Kiwilan\Steward\Queries\Options;
 
-use Illuminate\Http\Request;
-use ReflectionClass;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 class ClassMetadata
 {

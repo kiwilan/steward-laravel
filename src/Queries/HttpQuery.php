@@ -6,15 +6,14 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Kiwilan\Steward\Queries\BaseQuery;
 use Kiwilan\Steward\Queries\Options\ClassMetadata;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class HttpQuery extends BaseQuery
 {
     /**
-     * @param EloquentBuilder|Relation|string $class
-     * @param Request|null                    $request
+     * @param  EloquentBuilder|Relation|string  $class
+     * @param  Request|null  $request
      */
     public static function make($class, ?Request $request = null): self
     {
@@ -53,8 +52,8 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * @param string $orderBy   Any `fillable`, default is `id`
-     * @param string $direction `asc` | `desc`
+     * @param  string  $orderBy   Any `fillable`, default is `id`
+     * @param  string  $direction `asc` | `desc`
      */
     public function orderBy(string $orderBy = 'id', string $direction = 'desc'): self
     {
@@ -137,8 +136,7 @@ class HttpQuery extends BaseQuery
             )
             ->allowedSorts($this->allowSorts)
             ->with($this->with)
-            ->withCount($this->withCount)
-        ;
+            ->withCount($this->withCount);
 
         // if ($this->option->withExport) {
         //     $this->export = new BookExport($this->query);

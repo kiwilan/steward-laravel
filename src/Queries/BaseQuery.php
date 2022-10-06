@@ -19,19 +19,24 @@ abstract class BaseQuery
     public ?ClassMetadata $metadata = null;
 
     public ?Request $request = null;
+
     public array $with = [];
+
     public array $withCount = [];
 
     public bool $exportable = false;
 
     public string $orderBy = 'id';
+
     public bool $orderAsc = true;
 
     /** Sort options */
     public string $sortDefault = '';
+
     public bool $sortAsc = true;
 
     public array $allowFilters = [];
+
     public array $allowSorts = [];
 
     protected Builder|QueryBuilder $query;
