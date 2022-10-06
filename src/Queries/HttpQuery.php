@@ -5,15 +5,20 @@ namespace Kiwilan\Steward\Queries;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Kiwilan\Steward\Queries\Options\ClassMetadata;
+use Kiwilan\Steward\Traits\Queryable;
+use Kiwilan\Steward\Utils\ClassMetadata;
+use ReflectionClass;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class HttpQuery extends BaseQuery
 {
     /**
+     * Create the query with `HttpQuery`.
+     *
+     * Works with `spatie/laravel-query-builder`.
+     * Docs: https://spatie.be/docs/laravel-query-builder/v5/introduction
+     *
      * @param  EloquentBuilder|Relation|string  $class
-     * @param  Request|null  $request
      */
     public static function make($class, ?Request $request = null): self
     {
@@ -22,7 +27,10 @@ class HttpQuery extends BaseQuery
         $query->resource = $query->metadata->class_plural_snake;
         $query->request = $request;
 
-        $query->setQuery();
+        $query->defaultSort = 'id';
+        $query->size = 15;
+
+        $query->query = QueryBuilder::for($query->metadata->class);
 
         return $query;
     }
@@ -32,116 +40,110 @@ class HttpQuery extends BaseQuery
      */
     public function resource(string $resource): self
     {
+        if ($this->isQueryable()) {
+            $this->resource = $resource;
+        }
         $this->resource = $resource;
 
         return $this;
     }
 
-    public function with(array $with = []): self
+    /**
+     * Set default sort colunm.
+     *
+     * @param  string  $defaultSort Any `fillable`, default is `id`
+     * @param  string  $direction   `asc` | `desc`
+     */
+    public function defaultSort(string $defaultSort = 'id', string $direction = 'asc'): self
     {
-        $this->with = $with;
-
-        return $this;
-    }
-
-    public function withCount(array $withCount = []): self
-    {
-        $this->withCount = $withCount;
+        $direction = 'asc' === $direction ? '' : '-';
+        $this->defaultSort = "{$direction}{$defaultSort}";
+        $this->query = $this->query->defaultSort($this->defaultSort);
 
         return $this;
     }
 
     /**
-     * @param  string  $orderBy   Any `fillable`, default is `id`
-     * @param  string  $direction `asc` | `desc`
+     * Set allowed filters
+     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/filtering
      */
-    public function orderBy(string $orderBy = 'id', string $direction = 'desc'): self
+    public function filters(array $filters): self
     {
-        $this->orderBy = $orderBy;
-        $this->sortAsc = 'asc' === $direction ? true : false;
+        $this->allowFilters = $filters;
+        $this->query = $this->query->allowedFilters($filters);
 
         return $this;
     }
 
-    public function exportable(): self
+    /**
+     * Set allowed sorts
+     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/sorting
+     */
+    public function sorts(array $sorts): self
     {
-        $this->exportable = true;
+        $this->allowSorts = $sorts;
+        $this->query = $this->query->allowedSorts($sorts);
 
         return $this;
     }
 
-    public function collection(): AnonymousResourceCollection
+    /**
+     * Set relationships
+     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/including-relationships
+     */
+    public function with(array $with = []): self
     {
-        return $this->getCollection();
-    }
-
-    public function get(): array
-    {
-        return [
-            'sort' => request()->get('sort', $this->sortDefault),
-            'filter' => request()->get('filter'),
-            'books' => fn () => $this->collection(),
-        ];
-    }
-
-    private function setQuery()
-    {
-        // if (! $option || null === $option->resource) {
-        //     $option = new QueryOption(resource: BookResource::class);
-        // }
-
-        // $this->option = $option;
-        // $option->with = [] === $option->with ? ['serie', 'media', 'authors', 'language', 'publisher', 'tags', 'googleBook'] : $this->option->with;
-
-        $this->query = QueryBuilder::for($this->metadata->class)
-            ->defaultSort($this->sortDefault)
-            ->allowedFilters($this->allowFilters
-                // AllowedFilter::custom('q', new GlobalSearchFilter(['title', 'serie'])),
-                // AllowedFilter::exact('id'),
-                // AllowedFilter::partial('title'),
-                // AllowedFilter::callback('serie', function (Builder $query, $value) {
-                //     return $query->whereHas('serie', function (Builder $query) use ($value) {
-                //         $query->where('title', 'like', "%{$value}%");
-                //     });
-                // }),
-                // AllowedFilter::partial('volume'),
-                // AllowedFilter::callback('authors', function (Builder $query, $value) {
-                //     return $query->whereHas('authors', function (Builder $query) use ($value) {
-                //         $query->where('name', 'like', "%{$value}%");
-                //     });
-                // }),
-                // AllowedFilter::exact('is_disabled'),
-                // AllowedFilter::exact('released_on'),
-                // AllowedFilter::exact('type'),
-                // AllowedFilter::scope('types', 'whereTypesIs'),
-                // AllowedFilter::callback('language', function (Builder $query, $value) {
-                //     return $query->whereHas('language', function (Builder $query) use ($value) {
-                //         $query->where('name', 'like', "%{$value}%");
-                //     });
-                // }),
-                // AllowedFilter::scope('languages', 'whereLanguagesIs'),
-                // AllowedFilter::callback('publisher', function (Builder $query, $value) {
-                //     return $query->whereHas('publisher', function (Builder $query) use ($value) {
-                //         $query->where('name', 'like', "%{$value}%");
-                //     });
-                // }),
-                // AllowedFilter::scope('disallow_serie', 'whereDisallowSerie'),
-                // AllowedFilter::scope('language', 'whereLanguagesIs'),
-                // AllowedFilter::scope('published', 'publishedBetween'),
-                // AllowedFilter::scope('is_disabled', 'whereIsDisabled'),
-                // AllowedFilter::scope('author_like', 'whereAuthorIsLike'),
-                // AllowedFilter::scope('tags_all', 'whereTagsAllIs'),
-                // AllowedFilter::scope('tags', 'whereTagsIs'),
-                // AllowedFilter::scope('isbn', 'whereIsbnIs'),
-            )
-            ->allowedSorts($this->allowSorts)
-            ->with($this->with)
-            ->withCount($this->withCount);
-
-        // if ($this->option->withExport) {
-        //     $this->export = new BookExport($this->query);
-        // }
+        $this->with = $with;
+        $this->query = $this->query->with($this->with);
 
         return $this;
+    }
+
+    /**
+     * Set relationships count
+     * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/including-relationships
+     */
+    public function withCount(array $withCount = []): self
+    {
+        $this->withCount = $withCount;
+        $this->query = $this->query->withCount($this->withCount);
+
+        return $this;
+    }
+
+    /**
+     * Set default pagination size
+     */
+    public function size(int $size = 32): self
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * Set Export class like `PostExport::class`.
+     * If class is not set, it will be guessed from `App\Export\{ClassName}Export`.
+     */
+    public function exportable(string $export): self
+    {
+        $this->export = $export;
+
+        return $this;
+    }
+
+    private function isQueryable(): bool
+    {
+        $trait = new ReflectionClass(Queryable::class);
+
+        $instance = new $this->metadata->class_namespaced();
+        $class = new ReflectionClass($instance);
+
+        $usingTrait = in_array(
+            Queryable::class,
+            array_keys($class->getTraits())
+        );
+
+        return $usingTrait;
     }
 }

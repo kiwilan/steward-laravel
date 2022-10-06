@@ -74,10 +74,12 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Kiwilan\\Steward\\LaravelStewardServiceProvider"
+                "Kiwilan\\Steward\\LaravelStewardServiceProvider",
+                "Maatwebsite\\Excel\\ExcelServiceProvider"
             ],
             "aliases": {
-                "Steward": "Kiwilan\\Steward\\Facades\\LaravelSteward"
+                "Steward": "Kiwilan\\Steward\\Facades\\LaravelSteward",
+                "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
             }
         }
     },
