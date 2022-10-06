@@ -16,12 +16,12 @@ trait Queryable
 
     public function getQueryDefaultSort(): string
     {
-        return $this->query_default_sort ?? 'id';
+        return $this->query_default_sort ?? config('steward.query.default_sort');
     }
 
     public function getQueryDefaultSortDirection(): string
     {
-        return $this->query_default_sort_direction ?? 'asc';
+        return $this->query_default_sort_direction ?? config('steward.query.default_sort_direction');
     }
 
     public function getQueryAllowedFilters(): array
@@ -36,7 +36,7 @@ trait Queryable
 
     public function getQuerySize(): int
     {
-        return $this->query_size ?? 15;
+        return $this->query_size ?? config('steward.query.size');
     }
 
     public function getQueryExport(): ?string

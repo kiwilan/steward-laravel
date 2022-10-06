@@ -26,8 +26,8 @@ class HttpQuery extends BaseQuery
         $query->metadata = ClassMetadata::create($class);
         $query->request = $request;
 
-        $query->defaultSort = 'id';
-        $query->size = 15;
+        $query->defaultSort = $query->getSortDirection(config('steward.query.default_sort'), config('steward.query.default_sort_direction'));
+        $query->size = config('steward.query.size');
         $query->resourceGuess();
 
         $query->query = QueryBuilder::for($query->metadata->class);
@@ -55,8 +55,7 @@ class HttpQuery extends BaseQuery
      */
     public function defaultSort(string $defaultSort = 'id', string $direction = 'asc'): self
     {
-        $direction = 'asc' === $direction ? '' : '-';
-        $this->defaultSort = "{$direction}{$defaultSort}";
+        $this->defaultSort = $this->getSortDirection($defaultSort, $direction);
         $this->query = $this->query->defaultSort($this->defaultSort);
 
         return $this;
@@ -179,5 +178,12 @@ class HttpQuery extends BaseQuery
             Queryable::class,
             array_keys($class->getTraits())
         );
+    }
+
+    private function getSortDirection(string $sort, string $direction): string
+    {
+        $direction = 'asc' === $direction ? '' : '-';
+
+        return "{$direction}{$sort}";
     }
 }
