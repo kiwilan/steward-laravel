@@ -18,7 +18,7 @@ class HttpQuery extends BaseQuery
      * Works with `spatie/laravel-query-builder`.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/introduction
      *
-     * @param  EloquentBuilder|Relation|string  $class
+     * @param EloquentBuilder|Relation|string $class
      */
     public static function make($class, ?Request $request = null): self
     {
@@ -51,8 +51,8 @@ class HttpQuery extends BaseQuery
      * Set default sort colunm, default is `$query_default_sort`
      * and `$query_default_sort_direction` for direction into model.
      *
-     * @param  string  $defaultSort Any `fillable`, default is `id`
-     * @param  string  $direction   `asc` | `desc`
+     * @param string $defaultSort Any `fillable`, default is `id`
+     * @param string $direction   `asc` | `desc`
      */
     public function defaultSort(string $defaultSort = 'id', string $direction = 'asc'): self
     {
@@ -146,9 +146,9 @@ class HttpQuery extends BaseQuery
     /**
      * Set full query (no pagination), default is `$query_full` into model.
      */
-    public function full(?bool $full = null): self
+    public function full(): self
     {
-        $this->full = ! $full ? true : $full;
+        $this->full = true;
 
         return $this;
     }
@@ -190,7 +190,7 @@ class HttpQuery extends BaseQuery
                 $instance->getQueryDefaultSort(),
                 $instance->getQueryDefaultSortDirection()
             );
-            $this->full($instance->getQueryFull());
+            $this->full = $instance->getQueryFull();
             $this->limit($instance->getQueryLimit());
 
             if ($instance->getQueryExport()) {
