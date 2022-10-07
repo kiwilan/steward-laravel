@@ -27,7 +27,7 @@ class HttpQuery extends BaseQuery
         $query->request = $request;
 
         $query->defaultSort = $query->getSortDirection(config('steward.query.default_sort'), config('steward.query.default_sort_direction'));
-        $query->size = config('steward.query.size');
+        $query->limit = config('steward.query.limit');
         $query->resourceGuess();
 
         $query->query = QueryBuilder::for($query->metadata->class);
@@ -110,11 +110,11 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set default pagination size, default is `$query_size` into model.
+     * Set default pagination limit, default is `$query_limit` into model.
      */
-    public function size(int $size = 32): self
+    public function limit(int $limit = 32): self
     {
-        $this->size = $size;
+        $this->limit = $limit;
 
         return $this;
     }
@@ -146,7 +146,7 @@ class HttpQuery extends BaseQuery
                 $instance->getQueryDefaultSort(),
                 $instance->getQueryDefaultSortDirection()
             );
-            $this->size($instance->getQuerySize());
+            $this->limit($instance->getQueryLimit());
 
             if ($instance->getQueryExport()) {
                 $this->exportable($instance->getQueryExport());

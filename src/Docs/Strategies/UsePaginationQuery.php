@@ -36,7 +36,7 @@ class UsePaginationQuery extends Strategy
         }
 
         return [
-            'size' => [
+            'limit' => [
                 'description' => 'Number of entities to return in a page.',
                 'type' => 'int',
                 'required' => false,

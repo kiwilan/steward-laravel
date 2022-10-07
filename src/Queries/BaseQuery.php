@@ -37,11 +37,11 @@ abstract class BaseQuery
 
     protected ?string $resource = null;
 
-    protected int $size = 15;
+    protected int $limit = 15;
 
     public function paginate(): LengthAwarePaginator
     {
-        return $this->query->paginate(min(100, request()->get('size', $this->size)));
+        return $this->query->paginate(min(100, request()->get('limit', $this->limit)));
     }
 
     /**
