@@ -2,6 +2,33 @@
 
 namespace Kiwilan\Steward\Traits;
 
+/**
+ * Add Model capacity to use Model configuration with `HttpQuery`.
+ * - `$query_with`: `array` relationships
+ * - `$query_with_count`: `array` relationships with count
+ * - `$query_default_sort`: default sorting field to use
+ * - `$query_default_sort_direction`: `asc` | `desc` default sorting direction to use
+ * - `$query_allowed_filters`: `array` filters
+ * - `setQueryAllowedFilters()`: `array` advanced filters, override `$query_allowed_filters`
+ * - `$query_allowed_sorts`: `array` sorts
+ * - `setQueryAllowedSorts()`: `array` advanced sorts, override `$query_allowed_sorts`
+ * - `$query_full`: `bool` if pagination is disabled
+ * - `$query_limit`: `int` limit of results
+ * - `$query_export`: `string` Export class to use
+ * - `$query_resource`: `string` Resource class to use
+ *
+ * ```php
+ * protected $query_default_sort = 'name';
+ * protected $query_allowed_filters = ['name'];
+ *
+ * protected function setQueryAllowedSorts(): array
+ * {
+ *    return [
+ *       AllowedSort::custom('name-length', new StringLengthSort(), 'name'),
+ *    ];
+ * }
+ * ```
+ */
 trait Queryable
 {
     /**
