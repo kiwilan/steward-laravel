@@ -86,7 +86,7 @@ abstract class BaseQuery
         $resource = $this->resource;
         $response = $this->request->boolean('full') ? $this->query->get() : $this->paginate();
 
-        if (!class_exists($this->resource)) {
+        if (! class_exists($this->resource)) {
             return response()->json([
                 'data' => [],
                 'message' => 'Resource not found',
