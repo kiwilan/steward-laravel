@@ -27,6 +27,7 @@ class HttpQuery extends BaseQuery
         $query->request = $request;
 
         $query->defaultSort = $query->getSortDirection(config('steward.query.default_sort'), config('steward.query.default_sort_direction'));
+        $query->full = config('steward.query.full');
         $query->limit = config('steward.query.limit');
         $query->resourceGuess();
 
@@ -118,7 +119,6 @@ class HttpQuery extends BaseQuery
 
         return $this;
     }
-
 
     /**
      * Set default pagination limit, default is `$query_limit` into model.

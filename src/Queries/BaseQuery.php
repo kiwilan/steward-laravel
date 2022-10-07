@@ -93,8 +93,7 @@ abstract class BaseQuery
         $resource = $this->resource;
         $response = $this->request->boolean('full') || $this->full
             ? $this->query->get()
-            : $this->paginate()
-        ;
+            : $this->paginate();
 
         return $resource::collection($response);
     }
