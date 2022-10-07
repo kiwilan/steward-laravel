@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Utils;
 
-use Illuminate\Container\Container;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
