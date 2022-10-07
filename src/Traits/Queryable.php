@@ -23,14 +23,21 @@ trait Queryable
     {
         return $this->query_default_sort_direction ?? config('steward.query.default_sort_direction');
     }
-
     public function getQueryAllowedFilters(): array
     {
+        if (method_exists($this, 'setQueryAllowedFilters')) {
+            return $this->setQueryAllowedFilters();
+        }
+
         return $this->query_allowed_filters ?? [];
     }
 
     public function getQueryAllowedSorts(): array
     {
+        if (method_exists($this, 'setQueryAllowedSorts')) {
+            return $this->setQueryAllowedSorts();
+        }
+
         return $this->query_allowed_sorts ?? [];
     }
 

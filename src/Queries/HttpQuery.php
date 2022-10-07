@@ -63,8 +63,25 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set allowed filters, default is `$query_allowed_filters` into model.
+     * Set allowed filters, default is `$query_allowed_filters` into model,
+     * for advanced filters the method `setQueryAllowedFilters(): array` is available.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/filtering.
+     *
+     * Simple usage
+     * ```php
+     * protected $query_allowed_filters = ['title', 'slug'];
+     * ```
+     *
+     * Advanced usage (override `$query_allowed_filters`)
+     * ```php
+     * protected function setQueryAllowedFilters(): array
+     * {
+     *   return [
+     *      AllowedFilter::partial('title'),
+     *      AllowedFilter::scope('language', 'whereLanguagesIs'),
+     *   ];
+     * }
+     * ```
      */
     public function filters(array $filters = []): self
     {
@@ -75,8 +92,24 @@ class HttpQuery extends BaseQuery
     }
 
     /**
-     * Set allowed sorts, default is `$query_allowed_sorts` into model.
+     * Set allowed sorts, default is `$query_allowed_sorts` into model,
+     * for advanced sorts the method `setQueryAllowedSorts(): array` is available.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/sorting.
+     *
+     * Simple usage
+     * ```php
+     * protected $query_allowed_sorts = ['name'];
+     * ```
+     *
+     * Advanced usage (override `$query_allowed_sorts`)
+     * ```php
+     * protected function setQueryAllowedSorts(): array
+     * {
+     *   return [
+     *      AllowedSort::custom('name-length', new StringLengthSort(), 'name'),
+     *   ];
+     * }
+     * ```
      */
     public function sorts(array $sorts = []): self
     {
