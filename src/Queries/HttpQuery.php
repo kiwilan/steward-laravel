@@ -67,12 +67,12 @@ class HttpQuery extends BaseQuery
      * for advanced filters the method `setQueryAllowedFilters(): array` is available.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/filtering.
      *
-     * Simple usage
+     * Model simple usage
      * ```php
      * protected $query_allowed_filters = ['title', 'slug'];
      * ```
      *
-     * Advanced usage (override `$query_allowed_filters`)
+     * Model advanced usage (override `$query_allowed_filters`)
      * ```php
      * protected function setQueryAllowedFilters(): array
      * {
@@ -96,12 +96,12 @@ class HttpQuery extends BaseQuery
      * for advanced sorts the method `setQueryAllowedSorts(): array` is available.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/sorting.
      *
-     * Simple usage
+     * Model simple usage
      * ```php
      * protected $query_allowed_sorts = ['name'];
      * ```
      *
-     * Advanced usage (override `$query_allowed_sorts`)
+     * Model advanced usage (override `$query_allowed_sorts`)
      * ```php
      * protected function setQueryAllowedSorts(): array
      * {
