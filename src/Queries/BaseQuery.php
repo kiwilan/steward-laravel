@@ -86,24 +86,41 @@ abstract class BaseQuery
         $resource = $this->resource;
         $response = $this->request->boolean('full') ? $this->query->get() : $this->paginate();
 
+        if (!class_exists($this->resource)) {
+            return response()->json([
+                'data' => [],
+                'message' => 'Resource not found',
+            ]);
+        }
+
         return $resource::collection($response);
     }
 
     /**
-     * Guess API Resource from `App\Http\Resources\{ClassName}\{ClassName}CollectionResource`
-     * or from `App\Http\Resources\{ClassName}`.
+     * Guess API Resource.
+     * - `App\Http\Resources\{ClassName}\{ClassName}CollectionResource`
+     * - `App\Http\Resources\{ClassName}CollectionResource`
+     * - `App\Http\Resources\{ClassName}\{ClassName}Resource`
+     * - `App\Http\Resources\{ClassName}Resource`.
      */
     public function resourceGuess(): self
     {
         $name = $this->metadata->class_name;
-        $resource_class = "App\\Http\\Resources\\{$name}\\{$name}CollectionResource";
-        $resource_alternative_class = "App\\Http\\Resources\\{$name}Resource";
+
+        $resource_classname_collection = "App\\Http\\Resources\\{$name}\\{$name}CollectionResource";
+        $resource_collection = "App\\Http\\Resources\\{$name}CollectionResource";
+        $resource_classname = "App\\Http\\Resources\\{$name}\\{$name}Resource";
+        $resource = "App\\Http\\Resources\\{$name}Resource";
 
         if (! $this->resource) {
-            if (class_exists($resource_class)) {
-                $this->resource = $resource_class;
-            } elseif (class_exists($resource_alternative_class)) {
-                $this->resource = $resource_alternative_class;
+            if (class_exists($resource_classname_collection)) {
+                $this->resource = $resource_classname_collection;
+            } elseif (class_exists($resource_collection)) {
+                $this->resource = $resource_collection;
+            } elseif (class_exists($resource_classname)) {
+                $this->resource = $resource_classname;
+            } elseif (class_exists($resource)) {
+                $this->resource = $resource;
             }
         }
 
