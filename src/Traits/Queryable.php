@@ -34,6 +34,11 @@ trait Queryable
         return $this->query_allowed_sorts ?? [];
     }
 
+    public function getQueryFull(): bool
+    {
+        return $this->query_full ?? config('steward.query.full');
+    }
+
     public function getQueryLimit(): int
     {
         return $this->query_limit ?? config('steward.query.limit');

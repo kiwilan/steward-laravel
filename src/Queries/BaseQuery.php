@@ -37,6 +37,8 @@ abstract class BaseQuery
 
     protected ?string $resource = null;
 
+    protected bool $full = false;
+
     protected int $limit = 15;
 
     public function paginate(): LengthAwarePaginator
@@ -89,7 +91,10 @@ abstract class BaseQuery
 
         /** @var JsonResource $resource */
         $resource = $this->resource;
-        $response = $this->request->boolean('full') ? $this->query->get() : $this->paginate();
+        $response = $this->request->boolean('full') || $this->full
+            ? $this->query->get()
+            : $this->paginate()
+        ;
 
         return $resource::collection($response);
     }

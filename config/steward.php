@@ -112,5 +112,6 @@ return [
         'default_sort' => 'id',
         'default_sort_direction' => 'asc',
         'limit' => 15,
+        'full' => false,
     ],
 ];

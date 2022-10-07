@@ -110,9 +110,20 @@ class HttpQuery extends BaseQuery
     }
 
     /**
+     * Set full query (no pagination), default is `$query_full` into model.
+     */
+    public function full(?bool $full = null): self
+    {
+        $this->full = ! $full ? true : $full;
+
+        return $this;
+    }
+
+
+    /**
      * Set default pagination limit, default is `$query_limit` into model.
      */
-    public function limit(int $limit = 32): self
+    public function limit(int $limit = 15): self
     {
         $this->limit = $limit;
 
@@ -146,6 +157,7 @@ class HttpQuery extends BaseQuery
                 $instance->getQueryDefaultSort(),
                 $instance->getQueryDefaultSortDirection()
             );
+            $this->full($instance->getQueryFull());
             $this->limit($instance->getQueryLimit());
 
             if ($instance->getQueryExport()) {
