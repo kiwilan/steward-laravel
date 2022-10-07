@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Kiwilan\Steward\Resources\DefaultResource;
 use Kiwilan\Steward\Utils\ClassMetadata;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -82,16 +83,13 @@ abstract class BaseQuery
      */
     public function collection(): AnonymousResourceCollection
     {
+        if (! class_exists($this->resource)) {
+            $this->resource = DefaultResource::class;
+        }
+
         /** @var JsonResource $resource */
         $resource = $this->resource;
         $response = $this->request->boolean('full') ? $this->query->get() : $this->paginate();
-
-        if (! class_exists($this->resource)) {
-            return response()->json([
-                'data' => [],
-                'message' => 'Resource not found',
-            ]);
-        }
 
         return $resource::collection($response);
     }
