@@ -169,7 +169,8 @@ class HttpService
      *
      * From: https://nunomaduro.com/speed_up_your_php_http_guzzle_requests_with_concurrency
      */
-    public function useAsyncSettle(array $urls)
+    // @phpstan-ignore-next-line
+    private function useAsyncSettle(array $urls)
     {
         if (extension_loaded('curl')) {
             $handler = HandlerStack::create(
@@ -228,7 +229,7 @@ class HttpService
      *
      * @return Collection<int,?Response>
      */
-    public function usePool(array $urls)
+    private function usePool(array $urls)
     {
         if (extension_loaded('curl')) {
             $handler = HandlerStack::create(
