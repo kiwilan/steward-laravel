@@ -5,6 +5,22 @@ namespace Kiwilan\Steward\Services;
 class ImageService
 {
     /**
+     * Detecte dominant color of an image.
+     */
+    public static function colorThief(mixed $image, $default_color = 'eee'): string
+    {
+        return self::simple_color_thief($image, $default_color);
+    }
+
+    /**
+     * Detect if an hexadecimal code is valid.
+     */
+    public static function isHex(string $hexa_code): bool
+    {
+        return self::is_hex($hexa_code);
+    }
+
+    /**
      * PHP Simple Color Thief
      * ======================
      * Detect the Dominant Color used in an Image
@@ -14,7 +30,7 @@ class ImageService
      * @param  string  $default
      * @return string
      */
-    public static function simple_color_thief($img, $default = 'eee')
+    private static function simple_color_thief($img, $default = 'eee')
     {
         $default = 'fff';
 
@@ -62,7 +78,7 @@ class ImageService
         return $default;
     }
 
-    public static function is_hex($hex_code): bool
+    private static function is_hex($hex_code): bool
     {
         $isHex = false;
 
