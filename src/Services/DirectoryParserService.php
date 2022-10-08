@@ -8,7 +8,7 @@ namespace Kiwilan\Steward\Services;
  * Example
  *
  * ```php
- * $files = DirectoryParserService::parseDirectoryFiles($path);
+ * $files = DirectoryParserService::parse($path);
  * ```
  */
 class DirectoryParserService
@@ -16,18 +16,17 @@ class DirectoryParserService
     /**
      * Parse directory (recursive).
      *
-     * @param  mixed  $dir
      * @return \Generator<mixed, mixed, mixed, void>
      */
-    public static function parseDirectoryFiles($dir)
+    public static function parse(string $directory)
     {
-        $files = scandir($dir);
+        $files = scandir($directory);
         foreach ($files as $key => $value) {
-            $path = realpath($dir.DIRECTORY_SEPARATOR.$value);
+            $path = realpath($directory.DIRECTORY_SEPARATOR.$value);
             if (! is_dir($path)) {
                 yield $path;
             } elseif ('.' != $value && '..' != $value) {
-                yield from self::parseDirectoryFiles($path);
+                yield from self::parse($path);
                 yield $path;
             }
         }
