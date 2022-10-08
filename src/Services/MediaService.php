@@ -11,7 +11,7 @@ use UnitEnum;
  *
  * @property Model $model
  * @property string $name
- * @property string $disk
+ * @property string|UnitEnum $disk
  * @property ?string $collection
  * @property ?string $extension
  * @property ?SpatieMediaMethodEnum $method
@@ -21,7 +21,7 @@ class MediaService
     public function __construct(
         public Model $model,
         public string $name,
-        public string $disk,
+        public mixed $disk,
         public ?string $collection = null,
         public ?string $extension = null,
         public ?SpatieMediaMethodEnum $method = null,
