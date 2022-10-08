@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Services;
 
-use App\Models\Collector;
 use Faker\Factory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Model;
