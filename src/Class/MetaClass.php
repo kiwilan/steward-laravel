@@ -50,7 +50,7 @@ class MetaClass
         $metadata->class_kebab = Str::kebab($metadata->class_name);
         $metadata->class_kebab_plural = Str::kebab($metadata->class_plural);
 
-        $metadata->first_char = strtolower(substr($metadata->meta_class_name, 0, 1));
+        $metadata->first_char = strtolower(substr($metadata->class_name, 0, 1));
 
         return $metadata;
     }
