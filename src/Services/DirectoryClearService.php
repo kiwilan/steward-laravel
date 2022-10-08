@@ -10,25 +10,31 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 /**
  * Clear directories.
  *
+ * @property string[] $path   Paths to clear
+ * @property string[] $ignore Files to ignore
+ *
  * Example
  *
  * ```php
- * DirectoryClearService::create($paths, $ignore);
+ * DirectoryClearService::make($paths, $ignore);
  * ```
  */
 class DirectoryClearService
 {
     public function __construct(
         public array $paths,
-        public ?array $ignore = [],
+        public array $ignore = [],
     ) {
     }
 
-    public static function create(array|string $paths, array $ignore = ['.gitignore']): DirectoryClearService
+    /**
+     * Create a new DirectoryClearService instance.
+     *
+     * @param  string[]  $paths
+     * @param  string[]  $ignore
+     */
+    public static function make(array $paths, array $ignore = ['.gitignore']): self
     {
-        if (is_string($paths)) {
-            $paths = [$paths];
-        }
         $service = new DirectoryClearService($paths, $ignore);
         foreach ($paths as $path) {
             $service->clear($path);
@@ -59,7 +65,10 @@ class DirectoryClearService
         $output->writeln('Clear storage/'.basename($path));
     }
 
-    public function rmdir_recursive($dir)
+    /**
+     * Remove directory recursively.
+     */
+    private function rmdir_recursive(string $dir)
     {
         $it = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
         $it = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
