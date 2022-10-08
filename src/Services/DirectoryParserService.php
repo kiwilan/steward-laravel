@@ -41,7 +41,7 @@ class DirectoryParserService
     /**
      * Parse directory.
      *
-     * @param string $directory
+     * @param  string  $directory
      * @return Generator<mixed, mixed, mixed, void>
      */
     public function parse(string $directory)
