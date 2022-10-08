@@ -43,11 +43,11 @@ class HttpService
         /** @var Response[] $responses_list */
         $responses_list = [];
 
-        if (config('http.async_allow')) {
+        if (config('steward.http.async_allow')) {
             /**
              * Chunk by limit into arrays.
              */
-            $limit = config('http.pool_limit');
+            $limit = config('steward.http.pool_limit');
             $size = count($url_list);
             $chunk = array_chunk($url_list, $limit, true);
             $chunk_size = count($chunk);
