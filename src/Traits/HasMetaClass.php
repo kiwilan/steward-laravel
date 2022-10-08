@@ -20,14 +20,19 @@ trait HasMetaClass
 {
     /** Example: `WikipediaItem`: `App\Models\WikipediaItem::class` */
     public ?string $meta_class = null;
+
     /** Example: `WikipediaItem`: `App\Models\WikipediaItem` */
     public ?string $meta_class_namespaced = null;
+
     /** Example: `WikipediaItem`: `WikipediaItem` */
     public ?string $meta_class_name = null;
+
     /** Example: `WikipediaItem`: `WikipediaItems` */
     public ?string $meta_class_plural = null;
+
     /** Example: `WikipediaItem`: `wikipedia_item` */
     public ?string $meta_class_snake = null;
+
     /** Example: `WikipediaItem`: `wikipedia_items` */
     public ?string $meta_class_snake_plural = null;
 
