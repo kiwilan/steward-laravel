@@ -16,46 +16,127 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Kiwilan\Steward\Utils\Console;
 
+/**
+ * Manage requests to external API.
+ *
+ * @property int                    $max_curl_handles   max_curl_handles
+ * @property int                    $max_redirects      max_redirects
+ * @property int                    $timeout            timeout
+ * @property int                    $guzzle_concurrency guzzle_concurrency
+ * @property Collection<int,object> $collection         collection
+ * @property string                 $request_url_field  request_url_field
+ * @property string                 $model_id           model_id, default is `model_id`
+ */
 class HttpService
 {
-    public const MAX_CURL_HANDLES = 100;
-
-    public const MAX_REDIRECTS = 10;
-
-    public const REQUEST_TIMEOUT = 30;
-
-    public const GUZZLE_CONCURRENCY = 5;
+    public function __construct(
+        public int $max_curl_handles = 100,
+        public int $max_redirects = 10,
+        public int $timeout = 30,
+        public int $guzzle_concurrency = 5,
+        public ?Collection $collection = null,
+        public ?string $request_url_field = null,
+        public string $model_id = 'model_id',
+        public bool $poolable = true,
+        public int $pool_limit = 250,
+    ) {
+    }
 
     /**
-     * Transform Collection to URL array with Model $id as key and $url_attribute as value, make GET request on each url.
+     * Create HttpService from Collection.
      *
-     * @return Response[]
+     * @param Collection<int,object> $collection        collection
+     * @param string                 $request_url_field request_url_field
      */
-    public static function getCollection(Collection $collection, string $url_attribute, string $id): array
+    public static function make(Collection $collection, string $request_url_field): self
+    {
+        $service = new HttpService();
+        $service->collection = $collection;
+        $service->request_url_field = $request_url_field;
+        $service->poolable = config('steward.http.async_allow');
+        $service->pool_limit = config('steward.http.pool_limit');
+
+        return $service;
+    }
+
+    public function setMaxCurlHandles(int $max_curl_handles): self
+    {
+        $this->max_curl_handles = $max_curl_handles;
+
+        return $this;
+    }
+
+    public function setMaxRedirects(int $max_redirects): self
+    {
+        $this->max_redirects = $max_redirects;
+
+        return $this;
+    }
+
+    public function setTimeout(int $timeout): self
+    {
+        $this->timeout = $timeout;
+
+        return $this;
+    }
+
+    public function setGuzzleConcurrency(int $guzzle_concurrency): self
+    {
+        $this->guzzle_concurrency = $guzzle_concurrency;
+
+        return $this;
+    }
+
+    public function setModelId(string $model_id = 'model_id'): self
+    {
+        $this->model_id = $model_id;
+
+        return $this;
+    }
+
+    public function setPoolable(bool $poolable): self
+    {
+        $this->poolable = $poolable;
+
+        return $this;
+    }
+
+    public function setPoolLimit(int $pool_limit): self
+    {
+        $this->pool_limit = $pool_limit;
+
+        return $this;
+    }
+
+    /**
+     * Transform Collection to URL array with Model `$model_id` as key and `$request_url_field` as value. Make `GET` request on each url.
+     *
+     * @return Collection<int,?Response>
+     */
+    public function execute()
     {
         $console = Console::make();
         Artisan::call('cache:clear');
 
         $url_list = [];
 
-        foreach ($collection as $item) {
-            $url_list[$item->{$id}] = $item->{$url_attribute};
+        foreach ($this->collection as $item) {
+            $url_list[$item->{$this->model_id}] = $item->{$this->request_url_field};
         }
 
-        /** @var Response[] $responses_list */
-        $responses_list = [];
+        /** @var Collection<int,?Response> $responses_list */
+        $responses_list = collect([]);
 
-        if (config('steward.http.async_allow')) {
+        if ($this->poolable) {
             /**
              * Chunk by limit into arrays.
              */
-            $limit = config('steward.http.pool_limit');
             $size = count($url_list);
-            $chunk = array_chunk($url_list, $limit, true);
+            $chunk = array_chunk($url_list, $this->pool_limit, true);
             $chunk_size = count($chunk);
             if ($size > 0) {
                 $console->print('HttpService will setup async requests...');
-                $console->print("Pool is limited to {$limit} from .env, {$size} requests will become {$chunk_size} chunks.");
+                $console->print("Pool is limited to {$this->pool_limit} from .env, {$size} requests will become {$chunk_size} chunks.");
                 $console->newLine();
             }
 
@@ -68,8 +149,8 @@ class HttpService
                 $size_list = count($limited_url_list);
                 $current_chunk = $chunk_key + 1;
                 $console->print("Execute {$size_list} requests from chunk {$current_chunk}...");
-                $responses = HttpService::pool($limited_url_list);
-                // $responses = HttpService::asyncSettle($limited_url_list);
+                $responses = HttpService::usePool($limited_url_list);
+                // $responses = HttpService::useAsyncSettle($limited_url_list);
                 foreach ($responses as $key => $response) {
                     $responses_list[$key] = $response;
                 }
@@ -88,13 +169,13 @@ class HttpService
      *
      * From: https://nunomaduro.com/speed_up_your_php_http_guzzle_requests_with_concurrency
      */
-    public static function asyncSettle(array $urls)
+    public function useAsyncSettle(array $urls)
     {
         if (extension_loaded('curl')) {
             $handler = HandlerStack::create(
                 new CurlMultiHandler([
-                    'handle_factory' => new CurlFactory(self::MAX_CURL_HANDLES),
-                    'select_timeout' => self::REQUEST_TIMEOUT,
+                    'handle_factory' => new CurlFactory($this->max_curl_handles),
+                    'select_timeout' => $this->timeout,
                 ])
             );
         } else {
@@ -109,11 +190,11 @@ class HttpService
             'curl' => [
                 // CURLOPT_BINARYTRANSFER => true,
             ],
-            RequestOptions::CONNECT_TIMEOUT => self::REQUEST_TIMEOUT,
+            RequestOptions::CONNECT_TIMEOUT => $this->timeout,
             // Allow redirects?
             // Set this to RequestOptions::ALLOW_REDIRECTS => false, to turn off.
             RequestOptions::ALLOW_REDIRECTS => [
-                'max' => self::MAX_REDIRECTS,        // allow at most 10 redirects.
+                'max' => $this->max_redirects,        // allow at most 10 redirects.
                 'strict' => true,      // use "strict" RFC compliant redirects.
                 'track_redirects' => false,
             ],
@@ -144,14 +225,16 @@ class HttpService
 
     /**
      * Create and make request GET from array of $urls.
+     *
+     * @return Collection<int,?Response>
      */
-    public static function pool(array $urls): Collection
+    public function usePool(array $urls)
     {
         if (extension_loaded('curl')) {
             $handler = HandlerStack::create(
                 new CurlMultiHandler([
-                    'handle_factory' => new CurlFactory(self::MAX_CURL_HANDLES),
-                    'select_timeout' => self::REQUEST_TIMEOUT,
+                    'handle_factory' => new CurlFactory($this->max_curl_handles),
+                    'select_timeout' => $this->timeout,
                 ])
             );
         } else {
@@ -167,11 +250,11 @@ class HttpService
             'curl' => [
                 // CURLOPT_BINARYTRANSFER => true,
             ],
-            RequestOptions::CONNECT_TIMEOUT => self::REQUEST_TIMEOUT,
+            RequestOptions::CONNECT_TIMEOUT => $this->timeout,
             // Allow redirects?
             // Set this to RequestOptions::ALLOW_REDIRECTS => false, to turn off.
             RequestOptions::ALLOW_REDIRECTS => [
-                'max' => self::MAX_REDIRECTS,        // allow at most 10 redirects.
+                'max' => $this->max_redirects,        // allow at most 10 redirects.
                 'strict' => true,      // use "strict" RFC compliant redirects.
                 'track_redirects' => false,
             ],
@@ -184,10 +267,11 @@ class HttpService
             }
         }
 
+        /** @var Collection<int,?Response> */
         $responses = collect([]);
 
         $pool = new Pool($client, $requests, [
-            'concurrency' => self::GUZZLE_CONCURRENCY,
+            'concurrency' => $this->guzzle_concurrency,
             'fulfilled' => function (\GuzzleHttp\Psr7\Response $response, $index) use ($responses) {
                 $responses[$index] = new \Illuminate\Http\Client\Response($response);
             },

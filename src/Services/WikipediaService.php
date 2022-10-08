@@ -75,7 +75,7 @@ class WikipediaService
     /**
      * Set attributes to search on Wikipedia, can be unique or multiple for concat search.
      *
-     * @param  string|string[]  $attributes
+     * @param string|string[] $attributes
      */
     public function setQueryAttributes(mixed $attributes = ['name']): self
     {
@@ -104,7 +104,7 @@ class WikipediaService
     /**
      * Set unique identifier of the model.
      *
-     * @param  string  $subject_identifier Default is `id`
+     * @param string $subject_identifier Default is `id`
      */
     public function setSubjectIdentifier(string $subject_identifier = 'id'): self
     {
@@ -171,15 +171,16 @@ class WikipediaService
     /**
      * Make GET request from Wikipedia API and parse it.
      *
-     * @param  string  $url_attribute is WikipediaQuery attribute which is an URL
-     * @param  Closure  $callback      is WikipediaQuery class method to parse response
+     * @param string  $request_url_field is WikipediaQuery attribute which is an URL
+     * @param Closure $callback          is WikipediaQuery class method to parse response
      */
-    private function search(string $url_attribute, Closure $callback): self
+    private function search(string $request_url_field, Closure $callback): self
     {
         /**
-         * Make GET request from $url_attribute of WikipediaQuery[].
+         * Make GET request from $request_url_field of WikipediaQuery[].
          */
-        $responses = HttpService::getCollection($this->queries, $url_attribute, 'model_id');
+        $http = HttpService::make($this->queries, $request_url_field);
+        $responses = $http->execute();
 
         $queries = collect([]);
         $failed = collect([]);
@@ -234,7 +235,8 @@ class WikipediaService
         return WikipediaQuery::make($query_string, $model, $this->debug)
             ->setSubjectIdentifier($this->subject_identifier)
             ->setLanguage($lang)
-            ->execute();
+            ->execute()
+        ;
     }
 
     /**

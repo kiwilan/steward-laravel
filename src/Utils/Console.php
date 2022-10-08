@@ -12,7 +12,7 @@ class Console
     use InteractsWithIO;
 
     public function __construct(
-        public ?ConsoleOutput $output = null,
+        public ?ConsoleOutput $console_output = null,
     ) {
     }
 
@@ -20,7 +20,7 @@ class Console
     {
         $output = new ConsoleOutput();
         $service = new Console();
-        $service->output = $output;
+        $service->console_output = $output;
 
         return $service;
     }
@@ -28,22 +28,22 @@ class Console
     public function print(string $message, string $color = 'green', Throwable $th = null): void
     {
         $style = new OutputFormatterStyle($color, '', []);
-        $this->output->getFormatter()
+        $this->console_output->getFormatter()
             ->setStyle('info', $style);
 
         if ($th) {
-            $this->output->writeln("<info>Error about {$message}</info>\n");
-            $this->output->writeln($th->getMessage());
+            $this->console_output->writeln("<info>Error about {$message}</info>\n");
+            $this->console_output->writeln($th->getMessage());
         } else {
-            $this->output->writeln("<info>{$message}</info>");
+            $this->console_output->writeln("<info>{$message}</info>");
         }
     }
 
     public function newLine()
     {
         $style = new OutputFormatterStyle('red', '', ['bold']);
-        $this->output->getFormatter()
+        $this->console_output->getFormatter()
             ->setStyle('info', $style);
-        $this->output->writeln('');
+        $this->console_output->writeln('');
     }
 }
