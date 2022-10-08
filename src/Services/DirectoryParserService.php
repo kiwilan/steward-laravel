@@ -2,23 +2,49 @@
 
 namespace Kiwilan\Steward\Services;
 
+use Generator;
+
 /**
  * Directory parser.
+ *
+ * @property string $directory
+ * @property Generator<mixed,mixed,mixed,void> $files
  *
  * Example
  *
  * ```php
- * $files = DirectoryParserService::parse($path);
+ * $service = DirectoryParserService::make($path);
+ * $files = $service->files;
  * ```
  */
 class DirectoryParserService
 {
+    public function __construct(
+        public ?string $directory = null,
+        public mixed $files = null,
+    ) {
+    }
+
     /**
-     * Parse directory (recursive).
-     *
-     * @return \Generator<mixed, mixed, mixed, void>
+     * Parser directory service.
      */
-    public static function parse(string $directory)
+    public static function make(string $directory): self
+    {
+        $service = new DirectoryParserService();
+        $service->directory = $directory;
+
+        $service->files = $service->parse($service->directory);
+
+        return $service;
+    }
+
+    /**
+     * Parse directory.
+     *
+     * @param string $directory
+     * @return Generator<mixed, mixed, mixed, void>
+     */
+    public function parse(string $directory)
     {
         $files = scandir($directory);
         foreach ($files as $key => $value) {
@@ -26,7 +52,7 @@ class DirectoryParserService
             if (! is_dir($path)) {
                 yield $path;
             } elseif ('.' != $value && '..' != $value) {
-                yield from self::parse($path);
+                yield from $this->parse($path);
                 yield $path;
             }
         }

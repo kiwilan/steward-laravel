@@ -14,7 +14,7 @@ class QueryService
      *
      * @throws InvalidArgumentException
      */
-    public static function boot(Builder $query, array $filters, array $config): Builder|Model
+    public static function make(Builder $query, array $filters, array $config): Builder|Model
     {
         /**
          * Format Model config with keys.

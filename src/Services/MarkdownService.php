@@ -44,7 +44,7 @@ class MarkdownService
     ) {
     }
 
-    public static function generate(string $path, bool $absolute = false): MarkdownService
+    public static function make(string $path, bool $absolute = false): MarkdownService
     {
         if (! $absolute) {
             $path = resource_path("front/content/{$path}");

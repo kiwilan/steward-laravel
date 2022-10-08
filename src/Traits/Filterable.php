@@ -38,7 +38,7 @@ trait Filterable
         // dump($manual);
         // $instance = new $this();
         // $class = new ReflectionClass($instance);
-        return QueryService::boot($query, $filters, $configuration);
+        return QueryService::make($query, $filters, $configuration);
     }
 
     public function scopeSort(Builder $query, string $field, bool $reverse = false): Builder
