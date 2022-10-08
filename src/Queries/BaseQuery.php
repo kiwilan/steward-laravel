@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Kiwilan\Steward\Resources\DefaultResource;
-use Kiwilan\Steward\Utils\MetaClass;
+use Kiwilan\Steward\Class\MetaClass;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;

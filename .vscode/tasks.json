@@ -7,6 +7,30 @@
       "label": "tsup build",
       "type": "npm",
       "script": "build",
+    },
+    {
+      "label": "Format",
+      "type": "shell",
+      "command": "composer format",
+      "problemMatcher": []
+    },
+    {
+      "label": "Analyse",
+      "type": "shell",
+      "command": "composer analyse",
+      "problemMatcher": []
+    },
+    {
+      "label": "Tests",
+      "type": "shell",
+      "command": "composer tests",
+      "problemMatcher": []
+    },
+    {
+      "label": "grumphp",
+      "type": "shell",
+      "command": "composer grumphp",
+      "problemMatcher": []
     }
   ]
 }
