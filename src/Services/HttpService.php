@@ -45,8 +45,8 @@ class HttpService
     /**
      * Create HttpService from Collection.
      *
-     * @param Collection<int,object> $collection        collection
-     * @param string                 $request_url_field request_url_field
+     * @param  Collection<int,object>  $collection        collection
+     * @param  string  $request_url_field request_url_field
      */
     public static function make(Collection $collection, string $request_url_field): self
     {

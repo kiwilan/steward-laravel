@@ -45,8 +45,8 @@ class GoogleBookService
      * Get all useful data to improve Book, Identifier, Publisher and Tag
      * If data exist, create GoogleBook associate with Book with useful data to purchase eBook
      *
-     * @param string $subject Model class name, `Book::class`
-     * @param bool   $debug   Debug mode, default `false`
+     * @param  string  $subject Model class name, `Book::class`
+     * @param  bool  $debug   Debug mode, default `false`
      */
     public static function make(string $subject, ?bool $debug = false): self
     {
@@ -60,8 +60,8 @@ class GoogleBookService
     /**
      * Scan all models to keep only available.
      *
-     * @param string   $subject     Model class name, `Book::class`
-     * @param string[] $isbn_fields
+     * @param  string  $subject     Model class name, `Book::class`
+     * @param  string[]  $isbn_fields
      */
     public static function availableModels(string $subject, array $isbn_fields = ['isbn']): Collection
     {
@@ -81,7 +81,7 @@ class GoogleBookService
     /**
      * Set models to scan.
      *
-     * @param Collection<int,object> $models List of scanned models
+     * @param  Collection<int,object>  $models List of scanned models
      */
     public function setModels(Collection $models): self
     {
@@ -93,7 +93,7 @@ class GoogleBookService
     /**
      * Set isbn fields to scan.
      *
-     * @param string[] $isbn_fields List of isbn fields into `$subject`, set more relevant first, default `['isbn']`
+     * @param  string[]  $isbn_fields List of isbn fields into `$subject`, set more relevant first, default `['isbn']`
      */
     public function setIsbnFields(array $isbn_fields = ['isbn']): self
     {
@@ -105,7 +105,7 @@ class GoogleBookService
     /**
      * Set unique identifier of the model.
      *
-     * @param string $subject_identifier Default is `id`
+     * @param  string  $subject_identifier Default is `id`
      */
     public function setSubjectIdentifier(string $subject_identifier = 'id'): self
     {
