@@ -9,11 +9,11 @@ use Kiwilan\Steward\Utils\ClassMetadata;
  */
 trait HasClassWatcher
 {
-    protected ?ClassMetadata $class_watcher_meta = null;
+    protected ?ClassMetadata $class_watcher = null;
 
     public function initializeHasClassWatcher()
     {
-        $this->class_watcher_meta = ClassMetadata::create($this);
+        $this->class_watcher = ClassMetadata::create($this);
     }
 
     public function getClassName(bool $withPlural = false)
