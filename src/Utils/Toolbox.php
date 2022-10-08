@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils;
+namespace Kiwilan\Steward\Utils;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
