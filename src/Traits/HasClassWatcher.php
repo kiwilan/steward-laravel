@@ -2,11 +2,20 @@
 
 namespace Kiwilan\Steward\Traits;
 
+use Kiwilan\Steward\Utils\ClassMetadata;
+
 /**
- * Get class name.
+ * Class Watcher.
  */
-trait HasClassName
+trait HasClassWatcher
 {
+    protected ?ClassMetadata $class_watcher_meta = null;
+
+    public function initializeHasClassWatcher()
+    {
+        $this->class_watcher_meta = ClassMetadata::create($this);
+    }
+
     public function getClassName(bool $withPlural = false)
     {
         $class = strtolower(str_replace('App\Models\\', '', get_class($this)));

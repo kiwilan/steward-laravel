@@ -5,6 +5,10 @@ namespace Kiwilan\Steward\Traits;
 use Illuminate\Support\Str;
 use ReflectionClass;
 
+/**
+ * @property array $meta with [`slug` => show_route_column, `show` => `$show_route`]
+ * @property string $show_route
+ */
 trait HasShowRoute
 {
     protected $default_show_route_column = 'slug';
@@ -14,7 +18,7 @@ trait HasShowRoute
         return $this->show_route_column ?? $this->default_show_route_column;
     }
 
-    public function getRouteShowAttribute(): ?string
+    public function getShowRouteAttribute(): ?string
     {
         $instance = new $this();
         $class = new ReflectionClass($instance);
