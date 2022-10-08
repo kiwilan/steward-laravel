@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Kiwilan\Steward\Resources\DefaultResource;
-use Kiwilan\Steward\Utils\ClassMetadata;
+use Kiwilan\Steward\Utils\MetaClass;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 abstract class BaseQuery
 {
-    public ?ClassMetadata $metadata = null;
+    public ?MetaClass $metadata = null;
 
     public ?Request $request = null;
 
@@ -54,7 +54,7 @@ abstract class BaseQuery
         return [
             'sort' => request()->get('sort', $this->defaultSort),
             'filter' => request()->get('filter'),
-            $this->metadata->class_plural_snake => fn () => $this->collection(),
+            $this->metadata->class_snake_plural => fn () => $this->collection(),
         ];
     }
 
@@ -69,7 +69,7 @@ abstract class BaseQuery
         $this->exportGuess();
 
         // $name = trans_choice("crud.{$this->resource}.name";
-        $name = $this->metadata->class_plural_snake;
+        $name = $this->metadata->class_snake_plural;
         $fileName = $name;
         $date = date('Ymd-His');
 

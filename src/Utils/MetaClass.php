@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Utils;
 use Illuminate\Support\Str;
 use ReflectionClass;
 
-class ClassMetadata
+class MetaClass
 {
     public function __construct(
         public ?string $class = null,
@@ -13,13 +13,13 @@ class ClassMetadata
         public ?string $class_name = null,
         public ?string $class_plural = null,
         public ?string $class_snake = null,
-        public ?string $class_plural_snake = null,
+        public ?string $class_snake_plural = null,
     ) {
     }
 
-    public static function create(string $class): self
+    public static function make(string $class): self
     {
-        $metadata = new ClassMetadata($class);
+        $metadata = new MetaClass($class);
 
         $instance = new $class();
         $reflection_class = new ReflectionClass($instance);
@@ -29,7 +29,7 @@ class ClassMetadata
         $metadata->class_plural = Str::plural($metadata->class_name);
 
         $metadata->class_snake = Str::snake($metadata->class_name);
-        $metadata->class_plural_snake = Str::snake($metadata->class_plural);
+        $metadata->class_snake_plural = Str::snake($metadata->class_plural);
 
         return $metadata;
     }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Kiwilan\Steward\Traits\Queryable;
-use Kiwilan\Steward\Utils\ClassMetadata;
+use Kiwilan\Steward\Utils\MetaClass;
 use ReflectionClass;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -23,7 +23,7 @@ class HttpQuery extends BaseQuery
     public static function make($class, ?Request $request = null): self
     {
         $query = new HttpQuery();
-        $query->metadata = ClassMetadata::create($class);
+        $query->metadata = MetaClass::make($class);
         $query->request = $request;
 
         $query->defaultSort = $query->getSortDirection(config('steward.query.default_sort'), config('steward.query.default_sort_direction'));
