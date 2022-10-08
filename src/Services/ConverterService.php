@@ -4,6 +4,7 @@ namespace Kiwilan\Steward\Services;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Kiwilan\Steward\Utils\Console;
 
 class ConverterService
 {
@@ -15,9 +16,11 @@ class ConverterService
 
     public static function saveAsJson(mixed $data, string $name): void
     {
+        $console = Console::make();
+
         $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         Storage::disk('public')->put("debug/{$name}.json", $data);
-        ConsoleService::print("Saved to public/storage/debug/{$name}.json");
+        $console->print("Saved to public/storage/debug/{$name}.json");
     }
 
     public static function jsonToArray(string $path, bool $is_associative = true, bool $replace_dotenv = true): array

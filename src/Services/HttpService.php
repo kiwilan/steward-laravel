@@ -14,6 +14,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Kiwilan\Steward\Utils\Console;
 
 class HttpService
 {
@@ -32,6 +33,7 @@ class HttpService
      */
     public static function getCollection(Collection $collection, string $url_attribute, string $id): array
     {
+        $console = Console::make();
         Artisan::call('cache:clear');
 
         $url_list = [];
@@ -52,9 +54,9 @@ class HttpService
             $chunk = array_chunk($url_list, $limit, true);
             $chunk_size = count($chunk);
             if ($size > 0) {
-                ConsoleService::print('HttpService will setup async requests...');
-                ConsoleService::print("Pool is limited to {$limit} from .env, {$size} requests will become {$chunk_size} chunks.");
-                ConsoleService::newLine();
+                $console->print('HttpService will setup async requests...');
+                $console->print("Pool is limited to {$limit} from .env, {$size} requests will become {$chunk_size} chunks.");
+                $console->newLine();
             }
 
             /**
@@ -65,7 +67,7 @@ class HttpService
             foreach ($chunk as $chunk_key => $limited_url_list) {
                 $size_list = count($limited_url_list);
                 $current_chunk = $chunk_key + 1;
-                ConsoleService::print("Execute {$size_list} requests from chunk {$current_chunk}...");
+                $console->print("Execute {$size_list} requests from chunk {$current_chunk}...");
                 $responses = HttpService::pool($limited_url_list);
                 // $responses = HttpService::asyncSettle($limited_url_list);
                 foreach ($responses as $key => $response) {

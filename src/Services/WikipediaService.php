@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Class\WikipediaItem;
 use Kiwilan\Steward\Services\WikipediaService\WikipediaQuery;
+use Kiwilan\Steward\Utils\Console;
 use ReflectionClass;
 
 /**
@@ -123,17 +124,19 @@ class WikipediaService
             $this->queries->add($query);
         }
 
-        ConsoleService::print('List of query URL available, requests from query URL to get page id.');
-        ConsoleService::newLine();
+        $console = Console::make();
+
+        $console->print('List of query URL available, requests from query URL to get page id.');
+        $console->newLine();
 
         $this->search('query_url', fn (WikipediaQuery $query, $response) => $query->parseQueryResults($response));
 
-        ConsoleService::print('List of page id URL available, requests from page id URL to get extra content.');
-        ConsoleService::newLine();
+        $console->print('List of page id URL available, requests from page id URL to get extra content.');
+        $console->newLine();
 
         $this->search('page_id_url', fn (WikipediaQuery $query, $response) => $query->parsePageIdData($response));
 
-        ConsoleService::print('Convert into WikipediaItem...');
+        $console->print('Convert into WikipediaItem...');
 
         $this->convert();
 
