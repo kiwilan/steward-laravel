@@ -2,12 +2,12 @@
 
 namespace Kiwilan\Steward\Services\Auth;
 
-use Kiwilan\Steward\Http\Requests\LoginRequest;
-use Kiwilan\Steward\Http\Requests\LoginTokenRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Kiwilan\Steward\Http\Requests\LoginRequest;
+use Kiwilan\Steward\Http\Requests\LoginTokenRequest;
 
 class AuthService
 {

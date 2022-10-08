@@ -2,13 +2,13 @@
 
 namespace Kiwilan\Steward\Services\Auth;
 
-use Kiwilan\Steward\Http\Requests\PasswordForgotRequest;
-use Kiwilan\Steward\Http\Requests\PasswordResetRequest;
-use Kiwilan\Steward\Http\Requests\PasswordUpdateRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Kiwilan\Steward\Http\Requests\PasswordForgotRequest;
+use Kiwilan\Steward\Http\Requests\PasswordResetRequest;
+use Kiwilan\Steward\Http\Requests\PasswordUpdateRequest;
 
 class PasswordService
 {
