@@ -20,7 +20,7 @@ class Toolbox
     /**
      * Check if character is alpha.
      *
-     * @param mixed $toCheck
+     * @param  mixed  $toCheck
      */
     public static function isAlpha($toCheck)
     {
