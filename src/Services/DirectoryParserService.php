@@ -7,8 +7,8 @@ use Generator;
 /**
  * Directory parser.
  *
- * @property string $directory
- * @property Generator<mixed,mixed,mixed,void> $files
+ * @property string   $directory
+ * @property string[] $files
  *
  * Example
  *
@@ -41,10 +41,9 @@ class DirectoryParserService
     /**
      * Parse directory.
      *
-     * @param  string  $directory
      * @return Generator<mixed, mixed, mixed, void>
      */
-    public function parse(string $directory)
+    private function parse(string $directory)
     {
         $files = scandir($directory);
         foreach ($files as $key => $value) {
