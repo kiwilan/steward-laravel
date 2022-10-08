@@ -4,7 +4,18 @@ namespace Kiwilan\Steward\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Enums\SpatieMediaMethodEnum;
+use UnitEnum;
 
+/**
+ * MediaService to manage media files.
+ *
+ * @property Model $model
+ * @property string $name
+ * @property string $disk
+ * @property ?string $collection
+ * @property ?string $extension
+ * @property ?SpatieMediaMethodEnum $method
+ */
 class MediaService
 {
     public function __construct(
@@ -20,11 +31,16 @@ class MediaService
     public static function create(
         Model $model,
         string $name,
-        string $disk = 'media',
+        string|UnitEnum $disk = 'media',
         ?string $collection = null,
         ?string $extension = null,
         ?SpatieMediaMethodEnum $method = null
     ): MediaService {
+        if ($disk instanceof UnitEnum) {
+            if (property_exists($disk, 'value')) {
+                $disk = $disk->value;
+            }
+        }
         if (! $collection) {
             $collection = $disk;
         }
