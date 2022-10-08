@@ -22,7 +22,7 @@ class MarkdownToHtmlService
     ) {
     }
 
-    public static function create(object $md, string $type): MarkdownToHtmlService|false
+    public static function make(object $md, string $type): MarkdownToHtmlService|false
     {
         $service = new MarkdownToHtmlService();
 
@@ -83,7 +83,7 @@ class MarkdownToHtmlService
         $image = null;
         if (File::exists($this->path_image)) {
             $image = base64_encode(File::get($this->path_image));
-            MediaService::create($model, $model->{$model_name_attr}, 'media', $featured_image_name)
+            MediaService::make($model, $model->{$model_name_attr}, 'media', $featured_image_name)
                 ->setMedia($image)
                 ->setColor();
         }
@@ -92,7 +92,7 @@ class MarkdownToHtmlService
             $path_src = database_path("seeders/media/{$this->type}/{$name}");
             if (File::exists($path_src)) {
                 $src = base64_encode(File::get($path_src));
-                MediaService::create($model, $name, 'media', $inside_images_name)
+                MediaService::make($model, $name, 'media', $inside_images_name)
                     ->setMedia($src)
                     ->setColor();
             }

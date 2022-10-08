@@ -28,18 +28,26 @@ class MediaService
     ) {
     }
 
-    public static function create(
+    /**
+     * Add a media file to the model.
+     *
+     * @param  Model  $model
+     * @param  string  $name
+     * @param  string|UnitEnum  $disk
+     * @param  null|string  $collection
+     * @param  null|string  $extension
+     * @param  null|SpatieMediaMethodEnum  $method
+     */
+    public static function make(
         Model $model,
         string $name,
-        string|UnitEnum $disk = 'media',
+        mixed $disk = 'media',
         ?string $collection = null,
         ?string $extension = null,
         ?SpatieMediaMethodEnum $method = null
-    ): MediaService {
-        if ($disk instanceof UnitEnum) {
-            if (property_exists($disk, 'value')) {
-                $disk = $disk->value;
-            }
+    ): self {
+        if ($disk instanceof UnitEnum && property_exists($disk, 'value')) {
+            $disk = $disk->value;
         }
         if (! $collection) {
             $collection = $disk;
@@ -54,7 +62,7 @@ class MediaService
         return new MediaService($model, $name, $disk, $collection, $extension, $method);
     }
 
-    public function setMedia(string|null $data): MediaService
+    public function setMedia(string|null $data): self
     {
         if ($data) {
             $this->model->{$this->method->value}($data)
@@ -67,7 +75,7 @@ class MediaService
         return $this;
     }
 
-    public function setColor(): MediaService
+    public function setColor(): self
     {
         // @phpstan-ignore-next-line
         $image = $this->model->getFirstMediaPath($this->collection);
