@@ -12,5 +12,5 @@ interface Wikipediable
     /**
      * Convert WikipediaItem data into Model data.
      */
-    public function wikipediaConvert(WikipediaItem $wikipediaItem, bool $with_media = true): self;
+    public function wikipediaConvert(WikipediaItem $wikipediaItem, bool $default = false): self;
 }
