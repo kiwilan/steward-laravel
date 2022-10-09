@@ -12,5 +12,5 @@ interface GoogleBookable
     /**
      * Convert GoogleBook data into Model data.
      */
-    public function googleBookConvert(GoogleBook $googleBook): self;
+    public function googleBookConvert(GoogleBook $google_book): self;
 }
