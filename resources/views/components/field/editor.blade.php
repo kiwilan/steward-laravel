@@ -57,6 +57,7 @@
           </div>
         </div>
         <div class="tiptap-footer_helper">
+          @if ($footer)
           <span>Powered by
             <a
               href="https://tiptap.dev"
@@ -69,6 +70,7 @@
             >Markdown
               syntax</a>.
           </span>
+          @endif
         </div>
       </div>
     </div>

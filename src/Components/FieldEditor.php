@@ -13,6 +13,7 @@ class FieldEditor extends Component
         public string $name = 'editor',
         public string $label = '',
         public array $options = [],
+        public bool $footer = false,
     ) {
     }
 
