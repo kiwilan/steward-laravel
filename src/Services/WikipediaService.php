@@ -25,7 +25,7 @@ use ReflectionClass;
  * @property ?string                         $language           Wikipedia instance language
  * @property ?Collection<int,WikipediaQuery> $queries            List of queries
  * @property ?Collection<int,WikipediaQuery> $queries_failed     List of failed queries
- * @property ?Collection<int,WikipediaItem>  $wikipediaItems     List of WikipediaItem items
+ * @property ?Collection<int,WikipediaItem>  $wikipedia_items     List of WikipediaItem items
  * @property ?bool                           $debug              default `false`
  */
 class WikipediaService
@@ -38,13 +38,13 @@ class WikipediaService
         public ?string $language_field = null,
         public ?Collection $queries = null,
         public ?Collection $queries_failed = null,
-        public ?Collection $wikipediaItems = null,
+        public ?Collection $wikipedia_items = null,
         public ?bool $debug = false,
     ) {
         $this->models = collect([]);
         $this->queries = collect([]);
         $this->queries_failed = collect([]);
-        $this->wikipediaItems = collect([]);
+        $this->wikipedia_items = collect([]);
     }
 
     /**
@@ -162,7 +162,7 @@ class WikipediaService
                 extract: $query->extract,
                 picture_url: $query->picture_url,
             );
-            $this->wikipediaItems->add($wikipediaItem);
+            $this->wikipedia_items->add($wikipediaItem);
         }
 
         return $this;

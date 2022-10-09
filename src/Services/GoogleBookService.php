@@ -18,7 +18,7 @@ use Kiwilan\Steward\Services\GoogleBookService\GoogleBookQuery;
  * @property ?Collection<int,object>          $models             List of scanned models
  * @property ?Collection<int,GoogleBookQuery> $queries            List of queries
  * @property ?Collection<int,GoogleBookQuery> $queries_failed     List of failed queries
- * @property GoogleBook[]                     $googleBooks        List of GoogleBook items
+ * @property GoogleBook[]                     $google_books        List of GoogleBook items
  * @property bool                             $debug              Debug mode
  */
 class GoogleBookService
@@ -30,7 +30,7 @@ class GoogleBookService
         public array $isbn_fields = ['isbn'],
         public ?Collection $queries = null,
         public ?Collection $queries_failed = null,
-        public array $googleBooks = [],
+        public array $google_books = [],
         public ?bool $debug = false,
     ) {
         $this->models = collect([]);
@@ -170,7 +170,7 @@ class GoogleBookService
     {
         /** @var GoogleBookQuery $query */
         foreach ($this->queries as $query) {
-            $this->googleBooks[] = new GoogleBook(
+            $this->google_books[] = new GoogleBook(
                 model_id: $query->model_id,
                 model_name: $query->model_name,
                 original_isbn: $query->original_isbn,
