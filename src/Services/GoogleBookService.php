@@ -138,7 +138,7 @@ class GoogleBookService
         /**
          * Make GET request from $url_attribute of GoogleBookQuery[].
          */
-        $http = HttpService::make($this->queries, 'url');
+        $http = HttpService::collection($this->queries, 'url');
         $responses = $http->execute();
 
         $queries = collect([]);

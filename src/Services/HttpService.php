@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Kiwilan\Steward\Utils\Console;
+use stdClass;
 
 /**
  * Manage requests to external API.
@@ -43,20 +44,47 @@ class HttpService
     }
 
     /**
-     * Create HttpService from Collection.
+     * Create HttpService for Collection.
+     *
+     * @param  string[]  $array
+     */
+    public static function make(array $array): self
+    {
+        $service = new HttpService();
+        $collection = collect([]);
+        foreach ($array as $key => $item) {
+            $object = new stdClass();
+            $object->model_id = $key;
+            $object->url = $item;
+            $collection->put($key, $item);
+        }
+        $service->collection = $collection;
+        $service->request_url_field = 'url';
+        $service->setDefaultOptions();
+
+        return $service;
+    }
+
+    /**
+     * Create HttpService for Collection.
      *
      * @param  Collection<int,object>  $collection        collection
      * @param  string  $request_url_field request_url_field
      */
-    public static function make(Collection $collection, string $request_url_field): self
+    public static function collection(Collection $collection, string $request_url_field): self
     {
         $service = new HttpService();
         $service->collection = $collection;
         $service->request_url_field = $request_url_field;
-        $service->poolable = config('steward.http.async_allow');
-        $service->pool_limit = config('steward.http.pool_limit');
+        $service->setDefaultOptions();
 
         return $service;
+    }
+
+    public function setDefaultOptions()
+    {
+        $this->poolable = config('steward.http.async_allow');
+        $this->pool_limit = config('steward.http.pool_limit');
     }
 
     public function setMaxCurlHandles(int $max_curl_handles): self

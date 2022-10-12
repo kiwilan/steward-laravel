@@ -179,7 +179,7 @@ class WikipediaService
         /**
          * Make GET request from $request_url_field of WikipediaQuery[].
          */
-        $http = HttpService::make($this->queries, $request_url_field);
+        $http = HttpService::collection($this->queries, $request_url_field);
         $responses = $http->execute();
 
         $queries = collect([]);
