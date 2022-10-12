@@ -33,38 +33,38 @@ class HttpServiceResponse
      * Create HttpServiceResponse from Response.
      *
      * @param  int|string  $id
-     * @param  ?\GuzzleHttp\Psr7\Response  $response
+     * @param  ?\GuzzleHttp\Psr7\Response  $guzzle
      */
-    public static function make(mixed $id, ?Response $response): self
+    public static function make(mixed $id, ?Response $guzzle): self
     {
-        $metadata = HttpServiceMetadata::make($response);
-        $success = ! $response ? false : 200 === $response->getStatusCode();
-        $hs_response = new HttpServiceResponse(
+        $metadata = HttpServiceMetadata::make($guzzle);
+        $success = ! $guzzle ? false : 200 === $guzzle->getStatusCode();
+        $response = new HttpServiceResponse(
             id: $id,
-            guzzle: $response,
+            guzzle: $guzzle,
             metadata: $metadata,
             success: $success,
         );
 
-        if (! $response) {
-            return $hs_response;
+        if (! $guzzle) {
+            return $response;
         }
 
-        $body = $response->getBody()->getContents();
+        $body = $guzzle->getBody()->getContents();
         $contents = (string) $body;
 
-        if ($hs_response->isValidXml($contents)) {
-            $hs_response->body_xml = simplexml_load_string($contents);
-        } elseif ($hs_response->isValidJson($contents)) {
+        if ($response->isValidXml($contents)) {
+            $response->body_xml = simplexml_load_string($contents);
+        } elseif ($response->isValidJson($contents)) {
             $contents = json_decode($contents);
-            $hs_response->body_json = is_object($contents) ? $contents : null;
+            $response->body_json = is_object($contents) ? $contents : null;
         }
 
-        if ($hs_response->body_xml || $hs_response->body_json) {
-            $hs_response->body_exist = true;
+        if ($response->body_xml || $response->body_json) {
+            $response->body_exist = true;
         }
 
-        return $hs_response;
+        return $response;
     }
 
     /**
