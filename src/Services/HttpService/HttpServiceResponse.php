@@ -121,19 +121,6 @@ class HttpServiceResponse
         return $this->keyFind($this->array(), $key);
     }
 
-    /**
-     * Get query URL from Response.
-     */
-    public function getQuery(): ?string
-    {
-        $origin = $this->guzzle->getHeader('Origin');
-        if (array_key_exists(0, $origin)) {
-            return $origin[0];
-        }
-
-        return null;
-    }
-
     private function isValidXml(string $contents): bool
     {
         $content = trim($contents);
