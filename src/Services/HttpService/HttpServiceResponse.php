@@ -11,6 +11,7 @@ use Illuminate\Http\Client\Response;
  * @property ?Response                    $response      response
  * @property HttpServiceMetadata                    $metadata      response
  * @property bool $success      success
+ * @property bool $body_exist body_exist
  * @property mixed $body      body
  */
 class HttpServiceResponse
@@ -20,6 +21,7 @@ class HttpServiceResponse
         public ?Response $guzzle,
         public HttpServiceMetadata $metadata,
         public bool $success = false,
+        public bool $body_exist = false,
         public mixed $body = null,
     ) {
     }
@@ -47,6 +49,9 @@ class HttpServiceResponse
 
         $body = $response->json();
         $hs_response->body = $body;
+        if ($hs_response->body) {
+            $hs_response->body_exist = true;
+        }
 
         return $hs_response;
     }
