@@ -8,7 +8,7 @@ use GuzzleHttp\Psr7\Response;
  * Manage responses from HttpService with external API.
  *
  * @property int     $status_code  Request status code
- * @property string  $reason       Request reason phrase
+ * @property ?string  $reason       Request reason phrase
  * @property bool    $is_json      Content-Type is JSON
  * @property bool    $is_xml       Content-Type is XML
  * @property ?string $server       Server header
