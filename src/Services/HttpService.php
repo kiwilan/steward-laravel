@@ -14,6 +14,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
 use Kiwilan\Steward\Utils\Console;
 use stdClass;
 
@@ -27,6 +28,7 @@ use stdClass;
  * @property Collection<int,object> $collection         collection
  * @property string                 $request_url_field  request_url_field
  * @property string                 $model_id           model_id, default is `model_id`
+ * @property Collection<int,HttpServiceResponse> $responses         responses
  */
 class HttpService
 {
@@ -40,6 +42,7 @@ class HttpService
         public string $model_id = 'model_id',
         public bool $poolable = true,
         public int $pool_limit = 250,
+        public ?Collection $responses = null,
     ) {
     }
 
@@ -56,7 +59,7 @@ class HttpService
             $object = new stdClass();
             $object->model_id = $key;
             $object->url = $item;
-            $collection->put($key, $item);
+            $collection->put($key, $object);
         }
         $service->collection = $collection;
         $service->request_url_field = 'url';
@@ -139,7 +142,7 @@ class HttpService
     /**
      * Transform Collection to URL array with Model `$model_id` as key and `$request_url_field` as value. Make `GET` request on each url.
      *
-     * @return Collection<int,?Response>
+     * @return Collection<int,HttpServiceResponse>
      */
     public function execute()
     {
@@ -152,7 +155,7 @@ class HttpService
             $url_list[$item->{$this->model_id}] = $item->{$this->request_url_field};
         }
 
-        /** @var Collection<int,?Response> $responses_list */
+        /** @var Collection<int,HttpServiceResponse> $responses_list */
         $responses_list = collect([]);
 
         if ($this->poolable) {
@@ -185,11 +188,27 @@ class HttpService
             }
         } else {
             foreach ($url_list as $id => $url) {
-                $responses_list[$id] = Http::timeout(120)->get($url);
+                $guzzle = Http::timeout(120)->get($url);
+                $response = HttpServiceResponse::make($id, $guzzle);
+                $responses_list[$id] = $response;
             }
         }
 
         return $responses_list;
+    }
+
+    /**
+     * Get query URL from Response.
+     */
+    public static function getQueryFromResponse(Response $response): string
+    {
+        $uri = $response->transferStats->getRequest()->getUri();
+        $scheme = $uri->getScheme();
+        $host = $uri->getHost();
+        $path = $uri->getPath();
+        $query = $uri->getQuery();
+
+        return "{$scheme}://{$host}{$path}?{$query}";
     }
 
     /**
@@ -255,7 +274,7 @@ class HttpService
     /**
      * Create and make request GET from array of $urls.
      *
-     * @return Collection<int,?Response>
+     * @return Collection<int,HttpServiceResponse>
      */
     private function usePool(array $urls)
     {
@@ -311,21 +330,23 @@ class HttpService
         ]);
 
         $pool->promise()->wait();
+        $this->toHttpServiceResponse($responses);
 
-        return $responses;
+        return $this->responses;
     }
 
     /**
-     * Get query URL from Response.
+     * Transform GuzzleHttp Response to HttpServiceResponse.
+     *
+     * @param  Collection<int,?Response>  $responses
      */
-    public static function getQueryFromResponse(Response $response): string
+    public function toHttpServiceResponse(Collection $responses): self
     {
-        $uri = $response->transferStats->getRequest()->getUri();
-        $scheme = $uri->getScheme();
-        $host = $uri->getHost();
-        $path = $uri->getPath();
-        $query = $uri->getQuery();
+        foreach ($responses as $id => $response) {
+            $response = HttpServiceResponse::make($id, $response);
+            $this->responses->put($id, $response);
+        }
 
-        return "{$scheme}://{$host}{$path}?{$query}";
+        return $this;
     }
 }
