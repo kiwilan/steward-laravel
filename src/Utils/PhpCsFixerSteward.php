@@ -48,7 +48,7 @@ class PhpCsFixerSteward
      *
      * @param  array  $rules Optional rules for PHP-CS-Fixer configurator https://mlocati.github.io/php-cs-fixer-configurator.
      */
-    public static function make(array $rules = [])
+    public static function make(array $rules = []): \PhpCsFixer\ConfigInterface
     {
         $finder = Finder::create()
             ->in([
