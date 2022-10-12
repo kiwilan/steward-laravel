@@ -7,6 +7,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
 use Kiwilan\Steward\Services\WikipediaService;
 use ReflectionClass;
 
@@ -137,13 +138,13 @@ class WikipediaQuery
     /**
      * Find page id among Wikipedia results, if found set $page_id_url.
      */
-    public function parseQueryResults(?Response $response): self
+    public function parseQueryResults(HttpServiceResponse $response): self
     {
         $pageId = false;
-        if (! $response) {
+        if (! $response->success) {
             return $this;
         }
-        $response = $response->json();
+        $response = $response->body;
         if ($this->debug) {
             $this->print($response, 'results');
         }
@@ -199,12 +200,13 @@ class WikipediaQuery
     /**
      * Parse page id response to extract data.
      */
-    public function parsePageIdData(?Response $response): self
+    public function parsePageIdData(HttpServiceResponse $response): self
     {
-        if (null === $response) {
+        if (!$response->success) {
             return $this;
         }
-        $response = $response->json();
+
+        $response = $response->body;
         if ($this->debug) {
             $this->print($response, 'page-id');
         }

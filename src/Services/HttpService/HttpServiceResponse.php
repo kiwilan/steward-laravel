@@ -10,18 +10,18 @@ use Illuminate\Http\Client\Response;
  *
  * @property string|int                    $id   id
  * @property ?Response                    $response      response
+ * @property HttpServiceMetadata                    $metadata      response
+ * @property bool $success      success
+ * @property mixed $body      body
  */
 class HttpServiceResponse
 {
     public function __construct(
         public mixed $id,
-        public ?Response $response,
-        public bool $is_json = false,
-        public bool $is_xml = false,
+        public ?Response $guzzle,
+        public HttpServiceMetadata $metadata,
         public bool $success = false,
-        public ?string $server = null,
-        public ?DateTime $date_time = null,
-        public ?string $content_type = null,
+        public mixed $body = null,
     ) {
     }
 
@@ -33,27 +33,22 @@ class HttpServiceResponse
      */
     public static function make(mixed $id, ?Response $response): self
     {
-        $http_service_response = new HttpServiceResponse($id, $response);
-        $http_service_response->setMetadata();
+        $metadata = HttpServiceMetadata::make($response);
+        $success =  !$response ? false : $response->successful();
+        $hs_response = new HttpServiceResponse(
+            id: $id,
+            guzzle: $response,
+            metadata: $metadata,
+            success: $success,
+        );
 
-        return $http_service_response;
-    }
-
-    public function setMetadata(): self
-    {
-        if (! $this->response) {
-            return $this;
+        if (!$response) {
+            return $hs_response;
         }
 
-        $this->is_json = $this->response->header('Content-Type') === 'application/json';
-        $this->is_xml = $this->response->header('Content-Type') === 'application/xml';
-        $this->success = $this->response->successful();
-        $this->server = $this->response->header('Server');
-        $date = $this->response->header('Date');
-        $date_time = DateTime::createFromFormat('Y-m-d H:m:s', $date);
-        $this->date_time = $date_time ? $date_time : null;
-        $this->content_type = $this->response->header('Content-Type');
+        $body = $response->json();
+        $hs_response->body = json_decode(json_encode($body));
 
-        return $this;
+        return $hs_response;
     }
 }
