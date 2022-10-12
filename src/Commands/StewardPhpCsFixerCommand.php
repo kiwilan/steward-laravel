@@ -12,6 +12,7 @@ class StewardPhpCsFixerCommand extends CommandSteward
     public $description = 'Install PHP-CS-Fixer';
 
     public string $path = '';
+
     public string $stub = '';
 
     public function handle(): int
@@ -43,7 +44,7 @@ class StewardPhpCsFixerCommand extends CommandSteward
 
     public function make()
     {
-        $config = File::get(__DIR__ . "/stubs/{$this->stub}");
+        $config = File::get(__DIR__."/stubs/{$this->stub}");
         File::put($this->path, $config);
         $this->info('PHP-CS-Fixer config created');
     }
