@@ -54,7 +54,7 @@ class HttpServiceMetadata
         $metadata->server = $response->getHeaderLine('Server');
         $metadata->date = $response->getHeaderLine('Date');
         $metadata->content_type = $content_type;
-        $metadata->origin = $metadata->getOrigin($response);
+        $metadata->origin = $metadata->setOrigin($response);
 
         return $metadata;
     }
@@ -62,7 +62,7 @@ class HttpServiceMetadata
     /**
      * Get query URL from Response.
      */
-    public function getOrigin(?Response $response): ?string
+    private function setOrigin(?Response $response): ?string
     {
         $origin = $response->getHeader('Origin');
         if (array_key_exists(0, $origin)) {
