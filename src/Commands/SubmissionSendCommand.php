@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Commands;
 use Illuminate\Console\Command;
 use Kiwilan\Steward\Models\Submission;
 
-class SubmissionSendCommand extends Command
+class SubmissionSendCommand extends CommandSteward
 {
     /**
      * The name and signature of the console command.
@@ -28,12 +28,11 @@ class SubmissionSendCommand extends Command
      */
     public function handle()
     {
-        $this->alert($this->signature);
-        $this->warn($this->description);
-        $this->newLine();
+        $this->title();
+        $model = config('steward.submission.model');
 
-        $submission = Submission::factory(1)->make(parent: new Submission());
-        /** @var Submission */
+        /** @var Submission $model */
+        $submission = $model::factory(1)->make(parent: new $model());
         $submission = $submission->first();
 
         if (property_exists($submission, 'name')) {
@@ -46,6 +45,6 @@ class SubmissionSendCommand extends Command
 
         $this->info('Notification sent.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

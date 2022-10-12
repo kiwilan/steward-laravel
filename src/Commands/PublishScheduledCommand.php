@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
 use Kiwilan\Steward\Enums\PublishStatusEnum;
 
-class PublishScheduledCommand extends Command
+class PublishScheduledCommand extends CommandSteward
 {
     /**
      * The name and signature of the console command.
@@ -30,9 +30,7 @@ class PublishScheduledCommand extends Command
      */
     public function handle()
     {
-        $this->alert($this->signature);
-        $this->warn($this->description);
-        $this->newLine();
+        $this->title();
 
         $models = config('steward.publishable');
 
@@ -52,6 +50,6 @@ class PublishScheduledCommand extends Command
             $this->info("Publish {$models_udpated->count()} {$model}");
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

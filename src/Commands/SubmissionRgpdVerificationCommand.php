@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Commands;
 use Illuminate\Console\Command;
 use Kiwilan\Steward\Models\Submission;
 
-class SubmissionRgpdVerificationCommand extends Command
+class SubmissionRgpdVerificationCommand extends CommandSteward
 {
     /**
      * The name and signature of the console command.
@@ -28,15 +28,13 @@ class SubmissionRgpdVerificationCommand extends Command
      */
     public function handle()
     {
-        $this->alert($this->signature);
-        $this->warn($this->description);
-        $this->newLine();
+        $this->title();
 
         $submissions = Submission::whereYear('created_at', '<', date('Y') - 4)->get();
         $submissions->each(fn (Submission $submission) => $submission->delete());
 
         $this->info("{$submissions->count()} submissions deleted");
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

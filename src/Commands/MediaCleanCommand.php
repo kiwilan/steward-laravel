@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
-class MediaCleanCommand extends Command
+class MediaCleanCommand extends CommandSteward
 {
     /**
      * The name and signature of the console command.
@@ -30,9 +30,7 @@ class MediaCleanCommand extends Command
      */
     public function handle()
     {
-        $this->alert($this->signature);
-        $this->warn($this->description);
-        $this->newLine();
+        $this->title();
 
         $models_list = config('steward.mediable');
         $media_path = public_path('storage');
@@ -93,6 +91,6 @@ class MediaCleanCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

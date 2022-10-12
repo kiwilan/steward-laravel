@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use ReflectionClass;
 
-class ScoutFreshCommand extends Command
+class ScoutFreshCommand extends CommandSteward
 {
     /**
      * The name and signature of the console command.
@@ -31,8 +31,7 @@ class ScoutFreshCommand extends Command
      */
     public function handle()
     {
-        $this->alert($this->signature);
-        $this->warn($this->description);
+        $this->title();
 
         $list = config('steward.scoutable');
         $this->info('Models to search engine: '.implode(', ', $list));
@@ -62,7 +61,7 @@ class ScoutFreshCommand extends Command
 
         $this->info('Done.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     public function getScoutName(string $model)
