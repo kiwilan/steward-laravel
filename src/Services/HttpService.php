@@ -21,14 +21,14 @@ use stdClass;
 /**
  * Manage requests to external API.
  *
- * @property int                                 $max_curl_handles   max_curl_handles
- * @property int                                 $max_redirects      max_redirects
- * @property int                                 $timeout            timeout
- * @property int                                 $guzzle_concurrency guzzle_concurrency
- * @property Collection<int,object>              $collection         collection
- * @property string                              $request_url_field  request_url_field
+ * @property int                                 $max_curl_handles   Guzzle max curl handles
+ * @property int                                 $max_redirects      Guzzle max redirects
+ * @property int                                 $timeout            Guzzle timeout
+ * @property int                                 $guzzle_concurrency Guzzle concurrency
+ * @property Collection<int,object>              $requests         List of models to request
+ * @property string                              $model_url  Field name of url into each model of `collection`
  * @property string                              $model_id           model_id, default is `model_id`
- * @property Collection<int,HttpServiceResponse> $responses          responses
+ * @property Collection<int,HttpServiceResponse> $responses          List of responses
  */
 class HttpService
 {
@@ -37,8 +37,8 @@ class HttpService
         public int $max_redirects = 10,
         public int $timeout = 30,
         public int $guzzle_concurrency = 5,
-        public ?Collection $collection = null,
-        public ?string $request_url_field = null,
+        public ?Collection $requests = null,
+        public ?string $model_url = null,
         public string $model_id = 'model_id',
         public bool $poolable = true,
         public int $pool_limit = 250,
@@ -47,41 +47,44 @@ class HttpService
     }
 
     /**
-     * Create HttpService for Collection.
+     * Create HttpService instance.
      *
-     * @param  string[]  $array
+     * @param  Collection<int,object>|mixed[]|string[]  $requests
+     * @param  string  $model_url
      */
-    public static function make(array $array): self
+    public static function make(mixed $requests, ?string $model_url = 'url'): self
     {
         $service = new HttpService();
-        $collection = collect([]);
-        foreach ($array as $key => $item) {
-            $object = new stdClass();
-            $object->model_id = $key;
-            $object->url = $item;
-            $collection->put($key, $object);
+        if ($requests instanceof Collection) {
+            $service->requests = $requests;
+            $service->model_url = $model_url;
+        } else {
+            $service->arrayToRequests($requests);
         }
-        $service->collection = $collection;
-        $service->request_url_field = 'url';
         $service->setDefaultOptions();
 
         return $service;
     }
 
     /**
-     * Create HttpService for Collection.
-     *
-     * @param  Collection<int,object>  $collection        collection
-     * @param  string  $request_url_field request_url_field
+     * @param  string[]|mixed[]  $array
      */
-    public static function collection(Collection $collection, string $request_url_field): self
+    private function arrayToRequests(array $array)
     {
-        $service = new HttpService();
-        $service->collection = $collection;
-        $service->request_url_field = $request_url_field;
-        $service->setDefaultOptions();
+        $requests = collect([]);
+        foreach ($array as $key => $item) {
+            if (is_string($item)) {
+                $object = new stdClass();
+                $object->model_id = $key;
+                $object->url = $item;
+                $requests->put($key, $object);
+            } else {
+                $requests->put($key, $item);
+            }
+        }
 
-        return $service;
+        $this->requests = $requests;
+        $this->model_url = 'url';
     }
 
     public function setDefaultOptions()
@@ -141,7 +144,7 @@ class HttpService
     }
 
     /**
-     * Transform Collection to URL array with Model `$model_id` as key and `$request_url_field` as value. Make `GET` request on each url.
+     * Transform Collection to URL array with Model `$model_id` as key and `$model_url` as value. Make `GET` request on each url.
      *
      * @return Collection<int,HttpServiceResponse>
      */
@@ -152,8 +155,8 @@ class HttpService
 
         $url_list = [];
 
-        foreach ($this->collection as $item) {
-            $url_list[$item->{$this->model_id}] = $item->{$this->request_url_field};
+        foreach ($this->requests as $item) {
+            $url_list[$item->{$this->model_id}] = $item->{$this->model_url};
         }
 
         /** @var Collection<int,HttpServiceResponse> $responses_list */

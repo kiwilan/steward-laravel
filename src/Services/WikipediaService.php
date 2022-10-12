@@ -171,15 +171,15 @@ class WikipediaService
     /**
      * Make GET request from Wikipedia API and parse it.
      *
-     * @param  string  $request_url_field is WikipediaQuery attribute which is an URL
+     * @param  string  $model_url is WikipediaQuery attribute which is an URL
      * @param  Closure  $closure          is WikipediaQuery class method to parse response
      */
-    private function search(string $request_url_field, Closure $closure): self
+    private function search(string $model_url, Closure $closure): self
     {
         /**
-         * Make GET request from $request_url_field of WikipediaQuery[].
+         * Make GET request from $model_url of WikipediaQuery[].
          */
-        $http = HttpService::collection($this->queries, $request_url_field);
+        $http = HttpService::make($this->queries, $model_url);
         $responses = $http->execute();
 
         $queries = collect([]);
