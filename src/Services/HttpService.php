@@ -52,8 +52,8 @@ class HttpService
     /**
      * Create HttpService instance.
      *
-     * @param Collection<int,object>|mixed[]|string[] $requests
-     * @param string                                  $model_url
+     * @param  Collection<int,object>|mixed[]|string[]  $requests
+     * @param  string  $model_url
      */
     public static function make(mixed $requests, ?string $model_url = 'url'): self
     {
@@ -72,10 +72,9 @@ class HttpService
     /**
      * Parse responses from HttpService.
      *
-     * @param Collection<int|string,HttpServiceResponse> $responses
-     * @param Collection<int,object>                     $queries
-     * @param Closure                                    $closure   Closure to parse response
-     *
+     * @param  Collection<int|string,HttpServiceResponse>  $responses
+     * @param  Collection<int,object>  $queries
+     * @param  Closure  $closure   Closure to parse response
      * @return Collection<int|string,Collection<int|string,mixed>> Two Collection with `fullfilled` and `rejected` responses
      */
     public static function parseResponses(Collection $responses, Collection $queries, Closure $closure)
@@ -184,8 +183,7 @@ class HttpService
     /**
      * Transform GuzzleHttp Response to HttpServiceResponse.
      *
-     * @param Collection<int,?Response> $responses
-     *
+     * @param  Collection<int,?Response>  $responses
      * @return Collection<int,HttpServiceResponse>
      */
     public function setResponses(Collection $responses)
@@ -201,7 +199,7 @@ class HttpService
     }
 
     /**
-     * @param Collection<int,string> $urls
+     * @param  Collection<int,string>  $urls
      */
     private function executeRequestsPool(Collection $urls)
     {
@@ -242,7 +240,7 @@ class HttpService
     }
 
     /**
-     * @param Collection<int,string> $urls
+     * @param  Collection<int,string>  $urls
      */
     private function executeRequests(Collection $urls)
     {
@@ -256,7 +254,7 @@ class HttpService
     }
 
     /**
-     * @param mixed[]|string[] $array
+     * @param  mixed[]|string[]  $array
      */
     private function arrayToRequests(array $array)
     {
@@ -339,8 +337,7 @@ class HttpService
     /**
      * Create and make request GET from array of $urls.
      *
-     * @param Collection<int,string> $urls
-     *
+     * @param  Collection<int,string>  $urls
      * @return Collection<int,HttpServiceResponse>
      */
     private function usePool(Collection $urls)

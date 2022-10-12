@@ -66,7 +66,7 @@ class WikipediaQuery extends HttpServiceQuery
     /**
      * Set language for Wikipedia instance.
      *
-     * @param string $language Default is `en`
+     * @param  string  $language Default is `en`
      */
     public function setLanguage(string $language = 'en'): self
     {
@@ -78,7 +78,7 @@ class WikipediaQuery extends HttpServiceQuery
     /**
      * Set unique identifier of the model.
      *
-     * @param string $subject_identifier Default is `id`
+     * @param  string  $subject_identifier Default is `id`
      */
     public function setSubjectIdentifier(string $subject_identifier = 'id'): self
     {

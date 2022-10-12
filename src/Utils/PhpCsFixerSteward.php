@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Utils;
 
-use Illuminate\Support\Facades\File;
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
