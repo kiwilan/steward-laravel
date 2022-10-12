@@ -11,7 +11,9 @@ return [
     */
 
     'publishable' => [
-        // \App\Models\Example::class,
+        'models' => [
+            // \App\Models\Example::class,
+        ],
     ],
 
     /*
@@ -24,7 +26,9 @@ return [
     */
 
     'scoutable' => [
-        // \App\Models\Example::class,
+        'models' => [
+            // \App\Models\Example::class,
+        ],
     ],
 
     /*
@@ -37,7 +41,11 @@ return [
     */
 
     'mediable' => [
-        // \App\Models\Example::class,
+        'models' => [
+            // \App\Models\Example::class,
+        ],
+        'default' => false,
+        'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'],
     ],
 
     /*
@@ -45,26 +53,12 @@ return [
     | Steward submission
     |--------------------------------------------------------------------------
     |
-    | To manager Submission model.
+    | To manage Submission model.
     |
     */
 
     'submission' => [
         'model' => \Kiwilan\Steward\Models\Submission::class,
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Steward media
-    |--------------------------------------------------------------------------
-    |
-    | Set extensions for `Mediable` trait and `media:clean` command.
-    |
-    */
-
-    'media' => [
-        'default' => false,
-        'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'],
     ],
 
     /*

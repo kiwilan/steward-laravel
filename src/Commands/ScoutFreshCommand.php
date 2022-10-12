@@ -33,7 +33,7 @@ class ScoutFreshCommand extends CommandSteward
     {
         $this->title();
 
-        $list = config('steward.scoutable');
+        $list = config('steward.scoutable.models');
         $this->info('Models to search engine: '.implode(', ', $list));
         $this->newLine();
         foreach ($list as $model) {

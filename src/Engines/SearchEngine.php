@@ -109,7 +109,7 @@ class SearchEngine
      */
     private function search(): SearchEngine
     {
-        foreach (config('steward.scoutable') as $value) {
+        foreach (config('steward.scoutable.models') as $value) {
             $this->entitySearch($value);
         }
 
