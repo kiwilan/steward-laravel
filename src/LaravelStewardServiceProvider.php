@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward;
 
-use App\Console\Commands\LogReadCommand;
 use App\Console\Commands\RoutePrintCommand;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\LaravelStewardCommand;
