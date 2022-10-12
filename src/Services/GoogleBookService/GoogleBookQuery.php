@@ -104,7 +104,7 @@ class GoogleBookQuery
      */
     public function parseResponse(HttpServiceResponse $response): self
     {
-        if (!$response->success) {
+        if (! $response->success) {
             return $this;
         }
 
@@ -162,7 +162,6 @@ class GoogleBookQuery
         } catch (\Throwable $th) {
             throw $th;
         }
-
 
         return $this;
     }

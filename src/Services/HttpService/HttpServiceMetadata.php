@@ -31,7 +31,7 @@ class HttpServiceMetadata
     {
         $metadata = new HttpServiceMetadata();
 
-        if (!$response) {
+        if (! $response) {
             $metadata->date_time = now();
 
             return $metadata;

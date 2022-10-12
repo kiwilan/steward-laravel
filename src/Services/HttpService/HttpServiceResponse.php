@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Services\HttpService;
 
-use DateTime;
 use Illuminate\Http\Client\Response;
 
 /**
@@ -34,7 +33,7 @@ class HttpServiceResponse
     public static function make(mixed $id, ?Response $response): self
     {
         $metadata = HttpServiceMetadata::make($response);
-        $success =  !$response ? false : $response->successful();
+        $success = ! $response ? false : $response->successful();
         $hs_response = new HttpServiceResponse(
             id: $id,
             guzzle: $response,
@@ -42,7 +41,7 @@ class HttpServiceResponse
             success: $success,
         );
 
-        if (!$response) {
+        if (! $response) {
             return $hs_response;
         }
 

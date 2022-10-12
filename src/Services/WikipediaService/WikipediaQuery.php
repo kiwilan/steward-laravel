@@ -202,7 +202,7 @@ class WikipediaQuery
      */
     public function parsePageIdData(HttpServiceResponse $response): self
     {
-        if (!$response->success) {
+        if (! $response->success) {
             return $this;
         }
 
