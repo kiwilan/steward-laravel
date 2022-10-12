@@ -88,6 +88,7 @@ class HttpService
     {
         $this->poolable = config('steward.http.async_allow');
         $this->pool_limit = config('steward.http.pool_limit');
+        $this->responses = collect([]);
     }
 
     public function setMaxCurlHandles(int $max_curl_handles): self
