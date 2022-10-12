@@ -46,7 +46,7 @@ class PhpCsFixerSteward
     /**
      * Create PHP-CS-Fixer config.
      *
-     * @param array $rules Optional rules for PHP-CS-Fixer configurator https://mlocati.github.io/php-cs-fixer-configurator.
+     * @param  array  $rules Optional rules for PHP-CS-Fixer configurator https://mlocati.github.io/php-cs-fixer-configurator.
      */
     public static function make(array $rules = [])
     {
