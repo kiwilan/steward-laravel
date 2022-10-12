@@ -272,7 +272,6 @@ class HttpService
      * Transform Collection input to Collection of objects with `model_id` and `url` properties.
      *
      * @param  Collection<int,string>|string[]  $array
-     *
      * @return Collection<int,object>
      */
     private function arrayToRequests(mixed $array)
