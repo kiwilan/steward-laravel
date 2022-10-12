@@ -2,25 +2,28 @@
 
 namespace Kiwilan\Steward\Services\HttpService;
 
-use DateTime;
-use Illuminate\Http\Client\Response;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * Manage responses from HttpService with external API.
  *
- * @property bool $is_json is_json
- * @property bool $is_xml is_xml
- * @property ?string $server server
- * @property DateTime $date_time date_time
+ * @property int     $status_code  status_code
+ * @property string  $reason       reason
+ * @property bool    $is_json      is_json
+ * @property bool    $is_xml       is_xml
+ * @property ?string $server       server
+ * @property ?string $date         date
  * @property ?string $content_type content_type
  */
 class HttpServiceMetadata
 {
     public function __construct(
+        public int $status_code = 404,
+        public ?string $reason = null,
         public bool $is_json = false,
         public bool $is_xml = false,
         public ?string $server = null,
-        public ?DateTime $date_time = null,
+        public ?string $date = null,
         public ?string $content_type = null,
     ) {
     }
@@ -28,25 +31,27 @@ class HttpServiceMetadata
     /**
      * Create HttpServiceMetadata from HttpServiceResponse.
      *
-     * @param  ?Response  $response
+     * @param  ?\GuzzleHttp\Psr7\Response  $response
      */
     public static function make(?Response $response): self
     {
         $metadata = new HttpServiceMetadata();
 
         if (! $response) {
-            $metadata->date_time = now();
+            $metadata->date = now();
 
             return $metadata;
         }
 
-        $metadata->is_json = $response->header('Content-Type') === 'application/json';
-        $metadata->is_xml = $response->header('Content-Type') === 'application/xml';
-        $metadata->server = $response->header('Server');
-        $date = $response->header('Date');
-        $date_time = DateTime::createFromFormat('Y-m-d H:m:s', $date);
-        $metadata->date_time = $date_time ? $date_time : null;
-        $metadata->content_type = $response->header('Content-Type');
+        $content_type = $response->getHeaderLine('Content-Type');
+
+        $metadata->status_code = $response->getStatusCode();
+        $metadata->reason = $response->getReasonPhrase();
+        $metadata->is_json = str_contains($content_type, 'json');
+        $metadata->is_xml = str_contains($content_type, 'xml');
+        $metadata->server = $response->getHeaderLine('Server');
+        $metadata->date = $response->getHeaderLine('Date');
+        $metadata->content_type = $content_type;
 
         return $metadata;
     }

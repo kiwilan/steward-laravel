@@ -2,17 +2,19 @@
 
 namespace Kiwilan\Steward\Services\HttpService;
 
-use Illuminate\Http\Client\Response;
+use GuzzleHttp\Psr7\Response;
+use SimpleXMLElement;
 
 /**
  * Manage responses from HttpService with external API.
  *
- * @property int|string          $id         id
- * @property ?Response           $response   response
- * @property HttpServiceMetadata $metadata   response
- * @property bool                $success    success
- * @property bool                $body_exist body_exist
- * @property mixed               $body       body
+ * @property int|string                 $id         id
+ * @property ?\GuzzleHttp\Psr7\Response $response   response
+ * @property HttpServiceMetadata        $metadata   response
+ * @property bool                       $success    success
+ * @property bool                       $body_exist body_exist
+ * @property ?object                    $body_json  body_json
+ * @property ?SimpleXMLElement          $body_xml   body_xml
  */
 class HttpServiceResponse
 {
@@ -22,7 +24,8 @@ class HttpServiceResponse
         public HttpServiceMetadata $metadata,
         public bool $success = false,
         public bool $body_exist = false,
-        public mixed $body = null,
+        protected ?object $body_json = null,
+        protected ?SimpleXMLElement $body_xml = null,
     ) {
     }
 
@@ -30,12 +33,12 @@ class HttpServiceResponse
      * Create HttpServiceResponse from Response.
      *
      * @param  int|string  $id
-     * @param  ?Response  $response
+     * @param  ?\GuzzleHttp\Psr7\Response  $response
      */
     public static function make(mixed $id, ?Response $response): self
     {
         $metadata = HttpServiceMetadata::make($response);
-        $success = ! $response ? false : $response->successful();
+        $success = ! $response ? false : 200 === $response->getStatusCode();
         $hs_response = new HttpServiceResponse(
             id: $id,
             guzzle: $response,
@@ -47,9 +50,17 @@ class HttpServiceResponse
             return $hs_response;
         }
 
-        $body = $response->json();
-        $hs_response->body = $body;
-        if ($hs_response->body) {
+        $body = $response->getBody()->getContents();
+        $contents = (string) $body;
+
+        if ($hs_response->isValidXml($contents)) {
+            $hs_response->body_xml = simplexml_load_string($contents);
+        } elseif ($hs_response->isValidJson($contents)) {
+            $contents = json_decode($contents);
+            $hs_response->body_json = is_object($contents) ? $contents : null;
+        }
+
+        if ($hs_response->body_xml || $hs_response->body_json) {
             $hs_response->body_exist = true;
         }
 
@@ -57,11 +68,13 @@ class HttpServiceResponse
     }
 
     /**
-     * Body as `array`.
+     * Body as `object`.
+     *
+     * @return object|SimpleXMLElement|null
      */
-    public function body(): ?array
+    public function body()
     {
-        return $this->body;
+        return $this->body_json ?? $this->body_xml;
     }
 
     /**
@@ -69,15 +82,15 @@ class HttpServiceResponse
      */
     public function json(): ?string
     {
-        return $this->response?->json();
+        return json_encode($this->body());
     }
 
     /**
-     * Body as `object`.
+     * Body as `array`.
      */
-    public function object(): ?object
+    public function array(): ?array
     {
-        return json_decode(json_encode($this->body ?? []));
+        return json_decode(json_encode($this->body() ?? []), true);
     }
 
     /**
@@ -86,7 +99,7 @@ class HttpServiceResponse
     public function bodyKeyExists(string $key): bool
     {
         try {
-            return array_key_exists($key, $this->body);
+            return array_key_exists($key, $this->array());
         } catch (\Throwable $th) {
             return false;
         }
@@ -97,7 +110,7 @@ class HttpServiceResponse
      */
     public function bodyRecursiveKeyExists(string $key): bool
     {
-        return $this->keyExists($this->body, $key);
+        return $this->keyExists($this->array(), $key);
     }
 
     /**
@@ -105,7 +118,46 @@ class HttpServiceResponse
      */
     public function bodyRecursiveKeyFind(string $key): ?string
     {
-        return $this->keyFind($this->body, $key);
+        return $this->keyFind($this->array(), $key);
+    }
+
+    /**
+     * Get query URL from Response.
+     */
+    public function getQuery(): ?string
+    {
+        $origin = $this->guzzle->getHeader('Origin');
+        if (array_key_exists(0, $origin)) {
+            return $origin[0];
+        }
+
+        return null;
+    }
+
+    private function isValidXml(string $contents): bool
+    {
+        $content = trim($contents);
+        if (empty($content)) {
+            return false;
+        }
+
+        if (false !== stripos($content, '<!DOCTYPE html>')) {
+            return false;
+        }
+
+        libxml_use_internal_errors(true);
+        simplexml_load_string($content);
+        $errors = libxml_get_errors();
+        libxml_clear_errors();
+
+        return empty($errors);
+    }
+
+    private function isValidJson($string): bool
+    {
+        json_decode($string);
+
+        return JSON_ERROR_NONE === json_last_error();
     }
 
     /**

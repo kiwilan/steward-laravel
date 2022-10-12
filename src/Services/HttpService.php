@@ -9,8 +9,8 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
@@ -21,14 +21,14 @@ use stdClass;
 /**
  * Manage requests to external API.
  *
- * @property int                    $max_curl_handles   max_curl_handles
- * @property int                    $max_redirects      max_redirects
- * @property int                    $timeout            timeout
- * @property int                    $guzzle_concurrency guzzle_concurrency
- * @property Collection<int,object> $collection         collection
- * @property string                 $request_url_field  request_url_field
- * @property string                 $model_id           model_id, default is `model_id`
- * @property Collection<int,HttpServiceResponse> $responses         responses
+ * @property int                                 $max_curl_handles   max_curl_handles
+ * @property int                                 $max_redirects      max_redirects
+ * @property int                                 $timeout            timeout
+ * @property int                                 $guzzle_concurrency guzzle_concurrency
+ * @property Collection<int,object>              $collection         collection
+ * @property string                              $request_url_field  request_url_field
+ * @property string                              $model_id           model_id, default is `model_id`
+ * @property Collection<int,HttpServiceResponse> $responses          responses
  */
 class HttpService
 {
@@ -189,7 +189,8 @@ class HttpService
             }
         } else {
             foreach ($url_list as $id => $url) {
-                $guzzle = Http::timeout(120)->get($url);
+                $client = new Client();
+                $guzzle = $client->get($url);
                 $response = HttpServiceResponse::make($id, $guzzle);
                 $responses_list[$id] = $response;
             }
@@ -199,17 +200,18 @@ class HttpService
     }
 
     /**
-     * Get query URL from Response.
+     * Transform GuzzleHttp Response to HttpServiceResponse.
+     *
+     * @param  Collection<int,?Response>  $responses
      */
-    public static function getQueryFromResponse(Response $response): string
+    public function convertResponses(Collection $responses): self
     {
-        $uri = $response->transferStats->getRequest()->getUri();
-        $scheme = $uri->getScheme();
-        $host = $uri->getHost();
-        $path = $uri->getPath();
-        $query = $uri->getQuery();
+        foreach ($responses as $id => $response) {
+            $response = HttpServiceResponse::make($id, $response);
+            $this->responses->put($id, $response);
+        }
 
-        return "{$scheme}://{$host}{$path}?{$query}";
+        return $this;
     }
 
     /**
@@ -321,11 +323,12 @@ class HttpService
 
         $pool = new Pool($client, $requests, [
             'concurrency' => $this->guzzle_concurrency,
-            'fulfilled' => function (\GuzzleHttp\Psr7\Response $response, $index) use ($responses) {
-                $responses[$index] = new \Illuminate\Http\Client\Response($response);
+            'fulfilled' => function (Response $response, $index) use ($responses, $urls) {
+                $response = $response->withHeader('Origin', $urls[$index] ?? null);
+                $responses[$index] = $response;
             },
             'rejected' => function (mixed $reason, $index) use ($responses) {
-                // $responses[$index] = new \Illuminate\Http\Client\Response($reason->getResponse());
+                // $responses[$index] = $reason->getResponse();
                 $responses[$index] = null;
             },
         ]);
@@ -334,20 +337,5 @@ class HttpService
         $this->convertResponses($responses);
 
         return $this->responses;
-    }
-
-    /**
-     * Transform GuzzleHttp Response to HttpServiceResponse.
-     *
-     * @param  Collection<int,?Response>  $responses
-     */
-    public function convertResponses(Collection $responses): self
-    {
-        foreach ($responses as $id => $response) {
-            $response = HttpServiceResponse::make($id, $response);
-            $this->responses->put($id, $response);
-        }
-
-        return $this;
     }
 }

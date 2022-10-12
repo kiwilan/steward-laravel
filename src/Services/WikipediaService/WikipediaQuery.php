@@ -144,7 +144,7 @@ class WikipediaQuery
         if (! $response->success) {
             return $this;
         }
-        $response = $response->body;
+        $response = $response->body();
         if ($this->debug) {
             $this->print($response, 'results');
         }
