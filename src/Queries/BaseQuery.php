@@ -54,7 +54,7 @@ abstract class BaseQuery
         return [
             'sort' => request()->get('sort', $this->defaultSort),
             'filter' => request()->get('filter'),
-            $this->metadata->class_snake_plural => fn () => $this->collection(),
+            $this->metadata->meta_class_snake_plural => fn () => $this->collection(),
         ];
     }
 
@@ -69,7 +69,7 @@ abstract class BaseQuery
         $this->exportGuess();
 
         // $name = trans_choice("crud.{$this->resource}.name";
-        $name = $this->metadata->class_snake_plural;
+        $name = $this->metadata->meta_class_snake_plural;
         $fileName = $name;
         $date = date('Ymd-His');
 
@@ -107,7 +107,7 @@ abstract class BaseQuery
      */
     public function resourceGuess(): self
     {
-        $name = $this->metadata->class_name;
+        $name = $this->metadata->meta_class_name;
 
         $resource_classname_collection = "App\\Http\\Resources\\{$name}\\{$name}CollectionResource";
         $resource_collection = "App\\Http\\Resources\\{$name}CollectionResource";
@@ -134,7 +134,7 @@ abstract class BaseQuery
      */
     public function exportGuess(): self
     {
-        $name = $this->metadata->class_name;
+        $name = $this->metadata->meta_class_name;
         $export_class = "App\\Exports\\{$name}Export";
 
         if (! $this->export && class_exists($export_class)) {

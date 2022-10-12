@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Services;
 
+use Closure;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\CurlFactory;
 use GuzzleHttp\Handler\CurlMultiHandler;
@@ -14,6 +15,8 @@ use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Kiwilan\Steward\Services\HttpService\HttpServiceQuery;
 use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
 use Kiwilan\Steward\Utils\Console;
 use stdClass;
@@ -25,8 +28,8 @@ use stdClass;
  * @property int                                 $max_redirects      Guzzle max redirects
  * @property int                                 $timeout            Guzzle timeout
  * @property int                                 $guzzle_concurrency Guzzle concurrency
- * @property Collection<int,object>              $requests         List of models to request
- * @property string                              $model_url  Field name of url into each model of `collection`
+ * @property Collection<int,object>              $requests           List of models to request
+ * @property string                              $model_url          Field name of url into each model of `collection`
  * @property string                              $model_id           model_id, default is `model_id`
  * @property Collection<int,HttpServiceResponse> $responses          List of responses
  */
@@ -49,8 +52,8 @@ class HttpService
     /**
      * Create HttpService instance.
      *
-     * @param  Collection<int,object>|mixed[]|string[]  $requests
-     * @param  string  $model_url
+     * @param Collection<int,object>|mixed[]|string[] $requests
+     * @param string                                  $model_url
      */
     public static function make(mixed $requests, ?string $model_url = 'url'): self
     {
@@ -67,24 +70,34 @@ class HttpService
     }
 
     /**
-     * @param  string[]|mixed[]  $array
+     * Parse responses from HttpService.
+     *
+     * @param Collection<int|string,HttpServiceResponse> $responses
+     * @param Collection<int,object>                     $queries
+     * @param Closure                                    $closure   Closure to parse response
+     *
+     * @return Collection<int|string,Collection<int|string,mixed>> Two Collection with `fullfilled` and `rejected` responses
      */
-    private function arrayToRequests(array $array)
+    public static function parseResponses(Collection $responses, Collection $queries, Closure $closure)
     {
-        $requests = collect([]);
-        foreach ($array as $key => $item) {
-            if (is_string($item)) {
-                $object = new stdClass();
-                $object->model_id = $key;
-                $object->url = $item;
-                $requests->put($key, $object);
+        $fullfilled = collect([]);
+        $rejected = collect([]);
+
+        foreach ($responses as $id => $response) {
+            $query = $queries->first(fn (HttpServiceQuery $query) => $query->model_id === $id);
+            if (null !== $query) {
+                $parsed = $closure($query, $response);
+                $fullfilled->put($id, $parsed);
             } else {
-                $requests->put($key, $item);
+                $rejected->put($id, $response);
             }
         }
 
-        $this->requests = $requests;
-        $this->model_url = 'url';
+        $responses = collect([]);
+        $responses->put('fullfilled', $fullfilled);
+        $responses->put('rejected', $rejected);
+
+        return $responses;
     }
 
     public function setDefaultOptions()
@@ -150,71 +163,117 @@ class HttpService
      */
     public function execute()
     {
-        $console = Console::make();
         Artisan::call('cache:clear');
 
-        $url_list = [];
+        $urls = collect([]);
 
+        // Prepare requests
         foreach ($this->requests as $item) {
-            $url_list[$item->{$this->model_id}] = $item->{$this->model_url};
+            $urls->put($item->{$this->model_id}, $item->{$this->model_url});
         }
-
-        /** @var Collection<int,HttpServiceResponse> $responses_list */
-        $responses_list = collect([]);
 
         if ($this->poolable) {
-            /**
-             * Chunk by limit into arrays.
-             */
-            $size = count($url_list);
-            $chunk = array_chunk($url_list, $this->pool_limit, true);
-            $chunk_size = count($chunk);
-            if ($size > 0) {
-                $console->print('HttpService will setup async requests...');
-                $console->print("Pool is limited to {$this->pool_limit} from .env, {$size} requests will become {$chunk_size} chunks.");
-                $console->newLine();
-            }
-
-            /**
-             * async query on each chunk.
-             *
-             * @var array $limited_url_list
-             */
-            foreach ($chunk as $chunk_key => $limited_url_list) {
-                $size_list = count($limited_url_list);
-                $current_chunk = $chunk_key + 1;
-                $console->print("Execute {$size_list} requests from chunk {$current_chunk}...");
-                $responses = HttpService::usePool($limited_url_list);
-                // $responses = HttpService::useAsyncSettle($limited_url_list);
-                foreach ($responses as $key => $response) {
-                    $responses_list[$key] = $response;
-                }
-            }
+            $this->executeRequestsPool($urls);
         } else {
-            foreach ($url_list as $id => $url) {
-                $client = new Client();
-                $guzzle = $client->get($url);
-                $response = HttpServiceResponse::make($id, $guzzle);
-                $responses_list[$id] = $response;
-            }
+            $this->executeRequests($urls);
         }
 
-        return $responses_list;
+        return $this->responses;
     }
 
     /**
      * Transform GuzzleHttp Response to HttpServiceResponse.
      *
-     * @param  Collection<int,?Response>  $responses
+     * @param Collection<int,?Response> $responses
+     *
+     * @return Collection<int,HttpServiceResponse>
      */
-    public function convertResponses(Collection $responses): self
+    public function setResponses(Collection $responses)
     {
+        /** @var Collection<int,HttpServiceResponse> */
+        $list = collect([]);
         foreach ($responses as $id => $response) {
             $response = HttpServiceResponse::make($id, $response);
-            $this->responses->put($id, $response);
+            $list->put($id, $response);
         }
 
-        return $this;
+        return $list;
+    }
+
+    /**
+     * @param Collection<int,string> $urls
+     */
+    private function executeRequestsPool(Collection $urls)
+    {
+        $console = Console::make();
+
+        /**
+         * Chunk by limit into arrays.
+         */
+        $urls_count = count($urls);
+
+        /**
+         * @var Collection<int,Collection<int,string>> $chunks
+         */
+        $chunks = collect([]);
+        $chunkable = $urls->chunk($this->pool_limit);
+        foreach ($chunkable as $key => $value) {
+            $chunks->put($key, collect($value));
+        }
+
+        $chunks_size = count($chunks);
+
+        if ($urls_count > 0) {
+            $console->print('HttpService will setup async requests...');
+            $console->print("Pool is limited to {$this->pool_limit} from .env, {$urls_count} requests will become {$chunks_size} chunks.");
+            $console->newLine();
+        }
+
+        /**
+         * async query on each chunk.
+         */
+        foreach ($chunks as $chunk_key => $chunk_urls) {
+            $chunk_urls_count = count($chunk_urls);
+            $current_chunk = $chunk_key + 1;
+            $console->print("Execute {$chunk_urls_count} requests from chunk {$current_chunk}...");
+
+            $this->usePool($chunk_urls);
+        }
+    }
+
+    /**
+     * @param Collection<int,string> $urls
+     */
+    private function executeRequests(Collection $urls)
+    {
+        foreach ($urls as $id => $url) {
+            $client = new Client();
+            $guzzle = $client->get($url);
+
+            $response = HttpServiceResponse::make($id, $guzzle);
+            $this->responses->put($id, $response);
+        }
+    }
+
+    /**
+     * @param mixed[]|string[] $array
+     */
+    private function arrayToRequests(array $array)
+    {
+        $requests = collect([]);
+        foreach ($array as $key => $item) {
+            if (is_string($item)) {
+                $object = new stdClass();
+                $object->model_id = $key;
+                $object->url = $item;
+                $requests->put($key, $object);
+            } else {
+                $requests->put($key, $item);
+            }
+        }
+
+        $this->requests = $requests;
+        $this->model_url = 'url';
     }
 
     /**
@@ -280,10 +339,13 @@ class HttpService
     /**
      * Create and make request GET from array of $urls.
      *
+     * @param Collection<int,string> $urls
+     *
      * @return Collection<int,HttpServiceResponse>
      */
-    private function usePool(array $urls)
+    private function usePool(Collection $urls)
     {
+        // Need to have curl extension.
         if (extension_loaded('curl')) {
             $handler = HandlerStack::create(
                 new CurlMultiHandler([
@@ -314,30 +376,35 @@ class HttpService
             ],
         ]);
 
+        // Prepare requests with `id` and `url`.
         $requests = [];
-        foreach ($urls as $key => $url) {
+        foreach ($urls as $id => $url) {
             if ($url) {
-                $requests[$key] = new Request('GET', $url);
+                $requests[$id] = new Request('GET', $url);
             }
         }
 
         /** @var Collection<int,?Response> */
         $responses = collect([]);
 
+        // Create GuzzleHttp pool.
         $pool = new Pool($client, $requests, [
             'concurrency' => $this->guzzle_concurrency,
             'fulfilled' => function (Response $response, $index) use ($responses, $urls) {
-                $response = $response->withHeader('Origin', $urls[$index] ?? null);
+                $response = $response->withHeader('Origin', $urls[$index] ?? null); // Add Origin header for URL
                 $responses[$index] = $response;
             },
-            'rejected' => function (mixed $reason, $index) use ($responses) {
-                // $responses[$index] = $reason->getResponse();
+            'rejected' => function (mixed $reason, $index) use ($responses, $urls) {
+                $url = $urls[$index];
+                Log::warning('HttpService: one request rejected', [$reason, $index, $url]);
                 $responses[$index] = null;
             },
         ]);
 
+        // Execute pool.
         $pool->promise()->wait();
-        $this->convertResponses($responses);
+        // Transform GuzzleHttp Response to HttpServiceResponse.
+        $this->responses = $this->setResponses($responses);
 
         return $this->responses;
     }

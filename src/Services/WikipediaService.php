@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Class\WikipediaItem;
+use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
 use Kiwilan\Steward\Services\WikipediaService\WikipediaQuery;
 use Kiwilan\Steward\Utils\Console;
 use ReflectionClass;
@@ -25,7 +26,7 @@ use ReflectionClass;
  * @property ?string                         $language           Wikipedia instance language
  * @property ?Collection<int,WikipediaQuery> $queries            List of queries
  * @property ?Collection<int,WikipediaQuery> $queries_failed     List of failed queries
- * @property ?Collection<int,WikipediaItem>  $wikipedia_items     List of WikipediaItem items
+ * @property ?Collection<int,WikipediaItem>  $wikipedia_items    List of WikipediaItem items
  * @property ?bool                           $debug              default `false`
  */
 class WikipediaService
@@ -75,7 +76,7 @@ class WikipediaService
     /**
      * Set attributes to search on Wikipedia, can be unique or multiple for concat search.
      *
-     * @param  string|string[]  $attributes
+     * @param string|string[] $attributes
      */
     public function setQueryAttributes(mixed $attributes = ['name']): self
     {
@@ -104,7 +105,7 @@ class WikipediaService
     /**
      * Set unique identifier of the model.
      *
-     * @param  string  $subject_identifier Default is `id`
+     * @param string $subject_identifier Default is `id`
      */
     public function setSubjectIdentifier(string $subject_identifier = 'id'): self
     {
@@ -120,7 +121,7 @@ class WikipediaService
     {
         $this->fetchModels();
         foreach ($this->models as $model) {
-            $query = $this->wikipediaQuery($model);
+            $query = $this->setWikipediaQuery($model);
             $this->queries->add($query);
         }
 
@@ -138,19 +139,23 @@ class WikipediaService
 
         $console->print('Convert into WikipediaItem...');
 
-        $this->convert();
+        $this->wikipedia_items = $this->setWikipediaItems();
 
         return $this;
     }
 
     /**
      * Create `WikipediaItem[]` from `WikipediaQuery[]`.
+     *
+     * @return Collection<int,WikipediaItem>
      */
-    private function convert(): self
+    private function setWikipediaItems()
     {
-        /** @var WikipediaQuery $query */
+        /** @var Collection<int,WikipediaItem> */
+        $wikipedia_items = collect([]);
+
         foreach ($this->queries as $query) {
-            $wikipediaItem = new WikipediaItem(
+            $wikipedia_items->put($query->model_id, new WikipediaItem(
                 model_id: $query->model_id,
                 model_name: $query->model_name,
                 language: $query->language,
@@ -161,54 +166,40 @@ class WikipediaService
                 page_url: $query->page_url,
                 extract: $query->extract,
                 picture_url: $query->picture_url,
-            );
-            $this->wikipedia_items->add($wikipediaItem);
+            ));
         }
 
-        return $this;
+        return $wikipedia_items;
     }
 
     /**
      * Make GET request from Wikipedia API and parse it.
      *
-     * @param  string  $model_url is WikipediaQuery attribute which is an URL
-     * @param  Closure  $closure          is WikipediaQuery class method to parse response
+     * @param string  $model_url is WikipediaQuery attribute which is an URL
+     * @param Closure $closure   is WikipediaQuery class method to parse response
      */
     private function search(string $model_url, Closure $closure): self
     {
-        /**
-         * Make GET request from $model_url of WikipediaQuery[].
-         */
         $http = HttpService::make($this->queries, $model_url);
         $responses = $http->execute();
 
-        $queries = collect([]);
-        $failed = collect([]);
-        // Parse Reponse[] with $method
-        foreach ($responses as $id => $response) {
-            /** @var null|WikipediaQuery $query */
-            $query = $this->queries->first(fn (WikipediaQuery $query) => $query->model_id === $id);
-            if (null !== $query) {
-                $query = $closure($query, $response);
-                $queries->add($query);
-            } else {
-                $failed->add($id);
-            }
-        }
+        $parsing = HttpService::parseResponses(
+            $responses,
+            $this->queries,
+            fn (WikipediaQuery $query, HttpServiceResponse $response) => $closure($query, $response),
+        );
 
-        $this->queries = $queries;
-        $this->queries_failed = $failed;
+        $this->queries->replace($parsing->get('fullfilled'));
+        $this->queries_failed->replace($parsing->get('rejected'));
 
         return $this;
     }
 
     /**
-     * Get WikipediaQuery for each `$models`.
+     * Set WikipediaQuery for current `$model`.
      */
-    private function wikipediaQuery(Model $model): WikipediaQuery|false
+    private function setWikipediaQuery(Model $model): WikipediaQuery|false
     {
-        $exist = true;
-
         // Test each attribute
         foreach ($this->query_attributes as $attribute) {
             if (! $this->attributeExistInModel($attribute, $model)) {
@@ -235,7 +226,8 @@ class WikipediaService
         return WikipediaQuery::make($query_string, $model, $this->debug)
             ->setSubjectIdentifier($this->subject_identifier)
             ->setLanguage($lang)
-            ->execute();
+            ->execute()
+        ;
     }
 
     /**

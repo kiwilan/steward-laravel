@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Storage;
 use Kiwilan\Steward\Services\GoogleBookService;
+use Kiwilan\Steward\Services\HttpService\HttpServiceQuery;
 use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
 
 /**
@@ -14,8 +15,6 @@ use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
  *
  * @property ?string   $original_isbn
  * @property ?string   $url
- * @property ?string   $model_name
- * @property ?int      $model_id
  * @property ?DateTime $published_date
  * @property ?string   $description
  * @property array     $industry_identifiers
@@ -33,11 +32,9 @@ use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
  * @property string[]  $isbn_available
  * @property ?bool     $debug
  */
-class GoogleBookQuery
+class GoogleBookQuery extends HttpServiceQuery
 {
     public function __construct(
-        public ?int $model_id = null,
-        public ?string $model_name = null,
         public ?bool $debug = false,
         public array $isbn_available = [],
         public ?string $original_isbn = null,
@@ -62,9 +59,10 @@ class GoogleBookQuery
     /**
      * Create new GoogleBookQuery from Model and GoogleBookService.
      */
-    public static function make(object $model, GoogleBookService $service): self
+    public static function make(Model $model, GoogleBookService $service): self
     {
         $query = new GoogleBookQuery();
+        $query->model = $model;
         $query->model_id = $model->{$service->subject_identifier} ?? null;
         $query->model_name = $service->subject ?? null;
         $query->debug = $service->debug;

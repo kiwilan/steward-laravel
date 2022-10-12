@@ -31,7 +31,7 @@ class HttpQuery extends BaseQuery
         $query->limit = config('steward.query.limit');
         $query->resourceGuess();
 
-        $query->query = QueryBuilder::for($query->metadata->class);
+        $query->query = QueryBuilder::for($query->metadata->meta_class);
         $query->setDefault();
 
         return $query;
@@ -208,7 +208,7 @@ class HttpQuery extends BaseQuery
      */
     private function getInstance(): object
     {
-        return new $this->metadata->class_namespaced();
+        return new $this->metadata->meta_class_namespaced();
     }
 
     /**
@@ -216,7 +216,7 @@ class HttpQuery extends BaseQuery
      */
     private function isQueryable(): bool
     {
-        $instance = new $this->metadata->class_namespaced();
+        $instance = new $this->metadata->meta_class_namespaced();
         $class = new ReflectionClass($instance);
 
         return in_array(

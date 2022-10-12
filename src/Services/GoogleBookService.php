@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Class\GoogleBook;
 use Kiwilan\Steward\Services\GoogleBookService\GoogleBookQuery;
+use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
 
 /**
  * Use GoogleBook API to improve `$subject` data.
@@ -18,7 +19,7 @@ use Kiwilan\Steward\Services\GoogleBookService\GoogleBookQuery;
  * @property ?Collection<int,object>          $models             List of scanned models
  * @property ?Collection<int,GoogleBookQuery> $queries            List of queries
  * @property ?Collection<int,GoogleBookQuery> $queries_failed     List of failed queries
- * @property GoogleBook[]                     $google_books        List of GoogleBook items
+ * @property ?Collection<int,GoogleBook>      $google_books       List of GoogleBook items
  * @property bool                             $debug              Debug mode
  */
 class GoogleBookService
@@ -30,12 +31,13 @@ class GoogleBookService
         public array $isbn_fields = ['isbn'],
         public ?Collection $queries = null,
         public ?Collection $queries_failed = null,
-        public array $google_books = [],
+        public ?Collection $google_books = null,
         public ?bool $debug = false,
     ) {
         $this->models = collect([]);
         $this->queries = collect([]);
         $this->queries_failed = collect([]);
+        $this->google_books = collect([]);
     }
 
     /**
@@ -45,8 +47,8 @@ class GoogleBookService
      * Get all useful data to improve Book, Identifier, Publisher and Tag
      * If data exist, create GoogleBook associate with Book with useful data to purchase eBook
      *
-     * @param  string  $subject Model class name, `Book::class`
-     * @param  bool  $debug   Debug mode, default `false`
+     * @param string $subject Model class name, `Book::class`
+     * @param bool   $debug   Debug mode, default `false`
      */
     public static function make(string $subject, ?bool $debug = false): self
     {
@@ -60,8 +62,8 @@ class GoogleBookService
     /**
      * Scan all models to keep only available.
      *
-     * @param  string  $subject     Model class name, `Book::class`
-     * @param  string[]  $isbn_fields
+     * @param string   $subject     Model class name, `Book::class`
+     * @param string[] $isbn_fields
      */
     public static function availableModels(string $subject, array $isbn_fields = ['isbn']): Collection
     {
@@ -81,7 +83,7 @@ class GoogleBookService
     /**
      * Set models to scan.
      *
-     * @param  Collection<int,object>  $models List of scanned models
+     * @param Collection<int,object> $models List of scanned models
      */
     public function setModels(Collection $models): self
     {
@@ -93,7 +95,7 @@ class GoogleBookService
     /**
      * Set isbn fields to scan.
      *
-     * @param  string[]  $isbn_fields List of isbn fields into `$subject`, set more relevant first, default `['isbn']`
+     * @param string[] $isbn_fields List of isbn fields into `$subject`, set more relevant first, default `['isbn']`
      */
     public function setIsbnFields(array $isbn_fields = ['isbn']): self
     {
@@ -105,7 +107,7 @@ class GoogleBookService
     /**
      * Set unique identifier of the model.
      *
-     * @param  string  $subject_identifier Default is `id`
+     * @param string $subject_identifier Default is `id`
      */
     public function setSubjectIdentifier(string $subject_identifier = 'id'): self
     {
@@ -133,44 +135,37 @@ class GoogleBookService
      */
     private function search(): self
     {
-        $this->queries();
+        $this->queries = $this->setQueries();
 
-        /**
-         * Make GET request from $url_attribute of GoogleBookQuery[].
-         */
         $http = HttpService::make($this->queries, 'url');
         $responses = $http->execute();
 
-        $queries = collect([]);
-        $failed = collect([]);
-        // Parse Reponse[] with $method
-        foreach ($responses as $id => $response) {
-            /** @var null|GoogleBookQuery $query */
-            $query = $this->queries->first(fn (GoogleBookQuery $query) => $query->model_id === $id);
-            if (null !== $query) {
-                $query = $query->parseResponse($response);
-                $queries->add($query);
-            } else {
-                $failed->add($id);
-            }
-        }
+        $parsing = HttpService::parseResponses(
+            $responses,
+            $this->queries,
+            fn (GoogleBookQuery $query, HttpServiceResponse $response) => $query->parseResponse($response)
+        );
 
-        $this->queries->replace($queries);
-        $this->queries_failed->replace($failed);
+        $this->queries->replace($parsing->get('fullfilled'));
+        $this->queries_failed->replace($parsing->get('rejected'));
 
-        $this->convert();
+        $this->google_books = $this->setGoogleBooks();
 
         return $this;
     }
 
     /**
      * Create `GoogleBook[]` from `GoogleBookQuery[]`.
+     *
+     * @return Collection<int,GoogleBook>
      */
-    private function convert(): self
+    private function setGoogleBooks()
     {
-        /** @var GoogleBookQuery $query */
+        /** @var Collection<int,GoogleBook> */
+        $google_books = collect([]);
+
         foreach ($this->queries as $query) {
-            $this->google_books[] = new GoogleBook(
+            $google_books->put($query->model_id, new GoogleBook(
                 model_id: $query->model_id,
                 model_name: $query->model_name,
                 original_isbn: $query->original_isbn,
@@ -189,20 +184,26 @@ class GoogleBookService
                 buy_link: $query->buy_link,
                 isbn10: $query->isbn10,
                 isbn13: $query->isbn13,
-            );
+            ));
         }
 
-        return $this;
+        return $google_books;
     }
 
-    private function queries(): self
+    /**
+     * Create `GoogleBookQuery[]` from `models`.
+     *
+     * @return Collection<int,GoogleBookQuery>
+     */
+    private function setQueries()
     {
+        /** @var Collection<int,GoogleBookQuery> */
+        $queries = collect([]);
         foreach ($this->models as $model) {
             $query = GoogleBookQuery::make($model, $this);
-
-            $this->queries->add($query);
+            $queries->add($query);
         }
 
-        return $this;
+        return $queries;
     }
 }

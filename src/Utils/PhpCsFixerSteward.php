@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Utils;
 
+use Illuminate\Support\Facades\File;
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
@@ -50,14 +51,20 @@ class PhpCsFixerSteward
      */
     public static function make(array $rules = []): \PhpCsFixer\ConfigInterface
     {
+        $paths = [];
+        $app_path = __DIR__.'/../../../../../app';
+        $parent_dir = dirname(__DIR__, 5);
+        dump($parent_dir);
+        $paths[] = $parent_dir.'/app';
+        // $dir = dirname(__DIR__, 2);
+        // __DIR__.'/app',
+        // __DIR__.'/config',
+        // __DIR__.'/database',
+        // __DIR__.'/resources',
+        // __DIR__.'/tests',
+
         $finder = Finder::create()
-            ->in([
-                __DIR__.'/app',
-                __DIR__.'/config',
-                __DIR__.'/database',
-                __DIR__.'/resources',
-                __DIR__.'/tests',
-            ])
+            ->in($paths)
             ->name('*.php')
             ->notName('*.blade.php')
             ->ignoreDotFiles(true)

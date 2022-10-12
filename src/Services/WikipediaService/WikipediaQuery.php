@@ -7,6 +7,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Kiwilan\Steward\Services\HttpService\HttpServiceQuery;
 use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
 use Kiwilan\Steward\Services\WikipediaService;
 use ReflectionClass;
@@ -28,13 +29,10 @@ use ReflectionClass;
  * @property ?string $extract
  * @property ?string $picture_url
  */
-class WikipediaQuery
+class WikipediaQuery extends HttpServiceQuery
 {
     public function __construct(
         public ?string $search_query = null,
-        public ?Model $model = null,
-        public ?string $model_name = null,
-        public ?int $model_id = 0,
         public ?bool $debug = false,
         public ?string $subject_identifier = 'id',
         public ?string $language = 'en',
@@ -68,7 +66,7 @@ class WikipediaQuery
     /**
      * Set language for Wikipedia instance.
      *
-     * @param  string  $language Default is `en`
+     * @param string $language Default is `en`
      */
     public function setLanguage(string $language = 'en'): self
     {
@@ -80,7 +78,7 @@ class WikipediaQuery
     /**
      * Set unique identifier of the model.
      *
-     * @param  string  $subject_identifier Default is `id`
+     * @param string $subject_identifier Default is `id`
      */
     public function setSubjectIdentifier(string $subject_identifier = 'id'): self
     {
