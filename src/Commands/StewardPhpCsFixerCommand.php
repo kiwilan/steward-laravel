@@ -44,7 +44,7 @@ class StewardPhpCsFixerCommand extends CommandSteward
 
     public function make()
     {
-        $config = File::get(__DIR__."/stubs/{$this->stub}");
+        $config = File::get(__DIR__."/{$this->stub}");
         File::put($this->path, $config);
         $this->info('PHP-CS-Fixer config created');
     }
