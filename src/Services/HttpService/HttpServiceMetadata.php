@@ -8,8 +8,11 @@ use Illuminate\Http\Client\Response;
 /**
  * Manage responses from HttpService with external API.
  *
- * @property string|int                    $id   id
- * @property ?Response                    $response      response
+ * @property bool $is_json is_json
+ * @property bool $is_xml is_xml
+ * @property ?string $server server
+ * @property DateTime $date_time date_time
+ * @property ?string $content_type content_type
  */
 class HttpServiceMetadata
 {
