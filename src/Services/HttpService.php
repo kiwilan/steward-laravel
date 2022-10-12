@@ -47,22 +47,29 @@ class HttpService
         public int $pool_limit = 250,
         public ?Collection $responses = null,
     ) {
+        $this->requests = collect([]);
+        $this->responses = collect([]);
     }
 
     /**
      * Create HttpService instance.
      *
-     * @param  Collection<int,object>|mixed[]|string[]  $requests
+     * @param  Collection<int,object>|Collection<int,string>|string[]  $requests
      * @param  string  $model_url
      */
     public static function make(mixed $requests, ?string $model_url = 'url'): self
     {
         $service = new HttpService();
-        if ($requests instanceof Collection) {
+        if ($requests->isEmpty()) {
+            return $service;
+        }
+
+        if ($requests instanceof Collection && is_object($requests->first())) {
             $service->requests = $requests;
             $service->model_url = $model_url;
         } else {
-            $service->arrayToRequests($requests);
+            $service->requests = $service->arrayToRequests($requests);
+            $service->model_url = 'url';
         }
         $service->setDefaultOptions();
 
@@ -75,7 +82,7 @@ class HttpService
      * @param  Collection<int|string,HttpServiceResponse>  $responses
      * @param  Collection<int,object>  $queries
      * @param  Closure  $closure   Closure to parse response
-     * @return Collection<int|string,Collection<int|string,mixed>> Two Collection with `fullfilled` and `rejected` responses
+     * @return Collection<int|string,Collection<int|string,mixed>> Two Collections with `fullfilled` and `rejected` keys
      */
     public static function parseResponses(Collection $responses, Collection $queries, Closure $closure)
     {
@@ -99,14 +106,22 @@ class HttpService
         return $responses;
     }
 
+    /**
+     * Set default options.
+     *
+     * - `poolable` from `steward.http.async_allow`
+     * - `pool_limit` from `steward.http.pool_limit`
+     */
     public function setDefaultOptions()
     {
         $this->poolable = config('steward.http.async_allow');
         $this->pool_limit = config('steward.http.pool_limit');
-        $this->responses = collect([]);
     }
 
-    public function setMaxCurlHandles(int $max_curl_handles): self
+    /**
+     * Set max curl handles.
+     */
+    public function setMaxCurlHandles(int $max_curl_handles = 100): self
     {
         $this->max_curl_handles = $max_curl_handles;
 
@@ -156,7 +171,8 @@ class HttpService
     }
 
     /**
-     * Transform Collection to URL array with Model `$model_id` as key and `$model_url` as value. Make `GET` request on each url.
+     * Transform Collection to URL array with Model `$model_id` as key and `$model_url` as value.
+     * Make `GET` request on each url.
      *
      * @return Collection<int,HttpServiceResponse>
      */
@@ -199,6 +215,8 @@ class HttpService
     }
 
     /**
+     * Execute requests with Guzzle Pool.
+     *
      * @param  Collection<int,string>  $urls
      */
     private function executeRequestsPool(Collection $urls)
@@ -209,15 +227,10 @@ class HttpService
          * Chunk by limit into arrays.
          */
         $urls_count = count($urls);
-
         /**
          * @var Collection<int,Collection<int,string>> $chunks
          */
-        $chunks = collect([]);
-        $chunkable = $urls->chunk($this->pool_limit);
-        foreach ($chunkable as $key => $value) {
-            $chunks->put($key, collect($value));
-        }
+        $chunks = $urls->chunk($this->pool_limit);
 
         $chunks_size = count($chunks);
 
@@ -240,6 +253,8 @@ class HttpService
     }
 
     /**
+     * Execute requests.
+     *
      * @param  Collection<int,string>  $urls
      */
     private function executeRequests(Collection $urls)
@@ -254,24 +269,24 @@ class HttpService
     }
 
     /**
-     * @param  mixed[]|string[]  $array
+     * Transform Collection input to Collection of objects with `model_id` and `url` properties.
+     *
+     * @param  Collection<int,string>|string[]  $array
+     *
+     * @return Collection<int,object>
      */
-    private function arrayToRequests(array $array)
+    private function arrayToRequests(mixed $array)
     {
+        /** @var Collection<int,object> */
         $requests = collect([]);
         foreach ($array as $key => $item) {
-            if (is_string($item)) {
-                $object = new stdClass();
-                $object->model_id = $key;
-                $object->url = $item;
-                $requests->put($key, $object);
-            } else {
-                $requests->put($key, $item);
-            }
+            $object = new stdClass();
+            $object->model_id = $key;
+            $object->url = $item;
+            $requests->put($key, $object);
         }
 
-        $this->requests = $requests;
-        $this->model_url = 'url';
+        return $requests;
     }
 
     /**
@@ -335,7 +350,7 @@ class HttpService
     }
 
     /**
-     * Create and make request GET from array of $urls.
+     * Create and make `GET` requests from `$urls`.
      *
      * @param  Collection<int,string>  $urls
      * @return Collection<int,HttpServiceResponse>
