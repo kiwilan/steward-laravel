@@ -172,9 +172,9 @@ class WikipediaService
      * Make GET request from Wikipedia API and parse it.
      *
      * @param  string  $request_url_field is WikipediaQuery attribute which is an URL
-     * @param  Closure  $callback          is WikipediaQuery class method to parse response
+     * @param  Closure  $closure          is WikipediaQuery class method to parse response
      */
-    private function search(string $request_url_field, Closure $callback): self
+    private function search(string $request_url_field, Closure $closure): self
     {
         /**
          * Make GET request from $request_url_field of WikipediaQuery[].
@@ -189,7 +189,7 @@ class WikipediaService
             /** @var null|WikipediaQuery $query */
             $query = $this->queries->first(fn (WikipediaQuery $query) => $query->model_id === $id);
             if (null !== $query) {
-                $query = $callback($query, $response);
+                $query = $closure($query, $response);
                 $queries->add($query);
             } else {
                 $failed->add($id);

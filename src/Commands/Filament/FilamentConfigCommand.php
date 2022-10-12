@@ -30,7 +30,7 @@ class FilamentConfigCommand extends CommandSteward
      */
     public function handle()
     {
-        $this->intro();
+        $this->title();
         $this->newLine();
 
         $configs = File::allFiles(config_path('/'));
