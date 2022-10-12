@@ -331,7 +331,7 @@ class HttpService
         ]);
 
         $pool->promise()->wait();
-        $this->toHttpServiceResponse($responses);
+        $this->convertResponses($responses);
 
         return $this->responses;
     }
@@ -341,7 +341,7 @@ class HttpService
      *
      * @param  Collection<int,?Response>  $responses
      */
-    public function toHttpServiceResponse(Collection $responses): self
+    public function convertResponses(Collection $responses): self
     {
         foreach ($responses as $id => $response) {
             $response = HttpServiceResponse::make($id, $response);

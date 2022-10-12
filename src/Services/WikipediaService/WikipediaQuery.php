@@ -206,7 +206,7 @@ class WikipediaQuery
             return $this;
         }
 
-        $response = $response->body;
+        $response = $response->body();
         if ($this->debug) {
             $this->print($response, 'page-id');
         }

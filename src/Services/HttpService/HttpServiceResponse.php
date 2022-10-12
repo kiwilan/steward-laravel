@@ -46,8 +46,18 @@ class HttpServiceResponse
         }
 
         $body = $response->json();
-        $hs_response->body = json_decode(json_encode($body));
+        $hs_response->body = $body;
 
         return $hs_response;
+    }
+
+    public function body()
+    {
+        return $this->body;
+    }
+
+    public function bodyToObject()
+    {
+        return json_decode(json_encode($this->body));
     }
 }

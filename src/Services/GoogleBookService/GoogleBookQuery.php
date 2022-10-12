@@ -108,7 +108,7 @@ class GoogleBookQuery
             return $this;
         }
 
-        $body = $response->body;
+        $body = $response->body();
         if ($this->debug) {
             $this->print($response, 'gbooks');
         }
