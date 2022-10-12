@@ -29,8 +29,8 @@ class HttpServiceResponse
     /**
      * Create HttpServiceResponse from Response.
      *
-     * @param int|string $id
-     * @param ?Response  $response
+     * @param  int|string  $id
+     * @param  ?Response  $response
      */
     public static function make(mixed $id, ?Response $response): self
     {
