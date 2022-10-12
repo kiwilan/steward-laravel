@@ -7,12 +7,12 @@ use Illuminate\Http\Client\Response;
 /**
  * Manage responses from HttpService with external API.
  *
- * @property string|int $id id
- * @property ?Response $response response
- * @property HttpServiceMetadata $metadata response
- * @property bool $success success
- * @property bool $body_exist body_exist
- * @property mixed $body body
+ * @property int|string          $id         id
+ * @property ?Response           $response   response
+ * @property HttpServiceMetadata $metadata   response
+ * @property bool                $success    success
+ * @property bool                $body_exist body_exist
+ * @property mixed               $body       body
  */
 class HttpServiceResponse
 {
@@ -29,8 +29,8 @@ class HttpServiceResponse
     /**
      * Create HttpServiceResponse from Response.
      *
-     * @param  string|int  $id
-     * @param  ?Response  $response
+     * @param int|string $id
+     * @param ?Response  $response
      */
     public static function make(mixed $id, ?Response $response): self
     {
@@ -59,7 +59,7 @@ class HttpServiceResponse
     /**
      * Body as `array`.
      */
-    public function body(): array
+    public function body(): ?array
     {
         return $this->body;
     }
@@ -67,7 +67,7 @@ class HttpServiceResponse
     /**
      * Body as `json`.
      */
-    public function json(): string
+    public function json(): ?string
     {
         return $this->response?->json();
     }
@@ -75,9 +75,9 @@ class HttpServiceResponse
     /**
      * Body as `object`.
      */
-    public function object(): object
+    public function object(): ?object
     {
-        return json_decode(json_encode($this->body));
+        return json_decode(json_encode($this->body ?? []));
     }
 
     /**
@@ -85,18 +85,43 @@ class HttpServiceResponse
      */
     public function bodyKeyExists(string $key): bool
     {
-        return $this->findKey($this->body, $key);
+        try {
+            return array_key_exists($key, $this->body);
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    /**
+     * Check if `$key` exist into `body`.
+     */
+    public function bodyRecursiveKeyExists(string $key): bool
+    {
+        return $this->keyExists($this->body, $key);
+    }
+
+    /**
+     * Find `$key` into `body`.
+     */
+    public function bodyRecursiveKeyFind(string $key): ?string
+    {
+        return $this->keyFind($this->body, $key);
     }
 
     /**
      * Check if key exists in array.
      */
-    private function findKey(array $array, string $keySearch): bool
+    private function keyExists(?array $array, string $keySearch): bool
     {
+        if (! $array) {
+            return false;
+        }
+
         foreach ($array as $key => $item) {
             if ($key == $keySearch) {
                 return true;
-            } elseif (is_array($item) && $this->findKey($item, $keySearch)) {
+            }
+            if (is_array($item) && $this->keyExists($item, $keySearch)) {
                 return true;
             }
         }
@@ -104,23 +129,26 @@ class HttpServiceResponse
         return false;
     }
 
-    // @phpstan-ignore-next-line
-    private function arrayKeyExists(string $needle, array $haystack): bool
+    /**
+     * Find key in array.
+     *
+     * @return null|array|string
+     */
+    private function keyFind(?array $array, string $keySearch)
     {
-        $result = array_key_exists($needle, $haystack);
-        if ($result) {
-            return $result;
+        if (! $array) {
+            return null;
         }
 
-        foreach ($haystack as $v) {
-            if (is_array($v)) {
-                $result = $this->arrayKeyExists($needle, $v);
+        foreach ($array as $key => $item) {
+            if ($key == $keySearch) {
+                return $array[$keySearch];
             }
-            if ($result) {
-                return $result;
+            if (is_array($item) && $array = $this->keyFind($item, $keySearch)) {
+                return $array;
             }
         }
 
-        return $result;
+        return null;
     }
 }
