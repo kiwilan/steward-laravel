@@ -17,7 +17,6 @@ class StwTemplateConfig
             ->maxItems(1)
             ->columnSpan(2)
             ->label($label)
-            ->createItemButtonLabel("Add {$label}")
-        ;
+            ->createItemButtonLabel("Add {$label}");
     }
 }
