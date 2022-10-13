@@ -3,59 +3,72 @@
 namespace Kiwilan\Steward\Traits;
 
 use Kiwilan\Steward\Enums\BuilderEnum;
-use stdClass;
 
 trait HasTemplate
 {
-    protected $default_builder_column = 'content';
+    protected $default_template_column = 'content';
 
-    public function initializeHasBuilder()
+    public function initializeHasTemplate()
     {
-        $this->fillable[] = 'builder';
+        $this->fillable[] = 'template';
 
         // $this->casts['builder'] = BuilderEnum::class;
     }
 
-    public function getBuilderColumn(): string
+    public function getTemplateColumn(): string
     {
-        return $this->builder_column ?? $this->default_builder_column;
+        return $this->template_column ?? $this->default_template_column;
     }
 
-    public function getBuilderAttribute(): ?stdClass
+    public function getTemplateAttribute(): ?array
     {
-        $builder_obj = new stdClass();
-        if (is_array($this->{$this->getBuilderColumn()})) {
-            $data_builder = [];
-            foreach ($this->{$this->getBuilderColumn()} as $builder) {
-                $this->transformData($builder, $data_builder);
-            }
-
-            return json_decode(json_encode($data_builder, true));
-        }
-
-        return $builder_obj;
-    }
-
-    private function transformData(mixed $builder, array &$data_builder)
-    {
-        if (! is_array($builder) && ! array_key_exists('data', $builder)) {
+        $raw_data = $this->{$this->getTemplateColumn()};
+        if (! is_array($raw_data)) {
             return [];
         }
-        $data = $builder['data'];
-        $type = $builder['type'];
 
-        foreach ($data as $key => $value) {
-            $is_list = false;
-            if ('list' === $key) {
-                $is_list = true;
-            }
+        $data = [];
+        $raw_data = $this->checkArrayNested($raw_data);
 
-            if (! $is_list) {
-                $data_builder[$type][$key] = $this->setMedia($value);
-            }
-
-            // $this->transformData($value, $data);
+        foreach ($raw_data as $name => $raw_template) {
+            $raw_template = $this->checkArrayNested($raw_template);
+            $template = $this->transformData($raw_template);
+            $data[$name] = $template;
         }
+
+        return $data;
+    }
+
+    private function checkArrayNested(mixed $array): mixed
+    {
+        if (is_array($array) && 1 === count($array) && array_key_exists(0, $array)) {
+            return $array[0];
+        }
+
+        return $array;
+    }
+
+    private function transformData(mixed $template)
+    {
+        if (! is_array($template)) {
+            return $template;
+        }
+
+        $data = [];
+        foreach ($template as $name => $value) {
+            $is_subarray = false;
+            if (is_array($value)) {
+                $is_subarray = true;
+            }
+
+            if ($is_subarray) {
+                $data[$name] = $this->transformData($value);
+            } else {
+                $data[$name] = $this->setMedia($value);
+            }
+        }
+
+        return $data;
     }
 
     private function setMedia(mixed $value = null)
@@ -64,14 +77,13 @@ trait HasTemplate
         if (! is_array($extensions)) {
             $extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'];
         }
-        // foreach ($data as $key => $value) {
+
         foreach ($extensions as $extension) {
-            if (str_contains($value, $extension)) {
+            if (is_string($value) && str_contains($value, $extension)) {
                 $media_url = config('app.url')."/storage/{$value}";
                 $value = $media_url;
             }
         }
-        // }
 
         return $value;
     }

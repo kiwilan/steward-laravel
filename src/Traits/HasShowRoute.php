@@ -36,7 +36,7 @@ trait HasShowRoute
     {
         return [
             $this->getShowRouteColumn() => $this->{$this->getShowRouteColumn()},
-            'show' => $this->route_show,
+            'show' => $this->show_route,
         ];
     }
 }

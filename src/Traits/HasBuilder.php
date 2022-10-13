@@ -24,38 +24,59 @@ trait HasBuilder
     public function getBuilderAttribute(): ?stdClass
     {
         $builder_obj = new stdClass();
-        if (is_array($this->{$this->getBuilderColumn()})) {
-            $data_builder = [];
-            foreach ($this->{$this->getBuilderColumn()} as $builder) {
-                $this->transformData($builder, $data_builder);
-            }
-
-            return json_decode(json_encode($data_builder, true));
+        $raw_data = $this->{$this->getBuilderColumn()};
+        if (! is_array($raw_data)) {
+            return $builder_obj;
         }
 
-        return $builder_obj;
+        $data_builder = [];
+        foreach ($raw_data as $raw_builder) {
+            $this->transformData($raw_builder, $data_builder);
+        }
+
+        return json_decode(json_encode($data_builder, true));
     }
 
-    private function transformData(mixed $builder, array &$data_builder)
+    private function transformData(mixed $builder)
     {
+        // if (! is_array($builder) && ! array_key_exists('data', $builder)) {
+        //     return [];
+        // }
+        // $data = $builder['data'];
+        // $type = $builder['type'];
+
+        // foreach ($data as $key => $value) {
+        //     $is_list = false;
+        //     if ('list' === $key) {
+        //         $is_list = true;
+        //     }
+
+        //     if (! $is_list) {
+        //         $data_builder[$type][$key] = $this->setMedia($value);
+        //     }
+
+        //     // $this->transformData($value, $data);
+        // }
+
         if (! is_array($builder) && ! array_key_exists('data', $builder)) {
             return [];
         }
-        $data = $builder['data'];
-        $type = $builder['type'];
 
-        foreach ($data as $key => $value) {
-            $is_list = false;
-            if ('list' === $key) {
-                $is_list = true;
+        $data = [];
+        foreach ($builder as $name => $value) {
+            $is_subarray = false;
+            if (is_array($value)) {
+                $is_subarray = true;
             }
 
-            if (! $is_list) {
-                $data_builder[$type][$key] = $this->setMedia($value);
+            if ($is_subarray) {
+                $data[$name] = $this->transformData($value);
+            } else {
+                $data[$name] = $this->setMedia($value);
             }
-
-            // $this->transformData($value, $data);
         }
+
+        return $data;
     }
 
     private function setMedia(mixed $value = null)
