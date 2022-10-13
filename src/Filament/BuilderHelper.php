@@ -6,15 +6,26 @@ use Filament\Forms;
 
 class BuilderHelper
 {
-    public static function container(array $content, string $field = 'content')
+    public static function container(array $content, string $field = 'content', ?int $minItems = null, ?int $maxItems = null)
     {
-        return Forms\Components\Builder::make($field)
+        $blocks = Forms\Components\Builder::make($field)
             ->blocks([
                 ...$content,
             ])
             ->collapsed()
             ->collapsible()
-            ->columnSpan(2);
+            ->columnSpan(2)
+
+        ;
+
+        if ($minItems) {
+            $blocks->minItems($minItems);
+        }
+        if ($maxItems) {
+            $blocks->maxItems($maxItems);
+        }
+
+        return $blocks;
     }
 
     public static function block(array $content, string $name = 'content')
@@ -23,7 +34,8 @@ class BuilderHelper
             ->schema([
                 ...$content,
             ])
-            ->columns(2);
+            ->columns(2)
+        ;
     }
 
     public static function display()
@@ -32,7 +44,8 @@ class BuilderHelper
             ->helperText('Show this block on the page')
             ->label('Display')
             ->default(true)
-            ->columnSpan(2);
+            ->columnSpan(2)
+        ;
     }
 
     public static function basic()
@@ -42,10 +55,10 @@ class BuilderHelper
                 Forms\Components\TextInput::make('title'),
                 Forms\Components\TextInput::make('slug'),
                 Forms\Components\Textarea::make('summary'),
-                LayoutHelper::card('SEO', [
+                LayoutHelper::card([
                     Forms\Components\TextInput::make('meta_title'),
                     Forms\Components\Textarea::make('meta_description'),
-                ]),
+                ], title: 'SEO'),
                 Forms\Components\RichEditor::make('content')
                     ->columnSpan(2),
             ]),
