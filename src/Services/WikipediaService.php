@@ -180,7 +180,10 @@ class WikipediaService
      */
     private function search(string $model_url, Closure $closure): self
     {
-        $http = HttpService::make($this->queries, $model_url);
+        $http = HttpService::make($this->queries)
+            ->setModelId('model_id')
+            ->setModelUrl($model_url)
+        ;
         $responses = $http->execute();
 
         $parsing = HttpService::parseResponses(

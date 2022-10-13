@@ -41,8 +41,8 @@ class HttpService
         public int $timeout = 30,
         public int $guzzle_concurrency = 5,
         public ?Collection $requests = null,
-        public ?string $model_url = null,
-        public string $model_id = 'model_id',
+        public ?string $model_url = 'url',
+        public string $model_id = 'id',
         public bool $poolable = true,
         public int $pool_limit = 250,
         public ?Collection $responses = null,
@@ -54,22 +54,19 @@ class HttpService
     /**
      * Create HttpService instance.
      *
-     * @param  Collection<int,object>|Collection<int,string>|string[]  $requests
-     * @param  string  $model_url
+     * @param Collection<int,HttpServiceQuery>|Collection<int,object>|string[] $requests
      */
-    public static function make(mixed $requests, ?string $model_url = 'url'): self
+    public static function make(mixed $requests): self
     {
         $service = new HttpService();
-        if ($requests->isEmpty()) {
-            return $service;
+        if (0 === count($requests)) {
+            throw new \Exception('Requests must be an array or a collection');
         }
 
         if ($requests instanceof Collection && is_object($requests->first())) {
             $service->requests = $requests;
-            $service->model_url = $model_url;
         } else {
             $service->requests = $service->arrayToRequests($requests);
-            $service->model_url = 'url';
         }
         $service->setDefaultOptions();
 
@@ -79,9 +76,10 @@ class HttpService
     /**
      * Parse responses from HttpService.
      *
-     * @param  Collection<int|string,HttpServiceResponse>  $responses
-     * @param  Collection<int,object>  $queries
-     * @param  Closure  $closure   Closure to parse response
+     * @param Collection<int|string,HttpServiceResponse> $responses
+     * @param Collection<int,object>                     $queries
+     * @param Closure                                    $closure   Closure to parse response
+     *
      * @return Collection<int|string,Collection<int|string,mixed>> Two Collections with `fullfilled` and `rejected` keys
      */
     public static function parseResponses(Collection $responses, Collection $queries, Closure $closure)
@@ -114,8 +112,8 @@ class HttpService
      */
     public function setDefaultOptions()
     {
-        $this->poolable = config('steward.http.async_allow');
-        $this->pool_limit = config('steward.http.pool_limit');
+        $this->poolable = config('steward.http.async_allow') ?? true;
+        $this->pool_limit = config('steward.http.pool_limit') ?? 250;
     }
 
     /**
@@ -149,9 +147,16 @@ class HttpService
         return $this;
     }
 
-    public function setModelId(string $model_id = 'model_id'): self
+    public function setModelId(string $model_id = 'id'): self
     {
         $this->model_id = $model_id;
+
+        return $this;
+    }
+
+    public function setModelUrl(string $model_url = 'url'): self
+    {
+        $this->model_url = $model_url;
 
         return $this;
     }
@@ -199,7 +204,8 @@ class HttpService
     /**
      * Transform GuzzleHttp Response to HttpServiceResponse.
      *
-     * @param  Collection<int,?Response>  $responses
+     * @param Collection<int,?Response> $responses
+     *
      * @return Collection<int,HttpServiceResponse>
      */
     public function setResponses(Collection $responses)
@@ -217,7 +223,7 @@ class HttpService
     /**
      * Execute requests with Guzzle Pool.
      *
-     * @param  Collection<int,string>  $urls
+     * @param Collection<int,string> $urls
      */
     private function executeRequestsPool(Collection $urls)
     {
@@ -255,7 +261,7 @@ class HttpService
     /**
      * Execute requests.
      *
-     * @param  Collection<int,string>  $urls
+     * @param Collection<int,string> $urls
      */
     private function executeRequests(Collection $urls)
     {
@@ -271,7 +277,8 @@ class HttpService
     /**
      * Transform Collection input to Collection of objects with `model_id` and `url` properties.
      *
-     * @param  Collection<int,string>|string[]  $array
+     * @param Collection<int,string>|string[] $array
+     *
      * @return Collection<int,object>
      */
     private function arrayToRequests(mixed $array)
@@ -280,7 +287,7 @@ class HttpService
         $requests = collect([]);
         foreach ($array as $key => $item) {
             $object = new stdClass();
-            $object->model_id = $key;
+            $object->id = $key;
             $object->url = $item;
             $requests->put($key, $object);
         }
@@ -351,7 +358,8 @@ class HttpService
     /**
      * Create and make `GET` requests from `$urls`.
      *
-     * @param  Collection<int,string>  $urls
+     * @param Collection<int,string> $urls
+     *
      * @return Collection<int,HttpServiceResponse>
      */
     private function usePool(Collection $urls)
