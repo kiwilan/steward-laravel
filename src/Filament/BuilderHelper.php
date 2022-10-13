@@ -14,9 +14,7 @@ class BuilderHelper
             ])
             ->collapsed()
             ->collapsible()
-            ->columnSpan(2)
-
-        ;
+            ->columnSpan(2);
 
         if ($minItems) {
             $blocks->minItems($minItems);
@@ -34,8 +32,7 @@ class BuilderHelper
             ->schema([
                 ...$content,
             ])
-            ->columns(2)
-        ;
+            ->columns(2);
     }
 
     public static function display()
@@ -44,8 +41,7 @@ class BuilderHelper
             ->helperText('Show this block on the page')
             ->label('Display')
             ->default(true)
-            ->columnSpan(2)
-        ;
+            ->columnSpan(2);
     }
 
     public static function basic()
