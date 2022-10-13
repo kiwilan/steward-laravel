@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use Kiwilan\Steward\Enums\MediaTypeEnum;
 use Kiwilan\Steward\Enums\UserRoleEnum;
 
-class FormHelper
+class FormConfig
 {
     public static function getName(
         string $field = 'name',
@@ -111,7 +111,7 @@ class FormHelper
                 ->content(fn ($record): ?string => $record?->updated_at?->diffForHumans()),
         ];
 
-        return $card ? LayoutHelper::card($timestamps, title: 'Timestamps') : Forms\Components\Group::make($timestamps);
+        return $card ? LayoutConfig::card($timestamps, title: 'Timestamps') : Forms\Components\Group::make($timestamps);
     }
 
     public static function getSeo(bool $card = false)
@@ -129,7 +129,7 @@ class FormHelper
                 ->label('Description'),
         ];
 
-        return $card ? LayoutHelper::card($seo, title: 'SEO') : Forms\Components\Group::make($seo);
+        return $card ? LayoutConfig::card($seo, title: 'SEO') : Forms\Components\Group::make($seo);
     }
 
     public static function getDateFilter(string $field = 'created_at')
