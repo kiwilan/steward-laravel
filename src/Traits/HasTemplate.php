@@ -5,6 +5,7 @@ namespace Kiwilan\Steward\Traits;
 trait HasTemplate
 {
     protected $default_template_column = 'template';
+
     protected $default_content_column = 'content';
 
     public function initializeHasTemplate()
