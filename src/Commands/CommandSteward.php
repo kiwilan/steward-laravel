@@ -13,7 +13,7 @@ class CommandSteward extends Command
         $this->newLine();
 
         $signature_name = explode("\n", $this->signature); // remove options
-        $signature_name = explode(' ', $this->signature); // remove arguments
+        $signature_name = explode(' ', $signature_name[0]); // remove arguments
         if (array_key_exists(0, $signature_name)) {
             $signature_name = $signature_name[0];
             if (str_contains($signature_name, ':')) {

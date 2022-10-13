@@ -50,7 +50,7 @@ class LayoutHelper
             ]);
     }
 
-    public static function card(string $title, array|Closure $card = [], int $columns = 2)
+    public static function card(array|Closure $card = [], int $columns = 2, string $title = '')
     {
         return Forms\Components\Card::make()
             ->schema([

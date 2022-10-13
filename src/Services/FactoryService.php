@@ -47,7 +47,7 @@ class FactoryService
     {
         $html = '';
 
-        $dir = 'pubStlic/uploads';
+        $dir = 'public/uploads';
 
         if (! File::exists($dir)) {
             File::makeDirectory($dir);
