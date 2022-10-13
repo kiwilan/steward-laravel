@@ -138,8 +138,7 @@ class GoogleBookService
         $this->queries = $this->setQueries();
 
         $http = HttpService::make($this->queries)
-            ->setModelId('model_id')
-        ;
+            ->setModelId('model_id');
         $responses = $http->execute();
 
         $parsing = HttpService::parseResponses(
