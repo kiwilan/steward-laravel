@@ -60,7 +60,10 @@ trait HasBuilder
 
     private function setMedia(mixed $value = null)
     {
-        $extensions = config('steward.media.extensions');
+        $extensions = config('steward.mediable.extensions');
+        if (!is_array($extensions)) {
+            $extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'];
+        }
         // foreach ($data as $key => $value) {
         foreach ($extensions as $extension) {
             if (str_contains($value, $extension)) {
