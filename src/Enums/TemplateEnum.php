@@ -4,9 +4,10 @@ namespace Kiwilan\Steward\Enums;
 
 use Kiwilan\Steward\Traits\LazyEnum;
 
-enum BuilderEnum: string
+enum TemplateEnum: string
 {
     use LazyEnum;
 
-    case wordpress = 'wordpress';
+    case home = 'home';
+    case about = 'about';
 }

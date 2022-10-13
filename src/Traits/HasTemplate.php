@@ -2,17 +2,20 @@
 
 namespace Kiwilan\Steward\Traits;
 
-use Kiwilan\Steward\Enums\BuilderEnum;
-
 trait HasTemplate
 {
-    protected $default_template_column = 'content';
+    protected $default_template_column = 'template';
+    protected $default_content_column = 'content';
 
     public function initializeHasTemplate()
     {
-        $this->fillable[] = 'template';
+        $this->fillable[] = $this->getTemplateColumn();
+        $this->fillable[] = $this->getContentColumn();
 
-        // $this->casts['builder'] = BuilderEnum::class;
+        if ($enum = config('steward.template.enum')) {
+            $this->casts[$this->getTemplateColumn()] = $enum;
+        }
+        $this->casts[$this->getContentColumn()] = 'array';
     }
 
     public function getTemplateColumn(): string
@@ -20,9 +23,20 @@ trait HasTemplate
         return $this->template_column ?? $this->default_template_column;
     }
 
-    public function getTemplateAttribute(): ?array
+    /**
+     * Get `content` field.
+     */
+    public function getContentColumn(): string
     {
-        $raw_data = $this->{$this->getTemplateColumn()};
+        return $this->content_column ?? $this->default_content_column;
+    }
+
+    /**
+     * Transform `template` into response.
+     */
+    public function getTemplateDataAttribute(): array
+    {
+        $raw_data = $this->{$this->getContentColumn()};
         if (! is_array($raw_data)) {
             return [];
         }
@@ -33,12 +47,15 @@ trait HasTemplate
         foreach ($raw_data as $name => $raw_template) {
             $raw_template = $this->checkArrayNested($raw_template);
             $template = $this->transformData($raw_template);
-            $data[$name] = $template;
+            $data[$name] = array_reverse($template);
         }
 
         return $data;
     }
 
+    /**
+     * If `array` has just one key, transform in `array`.
+     */
     private function checkArrayNested(mixed $array): mixed
     {
         if (is_array($array) && 1 === count($array) && array_key_exists(0, $array)) {
@@ -48,6 +65,9 @@ trait HasTemplate
         return $array;
     }
 
+    /**
+     * Transform template parts into array.
+     */
     private function transformData(mixed $template)
     {
         if (! is_array($template)) {
@@ -71,17 +91,21 @@ trait HasTemplate
         return $data;
     }
 
-    private function setMedia(mixed $value = null)
+    /**
+     * Set media if current value is `media`.
+     */
+    private function setMedia(mixed $value = null): mixed
     {
         $extensions = config('steward.mediable.extensions');
         if (! is_array($extensions)) {
             $extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'];
         }
 
-        foreach ($extensions as $extension) {
-            if (is_string($value) && str_contains($value, $extension)) {
-                $media_url = config('app.url')."/storage/{$value}";
-                $value = $media_url;
+        if (is_string($value) && str_contains($value, '.')) {
+            foreach ($extensions as $extension) {
+                if (str_contains($value, ".{$extension}")) {
+                    return config('app.url')."/storage/{$value}";
+                }
             }
         }
 

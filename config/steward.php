@@ -1,5 +1,8 @@
 <?php
 
+use Kiwilan\Steward\Enums\BuilderEnum;
+use Kiwilan\Steward\Enums\TemplateEnum;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -46,6 +49,23 @@ return [
         ],
         'default' => false,
         'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Steward template & builder
+    |--------------------------------------------------------------------------
+    |
+    | To manage templates and builders.
+    |
+    */
+
+    'template' => [
+        'enum' => TemplateEnum::class,
+    ],
+
+    'builder' => [
+        'enum' => BuilderEnum::class,
     ],
 
     /*
