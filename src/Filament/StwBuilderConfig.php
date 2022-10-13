@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Filament;
 
 use Filament\Forms;
 
-class BuilderConfig
+class StwBuilderConfig
 {
     public static function container(array $content, string $field = 'content', ?int $minItems = null, ?int $maxItems = null)
     {
@@ -46,12 +46,12 @@ class BuilderConfig
 
     public static function basic()
     {
-        return BuilderConfig::container([
-            BuilderConfig::block([
+        return StwBuilderConfig::container([
+            StwBuilderConfig::block([
                 Forms\Components\TextInput::make('title'),
                 Forms\Components\TextInput::make('slug'),
                 Forms\Components\Textarea::make('summary'),
-                LayoutConfig::card([
+                StwLayoutConfig::card([
                     Forms\Components\TextInput::make('meta_title'),
                     Forms\Components\Textarea::make('meta_description'),
                 ], title: 'SEO'),

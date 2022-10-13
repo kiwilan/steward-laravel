@@ -7,7 +7,7 @@ use Filament\Forms;
 use Filament\Resources\Form;
 use Illuminate\Support\Str;
 
-class LayoutConfig
+class StwLayoutConfig
 {
     public static function container(mixed $columns = null, Form $form, int $width = 3)
     {

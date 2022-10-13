@@ -6,7 +6,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 use Kiwilan\Steward\Enums\PublishStatusEnum;
 
-class ChartConfig
+class StwChartConfig
 {
     /** @var string[] */
     public array $labels = [];
@@ -18,7 +18,7 @@ class ChartConfig
     ) {
     }
 
-    public static function chartBy(string $table, string $field, string $limit_year = null, bool $published = false): ChartConfig
+    public static function chartBy(string $table, string $field, string $limit_year = null, bool $published = false): StwChartConfig
     {
         $models_db = DB::table($table)
             ->selectRaw("
@@ -47,14 +47,14 @@ class ChartConfig
             array_push($stats, $stat->total);
         }
 
-        $chart_helper = new ChartConfig();
+        $chart_helper = new StwChartConfig();
         $chart_helper->labels = $labels;
         $chart_helper->stats = $stats;
 
         return $chart_helper;
     }
 
-    public static function chartByField(string $table, string $field, string $limit_year = null, bool $published = false): ChartConfig
+    public static function chartByField(string $table, string $field, string $limit_year = null, bool $published = false): StwChartConfig
     {
         $models_db = DB::table($table)
             ->selectRaw("
@@ -83,7 +83,7 @@ class ChartConfig
             array_push($stats, $stat->total);
         }
 
-        $chart_helper = new ChartConfig();
+        $chart_helper = new StwChartConfig();
         $chart_helper->labels = $labels;
         $chart_helper->stats = $stats;
 
@@ -155,7 +155,7 @@ class ChartConfig
             return $models_db->get($period)->total ?? 0;
         });
 
-        $chart_helper = new ChartConfig();
+        $chart_helper = new StwChartConfig();
         $chart_helper->labels = $periods->toArray();
         $chart_helper->stats = $res->toArray();
 
