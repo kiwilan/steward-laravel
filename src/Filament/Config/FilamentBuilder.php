@@ -46,18 +46,18 @@ class FilamentBuilder
 
     public static function basic()
     {
-        return FilamentBuilder::container([
-            FilamentBuilder::block([
-                Forms\Components\TextInput::make('title'),
-                Forms\Components\TextInput::make('slug'),
-                Forms\Components\Textarea::make('summary'),
-                FilamentLayout::card([
-                    Forms\Components\TextInput::make('meta_title'),
-                    Forms\Components\Textarea::make('meta_description'),
-                ], title: 'SEO'),
-                Forms\Components\RichEditor::make('content')
-                    ->columnSpan(2),
-            ]),
-        ]);
+        // return FilamentBuilder::container([
+        //     FilamentBuilder::block([
+        //         Forms\Components\TextInput::make('title'),
+        //         Forms\Components\TextInput::make('slug'),
+        //         Forms\Components\Textarea::make('summary'),
+        //         FilamentLayout::card([
+        //             Forms\Components\TextInput::make('meta_title'),
+        //             Forms\Components\Textarea::make('meta_description'),
+        //         ], title: 'SEO'),
+        //         Forms\Components\RichEditor::make('content')
+        //             ->columnSpan(2),
+        //     ]),
+        // ]);
     }
 }
