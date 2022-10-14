@@ -5,6 +5,7 @@ namespace Kiwilan\Steward\Filament\Config;
 use Filament\Forms\Components\Field;
 use Filament\Resources\Form;
 use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutColumn;
+use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutRow;
 
 class FilamentLayout
 {
@@ -41,6 +42,22 @@ class FilamentLayout
         }
 
         return new FilamentLayoutColumn($this, $fields);
+    }
+
+    /**
+     * Add fields to schema.
+     *
+     * @param  Field[]|Field[][]  $fields
+     */
+    public function row(array $fields = []): FilamentLayoutRow
+    {
+        foreach ($fields as $key => $field) {
+            if (! is_array($field)) {
+                $fields[$key] = [$field];
+            }
+        }
+
+        return new FilamentLayoutRow($this, $fields);
     }
 
     public function get(): Form
