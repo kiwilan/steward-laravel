@@ -3,7 +3,7 @@
 namespace Kiwilan\Steward\Filament\Config\FilamentLayout;
 
 use Filament\Forms;
-use Filament\Forms\Components\Component;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Field;
 use Illuminate\Support\Str;
 
@@ -13,7 +13,7 @@ class FilamentLayoutCard
      * @param  Field[]  $fields
      * @param  ?string  $title
      */
-    public static function make(array $fields = [], ?string $title = null): Component
+    public static function make(array $fields = [], ?string $title = null): Card
     {
         $list = [];
         if ($title) {
