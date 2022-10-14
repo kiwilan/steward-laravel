@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Kiwilan\Steward\Enums\MediaTypeEnum;
 use Kiwilan\Steward\Enums\UserRoleEnum;
+use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutCard;
 
 class FilamentForm
 {
@@ -111,7 +112,7 @@ class FilamentForm
                 ->content(fn ($record): ?string => $record?->updated_at?->diffForHumans()),
         ];
 
-        return $card ? FilamentLayout::card($timestamps, title: 'Timestamps') : Forms\Components\Group::make($timestamps);
+        return $card ? FilamentLayoutCard::make($timestamps, 'Timestamps') : Forms\Components\Group::make($timestamps);
     }
 
     public static function getSeo(bool $card = false)
@@ -129,7 +130,7 @@ class FilamentForm
                 ->label('Description'),
         ];
 
-        return $card ? FilamentLayout::card($seo, title: 'SEO') : Forms\Components\Group::make($seo);
+        return $card ? FilamentLayoutCard::make($seo, 'SEO') : Forms\Components\Group::make($seo);
     }
 
     public static function getDateFilter(string $field = 'created_at')

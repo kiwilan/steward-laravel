@@ -6,7 +6,7 @@ use Filament\Forms;
 use Illuminate\Support\Str;
 use Kiwilan\Steward\Filament\Config\FilamentLayout;
 
-class FilamentLayoutColumn
+class FilamentLayoutRow
 {
     public function __construct(
         protected FilamentLayout $layout,

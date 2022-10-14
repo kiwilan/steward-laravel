@@ -2,86 +2,54 @@
 
 namespace Kiwilan\Steward\Filament\Config;
 
-use Closure;
-use Filament\Forms;
+use Filament\Forms\Components\Field;
 use Filament\Resources\Form;
-use Illuminate\Support\Str;
-use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutContainer;
+use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutColumn;
 
 class FilamentLayout
 {
     public function __construct(
-        public int $width = 3,
-        public ?Form $form = null,
-        public array $columns = [],
-        public mixed $layout = null,
+        protected Form $form,
+        protected int $width = 3,
+        public array $schema = [],
     ) {
     }
 
-    public static function make(Form $form, mixed $columns = null): Form
+    public static function make(Form $form): self
     {
-        // return FilamentLayoutContainer::make($columns);
-        $filament = new FilamentLayout();
-        // $form = new Form();
-
-        // $filament->columns = $columns;
-        $filament->form = $form->columns($columns);
-
-        // $filament = $form
-        // ->schema($columns)
-        // ->columns([
-        //     'sm' => $this->width,
-        //     'lg' => null,
-        // ]);
-
-        return $filament->form;
+        return new FilamentLayout($form);
     }
 
-    public function form(Form $form): Form
-    {
-        $this->form = $form;
-
-        return $this->form;
-    }
-
-    public function width(int $width = 3): Form
+    public function width(int $width = 3): self
     {
         $this->width = $width;
 
-        return $this->form;
+        return $this;
     }
 
-    public static function column(array|Closure $content = [], int $width = 2)
+    /**
+     * Add fields to schema.
+     *
+     * @param  Field[]|Field[][]  $fields
+     */
+    public function column(array $fields = []): FilamentLayoutColumn
     {
-        $parts = [];
-        foreach ($content as $part) {
-            if (! empty($part)) {
-                $parts[] = Forms\Components\Card::make()
-                    ->schema($part)
-                    ->columns([
-                        'sm' => $width,
-                    ]);
-            } else {
-                $parts[] = Forms\Components\Group::make();
+        foreach ($fields as $key => $field) {
+            if (! is_array($field)) {
+                $fields[$key] = [$field];
             }
         }
 
-        return Forms\Components\Group::make()
-            ->schema($parts)
-            ->columnSpan([
-                'sm' => $width,
-            ]);
+        return new FilamentLayoutColumn($this, $fields);
     }
 
-    public static function card(array|Closure $card = [], int $columns = 2, string $title = '')
+    public function get(): Form
     {
-        return Forms\Components\Card::make()
-            ->schema([
-                Forms\Components\Placeholder::make(Str::slug($title))
-                    ->label($title)
-                    ->columnSpan(2),
-                ...$card,
-            ])
-            ->columns($columns);
+        return $this->form
+            ->schema($this->schema)
+            ->columns([
+                'sm' => $this->width,
+                'lg' => null,
+            ]);
     }
 }
