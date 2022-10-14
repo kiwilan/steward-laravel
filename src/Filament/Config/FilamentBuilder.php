@@ -1,10 +1,10 @@
 <?php
 
-namespace Kiwilan\Steward\Filament;
+namespace Kiwilan\Steward\Filament\Config;
 
 use Filament\Forms;
 
-class StwBuilderConfig
+class FilamentBuilder
 {
     public static function container(array $content, string $field = 'content', ?int $minItems = null, ?int $maxItems = null)
     {
@@ -46,12 +46,12 @@ class StwBuilderConfig
 
     public static function basic()
     {
-        return StwBuilderConfig::container([
-            StwBuilderConfig::block([
+        return FilamentBuilder::container([
+            FilamentBuilder::block([
                 Forms\Components\TextInput::make('title'),
                 Forms\Components\TextInput::make('slug'),
                 Forms\Components\Textarea::make('summary'),
-                StwLayoutConfig::card([
+                FilamentLayout::card([
                     Forms\Components\TextInput::make('meta_title'),
                     Forms\Components\Textarea::make('meta_description'),
                 ], title: 'SEO'),

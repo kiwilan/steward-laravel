@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Filament;
+namespace Kiwilan\Steward\Filament\Config;
 
 use Closure;
 use Filament\Forms;
@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use Kiwilan\Steward\Enums\MediaTypeEnum;
 use Kiwilan\Steward\Enums\UserRoleEnum;
 
-class StwFormConfig
+class FilamentForm
 {
     public static function getName(
         string $field = 'name',
@@ -111,7 +111,7 @@ class StwFormConfig
                 ->content(fn ($record): ?string => $record?->updated_at?->diffForHumans()),
         ];
 
-        return $card ? StwLayoutConfig::card($timestamps, title: 'Timestamps') : Forms\Components\Group::make($timestamps);
+        return $card ? FilamentLayout::card($timestamps, title: 'Timestamps') : Forms\Components\Group::make($timestamps);
     }
 
     public static function getSeo(bool $card = false)
@@ -129,7 +129,7 @@ class StwFormConfig
                 ->label('Description'),
         ];
 
-        return $card ? StwLayoutConfig::card($seo, title: 'SEO') : Forms\Components\Group::make($seo);
+        return $card ? FilamentLayout::card($seo, title: 'SEO') : Forms\Components\Group::make($seo);
     }
 
     public static function getDateFilter(string $field = 'created_at')

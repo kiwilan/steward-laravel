@@ -1,12 +1,12 @@
 <?php
 
-namespace Kiwilan\Steward\Filament;
+namespace Kiwilan\Steward\Filament\Config;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 use Kiwilan\Steward\Enums\PublishStatusEnum;
 
-class StwChartConfig
+class FilamentChart
 {
     /** @var string[] */
     public array $labels = [];
@@ -18,7 +18,7 @@ class StwChartConfig
     ) {
     }
 
-    public static function chartBy(string $table, string $field, string $limit_year = null, bool $published = false): StwChartConfig
+    public static function chartBy(string $table, string $field, string $limit_year = null, bool $published = false): FilamentChart
     {
         $models_db = DB::table($table)
             ->selectRaw("
@@ -47,14 +47,14 @@ class StwChartConfig
             array_push($stats, $stat->total);
         }
 
-        $chart_helper = new StwChartConfig();
+        $chart_helper = new FilamentChart();
         $chart_helper->labels = $labels;
         $chart_helper->stats = $stats;
 
         return $chart_helper;
     }
 
-    public static function chartByField(string $table, string $field, string $limit_year = null, bool $published = false): StwChartConfig
+    public static function chartByField(string $table, string $field, string $limit_year = null, bool $published = false): self
     {
         $models_db = DB::table($table)
             ->selectRaw("
@@ -83,7 +83,7 @@ class StwChartConfig
             array_push($stats, $stat->total);
         }
 
-        $chart_helper = new StwChartConfig();
+        $chart_helper = new FilamentChart();
         $chart_helper->labels = $labels;
         $chart_helper->stats = $stats;
 
@@ -155,7 +155,7 @@ class StwChartConfig
             return $models_db->get($period)->total ?? 0;
         });
 
-        $chart_helper = new StwChartConfig();
+        $chart_helper = new FilamentChart();
         $chart_helper->labels = $periods->toArray();
         $chart_helper->stats = $res->toArray();
 

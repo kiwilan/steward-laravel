@@ -1,16 +1,16 @@
 <?php
 
-namespace Kiwilan\Steward\Filament;
+namespace Kiwilan\Steward\Filament\Config;
 
 use Filament\Forms;
 
-class StwTemplateConfig
+class FilamentTemplate
 {
     public static function block(array $content = [], string $make = 'block', string $label = 'Block')
     {
         return Forms\Components\Repeater::make($make)
             ->schema([
-                StwBuilderConfig::display(),
+                FilamentBuilder::display(),
                 ...$content,
             ])
             ->disableItemMovement()
