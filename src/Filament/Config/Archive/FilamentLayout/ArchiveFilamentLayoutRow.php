@@ -1,12 +1,12 @@
 <?php
 
-namespace Kiwilan\Steward\Filament\Config\FilamentLayout;
+namespace Kiwilan\Steward\Filament\Config\Archive\FilamentLayout;
 
 use Filament\Forms;
 use Illuminate\Support\Str;
 use Kiwilan\Steward\Filament\Config\FilamentLayout;
 
-class FilamentLayoutRow
+class ArchiveFilamentLayoutRow
 {
     public function __construct(
         protected FilamentLayout $layout,

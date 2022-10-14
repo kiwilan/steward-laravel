@@ -28,38 +28,6 @@ class FilamentLayout
         return $this;
     }
 
-    /**
-     * Add fields to schema.
-     *
-     * @param  Field[]|Field[][]  $fields
-     */
-    public function column(array $fields = []): FilamentLayoutColumn
-    {
-        foreach ($fields as $key => $field) {
-            if (! is_array($field)) {
-                $fields[$key] = [$field];
-            }
-        }
-
-        return new FilamentLayoutColumn($this, $fields);
-    }
-
-    /**
-     * Add fields to schema.
-     *
-     * @param  Field[]|Field[][]  $fields
-     */
-    public function row(array $fields = []): FilamentLayoutRow
-    {
-        foreach ($fields as $key => $field) {
-            if (! is_array($field)) {
-                $fields[$key] = [$field];
-            }
-        }
-
-        return new FilamentLayoutRow($this, $fields);
-    }
-
     public function get(): Form
     {
         return $this->form
