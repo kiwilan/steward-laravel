@@ -3,13 +3,14 @@
 namespace Kiwilan\Steward\Filament\Config;
 
 use Filament\Resources\Form;
+use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutColumn;
 
 class FilamentLayout
 {
     public function __construct(
         protected Form $form,
         protected int $width = 3,
-        public array $schema = [],
+        protected array $schema = [],
     ) {
     }
 
@@ -18,9 +19,21 @@ class FilamentLayout
         return new FilamentLayout($form);
     }
 
+    public static function column(array $fields = []): FilamentLayoutColumn
+    {
+        return FilamentLayoutColumn::make($fields);
+    }
+
     public function width(int $width = 3): self
     {
         $this->width = $width;
+
+        return $this;
+    }
+
+    public function schema(array $schema = []): self
+    {
+        $this->schema = $schema;
 
         return $this;
     }

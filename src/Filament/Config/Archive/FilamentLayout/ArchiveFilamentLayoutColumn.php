@@ -57,11 +57,11 @@ class ArchiveFilamentLayoutColumn
     {
         $this->schema = $this->scanFields();
 
-        $this->layout->schema[] = Forms\Components\Group::make()
-            ->schema($this->schema)
-            ->columnSpan([
-                'sm' => $this->width,
-            ]);
+        // $this->layout->schema[] = Forms\Components\Group::make()
+        //     ->schema($this->schema)
+        //     ->columnSpan([
+        //         'sm' => $this->width,
+        //     ]);
 
         return $this->layout;
     }
