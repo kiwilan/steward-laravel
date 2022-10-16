@@ -7,16 +7,16 @@ use Kiwilan\Steward\Services\HttpService;
 /**
  * Class FactoryMedia
  *
- * @property FactoryMedia $media
- * @property string[] $media_urls
+ * @property string[] $media_paths
  */
 class FactoryMediaDownloader
 {
     public function __construct(
-        public FactoryMedia $media,
-        public array $media_urls = [],
-        public int $with = 600,
-        public int $height = 600,
+        protected FactoryMedia $media,
+        protected array $media_urls = [],
+        protected int $with = 600,
+        protected int $height = 600,
+        public array $media_paths = [],
     ) {
     }
 
@@ -29,7 +29,7 @@ class FactoryMediaDownloader
 
     /**
      * @param  int  $media_count
-     * @param  int[]  $size
+     * @param  int[]  $size width and height
      */
     public function getMedias(?int $media_count = null, array $size = [600, 600])
     {

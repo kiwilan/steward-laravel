@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Services\FactoryService;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -18,14 +19,23 @@ class FactoryMedia
     ) {
     }
 
-    public function setMedia(mixed $model): Model
+    public function setMedia(mixed $model): ?Model
     {
+        if (! $model instanceof Model) {
+            return null;
+        }
+
+        if (! property_exists($model, 'slug')) {
+            throw new Exception('Model must have a slug property');
+        }
+        $slug = $model->slug;
+
         $table = Str::replace('_', '-', $model->getTable());
         if (! $model->isFillable('slug') || ! $model->isFillable('picture')) {
             return $model;
         }
 
-        $media_path = database_path("seeders/media/{$table}/{$model->slug}.webp");
+        $media_path = database_path("seeders/media/{$table}/{$slug}.webp");
         if (File::exists($media_path)) {
             $media = File::get($media_path);
 
@@ -34,11 +44,18 @@ class FactoryMedia
                 File::makeDirectory($directory, 0755, true, true);
             }
 
-            $filename = uniqid().'_'."{$model->slug}.webp";
+            $filename = uniqid().'_'."{$slug}.webp";
             File::put("{$directory}/{$filename}", $media);
 
             $media = "{$table}/{$filename}";
-            $model->picture = $media;
+            if (! property_exists('picture', $model)) {
+                throw new Exception('Model does not have a picture property');
+            }
+
+            if (property_exists('picture', $model)) {
+                // @phpstan-ignore-next-line
+                $model->picture = $media;
+            }
 
             return $model;
         }
