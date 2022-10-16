@@ -3,8 +3,9 @@
 namespace Kiwilan\Steward\Filament\Config;
 
 use Exception;
-use Kiwilan\Steward\Filament\Config\FilamentBuilder\HelperBuilder;
-use Kiwilan\Steward\Filament\Config\FilamentBuilder\IFilamentBuilder;
+use Kiwilan\Steward\Filament\Config\FilamentBuilder\FilamentBuilderBlock;
+use Kiwilan\Steward\Filament\Config\FilamentBuilder\FilamentBuilderContainer;
+use Kiwilan\Steward\Filament\Config\FilamentBuilder\FilamentBuilderModule;
 
 class FilamentBuilder
 {
@@ -20,8 +21,8 @@ class FilamentBuilder
     public static function make(string $builder): self
     {
         $instance = new $builder();
-        if (! $instance instanceof IFilamentBuilder) {
-            throw new Exception('Builder must implement IFilamentBuilder');
+        if (! $instance instanceof FilamentBuilderModule) {
+            throw new Exception('Builder must implement FilamentBuilderModule');
         }
 
         $builder = new FilamentBuilder($builder);
@@ -30,14 +31,23 @@ class FilamentBuilder
         return $builder;
     }
 
+    public static function container(array $content): FilamentBuilderContainer
+    {
+        return FilamentBuilderContainer::make($content);
+    }
+
+    public static function block(array $fields): FilamentBuilderBlock
+    {
+        return FilamentBuilderBlock::make($fields);
+    }
+
     public function get()
     {
-        return HelperBuilder::container(
-            content: $this->instance,
-            field: $this->field,
-            minItems: $this->minItems,
-            maxItems: $this->maxItems,
-        );
+        return FilamentBuilder::container($this->instance)
+            ->field($this->field)
+            ->minItems($this->minItems)
+            ->maxItems($this->maxItems)
+            ->get();
     }
 
     public function field(string $field = 'content'): self

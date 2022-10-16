@@ -1,11 +1,14 @@
 <?php
 
-namespace Kiwilan\Steward\Filament\Config\FilamentBuilder;
+namespace Kiwilan\Steward\Filament\Config\FilamentBuilder\Modules;
 
 use Filament\Forms;
+use Filament\Forms\Components\Builder\Block;
 use Kiwilan\Steward\Enums\BuilderEnum\BuilderWordpressVideoEnum;
+use Kiwilan\Steward\Filament\Config\FilamentBuilder;
+use Kiwilan\Steward\Filament\Config\FilamentBuilder\FilamentBuilderModule;
 
-class WordpressBuilder implements IFilamentBuilder
+class WordpressBuilder implements FilamentBuilderModule
 {
     public static function make(): array
     {
@@ -30,9 +33,9 @@ class WordpressBuilder implements IFilamentBuilder
         ];
     }
 
-    public static function heading()
+    public static function heading(): Block
     {
-        return HelperBuilder::block([
+        return FilamentBuilder::block([
             Forms\Components\TextInput::make('heading')
                 ->label('Heading')
                 ->required(),
@@ -52,9 +55,9 @@ class WordpressBuilder implements IFilamentBuilder
             ->get();
     }
 
-    public static function paragraph()
+    public static function paragraph(): Block
     {
-        return HelperBuilder::block([
+        return FilamentBuilder::block([
             Forms\Components\RichEditor::make('paragraph')
                 ->label('Paragraph')
                 ->toolbarButtons([
@@ -76,9 +79,9 @@ class WordpressBuilder implements IFilamentBuilder
             ->get();
     }
 
-    public static function image()
+    public static function image(): Block
     {
-        return HelperBuilder::block([
+        return FilamentBuilder::block([
             Forms\Components\FileUpload::make('image')
                 ->label('Image')
                 ->columnSpan(2)
@@ -93,18 +96,26 @@ class WordpressBuilder implements IFilamentBuilder
             ->get();
     }
 
-    public static function video()
+    public static function video(): Block
     {
-        return HelperBuilder::block([
-            Forms\Components\TextInput::make('id')
-                ->label('Video ID')
+        return FilamentBuilder::block([
+            Forms\Components\Placeholder::make('helper')
+                ->label('You can use URL `https://www.youtube.com/watch?v=aqz-KE-bpKQ` or ID `aqz-KE-bpKQ`, short link can works too `https://youtu.be/aqz-KE-bpKQ`.')
+                ->columnSpan(2),
+            Forms\Components\TextInput::make('video')
+                ->label('Video URL or ID')
+                ->placeholder('https://www.youtube.com/watch?v=aqz-KE-bpKQ')
+                ->helperText('Enter the URL or ID of the video, ID is the short code at the end of video.')
+                ->columnSpan(2)
                 ->required(),
-            Forms\Components\Select::make('type')
+            Forms\Components\Select::make('origin')
                 ->options(BuilderWordpressVideoEnum::toArray())
-                ->default(BuilderWordpressVideoEnum::youtube->value)
+                ->helperText("Select the origin of the video. If you don't know, try YouTube first.")
+                ->columnSpan(2)
                 ->required(),
+            // TODO try to find the origin from video
         ])
-            ->name('image')
+            ->name('video')
             ->icon('heroicon-o-video-camera')
             ->get();
     }
