@@ -32,7 +32,7 @@ class FactoryService
         $html = '';
 
         // Generate many paragraphs
-        for ($k = 0; $k < $this->faker->numberBetween($min, $max); ++$k) {
+        for ($k = 0; $k < $this->faker->numberBetween($min, $max); $k++) {
             $paragraph = $this->faker->paragraph($sentences);
             $html .= "<p>{$paragraph}</p>";
         }
@@ -56,21 +56,21 @@ class FactoryService
         /*
          * Generate 1 title + block
          */
-        for ($i = 0; $i < $this->faker->numberBetween(1, 1); ++$i) {
+        for ($i = 0; $i < $this->faker->numberBetween(1, 1); $i++) {
             $title = Str::title($this->faker->words($this->faker->numberBetween(5, 10), true));
             $html .= "<h2>{$title}</h2>";
 
             /*
              * Generate 1 subtitle + block
              */
-            for ($j = 0; $j < $this->faker->numberBetween(1, 2); ++$j) {
+            for ($j = 0; $j < $this->faker->numberBetween(1, 2); $j++) {
                 $title = Str::title($this->faker->words($this->faker->numberBetween(5, 10), true));
                 $html .= "<h3>{$title}</h3>";
 
                 /*
                  *  Generate many paragraphs
                  */
-                for ($k = 0; $k < $this->faker->numberBetween(2, 5); ++$k) {
+                for ($k = 0; $k < $this->faker->numberBetween(2, 5); $k++) {
                     $paragraph = $this->faker->paragraph(5);
                     $html .= "<p>{$paragraph}</p>";
 

@@ -136,6 +136,7 @@ class FactoryMedia
     private function getSampleMedias(string $path)
     {
         $media_path = database_path("seeders/media/{$path}");
+
         return File::allFiles($media_path);
     }
 
