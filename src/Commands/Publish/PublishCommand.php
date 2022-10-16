@@ -59,9 +59,11 @@ class PublishCommand extends CommandSteward
         if ($unpublish) {
             $this->info("Unpublishing all models of class {$meta->meta_class_namespaced}");
             $instance::query()->update(['status' => $instance->getPublishableEnumDraft()]);
+            $instance::query()->update(['published_at' => null]);
         } else {
             $this->info("Publishing all models of class {$meta->meta_class_namespaced}");
             $instance::query()->update(['status' => $instance->getPublishableEnumPublished()]);
+            $instance::query()->update(['published_at' => now()]);
         }
 
         return Command::SUCCESS;
