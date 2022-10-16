@@ -52,8 +52,7 @@ class SeederService
             return false;
         }
         $json = json_decode(File::get($path));
-        $factory = FactoryService::make()
-            ->setFactoryMedia();
+        $factory = FactoryService::make();
 
         foreach ($json as $entity) {
             $data = (array) $entity;

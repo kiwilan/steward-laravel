@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Class\MetaClass;
 use Kiwilan\Steward\Commands\CommandSteward;
-use Kiwilan\Steward\Enums\PublishStatusEnum;
 
 class PublishCommand extends CommandSteward
 {
@@ -50,8 +49,6 @@ class PublishCommand extends CommandSteward
 
             return Command::FAILURE;
         }
-
-
 
         $models = $instance::all();
         if ($unpublish) {

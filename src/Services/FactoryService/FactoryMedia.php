@@ -57,27 +57,44 @@ class FactoryMedia
         return database_path("seeders/media/{$category}/{$type}-{$i}.{$extension}");
     }
 
-    public function medias(string $category, bool $multiple = false): string|array
+    /**
+     * @return SplFileInfo[]
+     */
+    private function getSampleMedias(string $path)
     {
-        $media_path = database_path("seeders/media/{$category}");
+        $media_path = database_path("seeders/media/{$path}");
         $medias = File::allFiles($media_path);
 
-        if ($multiple) {
-            /** @var SplFileInfo[] */
-            $medias_gallery = $this->factory->faker->randomElements($medias, $this->factory->faker->numberBetween(0, count($medias) > 5 ? 5 : count($medias)));
-            $medias_gallery_entries = [];
-            foreach ($medias_gallery as $item) {
-                $name = FactoryMedia::createMedia($item, $category);
-                $medias_gallery_entries[] = $name;
-            }
+        return $medias;
+    }
 
-            return $medias_gallery_entries;
-        }
+    public function media(string $path): string
+    {
+        $medias = $this->getSampleMedias($path);
 
         /** @var SplFileInfo */
         $media = $this->factory->faker->randomElement($medias);
 
-        return FactoryMedia::createMedia($media, $category);
+        return FactoryMedia::createMedia($media, $path);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function medias(string $path)
+    {
+        $medias = $this->getSampleMedias($path);
+
+        /** @var SplFileInfo[] */
+        $gallery = $this->factory->faker->randomElements($medias, $this->factory->faker->numberBetween(0, count($medias) > 5 ? 5 : count($medias)));
+
+        $entries = [];
+        foreach ($gallery as $item) {
+            $name = FactoryMedia::createMedia($item, $path);
+            $entries[] = $name;
+        }
+
+        return $entries;
     }
 
     /**

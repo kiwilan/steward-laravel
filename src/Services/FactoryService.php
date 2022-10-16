@@ -6,7 +6,6 @@ use Faker\Generator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Kiwilan\Steward\Faker\FakerHtmlProvider;
 use Kiwilan\Steward\Services\FactoryService\FactoryMedia;
 
 class FactoryService
@@ -21,29 +20,35 @@ class FactoryService
     {
         $faker = \Faker\Factory::create();
         $service = new FactoryService($faker);
-        $service->htmlParagraphs();
+        $service->setFactoryMedia();
 
         return $service;
     }
 
-    public function setFactoryMedia()
+    private function setFactoryMedia()
     {
         $this->media = new FactoryMedia($this);
 
         return $this;
     }
 
-    public function htmlParagraphs()
+    public function htmlParagraphs(int $min = 1, int $max = 5, int $sentences = 10): string
     {
-        $this->faker->addProvider(new FakerHtmlProvider($this->faker));
+        $html = '';
 
-        return $this;
+        // Generate many paragraphs
+        for ($k = 0; $k < $this->faker->numberBetween($min, $max); $k++) {
+            $paragraph = $this->faker->paragraph($sentences);
+            $html .= "<p>{$paragraph}</p>";
+        }
+
+        return $html;
     }
 
     /**
-     * Générer un body riche.
+     * Generate rich body content.
      */
-    public static function generateRichBody(Generator $faker): string
+    public function richBody(): string
     {
         $html = '';
 
@@ -56,22 +61,22 @@ class FactoryService
         /*
          * Generate 1 title + block
          */
-        for ($i = 0; $i < $faker->numberBetween(1, 1); $i++) {
-            $title = Str::title($faker->words($faker->numberBetween(5, 10), true));
+        for ($i = 0; $i < $this->faker->numberBetween(1, 1); $i++) {
+            $title = Str::title($this->faker->words($this->faker->numberBetween(5, 10), true));
             $html .= "<h2>{$title}</h2>";
 
             /*
              * Generate 1 subtitle + block
              */
-            for ($j = 0; $j < $faker->numberBetween(1, 2); $j++) {
-                $title = Str::title($faker->words($faker->numberBetween(5, 10), true));
+            for ($j = 0; $j < $this->faker->numberBetween(1, 2); $j++) {
+                $title = Str::title($this->faker->words($this->faker->numberBetween(5, 10), true));
                 $html .= "<h3>{$title}</h3>";
 
                 /*
                  *  Generate many paragraphs
                  */
-                for ($k = 0; $k < $faker->numberBetween(2, 5); $k++) {
-                    $paragraph = $faker->paragraph(5);
+                for ($k = 0; $k < $this->faker->numberBetween(2, 5); $k++) {
+                    $paragraph = $this->faker->paragraph(5);
                     $html .= "<p>{$paragraph}</p>";
 
                     /*
@@ -95,7 +100,12 @@ class FactoryService
         return $html;
     }
 
-    public function timestamps(string $minimum = '-20 years'): array
+    /**
+     * Generate timestamps
+     *
+     * @return array<string,string> array{`created_at`:string,`updated_at`:string}
+     */
+    public function timestamps(string $minimum = '-20 years')
     {
         $created_at = Carbon::createFromTimeString(
             $this->faker->dateTimeBetween($minimum)
