@@ -15,7 +15,7 @@ use UnitEnum;
  * @property Datetime $published_at can be override by `publishable_published_at`
  *
  * @method void publish() publish the model
- * @method Builder scopePublished(Builder $query) get all models where `status` is `published` and order by `published_at` `desc` works only with native `PublishStatusEnum`
+ * @method Builder scopePublished(Builder $query, string $direction = 'desc') get all models where `status` is `published` and order by `published_at` `desc` works only with native `PublishStatusEnum`
  */
 trait Publishable
 {
@@ -26,6 +26,8 @@ trait Publishable
     protected $publishable_status_cast_default = PublishStatusEnum::class;
 
     protected $publishable_status_cast_published_default = 'published';
+
+    protected $publishable_status_cast_draft_default = 'draft';
 
     public function initializePublishable()
     {
@@ -53,12 +55,12 @@ trait Publishable
             $enum = $config_enum;
         }
 
-        if ($this->publishable_status_cast) {
-            $enum = $this->publishable_status_cast;
+        if ($this->publishable_status_cast_published) {
+            $enum = $this->publishable_status_cast_published;
         }
 
         if (! $enum) {
-            $enum = $this->publishable_status_cast_default;
+            $enum = $this->publishable_status_cast_published_default;
         }
 
         return $enum;
@@ -71,7 +73,7 @@ trait Publishable
             $enum_published = $config_enum;
         }
 
-        if ($this->publishable_status_cast) {
+        if ($this->publishable_status_cast_published) {
             $enum_published = $this->publishable_status_cast;
         }
 
@@ -82,22 +84,46 @@ trait Publishable
         return $enum_published;
     }
 
+    public function getPublishableStatusCastDraft(): string
+    {
+        $enum_draft = null;
+        if ($config_enum = config('steward.publishable.enum_draft')) {
+            $enum_draft = $config_enum;
+        }
+
+        if ($this->publishable_status_cast_draft) {
+            $enum_draft = $this->publishable_status_cast_draft;
+        }
+
+        if (! $enum_draft) {
+            $enum_draft = $this->publishable_status_cast_draft_default;
+        }
+
+        return $enum_draft;
+    }
+
+    public function getEnumPublished()
+    {
+        return $this->getPublishableStatusCast()::$this->getPublishableStatusCastPublished();
+    }
+
+    public function getEnumDraft()
+    {
+        return $this->getPublishableStatusCast()::$this->getPublishableStatusCastDraft();
+    }
+
     public function publish()
     {
-        $enum = $this->getPublishableStatusCast()::$this->getPublishableStatusCastPublished();
-
-        $this->{$this->getPublishableStatus()} = $enum;
+        $this->{$this->getPublishableStatus()} = $this->getEnumPublished();
         $this->{$this->getPublishablePublishedAt()} = Carbon::now();
         $this->save();
     }
 
-    public function scopePublished(Builder $builder)
+    public function scopePublished(Builder $builder, string $direction = 'desc')
     {
-        $enum = $this->getPublishableStatusCast()::$this->getPublishableStatusCastPublished();
-
         return $builder
-            ->where($this->getPublishableStatus(), $enum)
+            ->where($this->getPublishableStatus(), $this->getEnumPublished())
             ->where($this->getPublishablePublishedAt(), '<=', Carbon::now())
-            ->orderBy($this->getPublishablePublishedAt(), 'desc');
+            ->orderBy($this->getPublishablePublishedAt(), $direction);
     }
 }
