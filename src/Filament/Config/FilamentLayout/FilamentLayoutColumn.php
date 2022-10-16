@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Filament\Config\FilamentLayout;
 
 use Filament\Forms;
-use Filament\Forms\Components\Field;
 use Illuminate\Support\Str;
 
 class FilamentLayoutColumn
@@ -17,7 +16,7 @@ class FilamentLayoutColumn
     }
 
     /**
-     * @param  Field[]|Field[][]  $fields
+     * @param array<array<int,mixed>>|array<int,mixed> $fields
      */
     public static function make(array $fields = []): self
     {
@@ -56,7 +55,8 @@ class FilamentLayoutColumn
             ->schema($fields)
             ->columnSpan([
                 'sm' => $this->width,
-            ]);
+            ])
+        ;
     }
 
     private function setFields(): array
@@ -76,7 +76,8 @@ class FilamentLayoutColumn
             if ($title) {
                 $group[] = Forms\Components\Placeholder::make(Str::slug($title))
                     ->label($title)
-                    ->columnSpan($this->width);
+                    ->columnSpan($this->width)
+                ;
             }
             $group = array_merge($group, $field);
             $component = $this->card ? Forms\Components\Card::make() : Forms\Components\Group::make();
@@ -86,7 +87,8 @@ class FilamentLayoutColumn
                     ->schema($group)
                     ->columns([
                         'sm' => $this->width,
-                    ]);
+                    ])
+                ;
             } else {
                 $fields[] = Forms\Components\Group::make();
             }

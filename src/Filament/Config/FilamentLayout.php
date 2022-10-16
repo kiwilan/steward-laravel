@@ -21,6 +21,9 @@ class FilamentLayout
         return new FilamentLayout($form);
     }
 
+    /**
+     * @param array<array<int,mixed>>|array<int,mixed> $fields
+     */
     public static function column(array $fields = []): FilamentLayoutColumn
     {
         return FilamentLayoutColumn::make($fields);
@@ -52,6 +55,7 @@ class FilamentLayout
             ->columns([
                 'sm' => $this->width,
                 'lg' => null,
-            ]);
+            ])
+        ;
     }
 }
