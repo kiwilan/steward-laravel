@@ -10,12 +10,12 @@ use UnitEnum;
 /**
  * Trait Publishable.
  *
- * @property UnitEnum $status can be override by `publishable_status`
- * Cast can be override for all models into config `steward.publishable.enum` or for a specific model into `publishable_status_cast` property, if enum change, update published property with `publishable_status_cast_published` property or `steward.publishable.enum_published`.
+ * @property UnitEnum $status       can be override by `publishable_status`
+ *                                  Cast can be override for all models into config `steward.publishable.enum` or for a specific model into `publishable_status_cast` property, if enum change, update published property with `publishable_status_cast_published` property or `steward.publishable.enum_published`.
  * @property Datetime $published_at can be override by `publishable_published_at`
  *
- * @method void publish() publish the model
- * @method void unpublish() unpublish the model
+ * @method void    publish()                                                  publish the model
+ * @method void    unpublish()                                                unpublish the model
  * @method Builder scopePublished(Builder $query, string $direction = 'desc') get all models where `status` is `published` and order by `published_at` `desc` works only with native `PublishStatusEnum`
  */
 trait Publishable
@@ -112,7 +112,7 @@ trait Publishable
 
     public function getPublishableEnumDraft()
     {
-        $value = $this->getPublishableStatusCastPublished();
+        $value = $this->getPublishableStatusCastDraft();
 
         return $this->getPublishableStatusCast()::tryFrom($value);
     }
