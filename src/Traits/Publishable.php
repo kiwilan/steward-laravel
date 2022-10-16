@@ -102,19 +102,19 @@ trait Publishable
         return $enum_draft;
     }
 
-    public function getEnumPublished()
+    public function getPublishableEnumPublished()
     {
         return $this->getPublishableStatusCast()::$this->getPublishableStatusCastPublished();
     }
 
-    public function getEnumDraft()
+    public function getPublishableEnumDraft()
     {
         return $this->getPublishableStatusCast()::$this->getPublishableStatusCastDraft();
     }
 
     public function publish()
     {
-        $this->{$this->getPublishableStatus()} = $this->getEnumPublished();
+        $this->{$this->getPublishableStatus()} = $this->getPublishableEnumPublished();
         $this->{$this->getPublishablePublishedAt()} = Carbon::now();
         $this->save();
     }
@@ -122,7 +122,7 @@ trait Publishable
     public function scopePublished(Builder $builder, string $direction = 'desc')
     {
         return $builder
-            ->where($this->getPublishableStatus(), $this->getEnumPublished())
+            ->where($this->getPublishableStatus(), $this->getPublishableEnumPublished())
             ->where($this->getPublishablePublishedAt(), '<=', Carbon::now())
             ->orderBy($this->getPublishablePublishedAt(), $direction);
     }
