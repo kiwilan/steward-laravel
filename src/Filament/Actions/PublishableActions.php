@@ -24,7 +24,7 @@ class PublishableActions
                 ->color('success')
                 ->requiresConfirmation()
                 ->modalHeading("Publish all {$label}")
-                ->modalSubheading("Are you sure you want to publish all {$label}?")
+                ->modalSubheading("Are you sure you want to publish all draft and scheduled {$label}? The published date will set to now.")
                 ->modalButton('Publish')
                 ->action(function () use ($label, $model) {
                     ProcessPublish::dispatch(label: $label, model: $model, recipients: [auth()->user()]);
