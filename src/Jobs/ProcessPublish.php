@@ -10,7 +10,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
-use Kiwilan\Steward\Class\MetaClass;
 use Throwable;
 
 class ProcessPublish implements ShouldQueue
