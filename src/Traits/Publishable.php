@@ -42,7 +42,7 @@ trait Publishable
         return $this->publishable_published_at ?? $this->publishable_published_at_default;
     }
 
-    public function getPublishableStatusCast(): UnitEnum
+    public function getPublishableStatusCast(): string
     {
         $enum = null;
         if ($config_enum = config('steward.publishable.enum')) {
