@@ -104,12 +104,16 @@ trait Publishable
 
     public function getPublishableEnumPublished()
     {
-        return $this->getPublishableStatusCast()::$this->getPublishableStatusCastPublished();
+        $value = $this->getPublishableStatusCastPublished();
+
+        return $this->getPublishableStatusCast()::tryFrom($value);
     }
 
     public function getPublishableEnumDraft()
     {
-        return $this->getPublishableStatusCast()::$this->getPublishableStatusCastDraft();
+        $value = $this->getPublishableStatusCastPublished();
+
+        return $this->getPublishableStatusCast()::tryFrom($value);
     }
 
     public function publish()
