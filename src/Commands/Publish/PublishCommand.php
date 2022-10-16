@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Class\MetaClass;
 use Kiwilan\Steward\Commands\CommandSteward;
+use Kiwilan\Steward\Enums\PublishStatusEnum;
 
 class PublishCommand extends CommandSteward
 {
@@ -50,20 +51,29 @@ class PublishCommand extends CommandSteward
             return Command::FAILURE;
         }
 
-        if (! method_exists($instance, 'getPublishableEnumPublished') && ! method_exists($instance, 'getPublishableEnumDraft')) {
-            $this->error('Class does not have a publishable enum.');
 
-            return Command::FAILURE;
-        }
 
+        $models = $instance::all();
         if ($unpublish) {
             $this->info("Unpublishing all models of class {$meta->meta_class_namespaced}");
-            $instance::query()->update(['status' => $instance->getPublishableEnumDraft()]);
-            $instance::query()->update(['published_at' => null]);
+            foreach ($models as $current) {
+                if (! method_exists($current, 'unpublish')) {
+                    $this->error('Class does not have a publishable enum.');
+
+                    return Command::FAILURE;
+                }
+                $current->unpublish();
+            }
         } else {
             $this->info("Publishing all models of class {$meta->meta_class_namespaced}");
-            $instance::query()->update(['status' => $instance->getPublishableEnumPublished()]);
-            $instance::query()->update(['published_at' => now()]);
+            foreach ($models as $current) {
+                if (! method_exists($current, 'publish')) {
+                    $this->error('Class does not have a publishable enum.');
+
+                    return Command::FAILURE;
+                }
+                $current->publish();
+            }
         }
 
         return Command::SUCCESS;

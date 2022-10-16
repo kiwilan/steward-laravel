@@ -37,7 +37,6 @@ class PublishScheduledCommand extends CommandSteward
 
         foreach ($models as $model) {
             $instance = new $model();
-            // TODO use `PublishCommand` config
             $date_column = Schema::hasColumn($instance->getTable(), 'published_at') ? 'published_at' : 'created_at';
 
             $models_udpated = $model::query()
