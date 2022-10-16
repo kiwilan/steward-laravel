@@ -96,6 +96,14 @@ trait LazyEnum
         return $array;
     }
 
+    public static function toString(): string
+    {
+        $list = self::toArray();
+        $string = implode(', ', $list);
+
+        return $string;
+    }
+
     public function locale(bool $lower = false): string
     {
         $base = static::getLocaleBaseName();
