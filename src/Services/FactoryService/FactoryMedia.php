@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Services\FactoryService;
 
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -19,21 +18,50 @@ class FactoryMedia
     ) {
     }
 
+    public function single(string|UnitEnum|null $path = null): string
+    {
+        $path = $this->getPath($path);
+        $medias = $this->getSampleMedias($path);
+
+        /** @var SplFileInfo */
+        $media = $this->factory->faker->randomElement($medias);
+
+        return FactoryMedia::createMedia($media, $path);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function multiple(string|UnitEnum|null $path = null)
+    {
+        $path = $this->getPath($path);
+        $medias = $this->getSampleMedias($path);
+
+        /** @var SplFileInfo[] */
+        $gallery = $this->factory->faker->randomElements($medias, $this->factory->faker->numberBetween(0, count($medias) > 5 ? 5 : count($medias)));
+
+        $entries = [];
+        foreach ($gallery as $item) {
+            $name = FactoryMedia::createMedia($item, $path);
+            $entries[] = $name;
+        }
+
+        return $entries;
+    }
+
     public function setMedia(mixed $model): ?Model
     {
         if (! $model instanceof Model) {
             return null;
         }
 
-        if (! property_exists($model, 'slug')) {
-            throw new Exception('Model must have a slug property');
-        }
-        $slug = $model->slug;
-
-        $table = Str::replace('_', '-', $model->getTable());
         if (! $model->isFillable('slug') || ! $model->isFillable('picture')) {
             return $model;
         }
+
+        $table = Str::replace('_', '-', $model->getTable());
+        // @phpstan-ignore-next-line
+        $slug = $model->slug;
 
         $media_path = database_path("seeders/media/{$table}/{$slug}.webp");
         if (File::exists($media_path)) {
@@ -48,14 +76,8 @@ class FactoryMedia
             File::put("{$directory}/{$filename}", $media);
 
             $media = "{$table}/{$filename}";
-            if (! property_exists('picture', $model)) {
-                throw new Exception('Model does not have a picture property');
-            }
-
-            if (property_exists('picture', $model)) {
-                // @phpstan-ignore-next-line
-                $model->picture = $media;
-            }
+            // @phpstan-ignore-next-line
+            $model->picture = $media;
 
             return $model;
         }
@@ -74,37 +96,6 @@ class FactoryMedia
         $i = str_pad($type, 2, '0', STR_PAD_LEFT);
 
         return database_path("seeders/media/{$category}/{$type}-{$i}.{$extension}");
-    }
-
-    public function media(string|UnitEnum|null $path = null): string
-    {
-        $path = $this->getPath($path);
-        $medias = $this->getSampleMedias($path);
-
-        /** @var SplFileInfo */
-        $media = $this->factory->faker->randomElement($medias);
-
-        return FactoryMedia::createMedia($media, $path);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function medias(string|UnitEnum|null $path = null)
-    {
-        $path = $this->getPath($path);
-        $medias = $this->getSampleMedias($path);
-
-        /** @var SplFileInfo[] */
-        $gallery = $this->factory->faker->randomElements($medias, $this->factory->faker->numberBetween(0, count($medias) > 5 ? 5 : count($medias)));
-
-        $entries = [];
-        foreach ($gallery as $item) {
-            $name = FactoryMedia::createMedia($item, $path);
-            $entries[] = $name;
-        }
-
-        return $entries;
     }
 
     /**
