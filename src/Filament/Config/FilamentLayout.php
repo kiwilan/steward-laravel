@@ -22,7 +22,7 @@ class FilamentLayout
     }
 
     /**
-     * @param array<array<int,mixed>>|array<int,mixed> $fields
+     * @param  array<array<int,mixed>>|array<int,mixed>  $fields
      */
     public static function column(array $fields = []): FilamentLayoutColumn
     {
@@ -55,7 +55,6 @@ class FilamentLayout
             ->columns([
                 'sm' => $this->width,
                 'lg' => null,
-            ])
-        ;
+            ]);
     }
 }
