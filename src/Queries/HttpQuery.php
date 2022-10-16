@@ -18,9 +18,9 @@ class HttpQuery extends BaseQuery
      * Works with `spatie/laravel-query-builder`.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/introduction
      *
-     * @param  EloquentBuilder|Relation|string  $class
+     * @param string $class
      */
-    public static function make($class, ?Request $request = null): self
+    public static function make(string $class, ?Request $request = null): self
     {
         $query = new HttpQuery();
         $query->metadata = MetaClass::make($class);

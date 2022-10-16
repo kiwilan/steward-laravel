@@ -10,7 +10,7 @@ class FilamentTemplate
     {
         return Forms\Components\Repeater::make($make)
             ->schema([
-                FilamentBuilder::display(),
+                FilamentForm::display(),
                 ...$content,
             ])
             ->disableItemMovement()

@@ -191,6 +191,15 @@ class FilamentForm
             ->directory($type->name);
     }
 
+    public static function display()
+    {
+        return Forms\Components\Toggle::make('display')
+            ->helperText('Show this block on the page')
+            ->label('Display')
+            ->default(true)
+            ->columnSpan(2);
+    }
+
     public static function showAction()
     {
         return Action::make('show')

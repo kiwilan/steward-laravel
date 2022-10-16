@@ -2,62 +2,59 @@
 
 namespace Kiwilan\Steward\Filament\Config;
 
-use Filament\Forms;
+use Exception;
+use Kiwilan\Steward\Filament\Config\FilamentBuilder\HelperBuilder;
+use Kiwilan\Steward\Filament\Config\FilamentBuilder\IFilamentBuilder;
 
 class FilamentBuilder
 {
-    public static function container(array $content, string $field = 'content', ?int $minItems = null, ?int $maxItems = null)
-    {
-        $blocks = Forms\Components\Builder::make($field)
-            ->blocks([
-                ...$content,
-            ])
-            ->collapsed()
-            ->collapsible()
-            ->columnSpan(2);
+    public function __construct(
+        protected string $builder,
+        protected string $field = 'content',
+        protected ?int $minItems = null,
+        protected ?int $maxItems = null,
+        protected mixed $instance = null,
+    ) {
+    }
 
-        if ($minItems) {
-            $blocks->minItems($minItems);
+    public static function make(string $builder): self
+    {
+        $instance = new $builder();
+        if (! $instance instanceof IFilamentBuilder) {
+            throw new Exception('Builder must implement IFilamentBuilder');
         }
-        if ($maxItems) {
-            $blocks->maxItems($maxItems);
-        }
 
-        return $blocks;
+        $builder = new FilamentBuilder($builder);
+        $builder->instance = $instance::make();
+
+        return $builder;
     }
 
-    public static function block(array $content, string $name = 'content')
+    public function get()
     {
-        return Forms\Components\Builder\Block::make($name)
-            ->schema([
-                ...$content,
-            ])
-            ->columns(2);
+        return HelperBuilder::container(
+            content: $this->instance,
+            field: $this->field,
+            minItems: $this->minItems,
+            maxItems: $this->maxItems,
+        );
     }
 
-    public static function display()
+    public function field(string $field = 'content'): self
     {
-        return Forms\Components\Toggle::make('display')
-            ->helperText('Show this block on the page')
-            ->label('Display')
-            ->default(true)
-            ->columnSpan(2);
+        $this->field = $field;
+        return $this;
     }
 
-    public static function basic()
+    public function minItems(int $minItems): self
     {
-        // return FilamentBuilder::container([
-        //     FilamentBuilder::block([
-        //         Forms\Components\TextInput::make('title'),
-        //         Forms\Components\TextInput::make('slug'),
-        //         Forms\Components\Textarea::make('summary'),
-        //         FilamentLayout::card([
-        //             Forms\Components\TextInput::make('meta_title'),
-        //             Forms\Components\Textarea::make('meta_description'),
-        //         ], title: 'SEO'),
-        //         Forms\Components\RichEditor::make('content')
-        //             ->columnSpan(2),
-        //     ]),
-        // ]);
+        $this->minItems = $minItems;
+        return $this;
+    }
+
+    public function maxItems(int $maxItems): self
+    {
+        $this->maxItems = $maxItems;
+        return $this;
     }
 }
