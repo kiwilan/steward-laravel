@@ -61,7 +61,7 @@ class MetaClass
     /**
      * Check if current instance has a given trait.
      *
-     * @param string $trait like `Publishable::class`
+     * @param  string  $trait like `Publishable::class`
      */
     public function useTrait(string $trait): bool
     {
