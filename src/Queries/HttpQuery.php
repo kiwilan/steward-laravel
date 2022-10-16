@@ -2,8 +2,6 @@
 
 namespace Kiwilan\Steward\Queries;
 
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Kiwilan\Steward\Class\MetaClass;
 use Kiwilan\Steward\Traits\Queryable;
@@ -18,7 +16,7 @@ class HttpQuery extends BaseQuery
      * Works with `spatie/laravel-query-builder`.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/introduction
      *
-     * @param string $class
+     * @param  string  $class
      */
     public static function make(string $class, ?Request $request = null): self
     {

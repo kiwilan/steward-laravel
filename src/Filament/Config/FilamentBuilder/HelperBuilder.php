@@ -14,8 +14,7 @@ class HelperBuilder
             ])
             ->collapsed()
             ->collapsible()
-            ->columnSpan(2)
-        ;
+            ->columnSpan(2);
 
         if ($minItems) {
             $container->minItems($minItems);

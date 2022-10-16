@@ -43,18 +43,21 @@ class FilamentBuilder
     public function field(string $field = 'content'): self
     {
         $this->field = $field;
+
         return $this;
     }
 
     public function minItems(int $minItems): self
     {
         $this->minItems = $minItems;
+
         return $this;
     }
 
     public function maxItems(int $maxItems): self
     {
         $this->maxItems = $maxItems;
+
         return $this;
     }
 }

@@ -49,8 +49,7 @@ class WordpressBuilder implements IFilamentBuilder
         ])
             ->name('heading')
             ->icon('heroicon-o-bookmark')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function paragraph()
@@ -74,8 +73,7 @@ class WordpressBuilder implements IFilamentBuilder
         ])
             ->name('paragraph')
             ->icon('heroicon-o-menu')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function image()
@@ -92,8 +90,7 @@ class WordpressBuilder implements IFilamentBuilder
         ])
             ->name('image')
             ->icon('heroicon-o-photograph')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function video()
@@ -109,7 +106,6 @@ class WordpressBuilder implements IFilamentBuilder
         ])
             ->name('image')
             ->icon('heroicon-o-video-camera')
-            ->get()
-        ;
+            ->get();
     }
 }

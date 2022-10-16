@@ -24,8 +24,7 @@ class FilamentBuilderBlock
         $block = Forms\Components\Builder\Block::make($this->name)
             ->schema([
                 ...$this->fields,
-            ])
-        ;
+            ]);
 
         if ($this->icon) {
             $block->icon($this->icon);
@@ -37,18 +36,21 @@ class FilamentBuilderBlock
     public function name(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
     public function icon(string $icon): self
     {
         $this->icon = $icon;
+
         return $this;
     }
 
     public function columns(int $columns): self
     {
         $this->columns = $columns;
+
         return $this;
     }
 }
