@@ -15,6 +15,7 @@ use UnitEnum;
  * @property Datetime $published_at can be override by `publishable_published_at`
  *
  * @method void publish() publish the model
+ * @method void unpublish() unpublish the model
  * @method Builder scopePublished(Builder $query, string $direction = 'desc') get all models where `status` is `published` and order by `published_at` `desc` works only with native `PublishStatusEnum`
  */
 trait Publishable
@@ -120,6 +121,13 @@ trait Publishable
     {
         $this->{$this->getPublishableStatus()} = $this->getPublishableEnumPublished();
         $this->{$this->getPublishablePublishedAt()} = Carbon::now();
+        $this->save();
+    }
+
+    public function unpublish()
+    {
+        $this->{$this->getPublishableStatus()} = $this->getPublishableEnumDraft();
+        $this->{$this->getPublishablePublishedAt()} = null;
         $this->save();
     }
 
