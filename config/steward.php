@@ -1,8 +1,5 @@
 <?php
 
-use Kiwilan\Steward\Enums\BuilderEnum;
-use Kiwilan\Steward\Enums\TemplateEnum;
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -17,6 +14,7 @@ return [
         'models' => [
             // \App\Models\Example::class,
         ],
+        'enum' => \Kiwilan\Steward\Enums\PublishStatusEnum::class,
     ],
 
     /*
@@ -61,11 +59,11 @@ return [
     */
 
     'template' => [
-        'enum' => TemplateEnum::class,
+        'enum' => \Kiwilan\Steward\Enums\TemplateEnum::class,
     ],
 
     'builder' => [
-        'enum' => BuilderEnum::class,
+        'enum' => \Kiwilan\Steward\Enums\BuilderEnum::class,
     ],
 
     /*
