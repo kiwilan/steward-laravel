@@ -98,7 +98,7 @@ class FilamentForm
         };
     }
 
-    public static function getTimestamps(bool $card = false)
+    public static function meta(bool $card = false)
     {
         $timestamps = [
             Forms\Components\Placeholder::make('id')
@@ -115,7 +115,7 @@ class FilamentForm
         return $card ? FilamentLayoutCard::make($timestamps, 'Timestamps') : Forms\Components\Group::make($timestamps);
     }
 
-    public static function getSeo(bool $card = false)
+    public static function seo(bool $card = false)
     {
         $seo = [
             Forms\Components\Placeholder::make('seo')
@@ -133,7 +133,7 @@ class FilamentForm
         return $card ? FilamentLayoutCard::make($seo, 'SEO') : Forms\Components\Group::make($seo);
     }
 
-    public static function getDateFilter(string $field = 'created_at')
+    public static function dateFilter(string $field = 'created_at')
     {
         return Filter::make('created_at')
             ->form([
@@ -170,9 +170,9 @@ class FilamentForm
         };
     }
 
-    public static function getImageField(
-        string $field = 'image',
-        string $label = 'Image',
+    public static function pictureField(
+        string $field = 'picture',
+        string $label = 'Picture',
         MediaTypeEnum $type = MediaTypeEnum::media,
         array $fileTypes = [
             'image/jpeg',
