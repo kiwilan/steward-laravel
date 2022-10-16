@@ -1,10 +1,11 @@
 <?php
 
-namespace Kiwilan\Steward\Commands;
+namespace Kiwilan\Steward\Commands\Publish;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
+use Kiwilan\Steward\Commands\CommandSteward;
 use Kiwilan\Steward\Enums\PublishStatusEnum;
 
 class PublishScheduledCommand extends CommandSteward
@@ -21,7 +22,7 @@ class PublishScheduledCommand extends CommandSteward
      *
      * @var string
      */
-    protected $description = 'Publish models that are scheduled to be published';
+    protected $description = 'Publish models that are scheduled to be published. The class have to use `Publishable` trait to use this command';
 
     /**
      * Execute the console command.
@@ -36,6 +37,7 @@ class PublishScheduledCommand extends CommandSteward
 
         foreach ($models as $model) {
             $instance = new $model();
+            // TODO use `PublishCommand` config
             $date_column = Schema::hasColumn($instance->getTable(), 'published_at') ? 'published_at' : 'created_at';
 
             $models_udpated = $model::query()

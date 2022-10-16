@@ -6,7 +6,8 @@ use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\LaravelStewardCommand;
 use Kiwilan\Steward\Commands\LogClearCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
-use Kiwilan\Steward\Commands\PublishScheduledCommand;
+use Kiwilan\Steward\Commands\Publish\PublishCommand;
+use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
 use Kiwilan\Steward\Commands\RoutePrintCommand;
 use Kiwilan\Steward\Commands\ScoutFreshCommand;
 use Kiwilan\Steward\Commands\StewardPhpCsFixerCommand;
@@ -56,6 +57,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 LaravelStewardCommand::class,
                 LogClearCommand::class,
                 MediaCleanCommand::class,
+                PublishCommand::class,
                 PublishScheduledCommand::class,
                 RoutePrintCommand::class,
                 ScoutFreshCommand::class,
