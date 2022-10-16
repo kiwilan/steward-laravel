@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Kiwilan\Steward\Services\FactoryService;
 use Symfony\Component\Finder\SplFileInfo;
+use UnitEnum;
 
 class FactoryMedia
 {
     public function __construct(
         public FactoryService $factory,
+        protected ?string $media_path = null,
     ) {
     }
 
@@ -57,19 +59,9 @@ class FactoryMedia
         return database_path("seeders/media/{$category}/{$type}-{$i}.{$extension}");
     }
 
-    /**
-     * @return SplFileInfo[]
-     */
-    private function getSampleMedias(string $path)
+    public function media(string|UnitEnum|null $path = null): string
     {
-        $media_path = database_path("seeders/media/{$path}");
-        $medias = File::allFiles($media_path);
-
-        return $medias;
-    }
-
-    public function media(string $path): string
-    {
+        $path = $this->getPath($path);
         $medias = $this->getSampleMedias($path);
 
         /** @var SplFileInfo */
@@ -81,8 +73,9 @@ class FactoryMedia
     /**
      * @return string[]
      */
-    public function medias(string $path)
+    public function medias(string|UnitEnum|null $path = null)
     {
+        $path = $this->getPath($path);
         $medias = $this->getSampleMedias($path);
 
         /** @var SplFileInfo[] */
@@ -135,5 +128,27 @@ class FactoryMedia
         File::put($media_path_dist, $media->getContents());
 
         return $item_path;
+    }
+
+    /**
+     * @return SplFileInfo[]
+     */
+    private function getSampleMedias(string $path)
+    {
+        $media_path = database_path("seeders/media/{$path}");
+        return File::allFiles($media_path);
+    }
+
+    private function getPath(string|UnitEnum|null $path = null): string
+    {
+        if ($path instanceof UnitEnum) {
+            $path = $path->name;
+        }
+
+        if (! $path) {
+            $path = $this->media_path;
+        }
+
+        return $path;
     }
 }
