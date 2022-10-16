@@ -13,7 +13,6 @@ class PublishableActions
      *
      * @param  string  $label The label for the model, like `posts`
      * @param  string  $model The model to publish, like `Post::class`
-     *
      * @return array<Actions\Action>
      */
     public static function make(string $label, string $model)
@@ -34,8 +33,7 @@ class PublishableActions
                         ->body("All {$label} will be published in background, you can close this window.")
                         ->icon('heroicon-o-paper-airplane')
                         ->iconColor('success')
-                        ->send()
-                    ;
+                        ->send();
                 }),
             Actions\Action::make('unpublish')
                 ->icon('heroicon-o-archive')
@@ -52,9 +50,8 @@ class PublishableActions
                         ->body("All {$label} will be unpublished in background, you can close this window.")
                         ->icon('heroicon-o-archive')
                         ->iconColor('success')
-                        ->send()
-                    ;
+                        ->send();
                 }),
-            ];
+        ];
     }
 }
