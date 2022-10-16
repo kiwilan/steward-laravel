@@ -15,7 +15,6 @@ class PublishCommand extends CommandSteward
      * @var string
      */
     protected $signature = 'publish {class : The class to publish, e.g. App\\Models\\Post};
-                            {--p|publish : Publish all}
                             {--u|unpublish : Unpublish all}';
 
     /**
@@ -35,12 +34,7 @@ class PublishCommand extends CommandSteward
         $this->title();
 
         $class = $this->argument('class');
-        $publish = $this->option('publish') ?? false;
         $unpublish = $this->option('unpublish') ?? false;
-
-        if (! $publish && ! $unpublish) {
-            $publish = true;
-        }
 
         $meta = MetaClass::make($class);
         $instance = new $class();
@@ -62,12 +56,12 @@ class PublishCommand extends CommandSteward
             return Command::FAILURE;
         }
 
-        if ($publish) {
-            $this->info("Publishing all models of class {$meta->meta_class_namespaced}");
-            $instance::query()->update(['status' => $instance->getPublishableEnumPublished()]);
-        } elseif ($unpublish) {
+        if ($unpublish) {
             $this->info("Unpublishing all models of class {$meta->meta_class_namespaced}");
             $instance::query()->update(['status' => $instance->getPublishableEnumDraft()]);
+        } else {
+            $this->info("Publishing all models of class {$meta->meta_class_namespaced}");
+            $instance::query()->update(['status' => $instance->getPublishableEnumPublished()]);
         }
 
         return Command::SUCCESS;
