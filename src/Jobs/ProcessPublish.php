@@ -24,6 +24,7 @@ class ProcessPublish implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
+        public string $label,
         public string $model,
         public bool $unpublish = false,
         public array $recipients = [],
@@ -38,15 +39,13 @@ class ProcessPublish implements ShouldQueue
         Log::info('-----');
         Log::info('ProcessPublish: start');
 
-        dump($this->unpublish);
         $action = $this->unpublish ? 'unpublish' : 'publish';
         Log::debug("ProcessPublish: {$action}");
         Artisan::call('publish', [
             'class' => $this->model,
             '--unpublish' => $this->unpublish,
         ]);
-        $meta = MetaClass::make($this->model);
-        $name = $meta->meta_class_namespaced;
+        $name = $this->label;
 
         Log::info('ProcessPublish: success');
 

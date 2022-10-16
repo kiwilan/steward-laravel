@@ -27,7 +27,7 @@ class PublishableActions
                 ->modalSubheading("Are you sure you want to publish all {$label}?")
                 ->modalButton('Publish')
                 ->action(function () use ($label, $model) {
-                    ProcessPublish::dispatch(model: $model, recipients: [auth()->user()]);
+                    ProcessPublish::dispatch(label: $label, model: $model, recipients: [auth()->user()]);
                     Notification::make()
                         ->title('Publishing...')
                         ->body("All {$label} will be published in background, you can close this window.")
@@ -44,7 +44,7 @@ class PublishableActions
                 ->modalSubheading("Are you sure you want to unpublish all {$label}?")
                 ->modalButton('Unpublish')
                 ->action(function () use ($label, $model) {
-                    ProcessPublish::dispatch(model: $model, unpublish: true, recipients: [auth()->user()]);
+                    ProcessPublish::dispatch(label: $label, model: $model, unpublish: true, recipients: [auth()->user()]);
                     Notification::make()
                         ->title('Unpublishing...')
                         ->body("All {$label} will be unpublished in background, you can close this window.")
