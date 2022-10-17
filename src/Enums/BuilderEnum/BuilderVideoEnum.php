@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Enums\BuilderEnum;
 
 use Kiwilan\Steward\Traits\LazyEnum;
 
-enum BuilderWordpressVideoEnum: string
+enum BuilderVideoEnum: string
 {
     use LazyEnum;
 

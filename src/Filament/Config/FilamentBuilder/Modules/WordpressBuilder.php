@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Filament\Config\FilamentBuilder\Modules;
 
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
-use Kiwilan\Steward\Enums\BuilderEnum\BuilderWordpressVideoEnum;
+use Kiwilan\Steward\Enums\BuilderEnum\BuilderVideoEnum;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder\FilamentBuilderModule;
 
@@ -109,7 +109,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->columnSpan(2)
                 ->required(),
             Forms\Components\Select::make('origin')
-                ->options(BuilderWordpressVideoEnum::toArray())
+                ->options(BuilderVideoEnum::toArray())
                 ->helperText("Select the origin of the video. If you don't know, try YouTube first.")
                 ->columnSpan(2)
                 ->required(),
