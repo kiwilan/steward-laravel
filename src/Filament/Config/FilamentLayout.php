@@ -6,6 +6,7 @@ use Filament\Forms\Components\Card;
 use Filament\Resources\Form;
 use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutCard;
 use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutColumn;
+use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutSettings;
 
 class FilamentLayout
 {
@@ -22,7 +23,7 @@ class FilamentLayout
     }
 
     /**
-     * @param  array<array<int,mixed>>|array<int,mixed>  $fields
+     * @param array<array<int,mixed>>|array<int,mixed> $fields
      */
     public static function column(array $fields = []): FilamentLayoutColumn
     {
@@ -32,6 +33,11 @@ class FilamentLayout
     public static function card(array $fields = [], ?string $title = null): Card
     {
         return FilamentLayoutCard::make($fields, $title);
+    }
+
+    public static function setting(array $fields = [], ?string $title = null): FilamentLayoutSettings
+    {
+        return FilamentLayoutSettings::make($fields);
     }
 
     public function width(int $width = 3): self
@@ -55,6 +61,7 @@ class FilamentLayout
             ->columns([
                 'sm' => $this->width,
                 'lg' => null,
-            ]);
+            ])
+        ;
     }
 }
