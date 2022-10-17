@@ -11,6 +11,7 @@ class FilamentLayoutSettings
     public function __construct(
         protected array $fields = [],
         protected int $width = 1,
+        protected ?string $title = null,
     ) {
     }
 
@@ -19,9 +20,16 @@ class FilamentLayoutSettings
         return new FilamentLayoutSettings($fields);
     }
 
-    public function width(int $width = 3): self
+    public function width(int $width = 1): self
     {
         $this->width = $width;
+
+        return $this;
+    }
+
+    public function title(?string $title = null): self
+    {
+        $this->title = $title;
 
         return $this;
     }
@@ -30,10 +38,11 @@ class FilamentLayoutSettings
     {
         return Forms\Components\Group::make()
             ->schema([
-                FilamentLayout::card($this->fields),
+                FilamentLayout::card($this->fields, $this->title),
             ])
             ->columnSpan([
-                'sm' => $this->width,
+                'sm' => 1,
+                'lg' => $this->width,
             ]);
     }
 }

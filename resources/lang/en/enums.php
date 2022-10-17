@@ -9,6 +9,10 @@ return [
         'agender' => 'Agender',
         'man' => 'Man',
     ],
+    'language' => [
+        'en' => 'English',
+        'fr' => 'French',
+    ],
     'user_role' => [
         'super_admin' => 'Superadmin',
         'admin' => 'Admin',

@@ -13,16 +13,24 @@ class FilamentLayoutCard
      * @param  Field[]  $fields
      * @param  ?string  $title
      */
-    public static function make(array $fields = [], ?string $title = null): Card
+    public static function make(array $fields = [], ?string $title = null, int $width = 2): Card
     {
         $list = [];
         if ($title) {
             $list[] = Forms\Components\Placeholder::make(Str::slug($title))
-            ->label($title)
-            ->columnSpan(2);
+                ->label($title)
+                ->columnSpan([
+                    'sm' => 1,
+                    'lg' => $width,
+                ]);
         }
         $list = array_merge($list, $fields);
 
-        return Forms\Components\Card::make()->schema($list);
+        return Forms\Components\Card::make()
+            ->schema($list)
+            ->columns([
+                'sm' => 1,
+                'lg' => $width,
+            ]);
     }
 }

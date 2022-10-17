@@ -30,12 +30,12 @@ class FilamentLayout
         return FilamentLayoutColumn::make($fields);
     }
 
-    public static function card(array $fields = [], ?string $title = null): Card
+    public static function card(array $fields = [], ?string $title = null, int $width = 2): Card
     {
-        return FilamentLayoutCard::make($fields, $title);
+        return FilamentLayoutCard::make($fields, $title, $width);
     }
 
-    public static function setting(array $fields = [], ?string $title = null): FilamentLayoutSettings
+    public static function setting(array $fields = []): FilamentLayoutSettings
     {
         return FilamentLayoutSettings::make($fields);
     }
@@ -59,8 +59,8 @@ class FilamentLayout
         return $this->form
             ->schema($this->schema)
             ->columns([
-                'sm' => $this->width,
-                'lg' => null,
+                'sm' => 1,
+                'lg' => $this->width,
             ]);
     }
 }

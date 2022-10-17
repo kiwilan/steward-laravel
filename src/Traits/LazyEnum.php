@@ -92,6 +92,7 @@ trait LazyEnum
                 ? __($locale)
                 : ucfirst($definition->value);
         }
+        asort($array);
 
         return $array;
     }
@@ -99,9 +100,8 @@ trait LazyEnum
     public static function toString(): string
     {
         $list = self::toArray();
-        $string = implode(', ', $list);
 
-        return $string;
+        return implode(', ', $list);
     }
 
     public function locale(bool $lower = false): string
