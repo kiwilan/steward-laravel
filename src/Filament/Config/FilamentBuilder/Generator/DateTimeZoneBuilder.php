@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Filament\Config\FilamentLayout\Generator;
+namespace Kiwilan\Steward\Filament\Config\FilamentBuilder\Generator;
 
 use DateTime;
 use DateTimeZone;
