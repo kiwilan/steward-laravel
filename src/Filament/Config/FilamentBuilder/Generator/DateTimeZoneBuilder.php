@@ -8,20 +8,22 @@ use DateTimeZone;
 class DateTimeZoneBuilder
 {
     protected function __construct(
-        protected array $regions = [],
         protected array $timezones = [],
-        protected array $timezone_offsets = [],
-        protected array $timezone_list = [],
     ) {
     }
 
-    public static function make(): self
+    public static function make(bool $full = false): self
     {
         $dtz = new DateTimeZoneBuilder();
-        $dtz->regions = $dtz->setRegions();
-        $dtz->timezones = $dtz->setTimezones();
-        $dtz->timezone_offsets = $dtz->setTimezoneOffsets();
-        $dtz->timezone_list = $dtz->setTimezoneList();
+
+        $dtz->timezones = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
+
+        if ($full) {
+            $regions = $dtz->setRegions();
+            $timezones = $dtz->setTimezones($regions);
+            $timezone_offsets = $dtz->setTimezoneOffsets($timezones);
+            $dtz->timezones = $dtz->setTimezoneList($timezone_offsets);
+        }
 
         return $dtz;
     }
@@ -34,10 +36,10 @@ class DateTimeZoneBuilder
         return $this->timezones;
     }
 
-    private function setTimezoneList(): array
+    private function setTimezoneList(array $timezone_offsets): array
     {
         $timezone_list = [];
-        foreach ($this->timezone_offsets as $timezone => $offset) {
+        foreach ($timezone_offsets as $timezone => $offset) {
             $offset_prefix = $offset < 0 ? '-' : '+';
             $offset_formatted = gmdate('H:i', abs($offset));
 
@@ -49,10 +51,10 @@ class DateTimeZoneBuilder
         return $timezone_list;
     }
 
-    private function setTimezoneOffsets(): array
+    private function setTimezoneOffsets(array $tz): array
     {
         $timezone_offsets = [];
-        foreach ($this->timezones as $timezone) {
+        foreach ($tz as $timezone) {
             $tz = new DateTimeZone($timezone);
             $timezone_offsets[$timezone] = $tz->getOffset(new DateTime());
         }
@@ -63,10 +65,10 @@ class DateTimeZoneBuilder
         return $timezone_offsets;
     }
 
-    private function setTimezones(): array
+    private function setTimezones(array $regions): array
     {
         $timezones = [];
-        foreach ($this->regions as $region) {
+        foreach ($regions as $region) {
             $timezones = array_merge($timezones, DateTimeZone::listIdentifiers($region));
         }
 
