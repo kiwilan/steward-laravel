@@ -34,7 +34,6 @@ class FilamentLayoutSettings
             ])
             ->columnSpan([
                 'sm' => $this->width,
-            ])
-        ;
+            ]);
     }
 }
