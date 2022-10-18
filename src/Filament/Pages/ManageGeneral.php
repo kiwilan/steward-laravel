@@ -66,6 +66,7 @@ class ManageGeneral extends SettingsPage
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
                         $name = "favicon.{$file->getClientOriginalExtension()}";
                         ProcessFavicon::dispatch();
+
                         return $name;
                     }),
                 Forms\Components\ColorPicker::make('site_color')

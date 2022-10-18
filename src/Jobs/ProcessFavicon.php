@@ -52,11 +52,13 @@ class ProcessFavicon implements ShouldQueue
         });
         $spaces = min(array_map(function ($part) {
             preg_match('#^ *#', $part, $matches);
+
             return strlen($matches[0]);
         }, $parts));
         $parts = array_map(function ($part) use ($spaces) {
             return substr($part, $spaces);
         }, $parts);
+
         return implode("\n", $parts);
     }
 
@@ -66,6 +68,7 @@ class ProcessFavicon implements ShouldQueue
         $parts = array_map(function ($part) use ($spaces) {
             return str_repeat(' ', $spaces).$part;
         }, $parts);
+
         return implode("\n", $parts);
     }
 
@@ -176,8 +179,7 @@ class ProcessFavicon implements ShouldQueue
             return $manipulations
                 ->width($width)
                 ->height($height)
-                ->optimize()
-            ;
+                ->optimize();
         })->save(public_path("{$name}.{$extension}"));
     }
 }
