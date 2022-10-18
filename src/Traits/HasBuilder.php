@@ -11,9 +11,10 @@ trait HasBuilder
 
     public function initializeHasBuilder()
     {
-        $this->fillable[] = 'builder';
+        $this->fillable[] = $this->getBuilderColumn();
 
         // $this->casts['builder'] = BuilderEnum::class;
+        $this->casts[$this->getBuilderColumn()] = 'array';
     }
 
     public function getBuilderColumn(): string
@@ -39,25 +40,6 @@ trait HasBuilder
 
     private function transformData(mixed $builder)
     {
-        // if (! is_array($builder) && ! array_key_exists('data', $builder)) {
-        //     return [];
-        // }
-        // $data = $builder['data'];
-        // $type = $builder['type'];
-
-        // foreach ($data as $key => $value) {
-        //     $is_list = false;
-        //     if ('list' === $key) {
-        //         $is_list = true;
-        //     }
-
-        //     if (! $is_list) {
-        //         $data_builder[$type][$key] = $this->setMedia($value);
-        //     }
-
-        //     // $this->transformData($value, $data);
-        // }
-
         if (! is_array($builder) && ! array_key_exists('data', $builder)) {
             return [];
         }
@@ -85,14 +67,13 @@ trait HasBuilder
         if (! is_array($extensions)) {
             $extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'];
         }
-        // foreach ($data as $key => $value) {
+
         foreach ($extensions as $extension) {
             if (str_contains($value, $extension)) {
                 $media_url = config('app.url')."/storage/{$value}";
                 $value = $media_url;
             }
         }
-        // }
 
         return $value;
     }

@@ -6,6 +6,7 @@ use Faker\Generator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Kiwilan\Steward\Services\FactoryService\FactoryBuilder;
 use Kiwilan\Steward\Services\FactoryService\FactoryMedia;
 use UnitEnum;
 
@@ -115,6 +116,11 @@ class FactoryService
             'created_at' => $created_at,
             'updated_at' => $updated_at,
         ];
+    }
+
+    public function builder(string $builder): array
+    {
+        return FactoryBuilder::make($this, $builder);
     }
 
     private function setFactoryMedia(string|UnitEnum|null $media_path = null)

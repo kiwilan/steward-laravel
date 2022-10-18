@@ -83,7 +83,7 @@ class ManageGeneral extends SettingsPage
                         ProcessManifest::dispatch();
                     }),
                 Forms\Components\FileUpload::make('default_image')
-                    ->label('Site favicon')
+                    ->label('OpenGraph default image')
                     ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp'])
                     ->maxSize(1024)
                     ->disk('public')
@@ -101,6 +101,7 @@ class ManageGeneral extends SettingsPage
             ])->width(2)->title('Theme')->get(),
             FilamentLayout::setting([
                 Forms\Components\Repeater::make('social')
+                    ->label('')
                     ->schema([
                         Forms\Components\Select::make('type')
                             ->options(BuilderSocialEnum::toArray())
@@ -118,6 +119,7 @@ class ManageGeneral extends SettingsPage
                         'lg' => 2,
                     ]),
             ])
+                ->title('Social')
                 ->width(2)
                 ->get(),
         ];

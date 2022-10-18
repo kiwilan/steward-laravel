@@ -25,12 +25,12 @@ class FilamentForm
         string $context_custom = 'edit',
         int $width = 1,
     ) {
-        if ($helper === null) {
+        if (null === $helper) {
             $trans_generate = __('steward::filament.form_helper.generate');
             $trans_slug = $slug ? ' '.__('steward::filament.form_helper.slug') : '';
             $trans_meta_title = $meta_title ? ' '.__('steward::filament.form_helper.meta_title') : '';
             $trans_meta_title .= $meta_title && $slug ? ' and ' : '';
-            $trans_only_create = $context_custom === 'edit' ? ', '.__('steward::filament.form_helper.only_create') : '';
+            $trans_only_create = 'edit' === $context_custom ? ', '.__('steward::filament.form_helper.only_create') : '';
             $helper = "{$trans_generate}{$trans_slug}{$trans_meta_title}{$trans_only_create}.";
         }
 
@@ -42,10 +42,9 @@ class FilamentForm
             ->afterStateUpdated(function (string $context, Closure $set, $state) use ($slug, $meta_title, $context_custom) {
                 if ($context_custom && $context === $context_custom) {
                     return;
-                } else {
-                    if ($context === 'edit') {
-                        return;
-                    }
+                }
+                if ('edit' === $context) {
+                    return;
                 }
 
                 if ($slug) {
@@ -123,7 +122,7 @@ class FilamentForm
             Forms\Components\TextInput::make('slug')
                 ->label('Metalien')
                 ->required()
-                ->unique(column: 'slug'),
+                ->unique(column: 'slug', ignoreRecord: true),
             Forms\Components\TextInput::make('meta_title')
                 ->label('Titre'),
             Forms\Components\Textarea::make('meta_description')

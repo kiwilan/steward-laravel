@@ -6,10 +6,15 @@ use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
 use Kiwilan\Steward\Enums\BuilderEnum\BuilderVideoEnum;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder;
+use Kiwilan\Steward\Filament\Config\FilamentBuilder\Faker\WordpressBuilderFaker;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder\FilamentBuilderModule;
 
 class WordpressBuilder implements FilamentBuilderModule
 {
+    public const NAME = 'wordpress';
+
+    public const FAKER = WordpressBuilderFaker::class;
+
     public static function make(): array
     {
         return [
@@ -17,6 +22,7 @@ class WordpressBuilder implements FilamentBuilderModule
             WordpressBuilder::paragraph(),
             WordpressBuilder::image(),
             WordpressBuilder::video(),
+            WordpressBuilder::codeBlock(),
             // WordpressBuilder::gallery(),
             // WordpressBuilder::button(),
             // WordpressBuilder::spacer(),
@@ -41,13 +47,13 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
             Forms\Components\Select::make('level')
                 ->options([
-                    'h1' => 'Heading 1',
                     'h2' => 'Heading 2',
                     'h3' => 'Heading 3',
                     'h4' => 'Heading 4',
                     'h5' => 'Heading 5',
                     'h6' => 'Heading 6',
                 ])
+                ->default('h2')
                 ->required(),
         ])
             ->name('heading')
@@ -88,8 +94,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
             Forms\Components\TextInput::make('alt')
                 ->label('Alt Text')
-                ->columnSpan(2)
-                ->required(),
+                ->columnSpan(2),
         ])
             ->name('image')
             ->icon('heroicon-o-photograph')
@@ -117,6 +122,19 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('video')
             ->icon('heroicon-o-video-camera')
+            ->get();
+    }
+
+    public static function codeBlock(): Block
+    {
+        return FilamentBuilder::block([
+            Forms\Components\MarkdownEditor::make('code-block')
+                ->label('Editor')
+                ->columnSpan(2)
+                ->required(),
+        ])
+            ->name('code-block')
+            ->icon('heroicon-o-code')
             ->get();
     }
 }

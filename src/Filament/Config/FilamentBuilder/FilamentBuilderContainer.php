@@ -17,9 +17,7 @@ class FilamentBuilderContainer
 
     public static function make(array $content): self
     {
-        $builder = new FilamentBuilderContainer($content);
-
-        return $builder;
+        return new FilamentBuilderContainer($content);
     }
 
     public function get()
@@ -28,7 +26,6 @@ class FilamentBuilderContainer
             ->blocks([
                 ...$this->content,
             ])
-            ->collapsed()
             ->collapsible()
             ->columnSpan($this->columnSpan);
 
