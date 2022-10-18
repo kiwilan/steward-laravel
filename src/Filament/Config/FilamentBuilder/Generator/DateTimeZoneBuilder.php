@@ -4,89 +4,65 @@ namespace Kiwilan\Steward\Filament\Config\FilamentBuilder\Generator;
 
 use DateTime;
 use DateTimeZone;
+use Illuminate\Support\Str;
 
 class DateTimeZoneBuilder
 {
     protected function __construct(
-        protected array $timezones = [],
+        protected ?string $region = null,
+        protected ?string $city = null,
+        protected ?string $slug = null,
+        protected ?int $offset = null,
+        protected ?string $pretty_offset = null,
+        protected ?string $label = null,
     ) {
     }
 
-    public static function make(bool $full = false): self
+    public static function make(bool $sort_utc = false): array
     {
-        $dtz = new DateTimeZoneBuilder();
-
-        $dtz->timezones = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
-
-        if ($full) {
-            $regions = $dtz->setRegions();
-            $timezones = $dtz->setTimezones($regions);
-            $timezone_offsets = $dtz->setTimezoneOffsets($timezones);
-            $dtz->timezones = $dtz->setTimezoneList($timezone_offsets);
+        $timezones = self::getTimezones();
+        if ($sort_utc) {
+            usort($timezones, fn (DateTimeZoneBuilder $a, DateTimeZoneBuilder $b) => strcmp($a->pretty_offset, $b->pretty_offset));
         }
 
-        return $dtz;
+        $list = [];
+
+        foreach ($timezones as $timezone) {
+            $list[$timezone->slug] = $timezone->label;
+        }
+
+        return $list;
     }
 
     /**
-     * @return array<string>
+     * @return array<DateTimeZoneBuilder>
      */
-    public function getTimezones(): array
+    private static function getTimezones(): array
     {
-        return $this->timezones;
-    }
+        $list = [];
 
-    private function setTimezoneList(array $timezone_offsets): array
-    {
-        $timezone_list = [];
-        foreach ($timezone_offsets as $timezone => $offset) {
-            $offset_prefix = $offset < 0 ? '-' : '+';
-            $offset_formatted = gmdate('H:i', abs($offset));
+        $date_time_zones = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
+        foreach ($date_time_zones as $timezone) {
+            $dtz = new DateTimeZoneBuilder();
 
-            $pretty_offset = "UTC${offset_prefix}${offset_formatted}";
+            $dtz->region = explode('/', $timezone)[0];
+            $dtz->city = explode('/', $timezone)[1] ?? '';
+            $dtz->city = str_replace('_', ' ', $dtz->city);
+            $dtz->slug = Str::slug("{$dtz->region} {$dtz->city}");
 
-            $timezone_list[$timezone] = "(${pretty_offset}) $timezone";
-        }
-
-        return $timezone_list;
-    }
-
-    private function setTimezoneOffsets(array $tz): array
-    {
-        $timezone_offsets = [];
-        foreach ($tz as $timezone) {
             $tz = new DateTimeZone($timezone);
-            $timezone_offsets[$timezone] = $tz->getOffset(new DateTime());
+            $dtz->offset = $tz->getOffset(new DateTime());
+
+            $offset_prefix = $dtz->offset < 0 ? '-' : '+';
+            $offset_formatted = gmdate('H:i', abs($dtz->offset));
+            $dtz->slug = "{$offset_prefix}{$offset_formatted}_{$dtz->slug}";
+
+            $dtz->pretty_offset = "{$offset_prefix}{$offset_formatted}";
+            $dtz->label = "{$dtz->region} {$dtz->city} ({$dtz->pretty_offset})";
+
+            $list[$dtz->slug] = $dtz;
         }
 
-        // sort timezone by offset
-        asort($timezone_offsets);
-
-        return $timezone_offsets;
-    }
-
-    private function setTimezones(array $regions): array
-    {
-        $timezones = [];
-        foreach ($regions as $region) {
-            $timezones = array_merge($timezones, DateTimeZone::listIdentifiers($region));
-        }
-
-        return $timezones;
-    }
-
-    private function setRegions(): array
-    {
-        return [
-            DateTimeZone::AFRICA,
-            DateTimeZone::AMERICA,
-            DateTimeZone::ANTARCTICA,
-            DateTimeZone::ASIA,
-            DateTimeZone::ATLANTIC,
-            DateTimeZone::AUSTRALIA,
-            DateTimeZone::EUROPE,
-            DateTimeZone::INDIAN,
-            DateTimeZone::PACIFIC,
-        ];
+        return $list;
     }
 }

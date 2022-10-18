@@ -18,6 +18,7 @@
     ],
     "require": {
         "php": "^8.1",
+        "filament/spatie-laravel-settings-plugin": "^2.0",
         "guzzlehttp/guzzle": "^7.5",
         "illuminate/contracts": "^9.0",
         "illuminate/database": "^9.18",
@@ -25,8 +26,10 @@
         "livewire/livewire": "^2.10",
         "maatwebsite/excel": "^3.1",
         "psr/simple-cache": "^1.0",
+        "spatie/image": "^2.2",
         "spatie/laravel-package-tools": "^1.9.2",
-        "spatie/laravel-query-builder": "^5.0"
+        "spatie/laravel-query-builder": "^5.0",
+        "spatie/laravel-settings": "^2.4"
     },
     "require-dev": {
         "filament/filament": "^2.15",
