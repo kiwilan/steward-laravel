@@ -8,10 +8,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Imagick;
 use ImagickPixel;
 use Kiwilan\Steward\Settings\GeneralSettings;
-use Log;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 
@@ -98,6 +98,8 @@ class ProcessFavicon implements ShouldQueue
             $path = $png_path;
         }
 
+        Log::info("Generating favicons");
+
         $icons = [
             'android-chrome-192' => [
                 'name' => 'android-chrome-192x192',
@@ -151,7 +153,6 @@ class ProcessFavicon implements ShouldQueue
         ];
 
         foreach ($icons as $icon => $config) {
-            Log::info("Generating favicon: {$icon}");
             $this->iconResize(
                 path: $path,
                 width: $config['width'],

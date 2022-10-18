@@ -10,6 +10,7 @@ use Kiwilan\Steward\Filament\Config\FilamentBuilder\Generator\DateTimeZoneBuilde
 use Kiwilan\Steward\Filament\Config\FilamentLayout;
 use Kiwilan\Steward\Jobs\ProcessFavicon;
 use Kiwilan\Steward\Jobs\ProcessManifest;
+use Kiwilan\Steward\Jobs\ProcessOpenGraph;
 use Kiwilan\Steward\Settings\GeneralSettings;
 use Livewire\TemporaryUploadedFile;
 
@@ -18,6 +19,10 @@ class ManageGeneral extends SettingsPage
     protected static ?string $navigationIcon = 'heroicon-o-cog';
 
     protected static string $settings = GeneralSettings::class;
+
+    protected static ?string $navigationLabel = 'Settings';
+
+    protected static ?string $title = 'Website';
 
     protected function getFormSchema(): array
     {
@@ -77,6 +82,21 @@ class ManageGeneral extends SettingsPage
                     ->after(function () {
                         ProcessManifest::dispatch();
                     }),
+                Forms\Components\FileUpload::make('default_image')
+                    ->label('Site favicon')
+                    ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/webp'])
+                    ->maxSize(1024)
+                    ->disk('public')
+                    ->directory('settings')
+                    ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                        $name = "default.{$file->getClientOriginalExtension()}";
+                        ProcessOpenGraph::dispatch();
+                        return $name;
+                    })
+                    ->columnSpan([
+                        'sm' => 1,
+                        'lg' => 2,
+                    ]),
             ])->width(2)->title('Theme')->get(),
             FilamentLayout::setting([
                 Forms\Components\Repeater::make('social')

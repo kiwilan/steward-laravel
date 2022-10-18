@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Kiwilan\Steward\Settings\GeneralSettings;
 
 class ProcessManifest implements ShouldQueue
@@ -28,6 +29,8 @@ class ProcessManifest implements ShouldQueue
      */
     public function handle()
     {
+        Log::info("Generating manifests");
+
         $settings = app(GeneralSettings::class);
         $this->setBrowserConfig($settings->site_color);
         $this->setSiteWebManifest($settings->site_name, $settings->site_color);
