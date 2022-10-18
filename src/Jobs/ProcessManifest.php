@@ -29,7 +29,7 @@ class ProcessManifest implements ShouldQueue
      */
     public function handle()
     {
-        Log::info("Generating manifests");
+        Log::info('Generating manifests');
 
         $settings = app(GeneralSettings::class);
         $this->setBrowserConfig($settings->site_color);

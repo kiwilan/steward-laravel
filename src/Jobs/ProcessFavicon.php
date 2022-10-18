@@ -98,7 +98,7 @@ class ProcessFavicon implements ShouldQueue
             $path = $png_path;
         }
 
-        Log::info("Generating favicons");
+        Log::info('Generating favicons');
 
         $icons = [
             'android-chrome-192' => [

@@ -91,6 +91,7 @@ class ManageGeneral extends SettingsPage
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
                         $name = "default.{$file->getClientOriginalExtension()}";
                         ProcessOpenGraph::dispatch();
+
                         return $name;
                     })
                     ->columnSpan([
