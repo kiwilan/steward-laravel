@@ -4,7 +4,6 @@ namespace Kiwilan\Steward\Filament\Config\FilamentBuilder\Faker;
 
 use Faker\Generator;
 use Illuminate\Support\Str;
-use Kiwilan\Steward\Filament\Config\FilamentBuilder\FilamentBuilderModule;
 use Kiwilan\Steward\Services\FactoryService;
 
 class WordpressBuilderFaker

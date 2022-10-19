@@ -2,9 +2,10 @@
 
 namespace Kiwilan\Steward\Filament\Config\FilamentBuilder\Modules;
 
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
-use Kiwilan\Steward\Enums\BuilderEnum\BuilderVideoEnum;
+use Kiwilan\Steward\Enums\BuilderEnum\SocialEnum;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder\Faker\WordpressBuilderFaker;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder\FilamentBuilderModule;
@@ -21,7 +22,7 @@ class WordpressBuilder implements FilamentBuilderModule
             WordpressBuilder::heading(),
             WordpressBuilder::paragraph(),
             WordpressBuilder::image(),
-            WordpressBuilder::video(),
+            WordpressBuilder::embedded(),
             WordpressBuilder::codeBlock(),
             // WordpressBuilder::gallery(),
             // WordpressBuilder::button(),
@@ -101,26 +102,33 @@ class WordpressBuilder implements FilamentBuilderModule
             ->get();
     }
 
-    public static function video(): Block
+    public static function embedded(): Block
     {
         return FilamentBuilder::block([
-            Forms\Components\Placeholder::make('helper')
-                ->label('You can use URL `https://www.youtube.com/watch?v=aqz-KE-bpKQ` or ID `aqz-KE-bpKQ`, short link can works too `https://youtu.be/aqz-KE-bpKQ`.')
-                ->columnSpan(2),
-            Forms\Components\TextInput::make('video')
-                ->label('Video URL or ID')
-                ->placeholder('https://www.youtube.com/watch?v=aqz-KE-bpKQ')
-                ->helperText('Enter the URL or ID of the video, ID is the short code at the end of video.')
+            // Forms\Components\Placeholder::make('helper')
+            //     ->label('You can use URL `https://www.youtube.com/watch?v=aqz-KE-bpKQ` or ID `aqz-KE-bpKQ`, short link can works too `https://youtu.be/aqz-KE-bpKQ`.')
+            //     ->columnSpan(2),
+            Forms\Components\TextInput::make('url')
+                ->label('URL of the media')
+                ->placeholder('https://www.example.com/media-id')
+                ->helperText('Set URL of the media you want to embed.')
                 ->columnSpan(2)
+                ->reactive()
+                ->afterStateUpdated(function (Closure $set, $state) {
+                    $enum = SocialEnum::findMedia($state);
+                    if ($enum) {
+                        $set('origin', $enum->value);
+                    }
+                })
                 ->required(),
             Forms\Components\Select::make('origin')
-                ->options(BuilderVideoEnum::toArray())
-                ->helperText("Select the origin of the video. If you don't know, try YouTube first.")
+                ->options(SocialEnum::toArray())
+                ->helperText('Select the website of your media.')
                 ->columnSpan(2)
                 ->required(),
             // TODO try to find the origin from video
         ])
-            ->name('video')
+            ->name('embedded')
             ->icon('heroicon-o-video-camera')
             ->get();
     }

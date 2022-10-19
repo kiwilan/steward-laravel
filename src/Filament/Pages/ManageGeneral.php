@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Filament\Pages;
 
 use Filament\Forms;
 use Filament\Pages\SettingsPage;
-use Kiwilan\Steward\Enums\BuilderEnum\BuilderSocialEnum;
+use Kiwilan\Steward\Enums\BuilderEnum\SocialEnum;
 use Kiwilan\Steward\Enums\LanguageEnum;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder\Generator\DateTimeZoneBuilder;
 use Kiwilan\Steward\Filament\Config\FilamentLayout;
@@ -104,7 +104,7 @@ class ManageGeneral extends SettingsPage
                     ->label('')
                     ->schema([
                         Forms\Components\Select::make('type')
-                            ->options(BuilderSocialEnum::toArray())
+                            ->options(SocialEnum::toArray())
                             ->required()
                             ->columnSpan(1),
                         Forms\Components\TextInput::make('link')
