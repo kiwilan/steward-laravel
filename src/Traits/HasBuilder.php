@@ -22,7 +22,7 @@ trait HasBuilder
         return $this->builder_column ?? $this->default_builder_column;
     }
 
-    public function getBuilderAttribute(): ?stdClass
+    public function getBuilderDataAttribute(): ?stdClass
     {
         $builder_obj = new stdClass();
         $raw_data = $this->{$this->getBuilderColumn()};
