@@ -72,7 +72,6 @@ class SocialService
         // https://open.spotify.com/embed/track/3tlkmfnEvrEyL35tWnqHYl?utm_source=generator
     }
 
-
     // @phpstan-ignore-next-line
     private function twitter()
     {
