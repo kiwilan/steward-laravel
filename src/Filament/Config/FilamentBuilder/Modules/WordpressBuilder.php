@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Filament\Config\FilamentBuilder\Modules;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Builder\Block;
-use Kiwilan\Steward\Enums\BuilderEnum\SocialEnum;
+use Kiwilan\Steward\Enums\SocialEnum;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder\Faker\WordpressBuilderFaker;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder\FilamentBuilderModule;

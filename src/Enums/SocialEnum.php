@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Enums\BuilderEnum;
+namespace Kiwilan\Steward\Enums;
 
 use Kiwilan\Steward\Traits\LazyEnum;
 

@@ -2,7 +2,7 @@
 
 namespace Kiwilan\Steward\Services;
 
-use Kiwilan\Steward\Enums\BuilderEnum\SocialEnum;
+use Kiwilan\Steward\Enums\SocialEnum;
 
 class SocialService
 {

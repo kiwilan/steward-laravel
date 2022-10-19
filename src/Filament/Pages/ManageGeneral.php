@@ -4,8 +4,8 @@ namespace Kiwilan\Steward\Filament\Pages;
 
 use Filament\Forms;
 use Filament\Pages\SettingsPage;
-use Kiwilan\Steward\Enums\BuilderEnum\SocialEnum;
 use Kiwilan\Steward\Enums\LanguageEnum;
+use Kiwilan\Steward\Enums\SocialEnum;
 use Kiwilan\Steward\Filament\Config\FilamentBuilder\Generator\DateTimeZoneBuilder;
 use Kiwilan\Steward\Filament\Config\FilamentLayout;
 use Kiwilan\Steward\Jobs\ProcessFavicon;
