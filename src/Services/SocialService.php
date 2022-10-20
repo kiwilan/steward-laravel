@@ -28,7 +28,6 @@ class SocialService
         // https://vimeo.com/161110645 => https://player.vimeo.com/video/161110645?h=e46badf906
         // https://open.spotify.com/track/3tlkmfnEvrEyL35tWnqHYl?si=96d4c52f62684f31 =>
 
-
         $this->origin = SocialEnum::find($this->url);
 
         $this->url = match ($this->origin) {
