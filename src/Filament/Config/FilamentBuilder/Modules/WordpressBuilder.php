@@ -134,7 +134,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->columnSpan(2)
                 ->reactive()
                 ->afterStateUpdated(function (Closure $set, $state) {
-                    $enum = SocialEnum::findMedia($state);
+                    $enum = SocialEnum::find($state);
                     if ($enum) {
                         $set('origin', $enum->value);
                     }

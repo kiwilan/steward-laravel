@@ -29,7 +29,7 @@ enum SocialEnum: string
     case vimeo = 'vimeo';
     case youtube = 'youtube';
 
-    public static function findMedia(string $url): ?SocialEnum
+    public static function find(string $url): ?SocialEnum
     {
         foreach (SocialEnum::cases() as $enum) {
             if (str_contains($url, $enum->value)) {
