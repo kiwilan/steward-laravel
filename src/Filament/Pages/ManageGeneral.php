@@ -101,13 +101,14 @@ class ManageGeneral extends SettingsPage
             ])->width(2)->title('Theme')->get(),
             FilamentLayout::setting([
                 Forms\Components\Repeater::make('social')
-                    ->label('')
+                    ->label('Links')
                     ->schema([
                         Forms\Components\Select::make('type')
                             ->options(SocialEnum::toArray())
                             ->required()
                             ->columnSpan(1),
-                        Forms\Components\TextInput::make('link')
+                        Forms\Components\TextInput::make('url')
+                            ->name('url')
                             ->url()
                             ->placeholder('https://example.com')
                             ->required()
@@ -117,6 +118,14 @@ class ManageGeneral extends SettingsPage
                     ->columns([
                         'sm' => 1,
                         'lg' => 2,
+                    ]),
+                Forms\Components\CheckboxList::make('social_share')
+                    ->label('Share on')
+                    ->options(SocialEnum::toArray())
+                    ->columnSpan(2)
+                    ->columns([
+                        'sm' => 1,
+                        'lg' => 4,
                     ]),
             ])
                 ->title('Social')

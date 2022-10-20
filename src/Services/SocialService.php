@@ -26,30 +26,77 @@ class SocialService
         // https://www.dailymotion.com/video/x8elgz7 => https://www.dailymotion.com/embed/video/x8elgz7
         // https://www.youtube.com/watch?v=0c9aRUTSV6U => https://www.youtube.com/embed/0c9aRUTSV6U
         // https://vimeo.com/161110645 => https://player.vimeo.com/video/161110645?h=e46badf906
-        // https://open.spotify.com/track/3tlkmfnEvrEyL35tWnqHYl?si=96d4c52f62684f31 => https://open.spotify.com/embed/track/3tlkmfnEvrEyL35tWnqHYl?utm_source=generator
+        // https://open.spotify.com/track/3tlkmfnEvrEyL35tWnqHYl?si=96d4c52f62684f31 =>
+
+        // spotify: les quatre saisons
+        // 'url' => 'https://open.spotify.com/track/6xMpUNOfaSkyywPiFFXZFh'
+        // 'share_url' => 'https://open.spotify.com/track/6xMpUNOfaSkyywPiFFXZFh?si=0ac6060423d540ed'
+        // 'embed' => 'https://open.spotify.com/embed/track/6xMpUNOfaSkyywPiFFXZFh?utm_source=generator'
+
+        // youtube: Les Quatre Saisons de Antonio Vivaldi
+        // 'url' => 'https://www.youtube.com/watch?v=C243DQBfjho'
+        // 'embed' => 'https://www.youtube.com/embed/C243DQBfjho'
+        // 'short_url' => 'https://youtu.be/C243DQBfjho'
+
+        // instagram: operadeparis
+        // 'profile' => 'https://www.instagram.com/operadeparis'
+        // 'post' => 'https://www.instagram.com/reel/CjcnkEXMmSI'
+        // 'post_link' => 'https://www.instagram.com/reel/CjcnkEXMmSI/?utm_source=ig_web_copy_link'
+        // 'post_embed' => 'https://www.instagram.com/reel/CjcnkEXMmSI/?utm_source=ig_embed&amp;utm_campaign=loading'
+
+        // dailymotion: Vivaldi - Les 4 Saisons
+        // 'url' => 'https://www.dailymotion.com/video/x1t5li3'
+        // 'short_url' => 'https://dai.ly/x1t5li3'
+        // 'embed' => 'https://www.dailymotion.com/embed/video/x1t5li3'
+
+        // twitter: Ballet Opéra Paris
+        // 'profile' => 'https://twitter.com/balletoparis'
+        // 'profile_link' => 'https://twitter.com/BalletOParis?s=20&t=kZTtgbvNXVIVkUR5zwNeIw'
+        // 'tweet' => 'https://twitter.com/BalletOParis/status/1580947790250721283'
+        // 'embed' => 'https://twitter.com/BalletOParis/status/1580947790250721283?ref_src=twsrc%5Etfw'
 
         $this->origin = SocialEnum::findMedia($this->url);
 
-        $format = match ($this->origin) {
+        $this->url = match ($this->origin) {
             SocialEnum::dailymotion => $this->dailymotion(),
+            SocialEnum::instagram => null,
+            SocialEnum::facebook => null,
+            SocialEnum::flickr => null,
+            SocialEnum::giphy =>null,
+            SocialEnum::imgur => null,
+            SocialEnum::kickstarter => null,
+            SocialEnum::linkedin => null,
+            SocialEnum::pinterest => null,
+            SocialEnum::reddit => null,
+            SocialEnum::snapchat => null,
+            SocialEnum::soundcloud => null,
+            SocialEnum::spotify => null,
+            SocialEnum::ted => null,
+            SocialEnum::tumblr => null,
+            SocialEnum::tiktok => null,
+            SocialEnum::twitch => null,
+            SocialEnum::twitter => null,
+            SocialEnum::vimeo => null,
             SocialEnum::youtube => $this->youtube(),
             default => null,
         };
     }
 
-    private function dailymotion()
+    private function dailymotion(): ?string
     {
-        $video_id = '';
         if (preg_match('!^.+dailymotion\.com/(video|hub)/([^_]+)[^#]*(#video=([^_&]+))?|(dai\.ly/([^_]+))!', $this->url, $m)) {
             if (isset($m[6])) {
-                $video_id = $m[6];
+                $this->video_id = $m[6];
             }
             if (isset($m[4])) {
-                $video_id = $m[4];
+                $this->video_id = $m[4];
             }
-            $video_id = $m[2];
+            $this->video_id = $m[2];
+
+            return "https://www.dailymotion.com/embed/video/{$this->video_id}";
         }
-        $this->video_id = $video_id;
+
+        return null;
     }
 
     // @phpstan-ignore-next-line
@@ -78,7 +125,7 @@ class SocialService
         // https://publish.twitter.com
     }
 
-    private function youtube()
+    private function youtube(): ?string
     {
         // https://youtu.be/0c9aRUTSV6U
         // https://www.youtube.com/watch?v=0c9aRUTSV6U
@@ -87,7 +134,10 @@ class SocialService
         preg_match("/^(?:http(?:s)?:\\/\\/)?(?:www\\.)?(?:m\\.)?(?:youtu\\.be\\/|youtube\\.com\\/(?:(?:watch)?\\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user|shorts)\\/))([^\\?&\"'>]+)/", $this->url, $matches);
         if (isset($matches[1])) {
             $this->video_id = $matches[1];
-            $this->url = "https://www.youtube.com/embed/{$this->video_id}";
+
+            return "https://www.youtube.com/embed/{$this->video_id}";
         }
+
+        return null;
     }
 }

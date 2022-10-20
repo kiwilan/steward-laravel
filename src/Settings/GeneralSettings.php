@@ -24,7 +24,11 @@ class GeneralSettings extends Settings
 
     public ?string $default_image = '';
 
+    /** @var string[] */
     public array $social = [];
+
+    /** @var string[] */
+    public array $social_share = [];
 
     public static function group(): string
     {

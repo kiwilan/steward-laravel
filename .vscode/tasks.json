@@ -4,6 +4,18 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "COMPOSER install",
+      "type": "shell",
+      "command": "composer install",
+      "problemMatcher": []
+    },
+    {
+      "label": "COMPOSER update",
+      "type": "shell",
+      "command": "composer update",
+      "problemMatcher": []
+    },
+    {
       "label": "tsup build",
       "type": "npm",
       "script": "build",

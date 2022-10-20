@@ -18,6 +18,24 @@ class WordpressBuilder implements FilamentBuilderModule
 
     public static function make(): array
     {
+        // paragraph => editor
+        // codeBlock => markdown
+        // gallery => mosaic, masonry
+        // fichier
+        // audio
+        // button
+        // divider
+        // toggle toc
+        // toggle share
+        // share post
+        // share swiper posts
+        // blockquote => optional
+        // toggle comments
+        // embedded => twitter, youtube, soundcloud, spotify, flickr, vimeo, dailymotion, imgur, kickstarter, pocket casts, reddit, tiktok, ted, tumblr, pinterest, facebook, insta, insta feed, gif, pinterest, podcast player, same article, twitch, snapchat
+        // google map
+        // sondage
+        // money: don, paypal
+
         return [
             WordpressBuilder::heading(),
             WordpressBuilder::paragraph(),
@@ -110,6 +128,7 @@ class WordpressBuilder implements FilamentBuilderModule
             //     ->columnSpan(2),
             Forms\Components\TextInput::make('url')
                 ->label('URL of the media')
+                ->name('url')
                 ->placeholder('https://www.example.com/media-id')
                 ->helperText('Set URL of the media you want to embed.')
                 ->columnSpan(2)
@@ -126,9 +145,8 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->helperText('Select the website of your media.')
                 ->columnSpan(2)
                 ->required(),
-            // TODO try to find the origin from video
         ])
-            ->name('embedded')
+            ->name('embedded_media')
             ->icon('heroicon-o-video-camera')
             ->get();
     }
