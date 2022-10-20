@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Services;
 
+use GuzzleHttp\Client;
 use Kiwilan\Steward\Enums\SocialEnum;
 
 class SocialService
@@ -9,7 +10,13 @@ class SocialService
     protected function __construct(
         protected string $url,
         protected ?string $media_id = null,
-        protected ?SocialEnum $origin = null,
+        protected ?SocialEnum $type = null,
+        protected ?string $embed_url = null,
+        protected ?string $embedded = null,
+        protected string $width = '100%',
+        protected string $height = '500',
+        protected bool $rounded = false,
+        protected string $title = '',
     ) {
     }
 
@@ -23,14 +30,9 @@ class SocialService
 
     private function find()
     {
-        // https://www.dailymotion.com/video/x8elgz7 => https://www.dailymotion.com/embed/video/x8elgz7
-        // https://www.youtube.com/watch?v=0c9aRUTSV6U => https://www.youtube.com/embed/0c9aRUTSV6U
-        // https://vimeo.com/161110645 => https://player.vimeo.com/video/161110645?h=e46badf906
-        // https://open.spotify.com/track/3tlkmfnEvrEyL35tWnqHYl?si=96d4c52f62684f31 =>
+        $this->type = SocialEnum::find($this->url);
 
-        $this->origin = SocialEnum::find($this->url);
-
-        $this->url = match ($this->origin) {
+        $this->embed_url = match ($this->type) {
             SocialEnum::dailymotion => $this->dailymotion(),
             SocialEnum::instagram => null,
             SocialEnum::facebook => null,
@@ -53,6 +55,10 @@ class SocialService
             SocialEnum::youtube => $this->youtube(),
             default => null,
         };
+
+        if ($this->type !== SocialEnum::twitter) {
+            $this->embedded = $this->setHtml();
+        }
     }
 
     private function dailymotion(): ?string
@@ -96,6 +102,14 @@ class SocialService
     private function twitter()
     {
         // https://publish.twitter.com
+        // https://developer.twitter.com/en/docs/twitter-for-websites/embedded-tweets/overview
+        $api = 'https://publish.twitter.com/oembed?url=';
+
+        $client = new Client();
+        $res = $client->get("{$api}{$this->url}");
+        $body = $res->getBody()->getContents();
+
+        // $this->embedded = $body['html'];
     }
 
     private function youtube(): ?string
@@ -112,5 +126,22 @@ class SocialService
         }
 
         return null;
+    }
+
+    private function setHtml()
+    {
+        $this->embedded = <<<HTML
+            <iframe
+                src="{ $this->embed_url }"
+                width="{ $this->width }"
+                height="{ this->height }"
+                src="{ $this->url }"
+                title="{ $this->title }"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+            ></iframe>
+        HTML;
     }
 }
