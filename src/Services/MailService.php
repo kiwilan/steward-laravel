@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Kiwilan\Steward\MailService\MailServer;
+use Kiwilan\Steward\Services\MailService\MailServer;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;

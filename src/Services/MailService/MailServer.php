@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\MailService;
+namespace Kiwilan\Steward\Services\MailService;
 
 interface MailServer
 {

@@ -140,7 +140,7 @@ class WordpressBuilder implements FilamentBuilderModule
                     }
                 })
                 ->required(),
-            Forms\Components\Select::make('origin')
+            Forms\Components\Select::make('type')
                 ->options(SocialEnum::toArray())
                 ->helperText('Select the website of your media.')
                 ->columnSpan(2)
