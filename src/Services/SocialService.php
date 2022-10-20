@@ -62,7 +62,7 @@ class SocialService
             SocialEnum::instagram => null,
             SocialEnum::facebook => null,
             SocialEnum::flickr => null,
-            SocialEnum::giphy =>null,
+            SocialEnum::giphy => null,
             SocialEnum::imgur => null,
             SocialEnum::kickstarter => null,
             SocialEnum::linkedin => null,
