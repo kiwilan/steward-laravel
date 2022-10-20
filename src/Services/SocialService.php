@@ -2,8 +2,8 @@
 
 namespace Kiwilan\Steward\Services;
 
-use GuzzleHttp\Client;
 use Kiwilan\Steward\Enums\SocialEnum;
+use Kiwilan\Steward\Services\OpenGraphService\OpenGraphItem;
 
 class SocialService
 {
@@ -17,6 +17,8 @@ class SocialService
         protected string $height = '500',
         protected bool $rounded = false,
         protected string $title = '',
+        protected bool $is_unknown = false,
+        protected ?OpenGraphItem $openGraph = null,
     ) {
     }
 
@@ -26,6 +28,21 @@ class SocialService
         $service->find();
 
         return $service;
+    }
+
+    public function getEmbedded(): ?string
+    {
+        return $this->embedded;
+    }
+
+    public function getIsUnknown(): bool
+    {
+        return $this->is_unknown;
+    }
+
+    public function getOpenGraph(): ?OpenGraphItem
+    {
+        return $this->openGraph;
     }
 
     private function find()
@@ -45,19 +62,24 @@ class SocialService
             SocialEnum::reddit => null,
             SocialEnum::snapchat => null,
             SocialEnum::soundcloud => null,
-            SocialEnum::spotify => null,
+            SocialEnum::spotify => $this->spotify(),
             SocialEnum::ted => null,
             SocialEnum::tumblr => null,
             SocialEnum::tiktok => null,
             SocialEnum::twitch => null,
-            SocialEnum::twitter => null,
+            SocialEnum::twitter => $this->twitter(),
             SocialEnum::vimeo => null,
             SocialEnum::youtube => $this->youtube(),
-            default => null,
+            default => 'unknown',
         };
 
-        if ($this->type !== SocialEnum::twitter) {
+        if (SocialEnum::twitter !== $this->type) {
             $this->embedded = $this->setHtml();
+        }
+
+        if ('unknown' === $this->embed_url || ! $this->embed_url) {
+            $this->is_unknown = true;
+            $this->unknown();
         }
     }
 
@@ -91,34 +113,39 @@ class SocialService
         // https://www.facebook.com/alicia.carasco/posts/pfbid0qQVtgkX2vt6JQPgv1EsTXCg7WBTKufQB1QaKgjyhq1EMhHjcaxEvzS5kHnUqUwxTl
     }
 
-    // @phpstan-ignore-next-line
     private function spotify()
     {
         // https://open.spotify.com/track/3tlkmfnEvrEyL35tWnqHYl?si=f24863fe8f2f49d3
         // https://open.spotify.com/embed/track/3tlkmfnEvrEyL35tWnqHYl?utm_source=generator
+        $regex = '/^(https:\/\/open.spotify.com\/|user:track:album:artist:playlist:)([a-zA-Z0-9]+)(.*)$/m';
+
+        if (preg_match($regex, $this->url, $matches)) {
+            $type = $matches[2] ?? 'track';
+            $this->media_id = $matches[3]
+                ? str_replace('/', '', $matches[3])
+                : null;
+
+            $embed = "https://open.spotify.com/embed/{$type}/{$this->media_id}?";
+            $embed .= 'utm_source=generator';
+            $embed .= 'theme=1';
+
+            return $embed;
+        }
     }
 
-    // @phpstan-ignore-next-line
     private function twitter()
     {
-        // https://publish.twitter.com
-        // https://developer.twitter.com/en/docs/twitter-for-websites/embedded-tweets/overview
-        $api = 'https://publish.twitter.com/oembed?url=';
+        $og = OpenGraphService::twitter($this->url);
+        $this->media_id = $og->getMediaId();
+        $body = $og->getApi();
 
-        $client = new Client();
-        $res = $client->get("{$api}{$this->url}");
-        $body = $res->getBody()->getContents();
-
-        // $this->embedded = $body['html'];
+        $embedded = $body['html'];
     }
 
     private function youtube(): ?string
     {
-        // https://youtu.be/0c9aRUTSV6U
-        // https://www.youtube.com/watch?v=0c9aRUTSV6U
-        // https://www.youtube.com/embed/0c9aRUTSV6U
-
-        preg_match("/^(?:http(?:s)?:\\/\\/)?(?:www\\.)?(?:m\\.)?(?:youtu\\.be\\/|youtube\\.com\\/(?:(?:watch)?\\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user|shorts)\\/))([^\\?&\"'>]+)/", $this->url, $matches);
+        $regex = "/^(?:http(?:s)?:\\/\\/)?(?:www\\.)?(?:m\\.)?(?:youtu\\.be\\/|youtube\\.com\\/(?:(?:watch)?\\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user|shorts)\\/))([^\\?&\"'>]+)/";
+        preg_match($regex, $this->url, $matches);
         if (isset($matches[1])) {
             $this->media_id = $matches[1];
 
@@ -128,20 +155,34 @@ class SocialService
         return null;
     }
 
-    private function setHtml()
+    private function unknown(): ?OpenGraphItem
     {
-        $this->embedded = <<<HTML
-            <iframe
-                src="{ $this->embed_url }"
-                width="{ $this->width }"
-                height="{ this->height }"
-                src="{ $this->url }"
-                title="{ $this->title }"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                loading="lazy"
-            ></iframe>
-        HTML;
+        $this->openGraph = OpenGraphService::make($this->url);
+
+        return $this->openGraph;
+    }
+
+    private function setHtml(): string
+    {
+        $src = $this->embed_url;
+        $width = $this->width;
+        $height = $this->height;
+        $title = $this->title;
+
+        $allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+
+        $html = '<iframe ';
+        $html .= "src=\"{$src}\" ";
+        $html .= "width=\"{$width}\" ";
+        $html .= "height=\"{$height}\" ";
+        $html .= "title=\"{$title}\" ";
+        $html .= "allow=\"{$allow}\" ";
+        $html .= 'allowfullscreen ';
+        $html .= 'frameborder="0" ';
+        $html .= 'scrolling="no" ';
+        $html .= 'loading="lazy" ';
+        $html .= '></iframe>';
+
+        return $html;
     }
 }
