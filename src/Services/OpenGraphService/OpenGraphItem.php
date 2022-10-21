@@ -28,7 +28,7 @@ class OpenGraphItem
     {
         $og = new OpenGraphItem($url);
 
-        $client = new Client();
+        $client = new Client(['http_errors' => false]);
         $response = $client->get($og->original_url);
         $og->html = $response->getBody()->getContents();
 

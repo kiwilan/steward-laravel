@@ -26,7 +26,7 @@ class OpenGraphService
             return $service->openGraph;
         }
 
-        // TODO twitter webpage into website settings
+        // TODO twitter webpage into website settings, media lozad
         $service->openGraph = OpenGraphItem::make($service->url);
 
         return $service->openGraph;

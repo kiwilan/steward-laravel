@@ -52,6 +52,8 @@ class SocialService
 
     public function getOpenGraph(): ?OpenGraphItem
     {
+        $this->openGraph = OpenGraphService::make($this->url);
+
         return $this->openGraph;
     }
 
@@ -94,7 +96,7 @@ class SocialService
         };
 
         if (! $social) {
-            $this->unknown();
+            $this->is_unknown = true;
         }
     }
 
@@ -182,13 +184,5 @@ class SocialService
         }
 
         return false;
-    }
-
-    private function unknown(): ?OpenGraphItem
-    {
-        $this->is_unknown = true;
-        $this->openGraph = OpenGraphService::make($this->url);
-
-        return $this->openGraph;
     }
 }
