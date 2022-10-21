@@ -42,12 +42,10 @@ class OpenGraphTwitter
         $res = $client->get($endpoint);
         $body = $res->getBody()->getContents();
 
-        if (! $body) {
-            return $twitter;
+        if ($body) {
+            $twitter->api = json_decode($body, true);
+            $twitter->open_graph = $twitter->setOpenGraph();
         }
-
-        $twitter->api = json_decode($body, true);
-        $twitter->open_graph = $twitter->setOpenGraph();
 
         return $twitter;
     }
@@ -77,6 +75,6 @@ class OpenGraphTwitter
 
     private function setDescription(): string
     {
-        return html_entity_decode(strip_tags($this->api['html'] ?? ''));
+        return html_entity_decode(strip_tags($this->api['html']));
     }
 }

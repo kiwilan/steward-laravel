@@ -128,7 +128,7 @@ class SocialService
 
             $embed = "https://open.spotify.com/embed/{$type}/{$this->media_id}?";
             $embed .= 'utm_source=generator';
-            $embed .= 'theme=1';
+            $embed .= '&theme=1';
 
             return $embed;
         }

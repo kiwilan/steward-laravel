@@ -56,14 +56,17 @@ class OpenGraphService
         $service = new OpenGraphService($url);
 
         if (str_contains($service->url, 'twitter')) {
-            return $service->twitter()
+            $service->openGraph = $service->twitter()
                 ->getOpenGraph();
+        } else {
+            $client = new Client();
+            $response = $client->get($url);
+            $service->body = $response->getBody()->getContents();
+            $service->setMetadata();
         }
 
-        $client = new Client();
-        $response = $client->get($url);
-        $service->body = $response->getBody()->getContents();
-        $service->setMetadata();
+        // twitter:site, twitter:creator, twitter:title, twitter:description, twitter:image
+        // TODO meta twitter alt 'twitter:title', twitter webpage into website settings, iframe params to SocialService
 
         return $service->openGraph;
     }
