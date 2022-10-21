@@ -154,9 +154,8 @@ class SocialService
     {
         $twitter = OpenGraphTwitter::make($this->url);
 
-        $this->embedded = $twitter->getHtml();
-        $this->title = $twitter->getOpenGraph()->title;
-        $this->is_embedded = true;
+        $this->embed_url = $twitter->getIframeSrc();
+        $this->is_frame = true;
 
         return true;
     }

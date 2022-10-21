@@ -9,7 +9,7 @@ class OpenGraphTwitter
     protected function __construct(
         protected string $origin_url,
         protected ?string $media_id = null,
-        protected array $api = [],
+        protected array $response = [],
         protected ?OpenGraphItem $open_graph = null,
     ) {
     }
@@ -44,7 +44,7 @@ class OpenGraphTwitter
         $body = $res->getBody()->getContents();
 
         if ($body) {
-            $twitter->api = json_decode($body, true);
+            $twitter->response = json_decode($body, true);
             $twitter->open_graph = $twitter->setOpenGraph();
         }
 
@@ -58,16 +58,29 @@ class OpenGraphTwitter
 
     public function getHtml(): ?string
     {
-        return $this->api['html'] ?? null;
+        return $this->response['html'] ?? null;
+    }
+
+    public function getIframeSrc(): ?string
+    {
+        $html = $this->getHtml();
+        $encoded = rawurlencode($html);
+
+        return "data:text/html;charset=utf-8,{$encoded}";
+    }
+
+    public function getResponse(): array
+    {
+        return $this->response;
     }
 
     private function setOpenGraph(): OpenGraphItem
     {
         $og = new OpenGraphItem($this->origin_url);
 
-        $og->site_name = $this->api['provider_name'] ?? null;
-        $og->title = $this->api['author_name'] ?? null;
-        $og->site_url = $this->api['url'] ?? null;
+        $og->site_name = $this->response['provider_name'] ?? null;
+        $og->title = $this->response['author_name'] ?? null;
+        $og->site_url = $this->response['url'] ?? null;
         $og->description = $this->setDescription();
         $og->theme_color = '#1DA1F2';
 
@@ -76,6 +89,6 @@ class OpenGraphTwitter
 
     private function setDescription(): string
     {
-        return html_entity_decode(strip_tags($this->api['html']));
+        return html_entity_decode(strip_tags($this->response['html']));
     }
 }
