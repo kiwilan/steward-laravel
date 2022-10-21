@@ -24,7 +24,10 @@ class SocialService
 
     public static function make(string $url): self
     {
-        return new SocialService($url);
+        $social = new SocialService($url);
+        $social->find();
+
+        return $social;
     }
 
     public function getEmbedded(): ?string
@@ -62,18 +65,11 @@ class SocialService
         return $this->embed_url;
     }
 
-    public function get(): self
-    {
-        $this->find();
-
-        return $this;
-    }
-
     private function find()
     {
         $this->type = SocialEnum::find($this->url);
 
-        $this->embed_url = match ($this->type) {
+        $social = match ($this->type) {
             SocialEnum::dailymotion => $this->dailymotion(),
             SocialEnum::instagram => null,
             SocialEnum::facebook => null,
@@ -94,34 +90,34 @@ class SocialService
             SocialEnum::twitter => $this->twitter(),
             SocialEnum::vimeo => null,
             SocialEnum::youtube => $this->youtube(),
-            default => 'unknown',
+            default => false,
         };
 
-        if ('unknown' === $this->embed_url) {
-            $this->is_unknown = true;
+        if (! $social) {
             $this->unknown();
-        }
-
-        if ($this->embed_url && $this->type) {
-            $this->is_frame = true;
         }
     }
 
-    private function dailymotion(): ?string
+    private function dailymotion(): bool
     {
-        if (preg_match('!^.+dailymotion\.com/(video|hub)/([^_]+)[^#]*(#video=([^_&]+))?|(dai\.ly/([^_]+))!', $this->url, $m)) {
-            if (isset($m[6])) {
-                $this->media_id = $m[6];
+        // TODO other URL formats
+        $regex = '!^.+dailymotion\.com/(video|hub)/([^_]+)[^#]*(#video=([^_&]+))?|(dai\.ly/([^_]+))!';
+        if (preg_match($regex, $this->url, $matches)) {
+            if (isset($matches[6])) {
+                $this->media_id = $matches[6];
+            } elseif (isset($matches[4])) {
+                $this->media_id = $matches[4];
+            } else {
+                $this->media_id = $matches[2];
             }
-            if (isset($m[4])) {
-                $this->media_id = $m[4];
-            }
-            $this->media_id = $m[2];
 
-            return "https://www.dailymotion.com/embed/video/{$this->media_id}";
+            $this->embed_url = "https://www.dailymotion.com/embed/video/{$this->media_id}";
+            $this->is_frame = true;
+
+            return true;
         }
 
-        return null;
+        return false;
     }
 
     // @phpstan-ignore-next-line
@@ -137,12 +133,11 @@ class SocialService
         // https://www.facebook.com/alicia.carasco/posts/pfbid0qQVtgkX2vt6JQPgv1EsTXCg7WBTKufQB1QaKgjyhq1EMhHjcaxEvzS5kHnUqUwxTl
     }
 
-    private function spotify()
+    private function spotify(): bool
     {
         // https://open.spotify.com/track/3tlkmfnEvrEyL35tWnqHYl?si=f24863fe8f2f49d3
         // https://open.spotify.com/embed/track/3tlkmfnEvrEyL35tWnqHYl?utm_source=generator
         $regex = '/^(https:\/\/open.spotify.com\/|user:track:album:artist:playlist:)([a-zA-Z0-9]+)(.*)$/m';
-
         if (preg_match($regex, $this->url, $matches)) {
             $type = $matches[2] ?? 'track';
             $this->media_id = $matches[3]
@@ -153,34 +148,45 @@ class SocialService
             $embed .= 'utm_source=generator';
             $embed .= '&theme=1';
 
-            return $embed;
+            $this->embed_url = $embed;
+            $this->is_frame = true;
+
+            return true;
         }
+
+        return false;
     }
 
-    private function twitter()
+    private function twitter(): bool
     {
         $twitter = OpenGraphTwitter::make($this->url);
 
+        $this->embedded = $twitter->getHtml();
         $this->title = $twitter->getOpenGraph()->title;
         $this->is_embedded = true;
-        $this->embedded = $twitter->getHtml();
+
+        return true;
     }
 
-    private function youtube(): ?string
+    private function youtube(): bool
     {
         $regex = "/^(?:http(?:s)?:\\/\\/)?(?:www\\.)?(?:m\\.)?(?:youtu\\.be\\/|youtube\\.com\\/(?:(?:watch)?\\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user|shorts)\\/))([^\\?&\"'>]+)/";
-        preg_match($regex, $this->url, $matches);
-        if (isset($matches[1])) {
-            $this->media_id = $matches[1];
+        if (preg_match($regex, $this->url, $matches)) {
+            if (isset($matches[1])) {
+                $this->media_id = $matches[1];
+                $this->embed_url = "https://www.youtube.com/embed/{$this->media_id}";
+                $this->is_frame = true;
 
-            return "https://www.youtube.com/embed/{$this->media_id}";
+                return true;
+            }
         }
 
-        return null;
+        return false;
     }
 
     private function unknown(): ?OpenGraphItem
     {
+        $this->is_unknown = true;
         $this->openGraph = OpenGraphService::make($this->url);
 
         return $this->openGraph;

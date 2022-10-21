@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 class OpenGraphTwitter
 {
     protected function __construct(
+        protected string $origin_url,
         protected ?string $media_id = null,
         protected array $api = [],
         protected ?OpenGraphItem $open_graph = null,
@@ -20,7 +21,7 @@ class OpenGraphTwitter
      */
     public static function make(string $url): self
     {
-        $twitter = new OpenGraphTwitter();
+        $twitter = new OpenGraphTwitter($url);
 
         $regex = '/\\/(\\d+)\\/?$/is';
         if (preg_match($regex, $url, $matches)) {
@@ -62,7 +63,7 @@ class OpenGraphTwitter
 
     private function setOpenGraph(): OpenGraphItem
     {
-        $og = new OpenGraphItem();
+        $og = new OpenGraphItem($this->origin_url);
 
         $og->site_name = $this->api['provider_name'] ?? null;
         $og->title = $this->api['author_name'] ?? null;
