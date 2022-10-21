@@ -14,21 +14,17 @@ class SocialService
         protected ?SocialEnum $type = null,
         protected ?string $embed_url = null,
         protected ?string $embedded = null,
-        protected string $width = '100%',
-        protected string $height = '450',
-        protected bool $rounded = false,
         protected string $title = '',
         protected bool $is_unknown = false,
+        protected bool $is_embedded = false,
+        protected bool $is_frame = false,
         protected ?OpenGraphItem $openGraph = null,
     ) {
     }
 
-    public static function make(string $url): SocialService
+    public static function make(string $url): self
     {
-        $service = new SocialService($url);
-        $service->find();
-
-        return $service;
+        return new SocialService($url);
     }
 
     public function getEmbedded(): ?string
@@ -41,9 +37,36 @@ class SocialService
         return $this->is_unknown;
     }
 
+    public function getIsEmbedded(): bool
+    {
+        return $this->is_embedded;
+    }
+
+    public function getIsFrame(): bool
+    {
+        return $this->is_frame;
+    }
+
     public function getOpenGraph(): ?OpenGraphItem
     {
         return $this->openGraph;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function getEmbedUrl(): ?string
+    {
+        return $this->embed_url;
+    }
+
+    public function get(): self
+    {
+        $this->find();
+
+        return $this;
     }
 
     private function find()
@@ -74,13 +97,13 @@ class SocialService
             default => 'unknown',
         };
 
-        if (SocialEnum::twitter !== $this->type) {
-            $this->embedded = $this->setHtml();
-        }
-
-        if ('unknown' === $this->embed_url || ! $this->embed_url) {
+        if ('unknown' === $this->embed_url) {
             $this->is_unknown = true;
             $this->unknown();
+        }
+
+        if ($this->embed_url && $this->type) {
+            $this->is_frame = true;
         }
     }
 
@@ -134,14 +157,13 @@ class SocialService
         }
     }
 
-    private function twitter(): string
+    private function twitter()
     {
         $twitter = OpenGraphTwitter::make($this->url);
 
         $this->title = $twitter->getOpenGraph()->title;
+        $this->is_embedded = true;
         $this->embedded = $twitter->getHtml();
-
-        return $this->url;
     }
 
     private function youtube(): ?string
@@ -162,29 +184,5 @@ class SocialService
         $this->openGraph = OpenGraphService::make($this->url);
 
         return $this->openGraph;
-    }
-
-    private function setHtml(): string
-    {
-        $src = $this->embed_url;
-        $width = $this->width;
-        $height = $this->height;
-        $title = $this->title;
-
-        $allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-
-        $html = '<iframe ';
-        $html .= "src=\"{$src}\" ";
-        $html .= "width=\"{$width}\" ";
-        $html .= "height=\"{$height}\" ";
-        $html .= "title=\"{$title}\" ";
-        $html .= "allow=\"{$allow}\" ";
-        $html .= 'allowfullscreen ';
-        $html .= 'frameborder="0" ';
-        $html .= 'scrolling="no" ';
-        $html .= 'loading="lazy" ';
-        $html .= '></iframe>';
-
-        return $html;
     }
 }
