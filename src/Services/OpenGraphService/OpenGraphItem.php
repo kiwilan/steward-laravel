@@ -119,9 +119,8 @@ class OpenGraphItem
             return null;
         }
         $value = html_entity_decode($value);
-        $value = iconv('utf-8', 'latin1', $value);
 
-        return $value;
+        return iconv('utf-8', 'UTF-8//IGNORE', $value);
     }
 
     /**

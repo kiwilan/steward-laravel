@@ -64,7 +64,7 @@ class SocialService
 
         $social = match ($this->type) {
             SocialEnum::dailymotion => $this->dailymotion(),
-            SocialEnum::instagram => null,
+            SocialEnum::instagram => $this->instagram(),
             SocialEnum::facebook => null,
             SocialEnum::flickr => null,
             SocialEnum::giphy => null,
@@ -113,10 +113,19 @@ class SocialService
         return false;
     }
 
-    // @phpstan-ignore-next-line
-    private function instagram()
+    private function instagram(): bool
     {
         // https://www.instagram.com/p/BC2_hmZh4K7
+        $regex = '/(?:https?:\/\/www\.)?instagram\.com\S*?\/p\/(\w{11})\/?/';
+        if (preg_match($regex, $this->url, $matches)) {
+            $this->media_id = $matches[1] ?? null;
+            $this->embed_url = "https://www.instagram.com/p/{$this->media_id}/embed";
+            $this->is_frame = true;
+
+            return true;
+        }
+
+        return false;
     }
 
     // @phpstan-ignore-next-line
