@@ -67,7 +67,7 @@ class OpenGraphTwitter
 
         $og->site_name = $this->api['provider_name'] ?? null;
         $og->title = $this->api['author_name'] ?? null;
-        $og->url = $this->api['url'] ?? null;
+        $og->site_url = $this->api['url'] ?? null;
         $og->description = $this->setDescription();
         $og->theme_color = '#1DA1F2';
 

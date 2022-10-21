@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Enums\SocialEnum;
-use Kiwilan\Steward\Services\OpenGraphService\OpenGraphItem;
 use Kiwilan\Steward\Services\OpenGraphService\OpenGraphTwitter;
 
 class SocialService
@@ -18,7 +17,6 @@ class SocialService
         protected bool $is_unknown = false,
         protected bool $is_embedded = false,
         protected bool $is_frame = false,
-        protected ?OpenGraphItem $openGraph = null,
     ) {
     }
 
@@ -48,13 +46,6 @@ class SocialService
     public function getIsFrame(): bool
     {
         return $this->is_frame;
-    }
-
-    public function getOpenGraph(): ?OpenGraphItem
-    {
-        $this->openGraph = OpenGraphService::make($this->url);
-
-        return $this->openGraph;
     }
 
     public function getTitle(): ?string

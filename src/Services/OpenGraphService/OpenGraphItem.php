@@ -16,7 +16,7 @@ class OpenGraphItem
         public ?string $title = null,
         public ?string $description = null,
         public ?string $image = null,
-        public ?string $url = null,
+        public ?string $site_url = null,
         public ?string $type = null,
         public ?string $site_name = null,
         public ?string $locale = null,
@@ -35,7 +35,7 @@ class OpenGraphItem
         $og->meta_values = $og->setMetaValues();
         $og->convertMetaValues();
 
-        $og->url = $og->checkUrl();
+        $og->site_url = $og->checkUrl();
         $og->image = $og->checkImage();
 
         return $og;
@@ -69,7 +69,7 @@ class OpenGraphItem
                 $xpath->query('//meta[@property="og:image"]/@content'),
                 $xpath->query('//meta[@name="twitter:image"]/@content'),
             ],
-            'url' => [
+            'site_url' => [
                 $xpath->query('//meta[@property="og:url"]/@content'),
                 $xpath->query('//meta[@property="twitter:url"]/@content'),
             ],
@@ -104,7 +104,7 @@ class OpenGraphItem
         $this->title = $this->convertMetaValue('title');
         $this->description = $this->convertMetaValue('description');
         $this->image = $this->convertMetaValue('image');
-        $this->url = $this->convertMetaValue('url');
+        $this->site_url = $this->convertMetaValue('site_url');
         $this->type = $this->convertMetaValue('type');
         $this->site_name = $this->convertMetaValue('site_name');
         $this->locale = $this->convertMetaValue('locale');
@@ -140,15 +140,15 @@ class OpenGraphItem
 
     private function checkUrl(): string
     {
-        return filter_var($this->url, FILTER_VALIDATE_URL)
-            ? $this->url
+        return filter_var($this->site_url, FILTER_VALIDATE_URL)
+            ? $this->site_url
             : rtrim($this->original_url, '/');
     }
 
     private function checkImage(): ?string
     {
         if (0 === strpos($this->image, '/')) {
-            return "{$this->url}{$this->image}";
+            return "{$this->site_url}{$this->image}";
         }
 
         return $this->image;
