@@ -4,6 +4,7 @@ namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Enums\SocialEnum;
 use Kiwilan\Steward\Services\OpenGraphService\OpenGraphItem;
+use Kiwilan\Steward\Services\OpenGraphService\OpenGraphTwitter;
 
 class SocialService
 {
@@ -14,7 +15,7 @@ class SocialService
         protected ?string $embed_url = null,
         protected ?string $embedded = null,
         protected string $width = '100%',
-        protected string $height = '500',
+        protected string $height = '450',
         protected bool $rounded = false,
         protected string $title = '',
         protected bool $is_unknown = false,
@@ -133,13 +134,14 @@ class SocialService
         }
     }
 
-    private function twitter()
+    private function twitter(): string
     {
-        $og = OpenGraphService::twitter($this->url);
-        $this->media_id = $og->getMediaId();
-        $body = $og->getApi();
+        $twitter = OpenGraphTwitter::make($this->url);
 
-        $embedded = $body['html'];
+        $this->title = $twitter->getOpenGraph()->title;
+        $this->embedded = $twitter->getHtml();
+
+        return $this->url;
     }
 
     private function youtube(): ?string

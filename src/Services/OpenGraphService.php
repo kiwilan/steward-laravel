@@ -47,12 +47,18 @@ class OpenGraphService
         protected string $url,
         protected ?string $body = null,
         protected ?OpenGraphItem $openGraph = null,
+        protected bool $is_twitter = false,
     ) {
     }
 
-    public static function make(string $url)
+    public static function make(string $url): ?OpenGraphItem
     {
         $service = new OpenGraphService($url);
+
+        if (str_contains($service->url, 'twitter')) {
+            return $service->twitter()
+                ->getOpenGraph();
+        }
 
         $client = new Client();
         $response = $client->get($url);
@@ -62,20 +68,20 @@ class OpenGraphService
         return $service->openGraph;
     }
 
-    public static function twitter(string $url): OpenGraphTwitter
+    private function twitter(): OpenGraphTwitter
     {
-        return OpenGraphTwitter::make($url);
+        $this->is_twitter = true;
+
+        return OpenGraphTwitter::make($this->url);
     }
 
     private function setMetadata(): self
     {
         $this->openGraph = new OpenGraphItem();
 
-        dump($this->body);
         foreach (self::OPEN_GRAPH_META as $property => $meta) {
             $this->openGraph->{$property} = $this->extract($meta['name'], $meta['type']);
         }
-        dump($this->openGraph);
 
         return $this;
     }

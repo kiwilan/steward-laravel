@@ -9,6 +9,7 @@ class OpenGraphTwitter
     protected function __construct(
         protected ?string $media_id = null,
         protected array $api = [],
+        protected ?OpenGraphItem $open_graph = null,
     ) {
     }
 
@@ -19,11 +20,11 @@ class OpenGraphTwitter
      */
     public static function make(string $url): self
     {
-        $og = new OpenGraphTwitter();
+        $twitter = new OpenGraphTwitter();
 
         $regex = '/\\/(\\d+)\\/?$/is';
         if (preg_match($regex, $url, $matches)) {
-            $og->media_id = $matches[1]
+            $twitter->media_id = $matches[1]
                 ? $matches[1]
                 : ($matches[0] ?? null);
         }
@@ -40,22 +41,42 @@ class OpenGraphTwitter
 
         $res = $client->get($endpoint);
         $body = $res->getBody()->getContents();
+
         if (! $body) {
-            return $og;
+            return $twitter;
         }
 
-        $og->media_id = json_decode($body, true);
+        $twitter->api = json_decode($body, true);
+        $twitter->open_graph = $twitter->setOpenGraph();
+
+        return $twitter;
+    }
+
+    public function getOpenGraph(): ?OpenGraphItem
+    {
+        return $this->open_graph;
+    }
+
+    public function getHtml(): ?string
+    {
+        return $this->api['html'] ?? null;
+    }
+
+    private function setOpenGraph(): OpenGraphItem
+    {
+        $og = new OpenGraphItem();
+
+        $og->site_name = $this->api['provider_name'] ?? null;
+        $og->title = $this->api['author_name'] ?? null;
+        $og->url = $this->api['url'] ?? null;
+        $og->description = $this->setDescription();
+        $og->theme_color = '#1DA1F2';
 
         return $og;
     }
 
-    public function getMediaId(): ?string
+    private function setDescription(): string
     {
-        return $this->media_id;
-    }
-
-    public function getApi(): array
-    {
-        return $this->api;
+        return html_entity_decode(strip_tags($this->api['html'] ?? ''));
     }
 }

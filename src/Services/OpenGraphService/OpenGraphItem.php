@@ -15,4 +15,9 @@ class OpenGraphItem
         public ?string $theme_color = null,
     ) {
     }
+
+    public function isEmpty()
+    {
+        return empty($this->title) && empty($this->description) && empty($this->image);
+    }
 }
