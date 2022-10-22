@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 
 /**
  * Use your own Iframely instance
+ *
  * @see https://iframely.com/docs/host
  */
 class IframelyService
@@ -19,11 +20,11 @@ class IframelyService
     }
 
     /**
-     * @param string $api Iframely instance to use, can be set from `steward.iframely.api`
+     * @param  string  $api Iframely instance to use, can be set from `steward.iframely.api`
      */
     public static function make(?string $api = null): self
     {
-        if (!$api) {
+        if (! $api) {
             $api = config('steward.iframely.api');
         }
 
