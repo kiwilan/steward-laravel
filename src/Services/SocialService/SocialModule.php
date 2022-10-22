@@ -2,8 +2,6 @@
 
 namespace Kiwilan\Steward\Services\SocialService;
 
-use Kiwilan\Steward\Services\SocialService\SocialServiceHtml;
-
 abstract class SocialModule
 {
     protected function __construct(
