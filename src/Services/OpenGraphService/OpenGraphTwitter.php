@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Services\OpenGraphService;
 
-use GuzzleHttp\Client;
 use Kiwilan\Steward\Services\SocialService\SocialServiceTwitter;
 
 class OpenGraphTwitter

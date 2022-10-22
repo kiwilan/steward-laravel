@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Enums\SocialEnum;
-use Kiwilan\Steward\Services\OpenGraphService\OpenGraphTwitter;
 use Kiwilan\Steward\Services\SocialService\Modules\SocialTwitter;
 use Kiwilan\Steward\Services\SocialService\Modules\SocialYoutube;
 
