@@ -8,7 +8,7 @@ class SocialServiceHtml
 {
     protected function __construct(
         protected SocialModule $social,
-        protected string $src,
+        protected ?string $src = null,
         protected int $width = 400,
         protected int $height = 500,
         protected string $title = '',
@@ -16,14 +16,15 @@ class SocialServiceHtml
     ) {
     }
 
-    public static function make(SocialModule $social, string $src): self
+    public static function make(SocialModule $social): ?string
     {
-        $html = new SocialServiceHtml($social, $src);
+        $html = new SocialServiceHtml($social);
+        $html->src = $social->getEmbedUrl();
 
-        return $html;
+        return $html->getHtml();
     }
 
-    public function getHtml(): string
+    private function getHtml(): string
     {
         if ($this->social->getHtmlIsCustom()) {
             return $this->social->getHtml();
@@ -37,15 +38,15 @@ class SocialServiceHtml
         return <<<HTML
             <div align="center">
                 <iframe
-                    src="{ $this->src }"
-                    width="{ $this->width }"
-                    height="{ $this->height }"
-                    title="{ $this->title }"
+                    src="{$this->src}"
+                    width="{$this->width}"
+                    height="{$this->height}"
+                    title="{$this->title}"
                     style="border:none"
                     scrolling="no"
                     frameborder="0"
                     allowfullscreen
-                    allow="{ $this->allow }"
+                    allow="{$this->allow}"
                     loading="lazy"
                 ></iframe>
             </div>

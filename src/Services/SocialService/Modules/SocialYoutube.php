@@ -8,6 +8,7 @@ class SocialYoutube extends SocialModule implements SocialInterface
     {
         $module = new SocialYoutube($url);
         $module->regex();
+        $module->setHtml();
 
         return $module;
     }

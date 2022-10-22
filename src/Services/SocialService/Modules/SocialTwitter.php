@@ -18,6 +18,10 @@ class SocialTwitter extends SocialModule implements SocialInterface
         $module = new SocialTwitter($url);
         $module->regex();
 
+        $html = $module->social->getHtml();
+        $module->html = $module->html($html);
+        $module->html_is_custom = true;
+
         return $module;
     }
 
@@ -27,22 +31,13 @@ class SocialTwitter extends SocialModule implements SocialInterface
         $this->media_id = $this->social->getMediaId();
         $this->embed_url = $this->social->getEmbedUrl();
         $this->is_valid = $this->social->getIsValid();
-
-        $html = $this->social->getHtml();
-        $this->html = $this->html($html);
-        $this->html_is_custom = true;
     }
 
     private function html(?string $html = null)
     {
         return <<<HTML
-            <div>
-                {!! $html !!}
-                <script
-                    async
-                    src="https://platform.twitter.com/widgets.js"
-                    charset="utf-8"
-                ></script>
+            <div align="center">
+                {$html}
             </div>
         HTML;
     }

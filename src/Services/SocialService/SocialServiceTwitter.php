@@ -10,7 +10,7 @@ class SocialServiceTwitter
         protected string $url,
         protected ?string $media_id = null,
         protected ?string $embed_url = null,
-        protected array $response = [],
+        protected ?array $response = [],
         protected bool $is_valid = false,
     ) {
     }
@@ -68,16 +68,17 @@ class SocialServiceTwitter
 
         $client = new Client(['http_errors' => false]);
 
-        $this->embed_url = "https://publish.twitter.com/oembed?url={$this->url}";
-        $response = $client->get($this->embed_url, [
-            'query' => [
-                'align' => 'center',
-                'conversation' => 'none',
-                'hide_media' => 'true',
-                'lang' => 'fr',
-                'theme' => 'dark',
-            ],
+        $url = "https://publish.twitter.com/oembed?url={$this->url}";
+        $query = http_build_query([
+            'align' => 'center',
+            'conversation' => 'none',
+            'hide_media' => 'true',
+            'lang' => 'fr',
+            'theme' => 'dark',
+            'omit_script' => true,
         ]);
+        $this->embed_url = "{$url}?{$query}";
+        $response = $client->get($this->embed_url);
 
         $body = $response->getBody()->getContents();
         $this->response = json_decode($body, true);

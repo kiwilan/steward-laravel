@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Enums\SocialEnum;
+use Kiwilan\Steward\Services\SocialService\Modules\SocialModule;
 use Kiwilan\Steward\Services\SocialService\Modules\SocialTwitter;
 use Kiwilan\Steward\Services\SocialService\Modules\SocialYoutube;
 
@@ -17,13 +18,14 @@ class SocialService
         protected bool $is_unknown = false,
         protected bool $is_frame = false,
         protected bool $is_custom = false,
+        public ?SocialModule $module = null,
     ) {
     }
 
     public static function make(string $url): self
     {
         $social = new SocialService($url);
-        $social->find();
+        $social->module = $social->setModule();
 
         return $social;
     }
@@ -53,11 +55,16 @@ class SocialService
         return $this->embed_url;
     }
 
-    private function find()
+    public function getType(): ?SocialEnum
+    {
+        return $this->type;
+    }
+
+    private function setModule()
     {
         $this->type = SocialEnum::find($this->url);
 
-        $social = match ($this->type) {
+        return match ($this->type) {
             SocialEnum::dailymotion => $this->dailymotion(),
             SocialEnum::instagram => $this->instagram(),
             SocialEnum::facebook => $this->facebook(),
@@ -80,10 +87,6 @@ class SocialService
             SocialEnum::youtube => SocialYoutube::make($this->url),
             default => false,
         };
-
-        if (! $social) {
-            $this->is_unknown = true;
-        }
     }
 
     private function dailymotion(): bool

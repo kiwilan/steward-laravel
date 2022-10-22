@@ -2,12 +2,15 @@
 
 namespace Kiwilan\Steward\Services\SocialService\Modules;
 
+use Kiwilan\Steward\Services\SocialService\SocialServiceHtml;
+
 abstract class SocialModule
 {
     protected function __construct(
         protected string $url,
         protected ?string $media_id = null,
         protected ?string $embed_url = null,
+        protected ?string $src = null,
         protected bool $is_valid = false,
         //
         protected ?string $html = null,
@@ -38,5 +41,10 @@ abstract class SocialModule
     public function getHtmlIsCustom(): bool
     {
         return $this->html_is_custom;
+    }
+
+    public function setHtml()
+    {
+        $this->html = SocialServiceHtml::make($this);
     }
 }
