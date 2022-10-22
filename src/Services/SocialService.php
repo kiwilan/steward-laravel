@@ -4,6 +4,8 @@ namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Enums\SocialEnum;
 use Kiwilan\Steward\Services\OpenGraphService\OpenGraphTwitter;
+use Kiwilan\Steward\Services\SocialService\Modules\SocialTwitter;
+use Kiwilan\Steward\Services\SocialService\Modules\SocialYoutube;
 
 class SocialService
 {
@@ -12,11 +14,10 @@ class SocialService
         protected ?string $media_id = null,
         protected ?SocialEnum $type = null,
         protected ?string $embed_url = null,
-        protected ?string $embedded = null,
         protected string $title = '',
         protected bool $is_unknown = false,
-        protected bool $is_embedded = false,
         protected bool $is_frame = false,
+        protected bool $is_custom = false,
     ) {
     }
 
@@ -28,19 +29,14 @@ class SocialService
         return $social;
     }
 
-    public function getEmbedded(): ?string
-    {
-        return $this->embedded;
-    }
-
     public function getIsUnknown(): bool
     {
         return $this->is_unknown;
     }
 
-    public function getIsEmbedded(): bool
+    public function getIsCustom(): bool
     {
-        return $this->is_embedded;
+        return $this->is_custom;
     }
 
     public function getIsFrame(): bool
@@ -65,7 +61,7 @@ class SocialService
         $social = match ($this->type) {
             SocialEnum::dailymotion => $this->dailymotion(),
             SocialEnum::instagram => $this->instagram(),
-            SocialEnum::facebook => null,
+            SocialEnum::facebook => $this->facebook(),
             SocialEnum::flickr => null,
             SocialEnum::giphy => null,
             SocialEnum::imgur => null,
@@ -80,9 +76,9 @@ class SocialService
             SocialEnum::tumblr => null,
             SocialEnum::tiktok => null,
             SocialEnum::twitch => null,
-            SocialEnum::twitter => $this->twitter(),
+            SocialEnum::twitter => SocialTwitter::make($this->url),
             SocialEnum::vimeo => null,
-            SocialEnum::youtube => $this->youtube(),
+            SocialEnum::youtube => SocialYoutube::make($this->url),
             default => false,
         };
 
@@ -120,7 +116,7 @@ class SocialService
         if (preg_match($regex, $this->url, $matches)) {
             $this->media_id = $matches[1] ?? null;
             $this->embed_url = "https://www.instagram.com/p/{$this->media_id}/embed";
-            $this->is_frame = true;
+            $this->is_custom = true;
 
             return true;
         }
@@ -128,11 +124,18 @@ class SocialService
         return false;
     }
 
-    // @phpstan-ignore-next-line
-    private function facebook()
+    private function facebook(): bool
     {
-        // <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Falicia.carasco%2Fposts%2Fpfbid0qQVtgkX2vt6JQPgv1EsTXCg7WBTKufQB1QaKgjyhq1EMhHjcaxEvzS5kHnUqUwxTl&show_text=true&width=500" width="500" height="736" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-        // https://www.facebook.com/alicia.carasco/posts/pfbid0qQVtgkX2vt6JQPgv1EsTXCg7WBTKufQB1QaKgjyhq1EMhHjcaxEvzS5kHnUqUwxTl
+        $regex = '/(?:https?:\/\/(?:www|m|mbasic|business)\.(?:facebook|fb)\.com\/)(?:photo(?:\.php|s)|permalink\.php|video\.php|media|watch\/|questions|notes|[^\/]+\/(?:activity|posts|videos|photos))[\/?](?:fbid=|story_fbid=|id=|b=|v=|)(?|([0-9]+)|[^\/]+\/(\d+))/';
+        if (preg_match($regex, $this->url, $matches)) {
+            $this->media_id = $matches[1] ?? null;
+            $this->embed_url = "https://www.facebook.com/plugins/post.php?href={$this->url}&show_text=true&width=500";
+            $this->is_frame = true;
+
+            return true;
+        }
+
+        return false;
     }
 
     private function spotify(): bool
@@ -154,32 +157,6 @@ class SocialService
             $this->is_frame = true;
 
             return true;
-        }
-
-        return false;
-    }
-
-    private function twitter(): bool
-    {
-        $twitter = OpenGraphTwitter::make($this->url);
-
-        $this->embed_url = $twitter->getIframeSrc();
-        $this->is_frame = true;
-
-        return true;
-    }
-
-    private function youtube(): bool
-    {
-        $regex = "/^(?:http(?:s)?:\\/\\/)?(?:www\\.)?(?:m\\.)?(?:youtu\\.be\\/|youtube\\.com\\/(?:(?:watch)?\\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user|shorts)\\/))([^\\?&\"'>]+)/";
-        if (preg_match($regex, $this->url, $matches)) {
-            if (isset($matches[1])) {
-                $this->media_id = $matches[1];
-                $this->embed_url = "https://www.youtube.com/embed/{$this->media_id}";
-                $this->is_frame = true;
-
-                return true;
-            }
         }
 
         return false;
