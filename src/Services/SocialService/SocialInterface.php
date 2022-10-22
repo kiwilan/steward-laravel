@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\SocialService\Modules;
+namespace Kiwilan\Steward\Services\SocialService;
 
 interface SocialInterface
 {

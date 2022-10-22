@@ -2,6 +2,8 @@
 
 namespace Kiwilan\Steward\Services\SocialService\Modules;
 
+use Kiwilan\Steward\Services\SocialService\SocialInterface;
+use Kiwilan\Steward\Services\SocialService\SocialModule;
 use Kiwilan\Steward\Services\SocialService\SocialServiceTwitter;
 
 class SocialTwitter extends SocialModule implements SocialInterface

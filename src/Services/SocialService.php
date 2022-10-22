@@ -3,9 +3,8 @@
 namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Enums\SocialEnum;
-use Kiwilan\Steward\Services\SocialService\Modules\SocialModule;
-use Kiwilan\Steward\Services\SocialService\Modules\SocialTwitter;
-use Kiwilan\Steward\Services\SocialService\Modules\SocialYoutube;
+use Kiwilan\Steward\Services\SocialService\Modules\{SocialDailymotion,SocialDefault,SocialFacebook,SocialFlickr,SocialGiphy,SocialImgur,SocialInstagram,SocialKickstarter,SocialLinkedin,SocialPinterest,SocialReddit,SocialSnapchat,SocialSoundcloud,SocialSpotify,SocialTed,SocialTiktok,SocialTumblr,SocialTwitch,SocialTwitter,SocialVimeo,SocialYoutube};
+use Kiwilan\Steward\Services\SocialService\SocialModule;
 
 class SocialService
 {
@@ -65,102 +64,27 @@ class SocialService
         $this->type = SocialEnum::find($this->url);
 
         return match ($this->type) {
-            SocialEnum::dailymotion => $this->dailymotion(),
-            SocialEnum::instagram => $this->instagram(),
-            SocialEnum::facebook => $this->facebook(),
-            SocialEnum::flickr => null,
-            SocialEnum::giphy => null,
-            SocialEnum::imgur => null,
-            SocialEnum::kickstarter => null,
-            SocialEnum::linkedin => null,
-            SocialEnum::pinterest => null,
-            SocialEnum::reddit => null,
-            SocialEnum::snapchat => null,
-            SocialEnum::soundcloud => null,
-            SocialEnum::spotify => $this->spotify(),
-            SocialEnum::ted => null,
-            SocialEnum::tumblr => null,
-            SocialEnum::tiktok => null,
-            SocialEnum::twitch => null,
+            SocialEnum::dailymotion => SocialDailymotion::make($this->url),
+            SocialEnum::instagram => SocialInstagram::make($this->url),
+            SocialEnum::facebook => SocialFacebook::make($this->url),
+            SocialEnum::flickr => SocialFlickr::make($this->url),
+            SocialEnum::giphy => SocialGiphy::make($this->url),
+            SocialEnum::imgur => SocialImgur::make($this->url),
+            SocialEnum::kickstarter => SocialKickstarter::make($this->url),
+            SocialEnum::linkedin => SocialLinkedin::make($this->url),
+            SocialEnum::pinterest => SocialPinterest::make($this->url),
+            SocialEnum::reddit => SocialReddit::make($this->url),
+            SocialEnum::snapchat => SocialSnapchat::make($this->url),
+            SocialEnum::soundcloud => SocialSoundcloud::make($this->url),
+            SocialEnum::spotify => SocialSpotify::make($this->url),
+            SocialEnum::ted => SocialTed::make($this->url),
+            SocialEnum::tumblr => SocialTumblr::make($this->url),
+            SocialEnum::tiktok => SocialTiktok::make($this->url),
+            SocialEnum::twitch => SocialTwitch::make($this->url),
             SocialEnum::twitter => SocialTwitter::make($this->url),
-            SocialEnum::vimeo => null,
+            SocialEnum::vimeo => SocialVimeo::make($this->url),
             SocialEnum::youtube => SocialYoutube::make($this->url),
-            default => false,
+            default => SocialDefault::make($this->url),
         };
-    }
-
-    private function dailymotion(): bool
-    {
-        // TODO other URL formats
-        $regex = '!^.+dailymotion\.com/(video|hub)/([^_]+)[^#]*(#video=([^_&]+))?|(dai\.ly/([^_]+))!';
-        if (preg_match($regex, $this->url, $matches)) {
-            if (isset($matches[6])) {
-                $this->media_id = $matches[6];
-            } elseif (isset($matches[4])) {
-                $this->media_id = $matches[4];
-            } else {
-                $this->media_id = $matches[2];
-            }
-
-            $this->embed_url = "https://www.dailymotion.com/embed/video/{$this->media_id}";
-            $this->is_frame = true;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private function instagram(): bool
-    {
-        // https://www.instagram.com/p/BC2_hmZh4K7
-        $regex = '/(?:https?:\/\/www\.)?instagram\.com\S*?\/p\/(\w{11})\/?/';
-        if (preg_match($regex, $this->url, $matches)) {
-            $this->media_id = $matches[1] ?? null;
-            $this->embed_url = "https://www.instagram.com/p/{$this->media_id}/embed";
-            $this->is_custom = true;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private function facebook(): bool
-    {
-        $regex = '/(?:https?:\/\/(?:www|m|mbasic|business)\.(?:facebook|fb)\.com\/)(?:photo(?:\.php|s)|permalink\.php|video\.php|media|watch\/|questions|notes|[^\/]+\/(?:activity|posts|videos|photos))[\/?](?:fbid=|story_fbid=|id=|b=|v=|)(?|([0-9]+)|[^\/]+\/(\d+))/';
-        if (preg_match($regex, $this->url, $matches)) {
-            $this->media_id = $matches[1] ?? null;
-            $this->embed_url = "https://www.facebook.com/plugins/post.php?href={$this->url}&show_text=true&width=500";
-            $this->is_frame = true;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private function spotify(): bool
-    {
-        // https://open.spotify.com/track/3tlkmfnEvrEyL35tWnqHYl?si=f24863fe8f2f49d3
-        // https://open.spotify.com/embed/track/3tlkmfnEvrEyL35tWnqHYl?utm_source=generator
-        $regex = '/^(https:\/\/open.spotify.com\/|user:track:album:artist:playlist:)([a-zA-Z0-9]+)(.*)$/m';
-        if (preg_match($regex, $this->url, $matches)) {
-            $type = $matches[2] ?? 'track';
-            $this->media_id = $matches[3]
-                ? str_replace('/', '', $matches[3])
-                : null;
-
-            $embed = "https://open.spotify.com/embed/{$type}/{$this->media_id}?";
-            $embed .= 'utm_source=generator';
-            $embed .= '&theme=1';
-
-            $this->embed_url = $embed;
-            $this->is_frame = true;
-
-            return true;
-        }
-
-        return false;
     }
 }

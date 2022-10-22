@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\SocialService\Modules;
+namespace Kiwilan\Steward\Services\SocialService;
 
 use Kiwilan\Steward\Services\SocialService\SocialServiceHtml;
 
