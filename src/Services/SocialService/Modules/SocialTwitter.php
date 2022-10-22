@@ -33,7 +33,7 @@ class SocialTwitter extends SocialModule implements SocialInterface
         $this->html_is_custom = true;
     }
 
-    private function html(string $html)
+    private function html(?string $html = null)
     {
         return <<<HTML
             <div>
