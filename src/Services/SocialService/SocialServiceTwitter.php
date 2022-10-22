@@ -43,7 +43,7 @@ class SocialServiceTwitter
         return $this->is_valid;
     }
 
-    public function getHtml(): string
+    public function getHtml(): ?string
     {
         return $this->response['html'] ?? null;
     }
