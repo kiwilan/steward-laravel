@@ -4,26 +4,47 @@ namespace Kiwilan\Steward\Services;
 
 use GuzzleHttp\Client;
 
+/**
+ * Use your own Iframely instance
+ * @see https://iframely.com/docs/host
+ */
 class IframelyService
 {
     protected function __construct(
         protected string $base_uri,
         protected Client $client,
-        protected ?string $media_url = null,
+        protected ?string $api_key = null,
+        protected bool $omit_script = false,
     ) {
     }
 
-    public static function make(): self
+    /**
+     * @param string $api Iframely instance to use, can be set from `steward.iframely.api`
+     */
+    public static function make(?string $api = null): self
     {
-        $api = config('steward.iframely.api');
+        if (!$api) {
+            $api = config('steward.iframely.api');
+        }
+
+        $api_key = config('steward.iframely.key');
+
         $client = new Client([
             'base_uri' => $api,
             'http_errors' => false,
         ]);
 
         $iframely = new IframelyService($api, $client);
+        $iframely->api_key = $api_key;
 
         return $iframely;
+    }
+
+    public function omitScript(bool $omit_script): self
+    {
+        $this->omit_script = $omit_script;
+
+        return $this;
     }
 
     /**
@@ -32,10 +53,15 @@ class IframelyService
      */
     public function get(string $media_url, string $endpoint = 'oembed'): array
     {
-        $query = http_build_query([
+        $query = [
             'url' => $media_url,
-        ]);
-        $api = "/{$endpoint}?{$query}";
+            'api_key' => $this->api_key,
+        ];
+        if ($this->omit_script) {
+            $query['omit_script'] = 1;
+        }
+        $query_params = http_build_query($query);
+        $api = "/{$endpoint}?{$query_params}";
 
         $response = $this->client->get($api);
         $body = $response->getBody()->getContents();

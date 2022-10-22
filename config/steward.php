@@ -155,5 +155,6 @@ return [
 
     'iframely' => [
         'api' => env('STEWARD_IFRAMELY_API', 'https://iframely.com'),
+        'key' => env('STEWARD_IFRAMELY_KEY', null),
     ],
 ];
