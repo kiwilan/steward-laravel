@@ -11,7 +11,7 @@ abstract class SocialModule
         protected bool $is_valid = false,
         //
         protected ?string $html = null,
-        protected bool $html_is_custom = null,
+        protected bool $html_is_custom = false,
     ) {
     }
 
