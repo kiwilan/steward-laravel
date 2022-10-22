@@ -25,7 +25,11 @@
       "https://www.facebook.com/operadeparis/posts/pfbid02XTQ4NjNTBysSVFvbGX6zH3AYCya6Jmu5KqZtAoTn6woHwHaCLxT9eATc3Pt2zmSDl"
     ]
   },
-  "flickr": {},
+  "flickr": {
+    "label": "Opera",
+    "url": "https://www.flickr.com/photos/jmlpyt/52419782706/in/photolist-2nTqZei-2nSa681-2nSN6m5-2nSAps9-2nUhL1U-2nSoBzm-2nTbu9B-2nShhsg-2nTAxTW-2nSTCxn-2nTtnAx-2nTHZLX-2nTR15a-2nU9WAe-2nQyt4v-2nPXSHW-2nP63Sf-2nRFz9W-2nS5dzE-2nRzwtk-2nQVwGX-2nSZbAr-2nNJrtJ-2nPfvqv-2nQF5PX-2nQF77p-2nPSyCz-2nTkzfw-2nTd2gL-2nPPo6U-2nQxHGt-2nRwHBj-2nT3NdH-2nSukFw-2nTyG4L-2nNFHvE-2nQkB7Y-2nT6ANM-2nT8nBS-2ietoZN-2nQbxPq-2nNFFXV-2nQTxYm-2nR9Z5u-2nNMz57-2nTuXr5-2nRbjHL-2nP1C8Y-2nRKsQt-2nTS2LB",
+    "short": "https://flic.kr/p/2nSa681"
+  },
   "giphy": {
     "label": "london theatre GIF",
     "url": "https://giphy.com/gifs/phantomoftheopera-london-theatre-l41JFtLH0sRXjp22Q",

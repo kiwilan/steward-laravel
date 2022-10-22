@@ -41,6 +41,10 @@ enum SocialEnum: string
             return SocialEnum::youtube;
         }
 
+        if (str_contains($url, 'flic.kr')) {
+            return SocialEnum::flickr;
+        }
+
         return null;
     }
 }
