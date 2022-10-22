@@ -64,7 +64,11 @@
   },
   "ted": {},
   "tumblr": {},
-  "tiktok": {},
+  "tiktok": {
+    "label": "ASMR mrnatasmr",
+    "url": "https://www.tiktok.com/@mrnatasmr/video/7155146642000219398?is_copy_url=1&is_from_webapp=v1",
+    "direct": "https://www.tiktok.com/@mrnatasmr/video/7155146642000219398"
+  },
   "twitch": {},
   "twitter": {
     "label": "Ballet Opéra Paris",
