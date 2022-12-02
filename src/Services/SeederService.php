@@ -45,6 +45,11 @@ class SeederService
         $name = $instance->getTable();
         $name = Str::replace('_', '-', $name);
 
+        $trans_fields = [];
+        if (property_exists($instance, 'translatable')) {
+            $trans_fields = $instance->translatable;
+        }
+
         $path = database_path("seeders/data/{$name}.json");
         if (! File::exists($path)) {
             echo 'No JSON detected';
@@ -58,6 +63,16 @@ class SeederService
             $data = (array) $entity;
             $data_entity = $data;
             unset($data_entity['foreign']);
+
+            $trans_values = [];
+            foreach ($trans_fields as $field) {
+                unset($data_entity[$field]);
+                $trans_values[$field] = (array) $data[$field];
+            }
+            $data_entity = [
+                ...$data_entity,
+                ...$trans_values,
+            ];
 
             if (class_exists($model)) {
                 /** @var Model */
