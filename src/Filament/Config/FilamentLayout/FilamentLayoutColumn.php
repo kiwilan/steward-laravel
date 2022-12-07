@@ -16,7 +16,7 @@ class FilamentLayoutColumn
     }
 
     /**
-     * @param  array<array<int,mixed>>|array<int,mixed>  $fields
+     * @param array<array<int,mixed>>|array<int,mixed> $fields
      */
     public static function make(array $fields = []): self
     {
@@ -54,8 +54,10 @@ class FilamentLayoutColumn
         return Forms\Components\Group::make()
             ->schema($fields)
             ->columnSpan([
-                'sm' => $this->width,
-            ]);
+                'sm' => 2,
+                'xl' => $this->width,
+            ])
+        ;
     }
 
     private function setFields(): array
@@ -75,7 +77,8 @@ class FilamentLayoutColumn
             if ($title) {
                 $group[] = Forms\Components\Placeholder::make(Str::slug($title))
                     ->label($title)
-                    ->columnSpan($this->width);
+                    ->columnSpan($this->width)
+                ;
             }
             $group = array_merge($group, $field);
             $component = $this->card ? Forms\Components\Card::make() : Forms\Components\Group::make();
@@ -85,7 +88,8 @@ class FilamentLayoutColumn
                     ->schema($group)
                     ->columns([
                         'sm' => $this->width,
-                    ]);
+                    ])
+                ;
             } else {
                 $fields[] = Forms\Components\Group::make();
             }

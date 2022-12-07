@@ -7,9 +7,11 @@ use Illuminate\Support\Str;
 
 trait HasUsername
 {
-    protected $default_username_with = 'name';
+    protected string $default_username_with = 'name';
 
-    protected $default_username_column = 'username';
+    protected string $default_username_column = 'username';
+
+    protected bool $default_username_auto_update = true;
 
     public function initializeHasUsername()
     {
@@ -24,6 +26,11 @@ trait HasUsername
     public function getUsernameColumn(): string
     {
         return $this->username_column ?? $this->default_username_column;
+    }
+
+    public function getAutoUpdate(): string
+    {
+        return $this->username_auto_update ?? $this->default_username_auto_update;
     }
 
     /**
@@ -48,33 +55,28 @@ trait HasUsername
 
     /**
      * Check if attribute link to username is updated.
-     *
-     * @param  string  $attribute in Model, like `title` or `name`
-     * @param  string  $value     new value for previous attibute from Request
-     * @param  bool  $with_tag  add a random number tag to allow model to have same $attribute with different `username`
      */
-    public function usernameAttributeIsUpdated(string $attribute, string $value, bool $with_tag = true): string
+    public function updateUsername(): string
     {
-        $username = $this->username;
+        $current_username = $this->{$this->getUsernameColumn()};
 
-        if ($this->{$attribute} !== $value) {
-            $find_id = explode('-', $username);
-            $id = end($find_id);
+        $username_name = Str::slug($this->{$this->getUsernameWith()}, '-');
+        $username_tag = explode('-', $current_username);
+        $username_tag = end($username_tag);
 
-            $new_username = Str::slug($value, '-').'-'.$id;
-            $exist = get_class($this)::where($this->getUsernameColumn(), $new_username)->first();
+        $new_name = $this->{$this->getUsernameWith()};
+        $new_username = "{$new_name}-{$username_tag}";
 
-            if ($exist) {
-                $new_username = $this->generateUsername();
-            }
-            $this->username = $new_username;
+        $instance = get_class($this);
+        $exist = $instance::where($this->getUsernameColumn(), $new_username)->first();
 
-            $this->save();
-
-            return $new_username;
+        while ($exist) {
+            $username_tag = rand(1000, 9999);
+            $new_username = "{$new_name}-{$username_tag}";
+            $exist = $instance::where($this->getUsernameColumn(), $new_username)->first();
         }
 
-        return $username;
+        return $new_username;
     }
 
     protected static function bootHasUsername()
@@ -83,6 +85,10 @@ trait HasUsername
             if (empty($model->{$model->getUsernameColumn()})) {
                 $model->{$model->getUsernameColumn()} = $model->generateUsername();
             }
+        });
+
+        static::updating(function ($model) {
+            $model->{$model->getUsernameColumn()} = $model->updateUsername();
         });
     }
 }
