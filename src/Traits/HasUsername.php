@@ -88,7 +88,9 @@ trait HasUsername
         });
 
         static::updating(function ($model) {
-            $model->{$model->getUsernameColumn()} = $model->updateUsername();
+            if ($model->isDirty($model->getUsernameWith())) {
+                $model->{$model->getUsernameColumn()} = $model->updateUsername();
+            }
         });
     }
 }
