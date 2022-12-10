@@ -21,6 +21,7 @@ use Kiwilan\Steward\Components\FieldSelect;
 use Kiwilan\Steward\Components\FieldText;
 use Kiwilan\Steward\Components\FieldToggle;
 use Kiwilan\Steward\Components\FieldUploadFile;
+use Kiwilan\Steward\Components\UploadFile;
 use Kiwilan\Steward\Http\Livewire\Editor;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
@@ -41,7 +42,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasViewComponents(
-                'steward',
+                'stw',
                 Button::class,
                 FieldCheckbox::class,
                 FieldEditor::class,
@@ -49,6 +50,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 FieldText::class,
                 FieldToggle::class,
                 FieldUploadFile::class,
+                UploadFile::class,
             )
             ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()

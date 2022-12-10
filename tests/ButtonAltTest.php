@@ -2,6 +2,7 @@
 
 use Kiwilan\Steward\Components\Button;
 use Mockery\MockInterface;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\mock;
 use function Pest\Laravel\partialMock;
@@ -12,7 +13,7 @@ it('can be render', function () {
         // $button->shouldReceive('render');
         // $button->shouldReceive('render')
         //     ->once()
-        //     ->andReturn('<x-steward-button>Submit</x-steward-button>');
+        //     ->andReturn('<x-stw-button>Submit</x-stw-button>');
         // dump($button->mockery_getMockableProperties());
         // expect($button)->toHaveProperties([
         // 'type' => 'button',

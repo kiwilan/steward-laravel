@@ -32,7 +32,7 @@ class ButtonTest extends TestCase
         $slot = 'Submit';
 
         $component = $this->blade(
-            "<x-steward-button>{$slot}</x-steward-button>",
+            "<x-stw-button>{$slot}</x-stw-button>",
             ['name' => 'Taylor']
         );
 
@@ -44,7 +44,7 @@ class ButtonTest extends TestCase
     public function can_be_button()
     {
         $component = $this->blade(
-            '<x-steward-button>Submit</x-steward-button>',
+            '<x-stw-button>Submit</x-stw-button>',
         );
 
         $component->assertSee('button');
