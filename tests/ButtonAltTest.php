@@ -2,7 +2,6 @@
 
 use Kiwilan\Steward\Components\Button;
 use Mockery\MockInterface;
-
 use function Pest\Laravel\get;
 use function Pest\Laravel\mock;
 use function Pest\Laravel\partialMock;
