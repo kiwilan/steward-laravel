@@ -15,7 +15,6 @@ use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
 use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Components\Button;
-use Kiwilan\Steward\Components\Field\UploadFile;
 use Kiwilan\Steward\Components\FieldCheckbox;
 use Kiwilan\Steward\Components\FieldEditor;
 use Kiwilan\Steward\Components\FieldSelect;
@@ -50,7 +49,6 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 FieldText::class,
                 FieldToggle::class,
                 FieldUploadFile::class,
-                UploadFile::class,
             )
             ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()

@@ -4,45 +4,113 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "COMPOSER install",
+      "label": "composer install",
       "type": "shell",
-      "command": "composer install",
-      "problemMatcher": []
+      "command": "composer i",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "close": true
+      }
     },
     {
-      "label": "COMPOSER update",
+      "label": "composer update",
       "type": "shell",
       "command": "composer update",
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "close": true
+      }
+    },
+    {
+      "label": "helper",
+      "type": "shell",
+      "command": "composer helper",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "close": true
+      }
+    },
+    {
+      "label": "format",
+      "type": "shell",
+      "command": "composer format",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "close": true
+      }
+    },
+    {
+      "label": "analyse",
+      "type": "shell",
+      "command": "composer analyse",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "close": true
+      }
+    },
+    {
+      "label": "queue",
+      "type": "shell",
+      "command": "composer queue:listen",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "close": true
+      }
+    },
+    {
+      "label": "docs",
+      "type": "shell",
+      "command": "composer docs",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "close": true
+      }
+    },
+    {
+      "label": "tests",
+      "type": "shell",
+      "command": "composer tests",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "close": true
+      }
     },
     {
       "label": "tsup build",
       "type": "npm",
       "script": "build",
-    },
-    {
-      "label": "Format",
-      "type": "shell",
-      "command": "composer format",
-      "problemMatcher": []
-    },
-    {
-      "label": "Analyse",
-      "type": "shell",
-      "command": "composer analyse",
-      "problemMatcher": []
-    },
-    {
-      "label": "Tests",
-      "type": "shell",
-      "command": "composer tests",
-      "problemMatcher": []
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "close": true
+      }
     },
     {
       "label": "grumphp",
       "type": "shell",
       "command": "composer grumphp",
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "close": true
+      }
     }
   ]
 }
