@@ -2,12 +2,11 @@
 
 return [
     'gender' => [
-        'unknown' => 'Unknown',
-        'woman' => 'Woman',
-        'nonbinary' => 'Nonbinary',
-        'genderfluid' => 'Genderfluid',
-        'agender' => 'Agender',
-        'man' => 'Man',
+        'other' => 'Other',
+        'female' => 'Female',
+        'male' => 'Male',
+        'nonbinary' => 'Non-binary',
+        'notsay' => 'Prefer to not say',
     ],
     'language' => [
         'en' => 'English',

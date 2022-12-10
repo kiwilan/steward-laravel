@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 trait HasUsername
@@ -50,7 +49,7 @@ trait HasUsername
             $username = "{$username_name}-{$tag}";
         }
 
-        return $username;
+        return Str::slug($username);
     }
 
     /**
@@ -76,7 +75,7 @@ trait HasUsername
             $exist = $instance::where($this->getUsernameColumn(), $new_username)->first();
         }
 
-        return $new_username;
+        return Str::slug($new_username);
     }
 
     protected static function bootHasUsername()

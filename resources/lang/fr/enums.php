@@ -2,12 +2,11 @@
 
 return [
     'gender' => [
-        'unknown' => 'Inconny',
-        'woman' => 'Femme',
-        'nonbinary' => 'Non binaire',
-        'genderfluid' => 'Genre fluide',
-        'agender' => 'Agenre',
-        'man' => 'Homme',
+        'other' => 'Autre',
+        'female' => 'Femme',
+        'male' => 'Homme',
+        'nonbinary' => 'Non-binaire',
+        'notsay' => 'Préfère ne pas le dire',
     ],
     'user_role' => [
         'super_admin' => 'Superadmin',

@@ -8,10 +8,9 @@ enum GenderEnum: string
 {
     use LazyEnum;
 
-    case unknown = 'unknown';
-    case woman = 'woman';
+    case other = 'other';
+    case female = 'female';
+    case male = 'male';
     case nonbinary = 'nonbinary';
-    case genderfluid = 'genderfluid';
-    case agender = 'agender';
-    case man = 'man';
+    case notsay = 'notsay';
 }
