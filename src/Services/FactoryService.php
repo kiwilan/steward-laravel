@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Kiwilan\Steward\Services\FactoryService\FactoryBuilder;
 use Kiwilan\Steward\Services\FactoryService\FactoryMedia;
-use UnitEnum;
 
 class FactoryService
 {
@@ -19,7 +18,7 @@ class FactoryService
     ) {
     }
 
-    public static function make(string|UnitEnum|null $media_path = null): self
+    public static function make(string|\UnitEnum|null $media_path = null): self
     {
         $faker = \Faker\Factory::create();
         $service = new FactoryService($faker);
@@ -33,7 +32,7 @@ class FactoryService
         $html = '';
 
         // Generate many paragraphs
-        for ($k = 0; $k < $this->faker->numberBetween($min, $max); $k++) {
+        for ($k = 0; $k < $this->faker->numberBetween($min, $max); ++$k) {
             $paragraph = $this->faker->paragraph($sentences);
             $html .= "<p>{$paragraph}</p>";
         }
@@ -57,21 +56,21 @@ class FactoryService
         /*
          * Generate 1 title + block
          */
-        for ($i = 0; $i < $this->faker->numberBetween(1, 1); $i++) {
+        for ($i = 0; $i < $this->faker->numberBetween(1, 1); ++$i) {
             $title = Str::title($this->faker->words($this->faker->numberBetween(5, 10), true));
             $html .= "<h2>{$title}</h2>";
 
             /*
              * Generate 1 subtitle + block
              */
-            for ($j = 0; $j < $this->faker->numberBetween(1, 2); $j++) {
+            for ($j = 0; $j < $this->faker->numberBetween(1, 2); ++$j) {
                 $title = Str::title($this->faker->words($this->faker->numberBetween(5, 10), true));
                 $html .= "<h3>{$title}</h3>";
 
                 /*
                  *  Generate many paragraphs
                  */
-                for ($k = 0; $k < $this->faker->numberBetween(2, 5); $k++) {
+                for ($k = 0; $k < $this->faker->numberBetween(2, 5); ++$k) {
                     $paragraph = $this->faker->paragraph(5);
                     $html .= "<p>{$paragraph}</p>";
 
@@ -94,6 +93,48 @@ class FactoryService
         }
 
         return $html;
+    }
+
+    /**
+     * Generate markdown content.
+     */
+    public function markdown(): string
+    {
+        $markdown = '';
+
+        // /*
+        //  * Generate 1 title + block
+        //  */
+        // for ($i = 0; $i < $this->faker->numberBetween(1, 1); ++$i) {
+        //     $title = Str::title($this->faker->words($this->faker->numberBetween(5, 10), true));
+        //     $markdown .= "{$title}</h2>";
+
+        //     /*
+        //      * Generate 1 subtitle + block
+        //      */
+        //     for ($j = 0; $j < $this->faker->numberBetween(1, 2); ++$j) {
+        //         $title = Str::title($this->faker->words($this->faker->numberBetween(5, 10), true));
+        //         $markdown .= "<h3>{$title}</h3>";
+
+        //         /*
+        //          *  Generate many paragraphs
+        //          */
+        //         for ($k = 0; $k < $this->faker->numberBetween(2, 5); ++$k) {
+        //             $paragraph = $this->faker->paragraph(5);
+        //             $markdown .= "<p>{$paragraph}</p>";
+        //         }
+        //     }
+        // }
+
+        /*
+        *  Generate many paragraphs
+        */
+        for ($k = 0; $k < $this->faker->numberBetween(2, 5); ++$k) {
+            $paragraph = $this->faker->paragraph(5);
+            $markdown .= "{$paragraph}\n\n";
+        }
+
+        return $markdown;
     }
 
     /**
@@ -123,9 +164,9 @@ class FactoryService
         return FactoryBuilder::make($this, $builder);
     }
 
-    private function setFactoryMedia(string|UnitEnum|null $media_path = null)
+    private function setFactoryMedia(string|\UnitEnum|null $media_path = null)
     {
-        if ($media_path && $media_path instanceof UnitEnum) {
+        if ($media_path && $media_path instanceof \UnitEnum) {
             $media_path = $media_path->name;
         }
 
