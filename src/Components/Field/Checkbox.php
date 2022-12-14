@@ -1,10 +1,10 @@
 <?php
 
-namespace Kiwilan\Steward\Components;
+namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldCheckbox extends Component
+class Checkbox extends Component
 {
     /**
      * Create a new component instance.
