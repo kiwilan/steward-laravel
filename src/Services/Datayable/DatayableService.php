@@ -12,7 +12,7 @@ class DatayableService
     public string $type;
 
     /**
-     * @param  string  $type `social` or `financial`
+     * @param string $type `social` or `financial`
      */
     public static function make(string $type): self
     {
@@ -53,15 +53,27 @@ class DatayableService
         }));
     }
 
-    public function merge(array $model): array
+    /**
+     * @return DatayableItem[]
+     */
+    public function merge(?array $json): array
     {
+        if (! $json) {
+            $json = [];
+        }
+
         $data = [];
         /** @var DatayableItem $item */
-        foreach ($this->data as $item) {
-            $current = array_filter($model, fn ($social) => $social['name'] == $item->name);
-            if (! empty($current)) {
-                $current = array_values($current)[0];
-            }
+        foreach ($this->data as $key => $item) {
+            $current = array_filter($json, function ($e) use ($item) {
+                if (is_array($e) && array_key_exists('name', $e) && $e['name'] === $item->name) {
+                    return $e;
+                }
+
+                return null;
+            });
+            $current = current($current);
+
             $item->value = $current['value'] ?? null;
             $item->full_url = "{$item->url}{$item->value}";
             $item->display_url = str_replace('https://', '', $item->full_url);
@@ -88,7 +100,8 @@ class DatayableService
     }
 
     /**
-     * @param  DatayableItem[]  $data
+     * @param DatayableItem[] $data
+     *
      * @return DatayableItem[]
      */
     private function setDisplayUrl(array $data)
