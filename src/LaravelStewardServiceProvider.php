@@ -40,7 +40,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
-            ->hasViewComponent('stw.field', Checkbox::class)
+            ->hasViewComponent('stw.field.', Checkbox::class)
             ->hasViewComponents(
                 'stw',
                 Button::class,
