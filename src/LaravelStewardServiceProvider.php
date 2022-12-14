@@ -15,7 +15,7 @@ use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
 use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Components\Button;
-use Kiwilan\Steward\Components\Field\Checkbox;
+use Kiwilan\Steward\Components\Field\FieldCheckbox;
 use Kiwilan\Steward\Components\FieldEditor;
 use Kiwilan\Steward\Components\FieldSelect;
 use Kiwilan\Steward\Components\FieldText;
@@ -40,10 +40,10 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
-            ->hasViewComponent('stw.field.', Checkbox::class)
             ->hasViewComponents(
                 'stw',
                 Button::class,
+                FieldCheckbox::class,
                 FieldEditor::class,
                 FieldSelect::class,
                 FieldText::class,

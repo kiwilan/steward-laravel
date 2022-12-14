@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class Checkbox extends Component
+class FieldCheckbox extends Component
 {
     /**
      * Create a new component instance.
