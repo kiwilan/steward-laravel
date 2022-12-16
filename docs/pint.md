@@ -3,3 +3,27 @@
 ```bash
 pint --config kiwilan/steward/pint.json
 ```
+
+You can use [Laravel Pint](https://marketplace.visualstudio.com/items?itemName=open-southeners.laravel-pint) extension with VSCode to auto format PHP files.
+
+And into your `settings.json` file.
+
+```json
+{
+  "[php]": {
+    "editor.defaultFormatter": "open-southeners.laravel-pint",
+    "editor.formatOnSave": true
+  },
+  "laravel-pint.enable": true,
+  "laravel-pint.preset": "laravel",
+  "laravel-pint.enableDebugLogs": true,
+}
+```
+
+Into your project, create `.vscode/settings.json`.
+  
+```json
+{
+  "laravel-pint.configPath": "vendor/kiwilan/laravel-steward/pint.json"
+}
+```
