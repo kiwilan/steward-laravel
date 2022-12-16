@@ -38,17 +38,6 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
-            // ->hasViewComponents(
-                // 'stw',
-                // Button::class,
-                // FieldCheckbox::class,
-                // FieldEditor::class,
-                // FieldSelect::class,
-                // FieldText::class,
-                // FieldToggle::class,
-                // FieldUploadFile::class,
-            // )
-            // ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([
                 FilamentConfigCommand::class,
