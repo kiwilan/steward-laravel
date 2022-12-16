@@ -64,7 +64,12 @@
     "analyse": "vendor/bin/phpstan analyse",
     "test": "vendor/bin/pest",
     "test-coverage": "vendor/bin/pest --coverage",
-    "format": "vendor/bin/pint"
+    "format": "vendor/bin/pint",
+    "grumphp": "./vendor/bin/grumphp run",
+    "test:watch": [
+      "Composer\\Config::disableProcessTimeout",
+      "phpunit-watcher watch < /dev/tty"
+    ]
   },
   "config": {
     "sort-packages": true,
