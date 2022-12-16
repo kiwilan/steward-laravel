@@ -40,10 +40,13 @@ class SeederService
 
     public function parseJson(string $model): bool
     {
-        /** @var Model */
+        /** @var object */
         $instance = new $model();
-        $name = $instance->getTable();
-        $name = Str::replace('_', '-', $name);
+        $name = $model;
+        if (method_exists($instance, 'getTable')) {
+            $name = $instance->getTable();
+            $name = Str::replace('_', '-', $name);
+        }
 
         $trans_fields = [];
         if (property_exists($instance, 'translatable')) {

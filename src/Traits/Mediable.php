@@ -10,7 +10,7 @@ trait Mediable
 
     public function getMediablesListAttribute(): array
     {
-        return $this->mediables ?? $this->default_mediables;
+        return property_exists($this, 'mediables') ? $this->mediables : $this->default_mediables; // @phpstan-ignore-line
     }
 
     /**

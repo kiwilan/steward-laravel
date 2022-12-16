@@ -1,9 +1,12 @@
 <?php
 
-namespace Kiwilan\Steward\Http\Livewire\Traits;
+namespace App\Http\Livewire\Traits;
 
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @template T
+ */
 trait Authenticable
 {
     public ?object $user;
@@ -16,8 +19,16 @@ trait Authenticable
     public function user()
     {
         $this->user = Auth::user();
-        if (property_exists($this, 'refresh')) {
+        if (property_exists($this->user, 'refresh')) {
             $this->user = $this->user->refresh();
         }
+    }
+
+    /**
+     * @return T
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
