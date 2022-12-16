@@ -1,10 +1,10 @@
 <?php
 
-namespace Kiwilan\LaravelSteward\Commands;
+namespace Kiwilan\Steward\Commands;
 
 use Illuminate\Console\Command;
 
-class LaravelStewardCommand extends Command
+class LaravelStewardCommand extends CommandSteward
 {
     public $signature = 'laravel-steward';
 
@@ -12,8 +12,10 @@ class LaravelStewardCommand extends Command
 
     public function handle(): int
     {
+        $this->title();
+
         $this->comment('All done');
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }

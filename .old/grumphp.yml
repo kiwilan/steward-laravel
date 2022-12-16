@@ -13,6 +13,6 @@ grumphp:
       working_directory: ~
     # phpcsfixer:
     #   config: .php-cs-fixer.dist.php
-    pest: ~
-    phpstan:
-      use_grumphp_paths: false
+    # pest: ~
+    # phpstan:
+    #   use_grumphp_paths: false

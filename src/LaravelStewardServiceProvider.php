@@ -1,28 +1,8 @@
 <?php
 
-namespace Kiwilan\Steward;
+namespace Kiwilan\LaravelSteward;
 
-use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
-use Kiwilan\Steward\Commands\LaravelStewardCommand;
-use Kiwilan\Steward\Commands\LogClearCommand;
-use Kiwilan\Steward\Commands\MediaCleanCommand;
-use Kiwilan\Steward\Commands\Publish\PublishCommand;
-use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
-use Kiwilan\Steward\Commands\RoutePrintCommand;
-use Kiwilan\Steward\Commands\ScoutFreshCommand;
-use Kiwilan\Steward\Commands\StewardPhpCsFixerCommand;
-use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
-use Kiwilan\Steward\Commands\SubmissionSendCommand;
-use Kiwilan\Steward\Commands\TagCleanCommand;
-use Kiwilan\Steward\Components\Button;
-use Kiwilan\Steward\Components\Field\FieldCheckbox;
-use Kiwilan\Steward\Components\FieldEditor;
-use Kiwilan\Steward\Components\FieldSelect;
-use Kiwilan\Steward\Components\FieldText;
-use Kiwilan\Steward\Components\FieldToggle;
-use Kiwilan\Steward\Components\FieldUploadFile;
-use Kiwilan\Steward\Http\Livewire\Editor;
-use Livewire\Livewire;
+use Kiwilan\LaravelSteward\Commands\LaravelStewardCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -35,46 +15,11 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
          *
          * More info: https://github.com/spatie/laravel-package-tools
          */
-
         $package
-            ->name('steward')
+            ->name('laravel-steward')
             ->hasConfigFile()
             ->hasViews()
-            ->hasViewComponents(
-                'stw',
-                Button::class,
-                FieldCheckbox::class,
-                FieldEditor::class,
-                FieldSelect::class,
-                FieldText::class,
-                FieldToggle::class,
-                FieldUploadFile::class,
-            )
             ->hasMigration('create_laravel-steward_table')
-            ->hasTranslations()
-            ->hasCommands([
-                FilamentConfigCommand::class,
-                LaravelStewardCommand::class,
-                LogClearCommand::class,
-                MediaCleanCommand::class,
-                PublishCommand::class,
-                PublishScheduledCommand::class,
-                RoutePrintCommand::class,
-                ScoutFreshCommand::class,
-                StewardPhpCsFixerCommand::class,
-                SubmissionRgpdVerificationCommand::class,
-                SubmissionSendCommand::class,
-                TagCleanCommand::class,
-            ]);
+            ->hasCommand(LaravelStewardCommand::class);
     }
-
-    // public function bootingPackage()
-    // {
-    //     $this->registerLivewireComponents();
-    // }
-
-    // public function registerLivewireComponents()
-    // {
-    //     Livewire::component('stw-editor', Editor::class);
-    // }
 }

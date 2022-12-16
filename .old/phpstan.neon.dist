@@ -11,4 +11,7 @@ parameters:
     checkOctaneCompatibility: true
     checkModelProperties: true
     checkMissingIterableValueType: false
+    excludePaths:
+        analyse:
+            - src/Queries/BaseQuery
 

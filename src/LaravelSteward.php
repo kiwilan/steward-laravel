@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward;
+namespace Kiwilan\LaravelSteward;
 
 class LaravelSteward
 {
