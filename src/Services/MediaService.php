@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Services;
 
+use BackedEnum;
 use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Enums\SpatieMediaMethodEnum;
 use UnitEnum;
@@ -46,13 +47,8 @@ class MediaService
         ?string $extension = null,
         ?SpatieMediaMethodEnum $method = null
     ): self {
-        if ($disk instanceof UnitEnum) {
-            // @phpstan-ignore-next-line
-            if (property_exists($disk, 'value')) {
-                $disk = $disk->value;
-            } else {
-                $disk = $disk;
-            }
+        if ($disk instanceof BackedEnum) {
+            $disk = $disk->value;
         }
         if (! $collection) {
             $collection = $disk;
