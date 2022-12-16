@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Components;
+namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 

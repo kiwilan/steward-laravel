@@ -17,7 +17,11 @@ use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Components\Button;
 use Kiwilan\Steward\Components\Field\FieldCheckbox;
+use Kiwilan\Steward\Components\Field\FieldEditor;
+use Kiwilan\Steward\Components\Field\FieldSelect;
 use Kiwilan\Steward\Components\Field\FieldText;
+use Kiwilan\Steward\Components\Field\FieldToggle;
+use Kiwilan\Steward\Components\Field\FieldUploadFile;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -80,12 +84,16 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
-        Blade::component('stw-button', Button::class);
-        Blade::component('stw-field-text', FieldText::class);
-        // Blade::component('stw-button', Button::class);
-        // Blade::component('stw-field.checkbox', FieldCheckbox::class);
+        // Blade::componentNamespace('Steward\\Components', 'stw');
 
-        // Blade::componentNamespace('Steward\\Views\\Components', 'stw');
+        Blade::component('stw-button', Button::class);
+
+        Blade::component('stw-field-checkbox', FieldCheckbox::class);
+        Blade::component('stw-field-editor', FieldEditor::class);
+        Blade::component('stw-field-select', FieldSelect::class);
+        Blade::component('stw-field-text', FieldText::class);
+        Blade::component('stw-field-toggle', FieldToggle::class);
+        Blade::component('stw-field-upload-file', FieldUploadFile::class);
     }
 
     // public function bootingPackage()

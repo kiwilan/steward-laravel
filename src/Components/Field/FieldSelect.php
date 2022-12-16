@@ -1,19 +1,19 @@
 <?php
 
-namespace Kiwilan\Steward\Components;
+namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldEditor extends Component
+class FieldSelect extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $name = 'editor',
+        public string $name = 'select',
         public string $label = '',
+        public ?string $default = null,
         public array $options = [],
-        public bool $footer = false,
     ) {
     }
 
@@ -24,6 +24,10 @@ class FieldEditor extends Component
      */
     public function render()
     {
-        return view('steward::components.field.editor');
+        if ($this->default) {
+            array_unshift($this->options, $this->default);
+        }
+
+        return view('steward::components.field.select');
     }
 }
