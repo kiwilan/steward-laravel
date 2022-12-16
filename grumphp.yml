@@ -8,7 +8,7 @@ grumphp:
     # phpcsfixer:
     #   config: .php-cs-fixer.dist.php
     # pest: null
-    # pest: ~
+    pest: ~
     phpstan:
       use_grumphp_paths: false
   parallel:
