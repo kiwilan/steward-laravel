@@ -1,74 +1,80 @@
 <?php
 
-namespace Tests;
+namespace Kiwilan\Steward\Tests;
 
-use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Kiwilan\Steward\Components\Button;
-use Kiwilan\Steward\Tests\TestCase;
+use Mockery\MockInterface;
+use function Pest\Laravel\partialMock;
 
-class ButtonTest extends TestCase
-{
-    use InteractsWithViews;
+it('have package name', function () {
+    /** @var TestCase $this */
+    $renderedView = (string) $this->blade('<x-stw-button />');
+    expect($renderedView)->toBeString();
+});
 
-    /** @test */
-    public function can_be_render()
-    {
-        // $renderedView = (string)$this->blade(
-        //     <<<BLADE
-        //     <x-markdown>
-        //     # My title
+it('can be button', function () {
+    /** @var TestCase $this */
+    $renderedView = (string) $this->blade(
+        <<<'BLADE'
+        <x-stw-button type="button">
+            Submit
+        </x-stw-button>
+        BLADE
+    );
 
-        //     This is a [link to our website](https://spatie.be)
+    expect($renderedView)->toBeString();
+    expect($renderedView)->toMatch('/type="button"/');
+});
 
-        //     ```php
-        //     echo 'Hello world';
-        //     ```
-        //     </x-markdown>
-        //     BLADE
-        // );
+it('can be link', function () {
+    /** @var TestCase $this */
+    $view = $this->component(Button::class, [
+        'href' => '/',
+    ]);
 
-        // $this->assert($renderedView);
+    $view->assertSee('href');
+    $view->assertDontSee('_blank');
+});
 
-        // $slot = 'Submit';
+it('can be external link', function () {
+    /** @var TestCase $this */
+    $view = $this->component(Button::class, [
+        'href' => '/',
+        'external' => true,
+    ]);
 
-        // $component = $this->blade(
-        //     "<x-stw-button>{$slot}</x-stw-button>",
-        //     ['name' => 'Taylor']
-        // );
+    $view->assertSee('href');
+    $view->assertSee('_blank');
+});
 
-        // $component->assertSeeText($slot);
-        // $component->assertSee('type="\button\"');
-    }
+it('can be render', function () {
+    partialMock(Button::class, function (MockInterface $button) {
+        // $button->shouldReceive('type')->once();
+        $button->shouldReceive('render');
+        $button->shouldReceive([
+            'type' => 'button',
+            'href' => null,
+            'external' => 'false',
+            'slot' => null,
+        ]);
+        $button->allows('slot')->andReturn('Submit');
 
-    // /** @test */
-    // public function can_be_button()
-    // {
-    //     $component = $this->blade(
-    //         '<x-stw-button>Submit</x-stw-button>',
-    //     );
+        // expect($button)->toHaveProperties(['type', 'href']);
+        expect($button)->toHaveProperty('type');
+    });
+});
 
-    //     $component->assertSee('button');
-    // }
+it('can have slot', function () {
+    partialMock(Button::class, function (MockInterface $button) {
+        $button->shouldReceive('render');
+        $button->allows('slot')->andReturn('Submit');
+        expect($button)->toHaveProperty('type');
+    });
+});
 
-    // /** @test */
-    // public function can_be_link()
-    // {
-    //     $view = $this->component(Button::class, [
-    //         'href' => '/',
-    //     ]);
-
-    //     $view->assertSee('href');
-    // }
-
-    // /** @test */
-    // public function can_be_external_link()
-    // {
-    //     $view = $this->component(Button::class, [
-    //         'href' => '/',
-    //         'external' => true,
-    //     ]);
-
-    //     $view->assertSee('href');
-    //     $view->assertSee('_blank');
-    // }
-}
+// test('guest can see homepage', function () {
+//     Page::factory()->active()->home()->create([
+//         'slug' => '/',
+//     ]);
+//     get('/')->assertStatus(200)->assertSee('Text');
+// });

@@ -10,7 +10,7 @@ class Button extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public ?string $type = 'button',
+        public string $type = 'button',
         public ?string $href = null,
         public bool $external = false,
         public mixed $slot = null,

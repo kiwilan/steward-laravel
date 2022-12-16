@@ -12,12 +12,12 @@ use Kiwilan\Steward\Commands\Publish\PublishCommand;
 use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
 use Kiwilan\Steward\Commands\RoutePrintCommand;
 use Kiwilan\Steward\Commands\ScoutFreshCommand;
-use Kiwilan\Steward\Commands\StewardPhpCsFixerCommand;
 use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
 use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Components\Button;
 use Kiwilan\Steward\Components\Field\FieldCheckbox;
+use Kiwilan\Steward\Components\Field\FieldText;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -34,16 +34,16 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
-            ->hasViewComponents(
-                'stw',
-                Button::class,
-                FieldCheckbox::class,
+            // ->hasViewComponents(
+                // 'stw',
+                // Button::class,
+                // FieldCheckbox::class,
                 // FieldEditor::class,
                 // FieldSelect::class,
                 // FieldText::class,
                 // FieldToggle::class,
                 // FieldUploadFile::class,
-            )
+            // )
             // ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([
@@ -55,7 +55,6 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 PublishScheduledCommand::class,
                 RoutePrintCommand::class,
                 ScoutFreshCommand::class,
-                StewardPhpCsFixerCommand::class,
                 SubmissionRgpdVerificationCommand::class,
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
@@ -80,10 +79,13 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
 
     public function boot()
     {
+        $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
+        Blade::component('stw-button', Button::class);
+        Blade::component('stw-field-text', FieldText::class);
         // Blade::component('stw-button', Button::class);
         // Blade::component('stw-field.checkbox', FieldCheckbox::class);
 
-        Blade::componentNamespace('Steward\\Views\\Components', 'stw');
+        // Blade::componentNamespace('Steward\\Views\\Components', 'stw');
     }
 
     // public function bootingPackage()
