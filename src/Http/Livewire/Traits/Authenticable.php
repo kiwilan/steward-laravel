@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Traits;
+namespace Kiwilan\Steward\Http\Livewire\Traits;
 
 use Illuminate\Support\Facades\Auth;
 
