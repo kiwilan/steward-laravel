@@ -2,12 +2,11 @@
 
 namespace Kiwilan\Steward\Http\Livewire\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 trait Authenticable
 {
-    public ?Model $user;
+    public ?object $user;
 
     public function initializeAuthenticable()
     {
@@ -16,8 +15,9 @@ trait Authenticable
 
     public function user()
     {
-        /** @var Model */
         $this->user = Auth::user();
-        $this->user = $this->user->refresh();
+        if (property_exists($this, 'refresh')) {
+            $this->user = $this->user->refresh();
+        }
     }
 }
