@@ -7,7 +7,7 @@ grumphp:
       working_directory: ~
     # phpcsfixer:
     #   config: .php-cs-fixer.dist.php
-    pest: null
+    # pest: null
     # pest: ~
     phpstan:
       use_grumphp_paths: false

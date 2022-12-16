@@ -38,6 +38,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
+            ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([
                 FilamentConfigCommand::class,
@@ -55,36 +56,36 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
         ;
     }
 
-    public function register()
-    {
-        // $this->mergeConfigFrom(__DIR__.'/../config/jetstream.php', 'jetstream');
+    // public function register()
+    // {
+    //     // $this->mergeConfigFrom(__DIR__.'/../config/jetstream.php', 'jetstream');
 
-        // $this->app->afterResolving(BladeCompiler::class, function () {
-        // if (config('jetstream.stack') === 'livewire' && class_exists(Livewire::class)) {
-        // Livewire::component('navigation-menu', NavigationMenu::class);
-        // Livewire::component('profile.update-profile-information-form', UpdateProfileInformationForm::class);
-        // Livewire::component('profile.update-password-form', UpdatePasswordForm::class);
-        // Livewire::component('profile.two-factor-authentication-form', TwoFactorAuthenticationForm::class);
-        // Livewire::component('profile.logout-other-browser-sessions-form', LogoutOtherBrowserSessionsForm::class);
-        // Livewire::component('profile.delete-user-form', DeleteUserForm::class);
-        // }
-        // });
-    }
+    //     // $this->app->afterResolving(BladeCompiler::class, function () {
+    //     // if (config('jetstream.stack') === 'livewire' && class_exists(Livewire::class)) {
+    //     // Livewire::component('navigation-menu', NavigationMenu::class);
+    //     // Livewire::component('profile.update-profile-information-form', UpdateProfileInformationForm::class);
+    //     // Livewire::component('profile.update-password-form', UpdatePasswordForm::class);
+    //     // Livewire::component('profile.two-factor-authentication-form', TwoFactorAuthenticationForm::class);
+    //     // Livewire::component('profile.logout-other-browser-sessions-form', LogoutOtherBrowserSessionsForm::class);
+    //     // Livewire::component('profile.delete-user-form', DeleteUserForm::class);
+    //     // }
+    //     // });
+    // }
 
-    public function boot()
-    {
-        $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
-        // Blade::componentNamespace('Steward\\Components', 'stw');
+    // public function boot()
+    // {
+    //     $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
+    //     // Blade::componentNamespace('Steward\\Components', 'stw');
 
-        Blade::component('stw-button', Button::class);
+    //     Blade::component('stw-button', Button::class);
 
-        Blade::component('stw-field-checkbox', FieldCheckbox::class);
-        Blade::component('stw-field-editor', FieldEditor::class);
-        Blade::component('stw-field-select', FieldSelect::class);
-        Blade::component('stw-field-text', FieldText::class);
-        Blade::component('stw-field-toggle', FieldToggle::class);
-        Blade::component('stw-field-upload-file', FieldUploadFile::class);
-    }
+    //     Blade::component('stw-field-checkbox', FieldCheckbox::class);
+    //     Blade::component('stw-field-editor', FieldEditor::class);
+    //     Blade::component('stw-field-select', FieldSelect::class);
+    //     Blade::component('stw-field-text', FieldText::class);
+    //     Blade::component('stw-field-toggle', FieldToggle::class);
+    //     Blade::component('stw-field-upload-file', FieldUploadFile::class);
+    // }
 
     // public function bootingPackage()
     // {
