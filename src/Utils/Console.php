@@ -29,7 +29,8 @@ class Console
     {
         $style = new OutputFormatterStyle($color, '', []);
         $this->console_output->getFormatter()
-            ->setStyle('info', $style);
+            ->setStyle('info', $style)
+        ;
 
         if ($th) {
             $this->console_output->writeln("<info>Error about {$message}</info>\n");
@@ -43,7 +44,8 @@ class Console
     {
         $style = new OutputFormatterStyle('red', '', ['bold']);
         $this->console_output->getFormatter()
-            ->setStyle('info', $style);
+            ->setStyle('info', $style)
+        ;
         $this->console_output->writeln('');
     }
 }

@@ -131,7 +131,8 @@ class SearchEngine
         if (in_array($key, $this->types)) {
             $this->results[$key] =
                 $static::search($this->q) // @phpstan-ignore-line
-                    ->get();
+                    ->get()
+                ;
         }
     }
 }

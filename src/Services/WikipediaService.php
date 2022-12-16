@@ -182,7 +182,8 @@ class WikipediaService
     {
         $http = HttpService::make($this->queries)
             ->setModelId('model_id')
-            ->setModelUrl($model_url);
+            ->setModelUrl($model_url)
+        ;
         $responses = $http->execute();
 
         $parsing = HttpService::parseResponses(
@@ -228,7 +229,8 @@ class WikipediaService
         return WikipediaQuery::make($query_string, $model, $this->debug)
             ->setSubjectIdentifier($this->subject_identifier)
             ->setLanguage($lang)
-            ->execute();
+            ->execute()
+        ;
     }
 
     /**

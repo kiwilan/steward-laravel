@@ -62,7 +62,8 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 SubmissionRgpdVerificationCommand::class,
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
-            ]);
+            ])
+        ;
     }
 
     public function register()

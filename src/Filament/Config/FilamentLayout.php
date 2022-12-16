@@ -60,6 +60,7 @@ class FilamentLayout
             ->schema($this->schema)
             ->columns([
                 'xl' => $this->width,
-            ]);
+            ])
+        ;
     }
 }

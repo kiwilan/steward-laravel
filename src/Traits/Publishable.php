@@ -61,6 +61,7 @@ trait Publishable
         return $builder
             ->where($this->getPublishableStatus(), PublishStatusEnum::published)
             ->where($this->getPublishablePublishedAt(), '<=', Carbon::now())
-            ->orderBy($this->getPublishablePublishedAt(), $direction);
+            ->orderBy($this->getPublishablePublishedAt(), $direction)
+        ;
     }
 }

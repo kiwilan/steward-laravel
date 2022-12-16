@@ -54,7 +54,8 @@ class FilamentForm
                     $set('meta_title', $state);
                 }
             })
-            ->columnSpan($width);
+            ->columnSpan($width)
+        ;
     }
 
     /**
@@ -153,7 +154,8 @@ class FilamentForm
                         $data['created_until'],
                         fn (Builder $query, $date): Builder => $query->whereDate($field, '<=', $date),
                     )
-            );
+            )
+        ;
     }
 
     public static function checkRole(UserRoleEnum $role = UserRoleEnum::super_admin)
@@ -187,7 +189,8 @@ class FilamentForm
             ->acceptedFileTypes($fileTypes)
             ->image()
             ->maxSize(1024)
-            ->directory($type->name);
+            ->directory($type->name)
+        ;
     }
 
     public static function display()
@@ -196,7 +199,8 @@ class FilamentForm
             ->helperText('Show this block on the page')
             ->label('Display')
             ->default(true)
-            ->columnSpan(2);
+            ->columnSpan(2)
+        ;
     }
 
     public static function showAction()
@@ -206,6 +210,7 @@ class FilamentForm
             ->icon('heroicon-o-eye')
             ->openUrlInNewTab()
             ->color('warning')
-            ->label('Voir');
+            ->label('Voir')
+        ;
     }
 }

@@ -33,7 +33,8 @@ class PublishableActions
                         ->body("All {$label} will be published in background, you can close this window.")
                         ->icon('heroicon-o-paper-airplane')
                         ->iconColor('success')
-                        ->send();
+                        ->send()
+                    ;
                 }),
             Actions\Action::make('unpublish')
                 ->icon('heroicon-o-archive')
@@ -50,7 +51,8 @@ class PublishableActions
                         ->body("All {$label} will be unpublished in background, you can close this window.")
                         ->icon('heroicon-o-archive')
                         ->iconColor('success')
-                        ->send();
+                        ->send()
+                    ;
                 }),
         ];
     }

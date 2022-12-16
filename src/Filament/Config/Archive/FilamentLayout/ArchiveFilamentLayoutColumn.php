@@ -93,7 +93,8 @@ class ArchiveFilamentLayoutColumn
                 ->schema($group)
                 ->columnSpan([
                     'sm' => $this->width,
-                ]);
+                ])
+            ;
         }
 
         return $schema;
@@ -114,12 +115,14 @@ class ArchiveFilamentLayoutColumn
         if ($title) {
             $fields[] = Forms\Components\Placeholder::make(Str::slug($title))
                 ->label($title)
-                ->columnSpan(2);
+                ->columnSpan(2)
+            ;
         }
         $fields = array_merge($fields, $group);
 
         $card = Forms\Components\Card::make()
-            ->schema($fields);
+            ->schema($fields)
+        ;
 
         return [
             $card,

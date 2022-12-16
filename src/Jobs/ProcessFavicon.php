@@ -180,7 +180,8 @@ class ProcessFavicon implements ShouldQueue
             return $manipulations
                 ->width($width)
                 ->height($height)
-                ->optimize();
+                ->optimize()
+            ;
         })->save(public_path("{$name}.{$extension}"));
     }
 }

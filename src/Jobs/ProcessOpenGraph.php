@@ -50,7 +50,8 @@ class ProcessOpenGraph implements ShouldQueue
         $image->manipulate(function (Manipulations $manipulations) {
             return $manipulations
                 ->crop(Manipulations::CROP_CENTER, 1200, 630)
-                ->optimize();
+                ->optimize()
+            ;
         })->save(public_path('default.jpg'));
     }
 }

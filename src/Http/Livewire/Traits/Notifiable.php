@@ -24,6 +24,7 @@ trait Notifiable
             ->icon($icon)
             ->iconColor($iconColor)
             ->body($message)
-            ->send();
+            ->send()
+        ;
     }
 }

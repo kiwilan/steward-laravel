@@ -85,7 +85,8 @@ class MarkdownToHtmlService
             $image = base64_encode(File::get($this->path_image));
             MediaService::make($model, $model->{$model_name_attr}, 'media', $featured_image_name)
                 ->setMedia($image)
-                ->setColor();
+                ->setColor()
+            ;
         }
 
         foreach ($this->image_paths as $name) {
@@ -94,7 +95,8 @@ class MarkdownToHtmlService
                 $src = base64_encode(File::get($path_src));
                 MediaService::make($model, $name, 'media', $inside_images_name)
                     ->setMedia($src)
-                    ->setColor();
+                    ->setColor()
+                ;
             }
         }
         // @phpstan-ignore-next-line
