@@ -46,8 +46,13 @@ class MediaService
         ?string $extension = null,
         ?SpatieMediaMethodEnum $method = null
     ): self {
-        if ($disk instanceof UnitEnum && property_exists($disk, 'value')) { // @phpstan-ignore-line
-            $disk = $disk->value;
+        if ($disk instanceof UnitEnum) {
+            // @phpstan-ignore-next-line
+            if (property_exists($disk, 'value')) {
+                $disk = $disk->value;
+            } else {
+                $disk = $disk;
+            }
         }
         if (! $collection) {
             $collection = $disk;
