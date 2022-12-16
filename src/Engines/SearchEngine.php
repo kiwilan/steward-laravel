@@ -132,7 +132,7 @@ class SearchEngine
             $this->results[$key] =
                 $static::search($this->q) // @phpstan-ignore-line
                     ->get()
-            ;
+                ;
         }
     }
 }

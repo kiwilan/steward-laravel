@@ -33,6 +33,7 @@
   },
   "require-dev": {
     "filament/filament": "^2.16",
+    "friendsofphp/php-cs-fixer": "^3.13",
     "knuckleswtf/scribe": "^4.10",
     "laravel/pint": "^1.0",
     "nunomaduro/collision": "^6.0",

@@ -12,6 +12,7 @@ use Kiwilan\Steward\Commands\Publish\PublishCommand;
 use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
 use Kiwilan\Steward\Commands\RoutePrintCommand;
 use Kiwilan\Steward\Commands\ScoutFreshCommand;
+use Kiwilan\Steward\Commands\StewardPhpCsFixerCommand;
 use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
 use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
@@ -41,6 +42,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->hasMigration('create_laravel-steward_table')
             ->hasTranslations()
             ->hasCommands([
+                // StewardPhpCsFixerCommand::class,
                 FilamentConfigCommand::class,
                 LaravelStewardCommand::class,
                 LogClearCommand::class,

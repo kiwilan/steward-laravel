@@ -49,6 +49,7 @@ class FactoryMediaDownloader
         }
         $this->setSize($size);
         $this->media_urls = $this->setMediaUrls($media_count, $this->with, $this->height);
+
         return $this->downloadMedias();
     }
 
@@ -88,6 +89,7 @@ class FactoryMediaDownloader
     private function downloadMedias()
     {
         $service = HttpService::make($this->media_urls);
+
         return $service->execute();
     }
 

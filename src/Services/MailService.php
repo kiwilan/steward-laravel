@@ -40,6 +40,7 @@ class MailService implements MailServer
             $email = $username;
         }
         $service = self::create($username, $password, $server['smtp'], $server['port']);
+
         return $service->send('Testing', $bodyHtml, $bodyPlainText, $server['encryption'], [$email => 'User'], $email);
     }
 
