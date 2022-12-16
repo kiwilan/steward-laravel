@@ -1,2 +1,16 @@
+# php ./vendor/bin/grumphp git:init --config=grumphp.yml
 grumphp:
-    tasks: { pest: null }
+  tasks:
+    composer_script:
+      script: format
+      triggered_by: [php, phtml]
+      working_directory: ~
+    # phpcsfixer:
+    #   config: .php-cs-fixer.dist.php
+    pest: null
+    # pest: ~
+    phpstan:
+      use_grumphp_paths: false
+  parallel:
+    enabled: true
+    max_workers: 32

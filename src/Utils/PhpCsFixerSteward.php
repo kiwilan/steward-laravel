@@ -2,9 +2,6 @@
 
 namespace Kiwilan\Steward\Utils;
 
-use PhpCsFixer\Config;
-use PhpCsFixer\Finder;
-
 class PhpCsFixerSteward
 {
     /**
@@ -43,37 +40,37 @@ class PhpCsFixerSteward
         'no_unused_imports' => true,
     ];
 
-    /**
-     * Create PHP-CS-Fixer config.
-     *
-     * @param  array  $rules Optional rules for PHP-CS-Fixer configurator https://mlocati.github.io/php-cs-fixer-configurator.
-     */
-    public static function make(array $rules = []): \PhpCsFixer\ConfigInterface
-    {
-        $paths = [];
-        $app_path = __DIR__.'/../../../../../app';
-        $parent_dir = dirname(__DIR__, 5);
-        dump($parent_dir);
-        $paths[] = $parent_dir.'/app';
-        // $dir = dirname(__DIR__, 2);
-        // __DIR__.'/app',
-        // __DIR__.'/config',
-        // __DIR__.'/database',
-        // __DIR__.'/resources',
-        // __DIR__.'/tests',
+    // /**
+    //  * Create PHP-CS-Fixer config.
+    //  *
+    //  * @param  array  $rules Optional rules for PHP-CS-Fixer configurator https://mlocati.github.io/php-cs-fixer-configurator.
+    //  */
+    // public static function make(array $rules = []): \PhpCsFixer\ConfigInterface
+    // {
+    //     $paths = [];
+    //     $app_path = __DIR__.'/../../../../../app';
+    //     $parent_dir = dirname(__DIR__, 5);
+    //     dump($parent_dir);
+    //     $paths[] = $parent_dir.'/app';
+    //     // $dir = dirname(__DIR__, 2);
+    //     // __DIR__.'/app',
+    //     // __DIR__.'/config',
+    //     // __DIR__.'/database',
+    //     // __DIR__.'/resources',
+    //     // __DIR__.'/tests',
 
-        $finder = Finder::create()
-            ->in($paths)
-            ->name('*.php')
-            ->notName('*.blade.php')
-            ->ignoreDotFiles(true)
-            ->ignoreVCS(true);
+    //     $finder = Finder::create()
+    //         ->in($paths)
+    //         ->name('*.php')
+    //         ->notName('*.blade.php')
+    //         ->ignoreDotFiles(true)
+    //         ->ignoreVCS(true);
 
-        $config = new Config();
+    //     $config = new Config();
 
-        return $config->setFinder($finder)
-          ->setRules(empty($rules) ? PhpCsFixerSteward::RULES : $rules)
-          ->setRiskyAllowed(true)
-          ->setUsingCache(true);
-    }
+    //     return $config->setFinder($finder)
+    //       ->setRules(empty($rules) ? PhpCsFixerSteward::RULES : $rules)
+    //       ->setRiskyAllowed(true)
+    //       ->setUsingCache(true);
+    // }
 }

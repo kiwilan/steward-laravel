@@ -1,6 +1,7 @@
 {
   "name": "kiwilan/laravel-steward",
   "description": "This is my package laravel-steward",
+  "version": "0.0.101",
   "keywords": [
     "kiwilan",
     "laravel",
@@ -17,16 +18,29 @@
   ],
   "require": {
     "php": "^8.1",
-    "spatie/laravel-package-tools": "^1.13.0",
-    "illuminate/contracts": "^9.0"
+    "filament/spatie-laravel-settings-plugin": "^2.16",
+    "guzzlehttp/guzzle": "^7.5",
+    "illuminate/contracts": "^9.0",
+    "illuminate/database": "^9.44",
+    "illuminate/support": "^9.44",
+    "livewire/livewire": "^2.10",
+    "maatwebsite/excel": "^3.1",
+    "psr/simple-cache": "^2.0",
+    "spatie/image": "^2.2",
+    "spatie/laravel-package-tools": "^1.13",
+    "spatie/laravel-query-builder": "^5.1",
+    "spatie/laravel-settings": "^2.6"
   },
   "require-dev": {
+    "filament/filament": "^2.16",
+    "knuckleswtf/scribe": "^4.10",
     "laravel/pint": "^1.0",
     "nunomaduro/collision": "^6.0",
     "nunomaduro/larastan": "^2.0.1",
     "orchestra/testbench": "^7.0",
     "pestphp/pest": "^1.21",
     "pestphp/pest-plugin-laravel": "^1.1",
+    "pestphp/pest-plugin-mock": "^1.0",
     "phpro/grumphp": "^1.14",
     "phpstan/extension-installer": "^1.1",
     "phpstan/phpstan-deprecation-rules": "^1.0",
@@ -63,10 +77,12 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Kiwilan\\Steward\\LaravelStewardServiceProvider"
+        "Kiwilan\\Steward\\LaravelStewardServiceProvider",
+        "Maatwebsite\\Excel\\ExcelServiceProvider"
       ],
       "aliases": {
-        "Steward": "Kiwilan\\Steward\\Facades\\LaravelSteward"
+        "Steward": "Kiwilan\\Steward\\Facades\\LaravelSteward",
+        "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
       }
     }
   },

@@ -4,6 +4,8 @@ namespace Kiwilan\Steward\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Kiwilan\Steward\LaravelStewardServiceProvider;
+use Livewire\LivewireServiceProvider;
+use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -13,7 +15,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Kiwilan\\LaravelSteward\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Kiwilan\\Steward\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
@@ -21,6 +23,8 @@ class TestCase extends Orchestra
     {
         return [
             LaravelStewardServiceProvider::class,
+            LivewireServiceProvider::class,
+            ExcelServiceProvider::class,
         ];
     }
 

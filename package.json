@@ -1,0 +1,17 @@
+{
+  "name": "laravel-steward",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kiwilan/laravel-steward.git"
+  },
+  "author": "Kiwilan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kiwilan/laravel-steward/issues"
+  },
+  "homepage": "https://github.com/kiwilan/laravel-steward#readme"
+}
