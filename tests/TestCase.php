@@ -1,10 +1,10 @@
 <?php
 
-namespace Kiwilan\LaravelSteward\Tests;
+namespace Kiwilan\Steward\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Kiwilan\Steward\LaravelStewardServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Kiwilan\LaravelSteward\LaravelStewardServiceProvider;
 
 class TestCase extends Orchestra
 {

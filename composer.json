@@ -27,6 +27,7 @@
     "orchestra/testbench": "^7.0",
     "pestphp/pest": "^1.21",
     "pestphp/pest-plugin-laravel": "^1.1",
+    "phpro/grumphp": "^1.14",
     "phpstan/extension-installer": "^1.1",
     "phpstan/phpstan-deprecation-rules": "^1.0",
     "phpstan/phpstan-phpunit": "^1.0",
@@ -35,13 +36,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Kiwilan\\LaravelSteward\\": "src",
-      "Kiwilan\\LaravelSteward\\Database\\Factories\\": "database/factories"
+      "Kiwilan\\Steward\\": "src",
+      "Kiwilan\\Steward\\Database\\Factories\\": "database/factories"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Kiwilan\\LaravelSteward\\Tests\\": "tests"
+      "Kiwilan\\Steward\\Tests\\": "tests"
     }
   },
   "scripts": {
@@ -55,16 +56,17 @@
     "sort-packages": true,
     "allow-plugins": {
       "pestphp/pest-plugin": true,
-      "phpstan/extension-installer": true
+      "phpstan/extension-installer": true,
+      "phpro/grumphp": true
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Kiwilan\\LaravelSteward\\LaravelStewardServiceProvider"
+        "Kiwilan\\Steward\\LaravelStewardServiceProvider"
       ],
       "aliases": {
-        "LaravelSteward": "Kiwilan\\LaravelSteward\\Facades\\LaravelSteward"
+        "Steward": "Kiwilan\\Steward\\Facades\\LaravelSteward"
       }
     }
   },

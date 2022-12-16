@@ -1,5 +1,5 @@
 <?php
 
-use Kiwilan\LaravelSteward\Tests\TestCase;
+use Kiwilan\Steward\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\LaravelSteward\Database\Factories;
+namespace Kiwilan\Steward\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -1,16 +1,16 @@
 <?php
 
-namespace Kiwilan\LaravelSteward\Facades;
+namespace Kiwilan\Steward\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Kiwilan\LaravelSteward\LaravelSteward
+ * @see \Kiwilan\Steward\LaravelSteward
  */
 class LaravelSteward extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \Kiwilan\LaravelSteward\LaravelSteward::class;
+        return \Kiwilan\Steward\LaravelSteward::class;
     }
 }

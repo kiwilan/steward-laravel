@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\LaravelSteward\Commands;
+namespace Kiwilan\Steward\Commands;
 
 use Illuminate\Console\Command;
 
