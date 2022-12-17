@@ -18,11 +18,12 @@ use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Components\Button;
 use Kiwilan\Steward\Components\Field\FieldCheckbox;
-use Kiwilan\Steward\Components\Field\FieldEditor;
 use Kiwilan\Steward\Components\Field\FieldSelect;
 use Kiwilan\Steward\Components\Field\FieldText;
 use Kiwilan\Steward\Components\Field\FieldToggle;
 use Kiwilan\Steward\Components\Field\FieldUploadFile;
+use Kiwilan\Steward\Http\Livewire\FieldEditor;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -84,11 +85,15 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
         Blade::component('stw-button', Button::class);
 
         Blade::component('stw-field-checkbox', FieldCheckbox::class);
-        Blade::component('stw-field-editor', FieldEditor::class);
+        // Blade::component('stw-field-editor', FieldEditor::class);
         Blade::component('stw-field-select', FieldSelect::class);
         Blade::component('stw-field-text', FieldText::class);
         Blade::component('stw-field-toggle', FieldToggle::class);
         Blade::component('stw-field-upload-file', FieldUploadFile::class);
+
+        if (class_exists(Livewire::class)) {
+            Livewire::component('stw-field-editor', FieldEditor::class);
+        }
     }
 
     // public function registerLivewireComponents()
