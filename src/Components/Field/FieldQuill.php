@@ -26,6 +26,6 @@ class FieldQuill extends Component
      */
     public function render()
     {
-        return view('components.field.quill');
+        return view('steward::components.field.quill');
     }
 }
