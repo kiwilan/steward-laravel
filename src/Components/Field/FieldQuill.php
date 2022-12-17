@@ -15,6 +15,9 @@ class FieldQuill extends Component
     public function __construct(
         public string $name = 'editor',
         public string $label = '',
+        public string $hint = '',
+        public string $helper = '',
+        public bool $required = false,
         public array $options = [],
         public bool $footer = false,
         public string $id = '',
