@@ -18,7 +18,7 @@
         'opacity-0' => $preview,
         'opacity-100' => !$preview,
     ])>
-      <x-field.rich-editor wire:model="content" />
+      <x-field.tiptap wire:model="content" />
     </div>
     <div @class([
         'transition-opacity absolute inset-0 border tiptap-border rounded-md p-2 mt-1 tiptap-bg prose dark:prose-invert max-w-full',

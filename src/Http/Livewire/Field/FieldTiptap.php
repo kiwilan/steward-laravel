@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Http\Livewire\Field;
 
 use Livewire\Component;
 
-class FieldEditor extends Component
+class FieldTiptap extends Component
 {
     public string $content = ' ';
 
@@ -17,6 +17,6 @@ class FieldEditor extends Component
 
     public function render()
     {
-        return view('steward::livewire.field.editor');
+        return view('steward::livewire.field.tiptap');
     }
 }

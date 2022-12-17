@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward;
 
+use App\View\Components\Field\FieldQuill;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Compilers\BladeCompiler;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
@@ -18,7 +19,6 @@ use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Components\Button;
 use Kiwilan\Steward\Components\Field\FieldCheckbox;
-use Kiwilan\Steward\Components\Field\FieldRichEditor;
 use Kiwilan\Steward\Components\Field\FieldSelect;
 use Kiwilan\Steward\Components\Field\FieldText;
 use Kiwilan\Steward\Components\Field\FieldToggle;
@@ -77,7 +77,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
         $components = [
             'stw-button' => Button::class,
             'stw-field-checkbox' => FieldCheckbox::class,
-            'stw-field-editor' => FieldRichEditor::class,
+            'stw-field-quill' => FieldQuill::class,
             'stw-field-select' => FieldSelect::class,
             'stw-field-text' => FieldText::class,
             'stw-field-toggle' => FieldToggle::class,
@@ -95,7 +95,7 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
     {
         $this->app->afterResolving(BladeCompiler::class, function () {
             if (class_exists(Livewire::class)) {
-                Livewire::component('stw-field-editor', FieldEditor::class);
+                // Livewire::component('stw-field-editor', FieldEditor::class); // <livewire:stw-field-editor wire:model="about" />
             }
         });
     }

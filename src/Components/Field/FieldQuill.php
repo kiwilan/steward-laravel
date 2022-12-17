@@ -1,13 +1,15 @@
 <?php
 
-namespace Kiwilan\Steward\Components\Field;
+namespace App\View\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldRichEditor extends Component
+class FieldQuill extends Component
 {
     /**
      * Create a new component instance.
+     *
+     * @return void
      */
     public function __construct(
         public string $name = 'editor',
@@ -20,10 +22,10 @@ class FieldRichEditor extends Component
     /**
      * Get the view / contents that represent the component.
      *
-     * @return \Closure|\Illuminate\Contracts\View\View|string
+     * @return \Illuminate\Contracts\View\View|\Closure|string
      */
     public function render()
     {
-        return view('steward::components.field.editor');
+        return view('components.field.quill');
     }
 }
