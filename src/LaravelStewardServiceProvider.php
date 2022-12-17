@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward;
 
-use App\View\Components\Field\FieldQuill;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Compilers\BladeCompiler;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
@@ -19,6 +18,7 @@ use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Components\Button;
 use Kiwilan\Steward\Components\Field\FieldCheckbox;
+use Kiwilan\Steward\Components\Field\FieldQuill;
 use Kiwilan\Steward\Components\Field\FieldSelect;
 use Kiwilan\Steward\Components\Field\FieldText;
 use Kiwilan\Steward\Components\Field\FieldToggle;
