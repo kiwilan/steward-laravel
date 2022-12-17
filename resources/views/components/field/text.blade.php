@@ -158,7 +158,9 @@
   <div class="mt-2 text-sm text-gray-500">
     {{ $helper }}
   </div>
-  @error($name)
-    <span class="text-sm italic text-red-600">{{ $message }}</span>
-  @enderror
+  @isset($errors)
+    @error($name)
+      <span class="text-sm italic text-red-600">{{ $message }}</span>
+    @enderror
+  @endisset
 </div>
