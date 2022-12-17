@@ -22,7 +22,7 @@ use Kiwilan\Steward\Components\Field\FieldSelect;
 use Kiwilan\Steward\Components\Field\FieldText;
 use Kiwilan\Steward\Components\Field\FieldToggle;
 use Kiwilan\Steward\Components\Field\FieldUploadFile;
-use Kiwilan\Steward\Http\Livewire\FieldEditor;
+use Kiwilan\Steward\Http\Livewire\Field\FieldEditor;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -59,45 +59,42 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
         ;
     }
 
-    // public function register()
-    // {
-        // $this->mergeConfigFrom(__DIR__.'/../config/jetstream.php', 'jetstream');
-
-        // $this->app->afterResolving(BladeCompiler::class, function () {
-        // if (config('jetstream.stack') === 'livewire' && class_exists(Livewire::class)) {
-        // Livewire::component('navigation-menu', NavigationMenu::class);
-        // Livewire::component('profile.update-profile-information-form', UpdateProfileInformationForm::class);
-        // Livewire::component('profile.update-password-form', UpdatePasswordForm::class);
-        // Livewire::component('profile.two-factor-authentication-form', TwoFactorAuthenticationForm::class);
-        // Livewire::component('profile.logout-other-browser-sessions-form', LogoutOtherBrowserSessionsForm::class);
-        // Livewire::component('profile.delete-user-form', DeleteUserForm::class);
-        // }
-        // });
-    // }
-
     public function bootingPackage()
     {
-        // $this->registerLivewireComponents();
-
         $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
-        // Blade::componentNamespace('Steward\\Components', 'stw');
 
-        Blade::component('stw-button', Button::class);
-
-        Blade::component('stw-field-checkbox', FieldCheckbox::class);
-        // Blade::component('stw-field-editor', FieldEditor::class);
-        Blade::component('stw-field-select', FieldSelect::class);
-        Blade::component('stw-field-text', FieldText::class);
-        Blade::component('stw-field-toggle', FieldToggle::class);
-        Blade::component('stw-field-upload-file', FieldUploadFile::class);
-
-        if (class_exists(Livewire::class)) {
-            Livewire::component('stw-field-editor', FieldEditor::class);
-        }
+        $this->configureComponents();
     }
 
-    // public function registerLivewireComponents()
-    // {
-    //     Livewire::component('stw-editor', Editor::class);
-    // }
+    public function registeringPackage()
+    {
+        $this->registerLivewireComponents();
+    }
+
+    private function configureComponents()
+    {
+        $components = [
+            'stw-button' => Button::class,
+            'stw-field-checkbox' => FieldCheckbox::class,
+            'stw-field-select' => FieldSelect::class,
+            'stw-field-text' => FieldText::class,
+            'stw-field-toggle' => FieldToggle::class,
+            'stw-field-upload-file' => FieldUploadFile::class,
+        ];
+
+        $this->callAfterResolving(BladeCompiler::class, function () use ($components) {
+            foreach ($components as $name => $class) {
+                Blade::component($name, $class);
+            }
+        });
+    }
+
+    public function registerLivewireComponents()
+    {
+        $this->app->afterResolving(BladeCompiler::class, function () {
+            if (class_exists(Livewire::class)) {
+                Livewire::component('stw-field-editor', FieldEditor::class);
+            }
+        });
+    }
 }
