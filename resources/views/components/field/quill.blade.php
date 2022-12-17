@@ -10,7 +10,7 @@
     x-data="{
         content: @entangle($attributes->wire('model')),
         init() {
-            const quill = new Quill('#{{ $token }}', {
+            const quill = new Quill('#{{ $id }}', {
                 modules: {
                     toolbar: [
                         ['bold', 'italic', 'underline'],
@@ -54,7 +54,7 @@
     wire:ignore
   >
     <div
-      id="{{ $token }}"
+      id="{{ $id }}"
       {{ $attributes }}
     ></div>
   </div>
