@@ -6,10 +6,6 @@
     >
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
   @endpush
-  @php
-    $bytes = random_bytes(20);
-    $token = bin2hex($bytes);
-  @endphp
   <div
     x-data="{
         content: @entangle($attributes->wire('model')),
@@ -45,11 +41,11 @@
                 document.getElementById('htmlToDelta').remove();
                 return delta;
             }
-
+    
             const name = '{{ $attributes->get('wire:model') }}'
             const content = htmlToDelta(this.content)
             quill.setContents(content)
-
+    
             quill.on('text-change', (delta, oldDelta, source) => {
                 @this.set(name, quill.root.innerHTML)
             });
