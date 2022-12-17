@@ -15,12 +15,17 @@ class FieldText extends Component
         public string $label = '',
         public string $value = '',
         public string $placeholder = '',
+        public string $hint = '',
+        public string $pattern = '',
         public string $helper = '',
         public bool $required = false,
         public bool $disabled = false,
         public bool $readonly = false,
         public bool $multiline = false,
         public ?string $prefix = null,
+        public mixed $regex = null,
+        public mixed $min = null,
+        public mixed $max = null,
     ) {
     }
 
