@@ -34,7 +34,7 @@ class FactoryService
         // Generate many paragraphs
         for ($k = 0; $k < $this->faker->numberBetween($min, $max); $k++) {
             $paragraph = $this->faker->paragraph($sentences);
-            $html .= "<p>{$paragraph}</p>";
+            $html .= "<p>{$paragraph}</p><br>";
         }
 
         return $html;
