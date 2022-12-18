@@ -10,7 +10,7 @@ trait Datayable
 
     public ?string $field = null;
 
-    public bool $auth = false;
+    public bool $isAuth = false;
 
     private ?DatayableService $service = null;
 
