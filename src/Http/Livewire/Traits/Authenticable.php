@@ -9,26 +9,26 @@ use Illuminate\Support\Facades\Auth;
  */
 trait Authenticable
 {
-    public ?object $user;
+    public ?object $auth;
 
     public function initializeAuthenticable()
     {
-        $this->user();
+        $this->auth();
     }
 
-    public function user()
+    public function auth()
     {
-        $this->user = Auth::user();
-        if (property_exists($this->user, 'refresh')) {
-            $this->user = $this->user->refresh();
+        $this->auth = Auth::user();
+        if (property_exists($this->auth, 'refresh')) {
+            $this->auth = $this->auth->refresh();
         }
     }
 
     /**
      * @return T
      */
-    public function getUser()
+    public function getAuth()
     {
-        return $this->user;
+        return $this->auth;
     }
 }

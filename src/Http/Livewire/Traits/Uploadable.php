@@ -81,7 +81,8 @@ trait Uploadable
 
         if ($value) {
             if (is_array($this->{$property})) {
-                $value = array_merge($this->user->collector->{$property}, $value);
+                $field = $this->user->collector->{$property} ?? [];
+                $value = array_merge($field, $value);
             }
 
             $this->user->collector->update([
