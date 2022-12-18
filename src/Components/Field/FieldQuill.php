@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Components\Field;
 
-use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
 class FieldQuill extends Component
@@ -31,8 +30,21 @@ class FieldQuill extends Component
      */
     public function render()
     {
-        $this->id = Str::random(10);
+        $this->id = $this->id ?: $this->getId();
 
         return view('steward::components.field.quill');
+    }
+
+    private function getId(int $n = 10)
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+
+        for ($i = 0; $i < $n; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+
+        return $randomString;
     }
 }
