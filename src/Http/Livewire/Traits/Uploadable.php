@@ -14,7 +14,6 @@ trait Uploadable
 
     public function initializeUploadable()
     {
-        ray('init');
     }
 
     public function uploadableClearMedias(string $params)
@@ -127,11 +126,6 @@ trait Uploadable
             $this->{$property}
         );
 
-        // foreach ($this->{$property} as $key => $value) {
-        //     ray($value);
-        // }
-        // ray($instances);
-
         $success = true;
         foreach ($instances as $instance) {
             if (! $instance) {
@@ -153,7 +147,6 @@ trait Uploadable
             }
 
             if ($this->isUploadArray($key, 'string', true)) {
-                ray($this->isUploadArray($key, 'string', true));
                 $this->{$key} = [];
             }
         }
