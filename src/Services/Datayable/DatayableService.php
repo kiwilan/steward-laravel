@@ -65,14 +65,27 @@ class DatayableService
         $data = [];
         /** @var DatayableItem $item */
         foreach ($this->data as $key => $item) {
-            $current = array_filter($json, function ($e) use ($item) {
-                if (is_array($e) && array_key_exists('name', $e) && $e['name'] === $item->name) {
-                    return $e;
-                }
+            $is_array = false;
+            if (array_key_exists(0, $json)) {
+                $is_array = true;
+            }
 
-                return null;
-            });
-            $current = current($current);
+            if ($is_array) {
+                $current = array_filter($json, function ($e) use ($item) {
+                    if (is_array($e) && array_key_exists('name', $e) && $e['name'] === $item->name) {
+                        return $e;
+                    }
+
+                    return null;
+                });
+                $current = current($current);
+            } else {
+                $current = array_intersect_key($json, array_flip([$item->name]));
+                $current = [
+                    'name' => $item->name,
+                    'value' => $current[$item->name] ?? null,
+                ];
+            }
 
             $item->value = $current['value'] ?? null;
             $item->full_url = "{$item->url}{$item->value}";
