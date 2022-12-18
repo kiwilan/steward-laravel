@@ -6,6 +6,8 @@ use Kiwilan\Steward\Services\Datayable\DatayableService;
 
 trait Datayable
 {
+    use Authenticable;
+
     public string $datayable = 'social';
 
     public ?string $field = null;
@@ -27,14 +29,14 @@ trait Datayable
     public function getRelation(): array
     {
         $fields = explode('.', $this->field);
-        $json = $this->user;
+        $auth = $this->getAuth();
         foreach ($fields as $field) {
-            if (isset($json->{$field})) {
-                $json = $json->{$field};
+            if (isset($auth->{$field})) {
+                $auth = $auth->{$field};
             }
         }
 
-        return $json;
+        return $auth;
     }
 
     public function getModel(): object
