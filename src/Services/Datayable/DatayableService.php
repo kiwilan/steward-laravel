@@ -96,6 +96,15 @@ class DatayableService
         return $data;
     }
 
+    public function hasData(array $json): bool
+    {
+        $data = $this->merge($json);
+
+        return count(array_filter($data, function (DatayableItem $e) {
+            return $e->value;
+        })) > 0;
+    }
+
     /**
      * @return DatayableItem[]
      */
