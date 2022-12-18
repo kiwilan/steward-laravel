@@ -1,5 +1,5 @@
 <div>
-  @push('head')
+  @pushOnce('head')
     <link
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
       rel="stylesheet"
@@ -33,7 +33,7 @@
         line-height: 1.25rem;
       }
     </style>
-  @endpush
+  @endPushOnce
   <div class="flex items-center justify-between text-gray-500">
     <label
       for="{{ $name }}"
