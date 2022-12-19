@@ -97,8 +97,10 @@
               }
       
               const name = '{{ $attributes->get('wire:model') }}'
-              const content = htmlToDelta(this.content)
-              quill.setContents(content)
+              if (this.content) {
+                  const content = htmlToDelta(this.content)
+                  quill.setContents(content)
+              }
       
               quill.on('text-change', (delta, oldDelta, source) => {
                   let html = quill.root.innerHTML
@@ -108,6 +110,12 @@
                   );
                   @this.set(name, html)
               });
+      
+              this.$watch('content', (value) => {
+                  if (value === null) {
+                      quill.setContents('')
+                  }
+              })
           }
       }"
       wire:ignore

@@ -6,9 +6,11 @@ use Filament\Notifications\Notification;
 
 trait Notifiable
 {
-    public function notify(?string $message = null, bool $success = true)
+    public function notify(?string $message = null, bool $success = true, ?string $title = null)
     {
-        $title = $success ? 'Saved successfully' : 'An error occurred';
+        if (! $title) {
+            $title = $success ? 'Saved successfully' : 'An error occurred';
+        }
         $icon = $success ? 'heroicon-o-check-circle' : 'heroicon-o-exclamation-circle';
         $iconColor = $success ? 'success' : 'danger';
         if (! $message) {
