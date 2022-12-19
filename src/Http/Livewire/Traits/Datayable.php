@@ -44,7 +44,7 @@ trait Datayable
         $fields = explode('.', $this->field);
         array_pop($fields);
 
-        $model = $this->user;
+        $model = $this->getAuth();
         foreach ($fields as $field) {
             $model = $model->{$field};
         }

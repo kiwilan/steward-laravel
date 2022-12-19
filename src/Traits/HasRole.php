@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
 use Kiwilan\Steward\Enums\UserRoleEnum;
 
 trait HasRole
@@ -24,26 +25,56 @@ trait HasRole
 
     public function haveDashboardAccess(): bool
     {
-        return $this->is_editor || $this->is_admin || $this->is_super_admin && ! $this->is_blocked;
+        return $this->isEditor() || $this->isAdmin() || $this->isSuperAdmin() && ! $this->isBlocked();
     }
 
-    protected function getIsSuperAdminAttribute(): bool
+    public function isSuperAdmin(): bool
     {
         return $this->role->value === UserRoleEnum::super_admin->value;
     }
 
-    protected function getIsAdminAttribute(): bool
+    public function isAdmin(): bool
     {
         return $this->role->value === UserRoleEnum::admin->value;
     }
 
-    protected function getIsEditorAttribute(): bool
+    public function isEditor(): bool
     {
         return $this->role->value === UserRoleEnum::editor->value;
     }
 
-    protected function getIsUserAttribute(): bool
+    public function isUser(): bool
     {
         return $this->role->value === UserRoleEnum::user->value;
+    }
+
+    public function isBlocked()
+    {
+        return $this->is_blocked;
+    }
+
+    protected function getIsSuperAdminAttribute(): bool
+    {
+        return $this->isSuperAdmin();
+    }
+
+    protected function getIsAdminAttribute(): bool
+    {
+        return $this->isAdmin();
+    }
+
+    protected function getIsEditorAttribute(): bool
+    {
+        return $this->isEditor();
+    }
+
+    protected function getIsUserAttribute(): bool
+    {
+        return $this->isUser();
+    }
+
+    public function scopeWhereIsUser(Builder $query)
+    {
+        return $query->where('role', UserRoleEnum::user);
     }
 }

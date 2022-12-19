@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Filament\Config\FilamentLayout;
 
+use Closure;
 use Filament\Forms;
 use Illuminate\Support\Str;
 
@@ -10,6 +11,7 @@ class FilamentLayoutColumn
     public function __construct(
         protected array $fields = [],
         protected int $width = 2,
+        protected bool|Closure $hidden = false,
         protected bool $card = true,
         protected array $titles = [],
     ) {
@@ -40,6 +42,13 @@ class FilamentLayoutColumn
         return $this;
     }
 
+    public function hidden(bool|Closure $condition = true): self
+    {
+        $this->hidden = $condition;
+
+        return $this;
+    }
+
     public function titles(string|array $titles = []): self
     {
         $this->titles = is_array($titles) ? $titles : [$titles];
@@ -57,6 +66,7 @@ class FilamentLayoutColumn
                 'sm' => 2,
                 'xl' => $this->width,
             ])
+            ->hidden($this->hidden)
         ;
     }
 
