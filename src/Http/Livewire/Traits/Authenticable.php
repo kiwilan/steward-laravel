@@ -18,6 +18,10 @@ trait Authenticable
 
     public function auth()
     {
+        if (! Auth::check()) {
+            return redirect()->route(config('steward.auth.login_route'));
+        }
+
         $this->auth = Auth::user();
         if (property_exists($this->auth, 'refresh')) {
             $this->auth = $this->auth->refresh();
