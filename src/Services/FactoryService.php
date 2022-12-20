@@ -27,6 +27,39 @@ class FactoryService
         return $service;
     }
 
+    public function mdParagraphs(int $min = 1, int $max = 5): string
+    {
+        $bold = "**{$this->faker->sentence()}**";
+        $italic = "*{$this->faker->sentence()}*";
+        $code = "`{$this->faker->words()}`";
+        $link = "[{$this->faker->sentence()}]({$this->faker->url()})";
+        $image = "  ![{$this->faker->sentence()}]({$this->faker->imageUrl()})  ";
+
+        $html = [];
+        if ($this->faker->boolean(25)) {
+            $html[] = $bold;
+        }
+        if ($this->faker->boolean(25)) {
+            $html[] = $italic;
+        }
+        if ($this->faker->boolean(25)) {
+            $html[] = $code;
+        }
+        if ($this->faker->boolean(25)) {
+            $html[] = $link;
+        }
+        if ($this->faker->boolean(25)) {
+            $html[] = $image;
+        }
+
+        for ($k = 0; $k < $this->faker->numberBetween($min, $max); $k++) {
+            $paragraph = $this->faker->sentence();
+            $html[] = "{$paragraph}";
+        }
+
+        return implode(' ', $html);
+    }
+
     public function htmlParagraphs(int $min = 1, int $max = 5, int $sentences = 10): string
     {
         $html = '';
@@ -34,7 +67,7 @@ class FactoryService
         // Generate many paragraphs
         for ($k = 0; $k < $this->faker->numberBetween($min, $max); $k++) {
             $paragraph = $this->faker->paragraph($sentences);
-            $html .= "<p>{$paragraph}</p><br>";
+            $html .= "<p>{$paragraph}</p>";
         }
 
         return $html;
