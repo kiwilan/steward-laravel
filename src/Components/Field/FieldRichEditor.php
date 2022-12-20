@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldQuill extends Component
+class FieldRichEditor extends Component
 {
     /**
      * Create a new component instance.
@@ -32,7 +32,7 @@ class FieldQuill extends Component
     {
         $this->id = $this->id ?: $this->getId();
 
-        return view('steward::components.field.quill');
+        return view('steward::components.field.rich-editor');
     }
 
     private function getId(int $n = 10)
