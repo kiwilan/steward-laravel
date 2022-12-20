@@ -99,7 +99,7 @@ class FactoryService
                 $paragraph .= " <a href=\"{$this->faker->url()}\">{$this->faker->words(asText: true)}</a>";
             }
             if ($withImage && $this->faker->boolean(15)) {
-                $paragraph = "<img src=\"{$this->faker->imageUrl()}\" alt=\"\">";
+                $paragraph = "<a href=\"{$this->faker->imageUrl()}\" target=\"_blank\"><img src=\"{$this->faker->imageUrl()}\" alt=\"{$this->faker->sentence()}\" /></a>";
             }
             $html .= "<p>{$paragraph}</p>";
         }
