@@ -76,12 +76,12 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
     {
         $components = [
             'stw-button' => Button::class,
-            'stw-field-checkbox' => FieldCheckbox::class,
-            'stw-field-rich-editor' => FieldRichEditor::class,
-            'stw-field-select' => FieldSelect::class,
-            'stw-field-text' => FieldText::class,
-            'stw-field-toggle' => FieldToggle::class,
-            'stw-field-upload-file' => FieldUploadFile::class,
+            'stw-field.checkbox' => FieldCheckbox::class,
+            'stw-field.rich-editor' => FieldRichEditor::class,
+            'stw-field.select' => FieldSelect::class,
+            'stw-field.text' => FieldText::class,
+            'stw-field.toggle' => FieldToggle::class,
+            'stw-field.upload-file' => FieldUploadFile::class,
         ];
 
         $this->callAfterResolving(BladeCompiler::class, function () use ($components) {

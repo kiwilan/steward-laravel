@@ -7,7 +7,7 @@ use Kiwilan\Steward\Tests\TestCase;
 
 it('have package name', function () {
     /** @var TestCase $this */
-    $renderedView = (string) $this->blade('<x-stw-field-rich-editor
+    $renderedView = (string) $this->blade('<x-stw-field.rich-editor
         name="biography"
         label="Biography"
         wire:model="biography"

@@ -7,7 +7,7 @@ use Kiwilan\Steward\Tests\TestCase;
 
 it('have package name', function () {
     /** @var TestCase $this */
-    $renderedView = (string) $this->blade('<x-stw-field-text />');
+    $renderedView = (string) $this->blade('<x-stw-field.text />');
     expect($renderedView)->toBeString();
 });
 
