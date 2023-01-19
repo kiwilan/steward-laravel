@@ -116,7 +116,7 @@ class FactoryService
 
         $dir = 'public/uploads';
 
-        if (!File::exists($dir)) {
+        if (! File::exists($dir)) {
             File::makeDirectory($dir);
         }
 
