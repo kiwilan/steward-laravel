@@ -116,7 +116,7 @@ class FactoryService
 
         $dir = 'public/uploads';
 
-        if (! File::exists($dir)) {
+        if (!File::exists($dir)) {
             File::makeDirectory($dir);
         }
 
@@ -246,5 +246,10 @@ class FactoryService
         $this->media = new FactoryMedia($this, $media_path);
 
         return $this;
+    }
+
+    public function title(): string
+    {
+        return ucfirst($this->faker->words(asText: true));
     }
 }
