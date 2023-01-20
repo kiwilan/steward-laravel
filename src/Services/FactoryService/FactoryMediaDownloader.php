@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Services\FactoryService;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -88,12 +89,47 @@ class FactoryMediaDownloader
     //     return $this;
     // }
 
+    /**
+     * @return Collection<int,string>
+     */
+    public function multiple(int $count)
+    {
+        $this->media_urls = $this->setMediaUrls($count, 600, 600);
+        $responses = $this->downloadMedias();
+
+        $images = [];
+        foreach ($responses as $key => $response) {
+            $images[] = $this->saveMediaFromResponse($response);
+        }
+
+        return collect($images);
+    }
+
     public function single(): string
     {
         $this->media_urls = $this->setMediaUrls(1, 600, 600);
         $responses = $this->downloadMedias();
         $response = $responses->first();
 
+        return $this->saveMediaFromResponse($response);
+    }
+
+    /**
+     * @param  Collection<int,Model>  $models
+     * @return void
+     */
+    public function associateMultiple(mixed $models, string $field = 'image')
+    {
+        $images = $this->multiple($models->count());
+
+        foreach ($models as $key => $model) {
+            $model->{$field} = $images->shift();
+            $model->save();
+        }
+    }
+
+    private function saveMediaFromResponse(\Illuminate\Http\Client\Response $response): string
+    {
         $base64 = HttpService::responseToImage($response);
         $random_name = uniqid();
 
