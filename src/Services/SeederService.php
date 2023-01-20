@@ -54,7 +54,7 @@ class SeederService
         }
 
         $path = database_path("seeders/data/{$name}.json");
-        if (!File::exists($path)) {
+        if (! File::exists($path)) {
             echo 'No JSON detected';
 
             return false;
