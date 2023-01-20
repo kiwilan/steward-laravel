@@ -423,4 +423,11 @@ class HttpService
 
         return $this->responses;
     }
+
+    public static function responseToImage(\Illuminate\Http\Client\Response $response): string
+    {
+        $base64 = base64_encode($response->body());
+        $mime = 'image/jpeg';
+        return ("data:{$mime};base64,{$base64}");
+    }
 }

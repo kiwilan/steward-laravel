@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Services;
 
 use Faker\Generator;
+use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\FactoryService\FactoryBuilder;
 use Kiwilan\Steward\Services\FactoryService\FactoryMediaDownloader;
 use Kiwilan\Steward\Services\FactoryService\FactoryMediaLocal;
@@ -20,6 +21,22 @@ class FactoryService
         public ?FactoryMediaDownloader $media_downloader = null,
         // protected ?string $path = null,
     ) {
+    }
+
+    public static function clean(): bool
+    {
+        $paths = [
+            public_path('storage/seeders'),
+            public_path('storage/temp'),
+            public_path('storage/media'),
+        ];
+        foreach ($paths as $key => $path) {
+            if (File::exists($path)) {
+                File::cleanDirectory($path);
+            }
+        }
+
+        return true;
     }
 
     public static function make(string|\UnitEnum|null $media_path = null, bool $use_sindarin = false): self

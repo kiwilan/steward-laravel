@@ -2,8 +2,12 @@
 
 namespace Kiwilan\Steward\Services\FactoryService;
 
+use Illuminate\Http\Client\Pool;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Kiwilan\Steward\Services\FactoryService;
+use Kiwilan\Steward\Services\HttpService;
 
 /**
  * Class FactoryMedia
@@ -15,7 +19,7 @@ class FactoryMediaDownloader
     public function __construct(
         public FactoryService $factory,
         // protected string $temp_media_path,
-        // protected array $media_urls = [],
+        protected array $media_urls = [],
         // protected int $with = 600,
         // protected int $height = 600,
         // public array $media_paths = [],
@@ -84,25 +88,51 @@ class FactoryMediaDownloader
     //     return $this;
     // }
 
-    // private function downloadMedias()
-    // {
-    //     $service = HttpService::make($this->media_urls);
+    public function single(): string
+    {
+        $this->media_urls = $this->setMediaUrls(1, 600, 600);
+        $responses = $this->downloadMedias();
+        $response = $responses->first();
 
-    //     return $service->execute();
-    // }
+        $base64 = HttpService::responseToImage($response);
+        $random_name = uniqid();
 
-    // /**
-    //  * @return string[]
-    //  */
-    // private function setMediaUrls(int $media_count = 1, int $width = 600, int $height = 600)
-    // {
-    //     $endpoint = "https://picsum.photos/{$width}/{$height}";
+        $path = public_path('storage/seeders');
+        if (! File::exists($path)) {
+            File::makeDirectory($path, 0755, true, true);
+        }
+        $name = "{$random_name}.jpg";
+        File::put("{$path}/{$name}", file_get_contents($base64));
 
-    //     $list = [];
-    //     for ($i = 0; $i < $media_count; $i++) {
-    //         $list[] = $endpoint;
-    //     }
+        return "seeders/{$name}";
+    }
 
-    //     return $list;
-    // }
+    /**
+     * @return Collection<int,\Illuminate\Http\Client\Response>
+     */
+    private function downloadMedias()
+    {
+        $responses = Http::pool(function (Pool $pool) {
+            foreach ($this->media_urls as $key => $url) {
+                $pool->as($key)->get($url);
+            }
+        });
+
+        return collect($responses);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function setMediaUrls(int $media_count = 1, int $width = 600, int $height = 600)
+    {
+        $endpoint = "https://picsum.photos/{$width}/{$height}";
+
+        $list = [];
+        for ($i = 0; $i < $media_count; $i++) {
+            $list[] = $endpoint;
+        }
+
+        return $list;
+    }
 }
