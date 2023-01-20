@@ -6,8 +6,13 @@
 
 ![Run tests](https://github.com/kiwilan/laravel-steward/actions/workflows/run-tests.yml/badge.svg)
 ![Fix PHP code style issues](https://github.com/kiwilan/laravel-steward/actions/workflows/fix-php-code-style-issues.yml/badge.svg)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2b7e3e6b-6789-4ea5-a92c-64d57ac58aad/deploy-status)](https://app.netlify.com/sites/laravel-steward/deploys)
 
 Laravel package to allow you to use some useful traits and methods in your Laravel application, works with [vite-plugin-laravel-steward](https://github.com/kiwilan/vite-plugin-laravel-steward) for front assets.
+
+## Documentation
+
+See [laravel-steward.netlify.app](https://laravel-steward.netlify.app/) for documentation.
 
 ## Installation
 
