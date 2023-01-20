@@ -428,6 +428,6 @@ class HttpService
     {
         $base64 = base64_encode($response->body());
         $mime = 'image/jpeg';
-        return ("data:{$mime};base64,{$base64}");
+        return "data:{$mime};base64,{$base64}";
     }
 }
