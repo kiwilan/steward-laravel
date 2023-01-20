@@ -54,7 +54,7 @@ class SeederService
         }
 
         $path = database_path("seeders/data/{$name}.json");
-        if (! File::exists($path)) {
+        if (!File::exists($path)) {
             echo 'No JSON detected';
 
             return false;
@@ -81,7 +81,7 @@ class SeederService
                 /** @var Model */
                 $created_model = $model::create($data_entity);
                 if ($created_model->isFillable('picture')) {
-                    $created_model = $factory->media->setMedia($created_model);
+                    $created_model = $factory->media_local->setMedia($created_model);
                 }
 
                 if (array_key_exists('foreign', $data)) {

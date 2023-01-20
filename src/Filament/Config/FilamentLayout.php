@@ -17,17 +17,26 @@ class FilamentLayout
     ) {
     }
 
-    public static function make(Form $form): self
+    public static function make(Form $form, array $schema = [], int $width = 3): Form
     {
-        return new FilamentLayout($form);
+        $layout = new FilamentLayout($form);
+
+        return $layout
+            ->schema($schema)
+            ->width($width)
+            ->get()
+        ;
     }
 
     /**
      * @param  array<array<int,mixed>>|array<int,mixed>  $fields
      */
-    public static function column(array $fields = []): FilamentLayoutColumn
+    public static function column(array $fields = [], int $width = 2): \Filament\Forms\Components\Group
     {
-        return FilamentLayoutColumn::make($fields);
+        return FilamentLayoutColumn::make($fields)
+            ->width($width)
+            ->get()
+        ;
     }
 
     public static function card(array $fields = [], ?string $title = null, int $width = 2): Card

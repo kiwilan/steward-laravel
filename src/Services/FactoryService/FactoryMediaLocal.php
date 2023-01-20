@@ -10,7 +10,7 @@ use Kiwilan\Steward\Services\FactoryService;
 use Symfony\Component\Finder\SplFileInfo;
 use UnitEnum;
 
-class FactoryMedia
+class FactoryMediaLocal
 {
     public function __construct(
         public FactoryService $factory,
@@ -26,7 +26,7 @@ class FactoryMedia
         /** @var SplFileInfo */
         $media = $this->factory->faker->randomElement($medias);
 
-        return FactoryMedia::createMedia($media, $path);
+        return FactoryMediaLocal::createMedia($media, $path);
     }
 
     /**
@@ -42,7 +42,7 @@ class FactoryMedia
 
         $entries = [];
         foreach ($gallery as $item) {
-            $name = FactoryMedia::createMedia($item, $path);
+            $name = FactoryMediaLocal::createMedia($item, $path);
             $entries[] = $name;
         }
 
