@@ -13,13 +13,14 @@ use Kiwilan\Steward\Services\HttpService;
 /**
  * Class FactoryMedia
  *
- * @property string[] $media_paths
+ * @property string[] $media_urls
  */
 class FactoryMediaDownloader
 {
     public function __construct(
         public FactoryService $factory,
         // protected string $temp_media_path,
+        /** @var string[] */
         protected array $media_urls = [],
         // protected int $with = 600,
         // protected int $height = 600,
@@ -134,7 +135,7 @@ class FactoryMediaDownloader
         $random_name = uniqid();
 
         $path = public_path('storage/seeders');
-        if (! File::exists($path)) {
+        if (!File::exists($path)) {
             File::makeDirectory($path, 0755, true, true);
         }
         $name = "{$random_name}.jpg";
