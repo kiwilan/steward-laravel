@@ -83,7 +83,7 @@ class FactoryText
             if ($type === 'markdown') {
                 $content .= "{$this->markdown(image: true, link: true, code: true)}\n\n";
             }
-            if (!$content) {
+            if (! $content) {
                 $content = '`type` must be `html` or `markdown`';
             }
         }
@@ -178,7 +178,7 @@ class FactoryText
     public function sentence(): string
     {
         return $this->use_sindarin
-            ? ucfirst(ProviderSindarin::words(limit: 8, asText: true) . '.')
+            ? ucfirst(ProviderSindarin::words(limit: 8, asText: true).'.')
             : $this->factory->faker->sentence();
     }
 
@@ -187,7 +187,7 @@ class FactoryText
         $content = '';
         if ($this->use_sindarin) {
             for ($k = 0; $k < $this->factory->faker->numberBetween(2, 5); $k++) {
-                $content .= $this->sentence() . ' ';
+                $content .= $this->sentence().' ';
             }
         }
 
