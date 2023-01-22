@@ -119,7 +119,7 @@ class FactoryMediaDownloader
      * @param  Collection<int,Model>  $models
      * @return void
      */
-    public function associateMultiple(mixed $models, string $field = 'image')
+    public function associateMultiple(mixed $models, string $field = 'picture')
     {
         $images = $this->multiple($models->count());
 
@@ -135,7 +135,7 @@ class FactoryMediaDownloader
         $random_name = uniqid();
 
         $path = public_path('storage/seeders');
-        if (! File::exists($path)) {
+        if (!File::exists($path)) {
             File::makeDirectory($path, 0755, true, true);
         }
         $name = "{$random_name}.jpg";
