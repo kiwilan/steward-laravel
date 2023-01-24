@@ -26,11 +26,13 @@ trait HasBuilder
     {
         $builder_obj = new stdClass();
         $raw_data = $this->{$this->getBuilderColumn()};
+
         if (! is_array($raw_data)) {
             return $builder_obj;
         }
 
         $data_builder = [];
+
         foreach ($raw_data as $raw_builder) {
             $this->transformData($raw_builder, $data_builder);
         }
@@ -45,8 +47,10 @@ trait HasBuilder
         }
 
         $data = [];
+
         foreach ($builder as $name => $value) {
             $is_subarray = false;
+
             if (is_array($value)) {
                 $is_subarray = true;
             }
@@ -64,6 +68,7 @@ trait HasBuilder
     private function setMedia(mixed $value = null)
     {
         $extensions = config('steward.mediable.extensions');
+
         if (! is_array($extensions)) {
             $extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'];
         }

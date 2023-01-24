@@ -73,17 +73,20 @@ class FilamentLayoutColumn
     private function setFields(): array
     {
         $fields = [];
+
         foreach ($this->fields as $key => $field) {
             if (! is_array($field)) {
                 $field = [$field];
             }
 
             $title = null;
+
             if (array_key_exists($key, $this->titles)) {
                 $title = $this->titles[$key];
             }
 
             $group = [];
+
             if ($title) {
                 $group[] = Forms\Components\Placeholder::make(Str::slug($title))
                     ->label($title)

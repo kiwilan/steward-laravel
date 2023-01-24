@@ -30,6 +30,7 @@ trait Datayable
     {
         $fields = explode('.', $this->field);
         $auth = $this->getAuth();
+
         foreach ($fields as $field) {
             if (isset($auth->{$field})) {
                 $auth = $auth->{$field};
@@ -45,6 +46,7 @@ trait Datayable
         array_pop($fields);
 
         $model = $this->getAuth();
+
         foreach ($fields as $field) {
             $model = $model->{$field};
         }

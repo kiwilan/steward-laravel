@@ -9,6 +9,9 @@ use Livewire\LivewireServiceProvider;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
+/**
+ * @internal
+ */
 class TestCase extends Orchestra
 {
     use InteractsWithViews;

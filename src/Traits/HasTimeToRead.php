@@ -38,6 +38,7 @@ trait HasTimeToRead
     {
         $word_count = str_word_count($this->{$this->getTimeToReadWith()});
         $minutes_to_read = round($word_count / 200);
+
         if ($minutes_to_read < 1) {
             $minutes_to_read = 1;
         }

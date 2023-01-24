@@ -43,6 +43,7 @@ class MarkdownToHtmlService
                 'ROUTE_OPDS' => route('front.opds', ['version' => '1.2']),
                 'ROUTE_WEBREADER' => route('front.webreader'),
             ];
+
             foreach ($config as $key => $value) {
                 $content = str_replace($key, $value, $content);
             }
@@ -54,6 +55,7 @@ class MarkdownToHtmlService
             $service->image_tags = $service->document->getElementsByTagName('img');
 
             $image_paths = [];
+
             foreach ($service->image_tags as $tag) {
                 $src = $tag->getAttribute('src');
                 $path = str_replace('IMAGE/', '', $src);
@@ -81,6 +83,7 @@ class MarkdownToHtmlService
         string $model_body_attr = 'body'
     ) {
         $image = null;
+
         if (File::exists($this->path_image)) {
             $image = base64_encode(File::get($this->path_image));
             MediaService::make($model, $model->{$model_name_attr}, 'media', $featured_image_name)
@@ -91,6 +94,7 @@ class MarkdownToHtmlService
 
         foreach ($this->image_paths as $name) {
             $path_src = database_path("seeders/media/{$this->type}/{$name}");
+
             if (File::exists($path_src)) {
                 $src = base64_encode(File::get($path_src));
                 MediaService::make($model, $name, 'media', $inside_images_name)
@@ -105,6 +109,7 @@ class MarkdownToHtmlService
         foreach ($this->image_tags as $tag) {
             $src = $tag->getAttribute('src');
             $path = str_replace('IMAGE/', '', $src);
+
             foreach ($medias as $media) {
                 if ($path === $media->name) {
                     $tag->setAttribute('src', $media->getFullUrl());
@@ -146,6 +151,7 @@ class MarkdownToHtmlService
     public static function saveHtml(?string $html, ?DOMDocument $document): ?string
     {
         $html = $document->saveHTML($document->documentElement);
+
         if ($document->doctype) {
             $document->removeChild($document->doctype);
         }

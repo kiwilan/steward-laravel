@@ -19,6 +19,7 @@ class RouteService
         $routes = Route::getRoutes()->getRoutes();
 
         $list = [];
+
         foreach ($routes as $route) {
             $uri = $route->uri();
             // foreach ($params_example as $key => $param) {
@@ -62,6 +63,7 @@ class RouteService
             'api.entities.related',
         ];
         $selected_routes = [];
+
         foreach ($routes as $key => $route) {
             if (in_array($route->getName(), $accepted_routes)) {
                 array_push($selected_routes, $route);
@@ -70,17 +72,21 @@ class RouteService
 
         $routes = [];
         $publicRoutes = [];
+
         foreach ($selected_routes as $route) {
             if (preg_match('/api/', $route->uri)) {
                 $fullRoute = config('app.url').'/'.$route->uri();
                 $paramsList = [];
+
                 if (preg_match('/[{]/i', $fullRoute)) {
                     $params = explode('/', $route->uri());
+
                     foreach ($params as $key => $param) {
                         if (preg_match('/[{]/i', $param)) {
                             $param = str_replace('{', '', $param);
                             $param = str_replace('}', '', $param);
                             $routeParam = null;
+
                             try {
                                 $routeParam = route('api.'.$param.'s.index');
                             } catch (\Throwable $th) {
@@ -95,6 +101,7 @@ class RouteService
                     }
                 }
                 $params_example = [];
+
                 foreach ($paramsList as $key => $param) {
                     $model_name = match ($param['parameter']) {
                         'author_slug' => 'Author',
@@ -103,6 +110,7 @@ class RouteService
                         default => 'Book',
                     };
                     $model_name = "App\\Models\\{$model_name}";
+
                     try {
                         if (is_string($model_name)) {
                             $entity = $model_name::inRandomOrder()
@@ -115,6 +123,7 @@ class RouteService
                     }
                 }
                 $uri = $route->uri();
+
                 foreach ($params_example as $key => $param) {
                     $uri = str_replace('{'.$key.'}', $param, $uri);
                 }

@@ -38,6 +38,7 @@ trait HasTemplate
     public function getTemplateDataAttribute(): array
     {
         $raw_data = $this->{$this->getContentColumn()};
+
         if (! is_array($raw_data)) {
             return [];
         }
@@ -76,8 +77,10 @@ trait HasTemplate
         }
 
         $data = [];
+
         foreach ($template as $name => $value) {
             $is_subarray = false;
+
             if (is_array($value)) {
                 $is_subarray = true;
             }
@@ -98,6 +101,7 @@ trait HasTemplate
     private function setMedia(mixed $value = null): mixed
     {
         $extensions = config('steward.mediable.extensions');
+
         if (! is_array($extensions)) {
             $extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'];
         }

@@ -94,6 +94,7 @@ class WikipediaQuery extends HttpServiceQuery
     public static function getPictureFile(string|null $picture_url): string|null
     {
         $picture = null;
+
         if ($picture_url) {
             $picture = Http::timeout(120)->get($picture_url)->body();
         }
@@ -104,6 +105,7 @@ class WikipediaQuery extends HttpServiceQuery
     public static function convertExtract(string|null $text, int $limit): string
     {
         $content = '';
+
         if ($text) {
             $text = trim($text);
             $text = strip_tags($text);
@@ -139,16 +141,19 @@ class WikipediaQuery extends HttpServiceQuery
     public function parseQueryResults(HttpServiceResponse $response): self
     {
         $pageId = false;
+
         if (! $response->success) {
             return $this;
         }
         $response = $response->body();
+
         if ($this->debug) {
             $this->print($response, 'results');
         }
 
         try {
             $response = json_decode(json_encode($response));
+
             if (! property_exists($response, 'query')) {
                 return $this;
             }
@@ -205,6 +210,7 @@ class WikipediaQuery extends HttpServiceQuery
         }
 
         $response = $response->body();
+
         if ($this->debug) {
             $this->print($response, 'page-id');
         }

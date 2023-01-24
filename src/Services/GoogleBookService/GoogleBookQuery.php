@@ -82,6 +82,7 @@ class GoogleBookQuery extends HttpServiceQuery
     public function setGoogleBookUrl(): self
     {
         $isbn = null;
+
         if (array_key_exists(0, $this->isbn_available)) {
             $isbn = $this->isbn_available[0];
         }
@@ -107,6 +108,7 @@ class GoogleBookQuery extends HttpServiceQuery
         }
 
         $body = $response->body();
+
         if ($this->debug) {
             $this->print($response, 'gbooks');
         }
@@ -119,6 +121,7 @@ class GoogleBookQuery extends HttpServiceQuery
 
                 if (property_exists($item, 'volumeInfo')) {
                     $volumeInfo = $item->volumeInfo ?? null;
+
                     if ($volumeInfo) {
                         $this->published_date = new DateTime($volumeInfo->publishedDate);
                         $this->publisher = $volumeInfo->publisher ?? null;
@@ -134,9 +137,11 @@ class GoogleBookQuery extends HttpServiceQuery
 
                 if (property_exists($item, 'saleInfo')) {
                     $saleInfo = $item->saleInfo;
+
                     if ($saleInfo) {
                         if (property_exists($saleInfo, 'retailPrice')) {
                             $retailPrice = $saleInfo->retailPrice;
+
                             if ($retailPrice) {
                                 $this->retail_price_amount = intval($retailPrice->amount);
                                 $this->retail_price_currency_code = intval($retailPrice->currencyCode);
@@ -151,6 +156,7 @@ class GoogleBookQuery extends HttpServiceQuery
                         if ('ISBN_13' === $new_identifier->type) {
                             $this->isbn13 = $new_identifier->identifier ?? null;
                         }
+
                         if ('ISBN_10' === $new_identifier->type) {
                             $this->isbn10 = $new_identifier->identifier ?? null;
                         }

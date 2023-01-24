@@ -24,6 +24,7 @@ trait Mediable
     public function getMediableAttribute(): object
     {
         $mediable = new stdClass();
+
         foreach ($this->getMediablesListAttribute() as $field) {
             $mediable->{$field} = $this->mediable($field);
         }
@@ -47,6 +48,7 @@ trait Mediable
 
         if (is_array($this->{$field})) {
             $list = [];
+
             foreach ($this->{$field} as $media) {
                 $list[] = config('app.url')."/storage/{$media}";
             }

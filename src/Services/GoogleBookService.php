@@ -68,10 +68,12 @@ class GoogleBookService
     public static function availableModels(string $subject, array $isbn_fields = ['isbn']): Collection
     {
         $models = collect([]);
+
         foreach ($subject::all() as $model) {
             foreach ($isbn_fields as $field) {
                 if ($model->{$field}) {
                     $models->add($model);
+
                     break;
                 }
             }
@@ -201,6 +203,7 @@ class GoogleBookService
     {
         /** @var Collection<int,GoogleBookQuery> */
         $queries = collect([]);
+
         foreach ($this->models as $model) {
             $query = GoogleBookQuery::make($model, $this);
             $queries->add($query);

@@ -26,6 +26,7 @@ class StewardPhpCsFixerCommand extends CommandSteward
 
         if (File::exists($this->path)) {
             $this->comment('PHP-CS-Fixer config already exists');
+
             if ($this->confirm('Do you want to overwrite it?', false)) {
                 $this->info('Overwriting...');
                 File::delete($this->path);

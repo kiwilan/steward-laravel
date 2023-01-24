@@ -36,6 +36,7 @@ class TypeColumnConverter
         }
 
         $columns = DB::select(DB::raw("SHOW COLUMNS FROM $table"));
+
         return array_map(fn ($column) => self::create($column, $model), $columns);
     }
 
@@ -59,6 +60,7 @@ class TypeColumnConverter
         $dates = $model->getDates();
 
         $is_date = in_array($column->Field, $dates);
+
         if ($is_date) {
             $type = 'DateTime';
         }

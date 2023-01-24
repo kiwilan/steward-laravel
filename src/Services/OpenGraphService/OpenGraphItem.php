@@ -92,6 +92,7 @@ class OpenGraphItem
         ];
 
         $meta_values = [];
+
         foreach ($meta_nodes as $property => $query) {
             $meta_values[$property] = $this->extractMeta($query);
         }

@@ -81,6 +81,7 @@ class WikipediaService
     public function setQueryAttributes(mixed $attributes = ['name']): self
     {
         $list = [];
+
         if (is_string($attributes)) {
             $list[] = $attributes;
         } else {
@@ -120,6 +121,7 @@ class WikipediaService
     public function execute(): self
     {
         $this->fetchModels();
+
         foreach ($this->models as $model) {
             $query = $this->setWikipediaQuery($model);
             $this->queries->add($query);
@@ -214,6 +216,7 @@ class WikipediaService
         // If language attribute is unknown, set it to english.
         if ($this->attributeExistInModel($this->language_field, $model)) {
             $lang = $model->{$this->language_field};
+
             if ('unknown' === $lang || null === $lang) {
                 $lang = 'en';
             }
@@ -221,6 +224,7 @@ class WikipediaService
 
         // set query string from `$query_attributes`
         $query_string = null;
+
         foreach ($this->query_attributes as $attr) {
             $query_string .= $model->{$attr}.' ';
         }

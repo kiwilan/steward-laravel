@@ -32,6 +32,7 @@ trait Uploadable
 
         $is_array = is_array($this->{$property});
         $value = $this->{$property} ?? null;
+
         if ($is_array) {
             if ('all' === $index) {
                 $value = [];
@@ -68,8 +69,10 @@ trait Uploadable
             || $this->isUploadArray($property, TemporaryUploadedFile::class)
         ) {
             $current = $this->{$property};
+
             if (is_array($current)) {
                 $value = [];
+
                 foreach ($current as $file) {
                     $value[] = $this->setFile($file, $size, $disk);
                 }
@@ -95,6 +98,7 @@ trait Uploadable
     private function setFile(TemporaryUploadedFile $file, int $size, string $disk): ?string
     {
         $sizeMax = $size * 1024;
+
         if ($file->getSize() > $sizeMax) {
             return null;
         }
@@ -127,6 +131,7 @@ trait Uploadable
         );
 
         $success = true;
+
         foreach ($instances as $instance) {
             if (! $instance) {
                 $success = false;

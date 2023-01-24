@@ -49,6 +49,7 @@ class GenerateTypeCommand extends CommandSteward
         $converter = ModelTypeService::make();
 
         $namespaces = [];
+
         foreach ($converter->models_namespaces as $name) {
             $namespaces[] = [$name];
         }

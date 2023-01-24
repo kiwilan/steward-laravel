@@ -42,6 +42,7 @@ class FilamentForm
                 if ($context_custom && $context === $context_custom) {
                     return;
                 }
+
                 if ('edit' === $context) {
                     return;
                 }
@@ -49,6 +50,7 @@ class FilamentForm
                 if ($slug) {
                     $set('slug', Str::slug($state));
                 }
+
                 if ($meta_title) {
                     $set('meta_title', $state);
                 }
@@ -162,6 +164,7 @@ class FilamentForm
         return function () use ($role) {
             /** @var object $user */
             $user = auth()->user();
+
             if (property_exists($user, 'role')) {
                 return $user->role?->value !== $role->value;
             }

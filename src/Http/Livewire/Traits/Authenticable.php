@@ -23,6 +23,7 @@ trait Authenticable
         }
 
         $this->auth = Auth::user();
+
         if (property_exists($this->auth, 'refresh')) {
             $this->auth = $this->auth->refresh();
         }

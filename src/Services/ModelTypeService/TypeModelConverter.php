@@ -28,8 +28,10 @@ class TypeModelConverter
 
         $appendsTypes = [];
         $appendsMethods = [];
+
         foreach ($reflector->getMethods() as $key => $method) {
             $name = $method->getName();
+
             if (! str_starts_with($name, 'get') || ! str_contains($name, 'Attribute')) {
                 continue;
             }
@@ -46,18 +48,22 @@ class TypeModelConverter
             $return = null;
 
             $regex = '/(?m)@return *\K(?>(\S+) *)??(\S+)$/';
+
             if (preg_match($regex, $doc, $matches)) {
                 $return = $matches[0] ?? null;
             }
 
             $type = $method->getReturnType();
+
             if ($return) {
                 $type = $return;
             }
 
             $is_mediable = method_exists($model, 'getMediablesListAttribute');
+
             if ($field === 'mediable' && $is_mediable) {
                 $mediable_object = '{';
+
                 foreach ($model->getMediablesListAttribute() as $media) {
                     $mediable_object .= " {$media}?: string, ";
                 }
@@ -86,6 +92,7 @@ class TypeModelConverter
         $enums = [];
 
         $typescript[] = "  export type {$converter->name} = {".PHP_EOL;
+
         foreach ($types as $name => $type) {
             if (! in_array($name, $hidden)) {
                 if ($type->type_is_enum) {
@@ -100,6 +107,7 @@ class TypeModelConverter
 
         if (! empty($enums)) {
             $enum_types = [];
+
             foreach ($enums as $name => $enum) {
                 $enum = array_map(fn ($value) => "'{$value}'", $enum);
                 $list = implode(' | ', $enum);

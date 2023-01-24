@@ -18,13 +18,16 @@ class DatayableService
     {
         $service = new self();
         $service->type = $type;
+
         switch ($type) {
             case 'social':
                 $service->data = $service->socials();
+
                 break;
 
             case 'financial':
                 $service->data = $service->financials();
+
                 break;
 
             default:
@@ -66,6 +69,7 @@ class DatayableService
         /** @var DatayableItem $item */
         foreach ($this->data as $key => $item) {
             $is_array = false;
+
             if (array_key_exists(0, $json)) {
                 $is_array = true;
             }
@@ -128,6 +132,7 @@ class DatayableService
     private function setDisplayUrl(array $data)
     {
         $list = [];
+
         foreach ($data as $item) {
             $item->display_url = str_replace('https://', '', $item->url);
             $list[] = $item;

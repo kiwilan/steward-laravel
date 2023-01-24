@@ -99,6 +99,7 @@ class FactoryMediaDownloader
         $responses = $this->downloadMedias();
 
         $images = [];
+
         foreach ($responses as $key => $response) {
             $images[] = $this->saveMediaFromResponse($response);
         }
@@ -135,6 +136,7 @@ class FactoryMediaDownloader
         $random_name = uniqid();
 
         $path = public_path('storage/seeders');
+
         if (! File::exists($path)) {
             File::makeDirectory($path, 0755, true, true);
         }
@@ -166,6 +168,7 @@ class FactoryMediaDownloader
         $endpoint = "https://picsum.photos/{$width}/{$height}";
 
         $list = [];
+
         for ($i = 0; $i < $media_count; $i++) {
             $list[] = $endpoint;
         }

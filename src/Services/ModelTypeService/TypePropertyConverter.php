@@ -37,9 +37,11 @@ class TypePropertyConverter
         $enum_types = [];
         $converter->type_is_enum = false;
         $converter->type_is_external = str_contains($type, '\\');
+
         if ($converter->type_is_external) {
             $reflector = new \ReflectionClass($type);
             $converter->type_is_enum = in_array('UnitEnum', $reflector->getInterfaceNames());
+
             if ($converter->type_is_enum) {
                 foreach ($reflector->getConstants() as $name => $enum) {
                     $enum_types[$name] = is_string($enum) ? "'{$enum}'" : $enum->value;
@@ -113,9 +115,11 @@ class TypePropertyConverter
     private function parseAdvancedTypes(): string
     {
         $ts_type = 'any';
+
         if (str_contains($this->php_type, 'array')) {
             $type = null;
             $regex = '/<[^>]*>/';
+
             if (preg_match($regex, $this->php_type, $matches)) {
                 $type = $matches[0] ?? null;
             }
@@ -123,6 +127,7 @@ class TypePropertyConverter
             $type = str_replace('<', '', $type);
             $type = str_replace('>', '', $type);
             $type = str_replace(' ', '', $type);
+
             if (str_contains($type, ',')) {
                 $types = explode(',', $type);
                 $ts_type = "{$this->convertPhpType($types[0])}[]";

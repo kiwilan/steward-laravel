@@ -20,6 +20,7 @@ class SocialDailymotion extends SocialModule implements SocialInterface
     {
         // TODO other URL formats
         $regex = '!^.+dailymotion\.com/(video|hub)/([^_]+)[^#]*(#video=([^_&]+))?|(dai\.ly/([^_]+))!';
+
         if (preg_match($regex, $this->url, $matches)) {
             if (isset($matches[6])) {
                 $this->media_id = $matches[6];

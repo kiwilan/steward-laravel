@@ -138,6 +138,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->reactive()
                 ->afterStateUpdated(function (Closure $set, $state) {
                     $enum = SocialEnum::find($state);
+
                     if ($enum) {
                         $set('origin', $enum->value);
                     }

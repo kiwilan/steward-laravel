@@ -46,12 +46,15 @@ class DirectoryParserService
     private function parse(string $directory)
     {
         $files = scandir($directory);
+
         foreach ($files as $key => $value) {
             $path = realpath($directory.DIRECTORY_SEPARATOR.$value);
+
             if (! is_dir($path)) {
                 yield $path;
             } elseif ('.' != $value && '..' != $value) {
                 yield from $this->parse($path);
+
                 yield $path;
             }
         }

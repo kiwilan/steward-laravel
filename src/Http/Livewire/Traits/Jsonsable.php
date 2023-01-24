@@ -40,6 +40,7 @@ trait Jsonsable
 
         foreach ($this->jsonsableData as $item) {
             $current = null;
+
             if (array_key_exists($item->name, $json)) {
                 $current = $json[$item->name];
             }
@@ -52,6 +53,7 @@ trait Jsonsable
         $validate = $this->validator();
 
         $data = [];
+
         foreach ($validate['jsonsableJson'] as $key => $value) {
             $data[] = [
                 'name' => $key,

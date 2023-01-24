@@ -20,19 +20,16 @@ class QueryService
          * Format Model config with keys.
          */
         $list = [];
+
         foreach ($config as $module) {
             $list[$module->field] = $module;
         }
 
         return $query->where(
             function (Builder $query) use ($filters, $list) {
-                /**
-                 * Parse current filters to compare with config.
-                 */
+                // Parse current filters to compare with config.
                 foreach ($filters as $name => $filter) {
-                    /**
-                     * If filter is allowed, apply config method.
-                     */
+                    // If filter is allowed, apply config method.
                     if (array_key_exists($name, $list)) {
                         /** @var FilterModule */
                         $module = $list[$name];

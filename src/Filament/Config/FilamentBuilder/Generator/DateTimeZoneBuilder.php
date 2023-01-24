@@ -21,6 +21,7 @@ class DateTimeZoneBuilder
     public static function make(bool $sort_utc = false): array
     {
         $timezones = self::getTimezones();
+
         if ($sort_utc) {
             usort($timezones, fn (DateTimeZoneBuilder $a, DateTimeZoneBuilder $b) => strcmp($a->pretty_offset, $b->pretty_offset));
         }
@@ -42,6 +43,7 @@ class DateTimeZoneBuilder
         $list = [];
 
         $date_time_zones = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
+
         foreach ($date_time_zones as $timezone) {
             $dtz = new DateTimeZoneBuilder();
 

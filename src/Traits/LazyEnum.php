@@ -30,6 +30,7 @@ trait LazyEnum
     public static function toList()
     {
         $list = [];
+
         foreach (self::cases() as $enum) {
             if ($enum instanceof BackedEnum) {
                 $list[$enum->value] = $enum->value;

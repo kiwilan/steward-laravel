@@ -35,6 +35,7 @@ class FilamentConfigCommand extends CommandSteward
 
         $configs = File::allFiles(config_path('/'));
         $exists = false;
+
         foreach ($configs as $file) {
             if ($file->getFilenameWithoutExtension() === 'filament') {
                 $exists = $file;

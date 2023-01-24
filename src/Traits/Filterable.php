@@ -45,11 +45,13 @@ trait Filterable
     {
         $class = new ReflectionClass($this);
         $instance = $class->getName();
+
         if (method_exists($instance, 'sortable')) {
             $sortable = $instance::sortable();
         }
 
         $sortable = array_filter($sortable, fn (SortModule $sort) => $sort->field === $field);
+
         if (empty($sortable)) {
             return $query;
         }
@@ -75,6 +77,7 @@ trait Filterable
     public static function getSortable()
     {
         $list = [];
+
         foreach (self::sortable() as $sort_module) {
             $list[$sort_module->field] = $sort_module->label;
         }

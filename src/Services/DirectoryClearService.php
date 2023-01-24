@@ -36,6 +36,7 @@ class DirectoryClearService
     public static function make(array $paths, array $ignore = ['.gitignore']): self
     {
         $service = new DirectoryClearService($paths, $ignore);
+
         foreach ($paths as $path) {
             $service->clear($path);
         }
@@ -72,6 +73,7 @@ class DirectoryClearService
     {
         $it = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
         $it = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+
         foreach ($it as $file) {
             if ($file->isDir()) {
                 rmdir($file->getPathname());

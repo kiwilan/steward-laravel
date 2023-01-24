@@ -14,8 +14,10 @@ class CommandSteward extends Command
 
         $signature_name = explode("\n", $this->signature); // remove options
         $signature_name = explode(' ', $signature_name[0]); // remove arguments
+
         if (array_key_exists(0, $signature_name)) {
             $signature_name = $signature_name[0];
+
             if (str_contains($signature_name, ':')) {
                 $signature_name = explode(':', $signature_name);
                 $signature_name = array_map('ucfirst', $signature_name);
@@ -38,6 +40,7 @@ class CommandSteward extends Command
     public function askOnProduction(?Closure $closure = null, bool $with_force = true, string $option = 'force')
     {
         $force = false;
+
         if ($with_force) {
             $force = $this->option($option) ?? false;
         }

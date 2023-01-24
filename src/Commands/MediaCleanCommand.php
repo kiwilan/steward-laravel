@@ -36,6 +36,7 @@ class MediaCleanCommand extends CommandSteward
         $media_path = public_path('storage');
 
         $media_entries = [];
+
         foreach ($models_list as $model) {
             /** @var Model $instance */
             $instance = new $model();
@@ -47,7 +48,7 @@ class MediaCleanCommand extends CommandSteward
                 ->get()
             ;
 
-            /** Extract all entries with media */
+            // Extract all entries with media
             foreach ($rows as $row) {
                 foreach ($row as $entry) {
                     foreach (config('steward.media.extensions') as $extension) {
@@ -62,6 +63,7 @@ class MediaCleanCommand extends CommandSteward
         /** Get all medias from $media_path */
         $files_list = File::allFiles($media_path);
         $files = [];
+
         foreach ($files_list as $file) {
             $file_path = $file->getRelativePathname();
             $file_path = str_replace('\\', '/', $file_path);
@@ -70,10 +72,11 @@ class MediaCleanCommand extends CommandSteward
 
         $media_used = [];
         $media_all = [];
-        /** Find medias between used and all */
+        // Find medias between used and all
         foreach ($files as $file) {
             foreach ($media_entries as $media_entry) {
                 $path = "{$media_path}/{$file}";
+
                 if (str_contains($media_entry, $file)) {
                     $media_used[] = $path;
                 } else {
@@ -84,7 +87,7 @@ class MediaCleanCommand extends CommandSteward
         $media_all = array_unique($media_all);
         $media_all = array_values($media_all);
 
-        /** Delete medias which is not used */
+        // Delete medias which is not used
         foreach ($media_all as $value) {
             if (! in_array($value, $media_used)) {
                 $this->warn("Media {$value} will be deleted.");

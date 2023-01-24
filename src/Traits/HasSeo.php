@@ -20,6 +20,7 @@ trait HasSeo
             if (empty($model->meta_title)) {
                 $model->meta_title = $model->limitStringSize($model->{$model->getMetaTitle()});
             }
+
             if (empty($model->meta_description)) {
                 $model->meta_description = $model->limitStringSize($model->{$model->getMetaDescription()});
             }
@@ -29,6 +30,7 @@ trait HasSeo
     public function getMetaTitle(): string
     {
         $default = $this->default_meta_title_from;
+
         if (null === $default) {
             $default = 'title';
         }

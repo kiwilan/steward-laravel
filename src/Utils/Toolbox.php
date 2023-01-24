@@ -51,12 +51,14 @@ class Toolbox
     public static function stringLimit(string|null $text, int $limit): string
     {
         $content = '';
+
         if ($text) {
             $isUTF8 = mb_check_encoding($text, 'UTF-8');
             $content = iconv('UTF-8', 'UTF-8//IGNORE', $text);
 
             if ($isUTF8) {
                 $content = trim($content);
+
                 if ($limit && strlen($content) > $limit) {
                     $content = substr($content, 0, $limit);
                 }

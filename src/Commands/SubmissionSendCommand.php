@@ -38,6 +38,7 @@ class SubmissionSendCommand extends CommandSteward
         if (property_exists($submission, 'name')) {
             $submission->name = 'Test Submission';
         }
+
         if (property_exists($submission, 'created_at')) {
             $submission->created_at = now();
         }

@@ -16,6 +16,7 @@ class FilamentLayoutCard
     public static function make(array $fields = [], ?string $title = null, int $width = 2): Card
     {
         $list = [];
+
         if ($title) {
             $list[] = Forms\Components\Placeholder::make(Str::slug($title))
                 ->label($title)

@@ -33,6 +33,7 @@ class FilamentBuilderContainer
         if ($this->minItems) {
             $container->minItems($this->minItems);
         }
+
         if ($this->maxItems) {
             $container->maxItems($this->maxItems);
         }

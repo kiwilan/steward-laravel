@@ -26,6 +26,7 @@ class ConverterService
     public static function jsonToArray(string $path, bool $is_associative = true, bool $replace_dotenv = true): array
     {
         $file = File::get($path);
+
         if ($replace_dotenv) {
             $file = ConverterService::replaceWithDotenv($file);
         }

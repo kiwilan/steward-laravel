@@ -30,6 +30,7 @@ class FactoryService
             public_path('storage/temp'),
             public_path('storage/media'),
         ];
+
         foreach ($paths as $key => $path) {
             if (File::exists($path)) {
                 File::cleanDirectory($path);

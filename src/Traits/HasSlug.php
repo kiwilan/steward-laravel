@@ -18,6 +18,7 @@ trait HasSlug
     public function getSlugWith(): string
     {
         $default = $this->default_slug_with;
+
         if (null === $default) {
             $default = 'title';
         }
@@ -35,6 +36,7 @@ trait HasSlug
         static::creating(function ($model) {
             if (empty($model->{$model->getSlugColumn()})) {
                 $model_value = $model->{$model->getSlugWith()};
+
                 if (is_array($model_value)) {
                     $model_value = reset($model_value);
                 }
@@ -49,6 +51,7 @@ trait HasSlug
             $name = uniqid();
         }
         $updated_name = 0 == $counter ? $name : $name.'-'.$counter;
+
         if (static::where($slug_field, Str::slug($updated_name))->exists()) {
             return $this->generateUniqueSlug($name, $counter + 1, $slug_field);
         }

@@ -30,11 +30,13 @@ trait HasDatayable
     {
         static::saved(function (Model $model) {
             $fields = $model->datayable ?? $model->default_datayable;
+
             foreach ($fields as $key => $field) {
                 $service = DatayableService::make($key);
                 $data = $service->merge($model->{$field});
 
                 $json = [];
+
                 foreach ($data as $value) {
                     $json[$value->name] = $value->value;
                 }

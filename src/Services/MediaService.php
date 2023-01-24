@@ -50,12 +50,15 @@ class MediaService
         if ($disk instanceof BackedEnum) {
             $disk = $disk->value;
         }
+
         if (! $collection) {
             $collection = $disk;
         }
+
         if (! $extension) {
             $extension = config('bookshelves.cover_extension');
         }
+
         if (! $method) {
             $method = SpatieMediaMethodEnum::addMediaFromBase64;
         }

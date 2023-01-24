@@ -13,6 +13,7 @@ trait Notifiable
         }
         $icon = $success ? 'heroicon-o-check-circle' : 'heroicon-o-exclamation-circle';
         $iconColor = $success ? 'success' : 'danger';
+
         if (! $message) {
             $message = $success ? 'Your changes have been saved.' : 'Please try again.';
         }

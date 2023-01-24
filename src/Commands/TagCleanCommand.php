@@ -32,14 +32,17 @@ class TagCleanCommand extends CommandSteward
         $taggables = $this->argument('taggables');
 
         $taggables = DB::table($taggables)->get();
+
         foreach ($taggables as $row) {
             $model = $row->taggable_type::find($row->taggable_id);
+
             if (null === $model) {
                 DB::table($taggables)->where('id', $row->id)->delete();
                 $this->warn("Deleted taggable entry: {$row->taggable_type} #{$row->taggable_id}");
             }
 
             $tag = DB::table('tags')->find($row->tag_id);
+
             if (null === $tag) {
                 DB::table($taggables)->where('id', $row->id)->delete();
                 $this->warn("Deleted taggable entry: Tag #{$row->id}");

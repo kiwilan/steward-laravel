@@ -9,5 +9,6 @@ enum TemplateEnum: string
     use LazyEnum;
 
     case home = 'home';
+
     case about = 'about';
 }

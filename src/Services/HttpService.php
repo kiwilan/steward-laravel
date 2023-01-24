@@ -59,6 +59,7 @@ class HttpService
     public static function make(mixed $requests): self
     {
         $service = new HttpService();
+
         if (0 === count($requests)) {
             throw new \Exception('Requests must be an array or a collection');
         }
@@ -88,6 +89,7 @@ class HttpService
 
         foreach ($responses as $id => $response) {
             $query = $queries->first(fn (HttpServiceQuery $query) => $query->model_id === $id);
+
             if (null !== $query) {
                 $parsed = $closure($query, $response);
                 $fullfilled->put($id, $parsed);
@@ -210,6 +212,7 @@ class HttpService
     {
         /** @var Collection<int,HttpServiceResponse> */
         $list = collect([]);
+
         foreach ($responses as $id => $response) {
             $response = HttpServiceResponse::make($id, $response);
             $list->put($id, $response);
@@ -231,6 +234,7 @@ class HttpService
          * Chunk by limit into arrays.
          */
         $urls_count = count($urls);
+
         /**
          * @var Collection<int,Collection<int,string>> $chunks
          */
@@ -244,9 +248,7 @@ class HttpService
             $console->newLine();
         }
 
-        /**
-         * async query on each chunk.
-         */
+        // async query on each chunk.
         foreach ($chunks as $chunk_key => $chunk_urls) {
             $chunk_urls_count = count($chunk_urls);
             $current_chunk = $chunk_key + 1;
@@ -282,6 +284,7 @@ class HttpService
     {
         /** @var Collection<int,object> */
         $requests = collect([]);
+
         foreach ($array as $key => $item) {
             $object = new stdClass();
             $object->id = $key;
@@ -330,6 +333,7 @@ class HttpService
         ]);
 
         $promises = [];
+
         foreach ($urls as $id => $url) {
             $promises[$id] = $client->getAsync($url);
         }
@@ -339,9 +343,11 @@ class HttpService
         )->wait();
 
         $responses_list = [];
+
         foreach ($responses as $id => $response) {
             /** @var string */
             $state = $response['state']; // "fulfilled"
+
             /** @var \GuzzleHttp\Psr7\Response */
             $value = $response['value']; // "fulfilled"
 
@@ -393,6 +399,7 @@ class HttpService
 
         // Prepare requests with `id` and `url`.
         $requests = [];
+
         foreach ($urls as $id => $url) {
             if ($url) {
                 $requests[$id] = new Request('GET', $url);
@@ -428,6 +435,7 @@ class HttpService
     {
         $base64 = base64_encode($response->body());
         $mime = 'image/jpeg';
+
         return "data:{$mime};base64,{$base64}";
     }
 }

@@ -59,6 +59,7 @@ class SocialServiceTwitter
     private function fetchOembedApi(): self
     {
         $regex = '/\\/(\\d+)\\/?$/is';
+
         if (preg_match($regex, $this->url, $matches)) {
             $this->media_id = $matches[1]
                 ? $matches[1]

@@ -26,6 +26,7 @@ class SocialSpotify extends SocialModule implements SocialInterface
     public function regex()
     {
         $regex = '/^(https:\/\/open.spotify.com\/|user:track:album:artist:playlist:)([a-zA-Z0-9]+)(.*)$/m';
+
         if (preg_match($regex, $this->url, $matches)) {
             $this->type = $matches[2] ?? 'track';
             $this->media_id = $matches[3]

@@ -30,6 +30,7 @@ class FilamentChart
         if ($published) {
             $models_db = $models_db->where('status', '=', PublishStatusEnum::published->value);
         }
+
         if ($limit_year) {
             $models_db = $models_db->whereYear($field, '>=', $limit_year);
         }
@@ -44,6 +45,7 @@ class FilamentChart
 
         $stats = [];
         $labels = [];
+
         foreach ($models_db as $year => $stat) {
             array_push($labels, $year);
             array_push($stats, $stat->total);
@@ -68,6 +70,7 @@ class FilamentChart
         if ($published) {
             $models_db = $models_db->where('status', '=', PublishStatusEnum::published->value);
         }
+
         if ($limit_year) {
             $models_db = $models_db->whereYear($field, '>=', $limit_year);
         }
@@ -82,6 +85,7 @@ class FilamentChart
 
         $stats = [];
         $labels = [];
+
         foreach ($models_db as $year => $stat) {
             array_push($labels, $year);
             array_push($stats, $stat->total);
@@ -112,6 +116,7 @@ class FilamentChart
         ;
 
         $periods = collect([]);
+
         foreach (CarbonPeriod::create("{$year}-01-01", '1 month', "{$year}-12-01") as $period) {
             $periods->push($period->format('M Y'));
         }
@@ -154,6 +159,7 @@ class FilamentChart
         ;
 
         $periods = collect([]);
+
         foreach (CarbonPeriod::create("{$limit_year}-01-01", '1 year', now()->subYear().'-12-01') as $period) {
             $periods->push($period->format('Y'));
         }
@@ -167,7 +173,6 @@ class FilamentChart
         $chart_helper->stats = $res->toArray();
 
         return $chart_helper;
-
         // $stats = Cache::remember(
         //     'statsByMonth',
         //     // Clears cache at the start of next month

@@ -58,6 +58,7 @@ class IframelyService
             'url' => $media_url,
             'api_key' => $this->api_key,
         ];
+
         if ($this->omit_script) {
             $query['omit_script'] = 1;
         }

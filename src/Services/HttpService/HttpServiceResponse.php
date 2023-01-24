@@ -124,6 +124,7 @@ class HttpServiceResponse
     private function isValidXml(string $contents): bool
     {
         $content = trim($contents);
+
         if (empty($content)) {
             return false;
         }
@@ -160,6 +161,7 @@ class HttpServiceResponse
             if ($key == $keySearch) {
                 return true;
             }
+
             if (is_array($item) && $this->keyExists($item, $keySearch)) {
                 return true;
             }
@@ -183,6 +185,7 @@ class HttpServiceResponse
             if ($key == $keySearch) {
                 return $array[$keySearch];
             }
+
             if (is_array($item) && $array = $this->keyFind($item, $keySearch)) {
                 return $array;
             }

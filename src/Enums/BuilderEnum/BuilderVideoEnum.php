@@ -9,6 +9,8 @@ enum BuilderVideoEnum: string
     use LazyEnum;
 
     case youtube = 'youtube';
+
     case dailymotion = 'dailymotion';
+
     case vimeo = 'vimeo';
 }

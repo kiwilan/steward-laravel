@@ -24,6 +24,7 @@ class FactoryBuilder
         $data = $factory_builder->{$factory_builder->name}();
 
         $faker = [];
+
         foreach ($data as $entry) {
             $faker[] = [
                 'data' => $entry['data'],

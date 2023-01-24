@@ -36,6 +36,7 @@ class ScoutFreshCommand extends CommandSteward
         $list = config('steward.scoutable.models');
         $this->info('Models to search engine: '.implode(', ', $list));
         $this->newLine();
+
         foreach ($list as $model) {
             $this->getScoutName($model);
         }
@@ -43,6 +44,7 @@ class ScoutFreshCommand extends CommandSteward
         try {
             $this->warn('Clean all models in search engine.');
             $this->newLine();
+
             foreach ($this->models as $key => $value) {
                 Artisan::call('scout:flush "'.$key.'"', [], $this->getOutput());
                 Artisan::call('scout:delete-index "'.$value.'"', [], $this->getOutput());
@@ -51,6 +53,7 @@ class ScoutFreshCommand extends CommandSteward
 
             $this->warn('Import all models in search engine.');
             $this->newLine();
+
             foreach ($this->models as $key => $value) {
                 Artisan::call('scout:import "'.$key.'"', [], $this->getOutput());
                 $this->newLine();

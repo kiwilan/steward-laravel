@@ -76,13 +76,16 @@ class FactoryText
     public function paragraphs(string $type = 'html', int $min = 1, int $max = 5): string
     {
         $content = null;
+
         for ($k = 0; $k < $this->factory->faker->numberBetween($min, $max); $k++) {
             if ($type === 'html') {
                 $content .= "{$this->html()}<br><br>";
             }
+
             if ($type === 'markdown') {
                 $content .= "{$this->markdown(image: true, link: true, code: true)}\n\n";
             }
+
             if (! $content) {
                 $content = '`type` must be `html` or `markdown`';
             }
@@ -100,18 +103,23 @@ class FactoryText
 
         for ($k = 0; $k < $this->factory->faker->numberBetween(2, 5); $k++) {
             $paragraph = $this->paragraph();
+
             if ($this->factory->faker->boolean(25)) {
                 $paragraph .= " <strong>{$this->sentence()}</strong>";
             }
+
             if ($this->factory->faker->boolean(25)) {
                 $paragraph .= " <em>{$this->sentence()}</em>";
             }
+
             if ($this->factory->faker->boolean(25)) {
                 $paragraph .= " <code>{$this->words()}</code>";
             }
+
             if ($withLink && $this->factory->faker->boolean(25)) {
                 $paragraph .= " <a href=\"{$this->factory->faker->url()}\">{$this->words()}</a>";
             }
+
             if ($withImage && $this->factory->faker->boolean(15)) {
                 $paragraph = "<a href=\"{$this->factory->faker->imageUrl()}\" target=\"_blank\"><img src=\"{$this->factory->faker->imageUrl()}\" alt=\"{$this->sentence()}\" /></a>";
             }
@@ -136,18 +144,23 @@ class FactoryText
         $image_text = "  ![{$this->sentence()}]({$this->factory->faker->imageUrl()})  ";
 
         $html = [];
+
         if ($this->factory->faker->boolean(25)) {
             $html[] = $bold_text;
         }
+
         if ($this->factory->faker->boolean(25)) {
             $html[] = $italic_text;
         }
+
         if ($code && $this->factory->faker->boolean(25)) {
             $html[] = $code_text;
         }
+
         if ($link && $this->factory->faker->boolean(25)) {
             $html[] = $link_text;
         }
+
         if ($image && $this->factory->faker->boolean(25)) {
             $html[] = $image_text;
         }
@@ -185,6 +198,7 @@ class FactoryText
     public function paragraph(): string
     {
         $content = '';
+
         if ($this->use_sindarin) {
             for ($k = 0; $k < $this->factory->faker->numberBetween(2, 5); $k++) {
                 $content .= $this->sentence().' ';

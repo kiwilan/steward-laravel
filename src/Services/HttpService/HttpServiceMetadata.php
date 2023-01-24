@@ -65,6 +65,7 @@ class HttpServiceMetadata
     private function setOrigin(?Response $response): ?string
     {
         $origin = $response->getHeader('Origin');
+
         if (array_key_exists(0, $origin)) {
             return $origin[0];
         }

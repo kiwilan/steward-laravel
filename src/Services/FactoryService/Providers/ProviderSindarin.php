@@ -14,6 +14,7 @@ class ProviderSindarin
     {
         $words = self::sindarin();
         shuffle($words);
+
         if ($limit) {
             $words = array_slice($words, 0, $limit);
         }

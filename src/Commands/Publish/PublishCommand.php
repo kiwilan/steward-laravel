@@ -38,6 +38,7 @@ class PublishCommand extends CommandSteward
 
         $meta = MetaClass::make($class);
         $instance = new $class();
+
         if (! $meta->useTrait(\Kiwilan\Steward\Traits\Publishable::class)) {
             $this->error('Class does not use the Publishable trait.');
 
@@ -51,8 +52,10 @@ class PublishCommand extends CommandSteward
         }
 
         $models = $instance::all();
+
         if ($unpublish) {
             $this->info("Unpublishing all models of class {$meta->meta_class_namespaced}");
+
             foreach ($models as $current) {
                 if (! method_exists($current, 'unpublish')) {
                     $this->error('Class does not have a publishable enum.');
@@ -63,6 +66,7 @@ class PublishCommand extends CommandSteward
             }
         } else {
             $this->info("Publishing all models of class {$meta->meta_class_namespaced}");
+
             foreach ($models as $current) {
                 if (! method_exists($current, 'publish')) {
                     $this->error('Class does not have a publishable enum.');

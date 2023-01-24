@@ -41,6 +41,7 @@ class FactoryMediaLocal
         $gallery = $this->factory->faker->randomElements($medias, $this->factory->faker->numberBetween(0, count($medias) > 5 ? 5 : count($medias)));
 
         $entries = [];
+
         foreach ($gallery as $item) {
             $name = FactoryMediaLocal::createMedia($item, $path);
             $entries[] = $name;
@@ -64,10 +65,12 @@ class FactoryMediaLocal
         $slug = $model->slug;
 
         $media_path = database_path("seeders/media/{$table}/{$slug}.webp");
+
         if (File::exists($media_path)) {
             $media = File::get($media_path);
 
             $directory = public_path("storage/{$table}");
+
             if (! File::exists($directory)) {
                 File::makeDirectory($directory, 0755, true, true);
             }
@@ -130,6 +133,7 @@ class FactoryMediaLocal
         $directory = public_path("storage/{$category}");
         $item_path = "{$category}/{$filename}";
         $media_path_dist = public_path("storage/{$item_path}");
+
         if (! File::exists($directory)) {
             File::makeDirectory($directory, 0755, true, true);
         }

@@ -21,6 +21,7 @@ class FilamentBuilder
     public static function make(string $builder): self
     {
         $instance = new $builder();
+
         if (! $instance instanceof FilamentBuilderModule) {
             throw new Exception('Builder must implement FilamentBuilderModule');
         }

@@ -192,6 +192,6 @@ return [
             'models' => 'types-models.d.ts',
             'ziggy' => 'types-ziggy.d.ts',
         ],
-        'path' => base_path(),
+        'path' => resource_path('js'),
     ],
 ];

@@ -69,6 +69,7 @@ class ArchiveFilamentLayoutColumn
     private function scanFields(): array
     {
         $list = [];
+
         foreach ($this->fields as $field) {
             if (is_array($field)) {
                 // if only one field is passed, it is not an array
@@ -81,10 +82,12 @@ class ArchiveFilamentLayoutColumn
         }
 
         $schema = [];
+
         foreach ($list as $key => $group) {
             if (! is_array($group)) {
                 $group = [$group];
             }
+
             if ($this->card) {
                 $group = $this->setCard($group, $key);
             }
@@ -103,6 +106,7 @@ class ArchiveFilamentLayoutColumn
     private function setCard(array $group, ?int $key = null): array
     {
         $title = null;
+
         if (array_key_exists($key, $this->titles)) {
             $title = $this->titles[$key];
         }
@@ -112,6 +116,7 @@ class ArchiveFilamentLayoutColumn
         // }
 
         $fields = [];
+
         if ($title) {
             $fields[] = Forms\Components\Placeholder::make(Str::slug($title))
                 ->label($title)

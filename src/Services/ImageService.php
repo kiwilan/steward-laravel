@@ -37,6 +37,7 @@ class ImageService
         try {
             if (@exif_imagetype($img)) { // CHECK IF IT IS AN IMAGE
                 $type = getimagesize($img)[2]; // GET TYPE
+
                 if (1 === $type) { // GIF
                     $image = imagecreatefromgif($img);
                     // IF IMAGE IS TRANSPARENT (alpha=127) RETURN fff FOR WHITE
@@ -67,6 +68,7 @@ class ImageService
             $newImg = imagecreatetruecolor(1, 1); // FIND DOMINANT COLOR
             imagecopyresampled($newImg, $image, 0, 0, 0, 0, 1, 1, imagesx($image), imagesy($image));
             $hexa_color = dechex(imagecolorat($newImg, 0, 0));
+
             if (! self::is_hex($hexa_color)) {
                 $hexa_color = $default;
             }
