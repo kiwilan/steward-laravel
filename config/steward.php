@@ -184,7 +184,11 @@ return [
     */
 
     'components' => [
-        'config' => [
-        ],
+        'config' => [],
+    ],
+
+    'typescript' => [
+        'file' => 'models.d.ts',
+        'path' => resource_path('js'),
     ],
 ];

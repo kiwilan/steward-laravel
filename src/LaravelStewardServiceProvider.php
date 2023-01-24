@@ -8,6 +8,7 @@ use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\LaravelStewardCommand;
 use Kiwilan\Steward\Commands\LogClearCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
+use Kiwilan\Steward\Commands\ModelTypeCommand;
 use Kiwilan\Steward\Commands\Publish\PublishCommand;
 use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
 use Kiwilan\Steward\Commands\RoutePrintCommand;
@@ -56,13 +57,13 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 SubmissionRgpdVerificationCommand::class,
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
-            ])
-        ;
+                ModelTypeCommand::class,
+            ]);
     }
 
     public function bootingPackage()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'steward');
 
         $this->configureComponents();
     }

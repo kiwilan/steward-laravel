@@ -41,6 +41,9 @@ trait HasSeo
         return $this->meta_description_from ?? $this->default_meta_description_from;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getSeoAttribute(): array
     {
         return [
