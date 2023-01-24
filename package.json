@@ -1,26 +1,21 @@
 {
   "name": "laravel-steward",
+  "type": "module",
   "version": "1.0.0",
-  "scripts": {
-    "build": "tsup --clean",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
-  },
+  "author": "Kiwilan",
+  "license": "MIT",
+  "homepage": "https://github.com/kiwilan/laravel-steward#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kiwilan/laravel-steward.git"
   },
-  "author": "Kiwilan",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/kiwilan/laravel-steward/issues"
   },
-  "homepage": "https://github.com/kiwilan/laravel-steward#readme",
-  "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -28,8 +23,14 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "build": "tsup --clean",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.1",
+    "@inertiajs/vue3": "^1.0.0",
     "@types/node": "^18.11.18",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.32.0",
@@ -37,6 +38,8 @@
     "tailwindcss": "^3.2.4",
     "tsup": "^6.5.0",
     "typescript": "^4.9.4",
-    "vite": "^4.0.4"
+    "vite": "^4.0.4",
+    "vue": "^3.2.45",
+    "ziggy-js": "^1.5.0"
   }
 }
