@@ -2,7 +2,9 @@
   "name": "laravel-steward",
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "unbuild",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -14,9 +16,27 @@
     "url": "https://github.com/kiwilan/laravel-steward/issues"
   },
   "homepage": "https://github.com/kiwilan/laravel-steward#readme",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
+    "@antfu/eslint-config": "^0.34.1",
+    "@types/node": "^18.11.18",
     "autoprefixer": "^10.4.13",
+    "eslint": "^8.32.0",
     "postcss": "^8.4.20",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.2.4",
+    "typescript": "^4.9.4",
+    "unbuild": "^1.1.1",
+    "vite": "^4.0.4"
   }
 }

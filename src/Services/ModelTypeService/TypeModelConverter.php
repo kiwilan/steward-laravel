@@ -23,7 +23,6 @@ class TypeModelConverter
         $reflector = new \ReflectionClass($model);
         $converter = new TypeModelConverter($model, $reflector->getShortName());
 
-        $appends = $model->getAppends();
         $hidden = $model->getHidden();
 
         $appendsTypes = [];
@@ -85,8 +84,22 @@ class TypeModelConverter
             }
         }
 
+        $counts = [];
+
+        foreach ($types as $name => $type) {
+            if ($type->is_array) {
+                $counts[$name] = TypePropertyConverter::create(
+                    model: $model,
+                    name: "{$type->name}_count",
+                    type: 'int',
+                    is_nullable: true,
+                );
+            }
+        }
+
+        $counts = TypePropertyConverter::make($counts);
         $appendsTypes = TypePropertyConverter::make($appendsTypes);
-        $types = array_merge($types, $appendsTypes);
+        $types = array_merge($types, $appendsTypes, $counts);
 
         $typescript = [];
         $enums = [];

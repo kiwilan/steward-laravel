@@ -57,6 +57,10 @@ class TypePropertyConverter
 
     private function convertPhpType(string $php_type): string
     {
+        if (str_contains($php_type, '?')) {
+            $php_type = str_replace('?', '', $php_type);
+        }
+
         return match ($php_type) {
             'string' => 'string',
             'int' => 'number',
@@ -78,6 +82,11 @@ class TypePropertyConverter
 
     private function phpTypeToTsType()
     {
+        if (str_contains($this->php_type, '?')) {
+            $this->is_nullable = true;
+            $this->php_type = str_replace('?', '', $this->php_type);
+        }
+
         $this->ts_type = $this->convertPhpType($this->php_type);
 
         if ($this->override_type) {

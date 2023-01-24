@@ -2,14 +2,13 @@
 
 namespace Kiwilan\Steward\Services;
 
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 use Tightenco\Ziggy\Ziggy;
 
 class ZiggyTypeService
 {
-    protected function __construct(
-        public Filesystem $files,
-    ) {
+    protected function __construct()
+    {
     }
 
     public static function make(): self
@@ -17,13 +16,13 @@ class ZiggyTypeService
         $path = config('steward.typescript.path') ?? resource_path('js');
         $filename = config('steward.typescript.file.ziggy') ?? 'types-ziggy.d.ts';
 
-        $service = new self(new Filesystem());
+        $service = new self();
 
         $file = "{$path}/{$filename}";
         $generatedRoutes = $service->generate();
 
         $service->makeDirectory($path);
-        $service->files->put($file, $generatedRoutes);
+        File::put($file, $generatedRoutes);
 
         return $service;
     }
@@ -76,8 +75,8 @@ class ZiggyTypeService
 
     protected function makeDirectory($path)
     {
-        if (! $this->files->isDirectory(dirname(base_path($path)))) {
-            $this->files->makeDirectory(dirname(base_path($path)), 0755, true, true);
+        if (! File::isDirectory(dirname(base_path($path)))) {
+            File::makeDirectory(dirname(base_path($path)), 0755, true, true);
         }
 
         return $path;
