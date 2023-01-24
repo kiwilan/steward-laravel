@@ -10,7 +10,7 @@ trait Mediable
 
     public function initializeMediable()
     {
-        // $this->appends[] = 'picture_url';
+        $this->appends[] = 'mediable';
     }
 
     /**
@@ -37,7 +37,7 @@ trait Mediable
      */
     public function mediable(?string $field = 'picture', bool $get_path = false): string|array|null
     {
-        if (! $field) {
+        if (!$field) {
             return null;
         }
 
@@ -50,12 +50,12 @@ trait Mediable
             $list = [];
 
             foreach ($this->{$field} as $media) {
-                $list[] = config('app.url')."/storage/{$media}";
+                $list[] = config('app.url') . "/storage/{$media}";
             }
 
             return $list;
         }
 
-        return config('app.url')."/storage/{$path}";
+        return config('app.url') . "/storage/{$path}";
     }
 }
