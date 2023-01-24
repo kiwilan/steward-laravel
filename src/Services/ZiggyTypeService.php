@@ -58,8 +58,6 @@ class ZiggyTypeService
 
         $content .= 'declare global {'.PHP_EOL;
         $content .= '  declare interface ZiggyLaravelRoutes extends LaravelRoutes {}'.PHP_EOL;
-        $content .= '  declare function $route(): Router;'.PHP_EOL;
-        $content .= '  declare function $route(name: keyof ZiggyLaravelRoutes, params?: InputParams, absolute?: boolean, customZiggy?: Config): string;'.PHP_EOL;
         $content .= '}'.PHP_EOL;
 
         $content .= 'declare module "@vue/runtime-core" {'.PHP_EOL;
