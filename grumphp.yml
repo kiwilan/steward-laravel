@@ -11,6 +11,8 @@ grumphp:
     pest: ~
     phpstan:
       use_grumphp_paths: false
+    npm_script:
+      script: run lint:fix
   parallel:
     enabled: true
     max_workers: 32
