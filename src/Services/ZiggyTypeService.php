@@ -14,7 +14,7 @@ class ZiggyTypeService
 
     public static function make(): self
     {
-        $path = config('steward.typescript.path') ?? resource_path('js');
+        $path = config('steward.typescript.path') ?? base_path();
         $filename = config('steward.typescript.file.ziggy') ?? 'types-ziggy.d.ts';
 
         $service = new self(new Filesystem());
