@@ -13,7 +13,8 @@ class GenerateTypeCommand extends CommandSteward
      *
      * @var string
      */
-    protected $signature = 'generate:type {type=model}';
+    protected $signature = 'generate:type
+                            {type=models : Generate `models` or `ziggy` types}';
 
     /**
      * The console command description.
@@ -30,7 +31,7 @@ class GenerateTypeCommand extends CommandSteward
         $this->title();
         $type = $this->argument('type');
 
-        if ($type === 'model') {
+        if ($type === 'models') {
             $this->models();
         }
 
