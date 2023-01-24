@@ -188,7 +188,10 @@ return [
     ],
 
     'typescript' => [
-        'file' => 'models.d.ts',
+        'file' => [
+            'models' => 'types-models.d.ts',
+            'ziggy' => 'types-ziggy.d.ts',
+        ],
         'path' => resource_path('js'),
     ],
 ];

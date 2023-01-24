@@ -63,7 +63,7 @@ class ModelTypeService
         $content .= '}'.PHP_EOL;
 
         $path = config('steward.typescript.path') ?? resource_path('js');
-        $filename = config('steward.typescript.file') ?? 'models.d.ts';
+        $filename = config('steward.typescript.file.models') ?? 'types-models.d.ts';
 
         $path = "{$path}/{$filename}";
         File::put($path, $content);
