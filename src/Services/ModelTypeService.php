@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Services;
 
-use Doctrine\DBAL\Types\Types;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\ModelTypeService\TypeColumnConverter;
@@ -57,11 +56,11 @@ class ModelTypeService
 
         $content = '';
 
-        $content .= 'declare namespace App.Models {' . PHP_EOL;
+        $content .= 'declare namespace App.Models {'.PHP_EOL;
         foreach ($this->models_ts as $key => $model_ts) {
             $content .= $model_ts->typescript;
         }
-        $content .= '}' . PHP_EOL;
+        $content .= '}'.PHP_EOL;
 
         $path = config('steward.typescript.path') ?? resource_path('js');
         $filename = config('steward.typescript.file') ?? 'models.d.ts';
@@ -72,14 +71,14 @@ class ModelTypeService
 
     private function parseClass(string $model_namespaced): ?TypeModelConverter
     {
-        if (!class_exists($model_namespaced)) {
+        if (! class_exists($model_namespaced)) {
             $this->error = "{$model_namespaced} class not exist.";
             return null;
         }
 
         $model = new $model_namespaced();
 
-        if (!$model instanceof Model) {
+        if (! $model instanceof Model) {
             $this->error = "{$model_namespaced} is not an instance of Model.";
             return null;
         }
@@ -132,7 +131,7 @@ class ModelTypeService
 
         /** @var \SplFileInfo $file */
         foreach ($iterator as $file) {
-            if (!$file->isDir()) {
+            if (! $file->isDir()) {
                 $ns = $this->getFileNamespace($file);
                 $namespaces[] = $ns;
             }

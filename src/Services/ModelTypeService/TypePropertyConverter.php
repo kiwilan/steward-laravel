@@ -55,7 +55,7 @@ class TypePropertyConverter
 
     private function convertPhpType(string $php_type): string
     {
-        $ts_type = match ($php_type) {
+        return match ($php_type) {
             'string' => 'string',
             'int' => 'number',
             'integer' => 'number',
@@ -72,8 +72,6 @@ class TypePropertyConverter
             'Model' => 'any',
             default => 'any',
         };
-
-        return $ts_type;
     }
 
     private function phpTypeToTsType()

@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Commands;
 
 use Illuminate\Console\Command;
-use Kiwilan\Steward\Commands\CommandSteward;
 use Kiwilan\Steward\Services\ModelTypeService;
 
 class ModelTypeCommand extends CommandSteward

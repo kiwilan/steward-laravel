@@ -30,11 +30,11 @@ class TypeModelConverter
         $appendsMethods = [];
         foreach ($reflector->getMethods() as $key => $method) {
             $name = $method->getName();
-            if (!str_starts_with($name, 'get') || !str_contains($name, 'Attribute')) {
+            if (! str_starts_with($name, 'get') || ! str_contains($name, 'Attribute')) {
                 continue;
             }
 
-            if (!$method->getReturnType()) {
+            if (! $method->getReturnType()) {
                 continue;
             }
 
@@ -85,27 +85,27 @@ class TypeModelConverter
         $typescript = [];
         $enums = [];
 
-        $typescript[] = "  export type {$converter->name} = {" . PHP_EOL;
+        $typescript[] = "  export type {$converter->name} = {".PHP_EOL;
         foreach ($types as $name => $type) {
-            if (!in_array($name, $hidden)) {
+            if (! in_array($name, $hidden)) {
                 if ($type->type_is_enum) {
                     $enums[class_basename($type->php_type)] = $type->enum_types;
                 }
                 $typescript[] = "{$type->typescript}";
             }
         }
-        $typescript[] = '  };' . PHP_EOL;
+        $typescript[] = '  };'.PHP_EOL;
 
         $converter->typescript = implode('', $typescript);
 
-        if (!empty($enums)) {
+        if (! empty($enums)) {
             $enum_types = [];
             foreach ($enums as $name => $enum) {
                 $enum = array_map(fn ($value) => "'{$value}'", $enum);
                 $list = implode(' | ', $enum);
                 $enum_types[] = "  export type {$name} = {$list};";
             }
-            $converter->typescript .= implode(PHP_EOL, $enum_types) . PHP_EOL;
+            $converter->typescript .= implode(PHP_EOL, $enum_types).PHP_EOL;
         }
 
         return $converter;

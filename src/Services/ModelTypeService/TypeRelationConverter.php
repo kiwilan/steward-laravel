@@ -25,7 +25,7 @@ class TypeRelationConverter
 
         foreach ($reflect->getMethods() as $method) {
             $is_relation = str_contains($method->getReturnType(), 'Illuminate\Database\Eloquent\Relations');
-            if (!$is_relation) {
+            if (! $is_relation) {
                 continue;
             }
 

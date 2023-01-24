@@ -31,7 +31,7 @@ class TypeColumnConverter
     {
         $table = $model->getTable();
 
-        if (!Schema::hasTable($table)) {
+        if (! Schema::hasTable($table)) {
             throw new \Exception("Table $table does not exist");
         }
 

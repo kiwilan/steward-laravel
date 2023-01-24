@@ -58,12 +58,13 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
                 ModelTypeCommand::class,
-            ]);
+            ])
+        ;
     }
 
     public function bootingPackage()
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'steward');
+        $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
 
         $this->configureComponents();
     }
