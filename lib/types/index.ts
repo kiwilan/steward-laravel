@@ -27,7 +27,7 @@ export interface StewardOptions {
    * Enable `@inertiajs/vue3` types.
    * @default false
    */
-  inertia?: StewardOptionsInertia | false
+  inertia?: StewardOptionsInertia
 }
 
 export type Route = keyof ZiggyLaravelRoutes
