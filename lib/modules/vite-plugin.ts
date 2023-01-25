@@ -1,5 +1,4 @@
 // import fs from 'fs'
-import { exec } from 'child_process'
 import type { Plugin } from 'vite'
 import type { StewardOptions } from '@/types'
 
@@ -51,13 +50,23 @@ const Steward = (userOptions: StewardOptions = {}): Plugin => {
       // }
 
       if (opts.inertia) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        let exec = (command: string, callback: (error: any, stdout: any) => void) => {}
+
+        if (process.env.NODE_ENV !== 'production') {
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          exec = require('child_process').exec
+        }
+
+        // import { exec } from 'child_process'
         const command = (command: string) => exec(
           command,
-          (error, stdout) => {
+          (error) => {
             if (error) {
               console.error(`exec error: ${error}`)
               return
             }
+            // eslint-disable-next-line no-console
             console.log(`${command} ready!`)
           },
         )
