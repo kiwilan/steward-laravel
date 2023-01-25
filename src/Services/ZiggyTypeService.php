@@ -53,7 +53,7 @@ class ZiggyTypeService
         $content .= 'declare interface IPage {'.PHP_EOL;
         $content .= '  props: {'.PHP_EOL;
         $content .= '    user: App.Models.User'.PHP_EOL;
-        $content .= '    jetstream: { canCreateTeams: boolean, hasTeamFeatures: boolean, managesProfilePhotos: boolean, hasApiFeatures: boolean }'.PHP_EOL;
+        $content .= '    jetstream: { canCreateTeams: boolean, hasTeamFeatures: boolean, managesProfilePhotos: boolean, hasApiFeatures: boolean, canUpdateProfileInformation: boolean, canUpdatePassword: boolean, canManageTwoFactorAuthentication: boolean, hasAccountDeletionFeatures: boolean }'.PHP_EOL;
         $content .= '    [x: string]: unknown;'.PHP_EOL;
         $content .= '    errors: import("@inertiajs/core").Errors & import("@inertiajs/core").ErrorBag;'.PHP_EOL;
         $content .= '  }'.PHP_EOL;
