@@ -1,6 +1,6 @@
 {
   "name": "@kiwilan/vite-plugin-laravel-steward",
-  "version": "0.0.139",
+  "version": "0.0.140",
   "type": "commonjs",
   "description": "Vite plugin for laravel-steward.",
   "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
