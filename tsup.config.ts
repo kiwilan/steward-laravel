@@ -8,13 +8,14 @@ export default defineConfig({
     // 'tiptap/index': 'src/tiptap.ts',
   },
   format: ['cjs', 'esm'],
+  external: ['vue', '@inertiajs/vue3', 'ziggy-js'],
   // outExtension() {
   //   return {
   //     js: '.cjs',
   //   }
   // },
   dts: true,
-  minify: false,
+  minify: true,
   treeshake: true,
   splitting: true,
 })

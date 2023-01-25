@@ -1,24 +1,7 @@
 // import fs from 'fs'
 import { exec } from 'child_process'
 import type { Plugin } from 'vite'
-
-interface StewardOptions {
-  // /**
-  //  * Where JS scripts will be copied
-  //  * @default './public/vendor/js'
-  //  */
-  // outputDirScripts?: string
-  // /**
-  //  * Where JS libraries will be copied
-  //  * @default './resources/js'
-  //  */
-  // outputDirLibraries?: string
-  /**
-   * Whether to use inertia or not
-   * @default false
-   */
-  inertia?: boolean
-}
+import type { StewardOptions } from '@/types'
 
 // const outputDirScriptsDefault = './public/vendor/js'
 // const outputDirLibrariesDefault = './resources/libs'
