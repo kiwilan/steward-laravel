@@ -1,10 +1,10 @@
 {
-  "name": "laravel-steward",
-  "type": "module",
-  "version": "1.0.0",
-  "author": "Kiwilan",
+  "name": "@kiwilan/vite-plugin-laravel-steward",
+  "version": "0.0.139",
+  "description": "Vite plugin for laravel-steward.",
+  "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/kiwilan/laravel-steward#readme",
+  "homepage": "https://github.com/kiwilan/laravel-steward",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kiwilan/laravel-steward.git"
@@ -12,6 +12,10 @@
   "bugs": {
     "url": "https://github.com/kiwilan/laravel-steward/issues"
   },
+  "keywords": [
+    "steward",
+    "vite"
+  ],
   "exports": {
     ".": {
       "require": "./dist/index.cjs",

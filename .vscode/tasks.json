@@ -134,12 +134,23 @@
     {
       "label": "NPM pack-local",
       "type": "shell",
-      "command": "pnpm prepack && rm -f ~/vite-plugin-laravel-steward-*.tgz || true && npm pack && mv vite-plugin-laravel-steward-*.tgz ~/",
+      "command": "npm pack --dry-run && rm -f ~/kiwilan-vite-plugin-laravel-steward-*.tgz || true && npm pack && mv kiwilan-vite-plugin-laravel-steward-*.tgz ~/",
       "problemMatcher": [],
       "presentation": {
         "reveal": "never",
         "revealProblems": "never",
         "close": true
+      }
+    },
+    {
+      "label": "NPM deploy",
+      "type": "shell",
+      "command": "npm pack --dry-run && npm publish",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "revealProblems": "always",
+        "close": false
       }
     },
     {
