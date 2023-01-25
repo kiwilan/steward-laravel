@@ -1,7 +1,10 @@
 import InertiaTyped from './plugin'
-import { useInertia } from './composables/useInertia'
+import { appResolve, appTitle } from './setup'
+import { useInertiaRouter } from './composables/useInertiaRouter'
 
 export {
   InertiaTyped,
-  useInertia,
+  appResolve,
+  appTitle,
+  useInertiaRouter,
 }

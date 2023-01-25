@@ -45,5 +45,4 @@ export interface IInertiaTyped {
 export interface InertiaTypedOptions {
   inject: boolean
   router: any
-  usePage: any
 }
