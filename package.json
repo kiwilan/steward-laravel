@@ -25,13 +25,17 @@
   ],
   "scripts": {
     "build": "tsup --clean",
+    "watch": "tsup --watch",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.1",
     "@inertiajs/vue3": "^1.0.0",
     "@types/node": "^18.11.18",
+    "@types/ziggy-js": "^1.3.2",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.32.0",
     "postcss": "^8.4.20",

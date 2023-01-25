@@ -4,6 +4,7 @@ specifiers:
   '@antfu/eslint-config': ^0.34.1
   '@inertiajs/vue3': ^1.0.0
   '@types/node': ^18.11.18
+  '@types/ziggy-js': ^1.3.2
   autoprefixer: ^10.4.13
   eslint: ^8.32.0
   postcss: ^8.4.20
@@ -18,6 +19,7 @@ devDependencies:
   '@antfu/eslint-config': 0.34.1_7uibuqfxkfaozanbtbziikiqje
   '@inertiajs/vue3': 1.0.0_vue@3.2.45
   '@types/node': 18.11.18
+  '@types/ziggy-js': 1.3.2
   autoprefixer: 10.4.13_postcss@8.4.20
   eslint: 8.32.0
   postcss: 8.4.20
@@ -474,6 +476,10 @@ packages:
       fastq: 1.14.0
     dev: true
 
+  /@types/history/4.7.11:
+    resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
+    dev: true
+
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
@@ -502,6 +508,12 @@ packages:
 
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
+    dev: true
+
+  /@types/ziggy-js/1.3.2:
+    resolution: {integrity: sha512-hwnsR3tEy3jyW+akw5kwfyZ9+/MZ+jN659G6LoGKBL9LvOUv07fiMsZL3vaK8IfTo2OXVMa4elsX8r/nU/x9hw==}
+    dependencies:
+      '@types/history': 4.7.11
     dev: true
 
   /@typescript-eslint/eslint-plugin/5.49.0_iu322prlnwsygkcra5kbpy22si:
