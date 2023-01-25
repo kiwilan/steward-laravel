@@ -5,6 +5,7 @@ namespace Kiwilan\Steward\Services\ModelTypeService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use ReflectionMethod;
+use ReflectionNamedType;
 
 /**
  * @property TypePropertyConverter[] $appendsTypes
@@ -24,16 +25,21 @@ class TypeAppendsConverter
 
         foreach ($reflector->getMethods() as $key => $method) {
             $name = $method->getName();
+            $return = $method->getReturnType();
+
+            if ($return instanceof ReflectionNamedType && $return->getName() === 'Illuminate\Database\Eloquent\Casts\Attribute') {
+                $converter->appendsTypes[$name] = $converter->getAppendsMethods($name, $method);
+            }
 
             if (str_starts_with($name, 'get') && str_ends_with($name, 'Attribute') && $name !== 'getAttribute') {
-                $converter->appendsTypes[$name] = $converter->getAppendMethods($name, $method);
+                $converter->appendsTypes[$name] = $converter->getAppendsMethods($name, $method);
             }
         }
 
         return $converter;
     }
 
-    private function getAppendMethods(string $name, ReflectionMethod $method): ?TypePropertyConverter
+    private function getAppendsMethods(string $name, ReflectionMethod $method): ?TypePropertyConverter
     {
         $appendsMethods[$name] = $method;
 
