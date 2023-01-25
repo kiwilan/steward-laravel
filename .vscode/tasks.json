@@ -134,7 +134,7 @@
     {
       "label": "NPM pack-local",
       "type": "shell",
-      "command": "npm pack --dry-run && rm -f ~/kiwilan-vite-plugin-laravel-steward-*.tgz || true && npm pack && mv kiwilan-vite-plugin-laravel-steward-*.tgz ~/",
+      "command": "pnpm build && rm -f ~/kiwilan-vite-plugin-laravel-steward-*.tgz || true && npm pack && mv kiwilan-vite-plugin-laravel-steward-*.tgz ~/",
       "problemMatcher": [],
       "presentation": {
         "reveal": "never",

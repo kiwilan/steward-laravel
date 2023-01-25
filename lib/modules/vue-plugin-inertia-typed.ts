@@ -5,9 +5,23 @@ import type {
   RouteParamsWithQueryOverload,
 } from 'ziggy-js'
 import route from 'ziggy-js'
-import { router as routerInertia } from '@inertiajs/vue3'
+// import { router } from '@inertiajs/vue3'
+import { useInertia } from './vue'
 
 type Route = keyof ZiggyLaravelRoutes
+// class Router {
+//   static current(name?: string, params?: any) {
+//     return name
+//   }
+// }
+// const route = (name?: string, params?: any, absolute?: boolean, customZiggy?: any) => {
+//   return Router
+// }
+// type Route = string
+// type RouteParamsWithQueryOverload = Record<string, any>
+// type RouteParam = string | number
+// type Config = Record<string, any>
+
 type RequestPayload = Record<string, any>
 export interface IInertiaTyped {
   route: (
@@ -18,21 +32,21 @@ export interface IInertiaTyped {
   ) => string
   isRoute: (name: Route, params?: RouteParamsWithQueryOverload) => boolean
   currentRoute: () => string
-  router: {
-    get: (url: Route, data?: RequestPayload) => Promise<any>
-    post: (url: Route, data?: RequestPayload) => Promise<any>
-    patch: (url: Route, data?: RequestPayload) => Promise<any>
-    put: (url: Route, data?: RequestPayload) => Promise<any>
-    delete: (url: Route) => Promise<any>
-  }
+  // router: {
+  //   get: (url: Route, data?: RequestPayload) => Promise<any>
+  //   post: (url: Route, data?: RequestPayload) => Promise<any>
+  //   patch: (url: Route, data?: RequestPayload) => Promise<any>
+  //   put: (url: Route, data?: RequestPayload) => Promise<any>
+  //   delete: (url: Route) => Promise<any>
+  // }
 }
 
-export interface PluginOptions {
+export interface InertiaTypedOptions {
   inject: boolean
 }
 
 const InertiaTyped: Plugin = {
-  install: (app, options: PluginOptions) => {
+  install: (app, options: InertiaTypedOptions) => {
     app.config.globalProperties.$route = (
       name: Route,
       params?: RouteParamsWithQueryOverload | RouteParam,
@@ -46,19 +60,21 @@ const InertiaTyped: Plugin = {
     app.config.globalProperties.$currentRoute = () =>
       route().current() as string
 
-    const router = {
-      get: (url: Route, data?: RequestPayload) => routerInertia.get(url, data),
-      post: (url: Route, data?: RequestPayload) => routerInertia.post(url, data),
-      patch: (url: Route, data?: RequestPayload) => routerInertia.patch(url, data),
-      put: (url: Route, data?: RequestPayload) => routerInertia.put(url, data),
-      delete: (url: Route) => routerInertia.delete(url),
-    }
+    // const routing = {
+    // get: (url: Route, data?: RequestPayload) => router.get(url, data),
+    // post: (url: Route, data?: RequestPayload) => router.post(url, data),
+    // patch: (url: Route, data?: RequestPayload) => router.patch(url, data),
+    // put: (url: Route, data?: RequestPayload) => router.put(url, data),
+    // delete: (url: Route) => router.delete(url),
+    // }
+
+    app.component('UseInertia', useInertia)
 
     app.provide('inertia', {
       route: app.config.globalProperties.$route,
       isRoute: app.config.globalProperties.$isRoute,
       currentRoute: app.config.globalProperties.$currentRoute,
-      router,
+      // routing,
     })
 
     return app

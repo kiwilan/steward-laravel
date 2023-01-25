@@ -16,7 +16,7 @@ With `tgz`
 # shortcut
 pnpm package
 cd test && pnpm remove @kiwilan/vite-plugin-laravel-steward
-pnpm add @kiwilan/vite-plugin-laravel-steward@file:~/kiwilan-vite-plugin-laravel-steward-0.0.136.tgz
+pnpm add @kiwilan/vite-plugin-laravel-steward@file:~/kiwilan-vite-plugin-laravel-steward-0.0.138.tgz
 cd ..
 
 # manually

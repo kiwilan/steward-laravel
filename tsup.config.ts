@@ -8,6 +8,11 @@ export default defineConfig({
     // 'tiptap/index': 'src/tiptap.ts',
   },
   format: ['cjs', 'esm'],
+  // outExtension() {
+  //   return {
+  //     js: '.cjs',
+  //   }
+  // },
   dts: true,
   minify: false,
   treeshake: true,

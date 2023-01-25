@@ -1,6 +1,7 @@
 {
   "name": "@kiwilan/vite-plugin-laravel-steward",
   "version": "0.0.139",
+  "type": "commonjs",
   "description": "Vite plugin for laravel-steward.",
   "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
   "license": "MIT",
@@ -18,7 +19,7 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
+      "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     }
   },

@@ -1,8 +1,8 @@
-import fs from 'fs'
+// import fs from 'fs'
 import { exec } from 'child_process'
 import type { Plugin } from 'vite'
 
-interface Options {
+interface StewardOptions {
   // /**
   //  * Where JS scripts will be copied
   //  * @default './public/vendor/js'
@@ -20,20 +20,20 @@ interface Options {
   inertia?: boolean
 }
 
-const outputDirScriptsDefault = './public/vendor/js'
-const outputDirLibrariesDefault = './resources/libs'
+// const outputDirScriptsDefault = './public/vendor/js'
+// const outputDirLibrariesDefault = './resources/libs'
 
-const DEFAULT_OPTIONS: Options = {
+const DEFAULT_OPTIONS: StewardOptions = {
   // outputDirScripts: outputDirScriptsDefault,
   // outputDirLibraries: outputDirLibrariesDefault,
   inertia: false,
 }
 
-function plugin(userOptions: Options = {}): Plugin {
+const Steward = (userOptions: StewardOptions = {}): Plugin => {
   return {
     name: 'vite-plugin-markdoc-content',
     async buildStart() {
-      const opts: Options = Object.assign({}, DEFAULT_OPTIONS, userOptions)
+      const opts: StewardOptions = Object.assign({}, DEFAULT_OPTIONS, userOptions)
       // const outputDirScripts = opts.outputDirScripts as string
       // const outputDirLibraries = opts.outputDirLibraries as string
 
@@ -91,5 +91,7 @@ function plugin(userOptions: Options = {}): Plugin {
   }
 }
 
-export type { Options }
-export default plugin
+export type { StewardOptions }
+export {
+  Steward,
+}
