@@ -1,4 +1,6 @@
 import { inject } from 'vue'
+// @ts-expect-error - LaravelRoutes is a global variable
+import { LaravelRoutes } from '@/types'
 import type { IInertiaTyped, RequestPayload, Route } from '@/types'
 
 export function useInertia() {
@@ -6,7 +8,7 @@ export function useInertia() {
   const options = inertia.options as any | undefined
   const inertiaRouter = options.router
 
-  const convertURL = (url: Route) => `/${url}`
+  const convertURL = (url: Route) => `/${LaravelRoutes[url].uri}`
   const router = {
     get: (url: Route, data?: RequestPayload) => inertiaRouter?.get(convertURL(url), data),
     post: (url: Route, data?: RequestPayload) => inertiaRouter?.post(convertURL(url), data),
