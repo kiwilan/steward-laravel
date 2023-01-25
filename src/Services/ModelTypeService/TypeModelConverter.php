@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Services\ModelTypeService;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class TypeModelConverter
 {
@@ -25,65 +24,6 @@ class TypeModelConverter
 
         $hidden = $model->getHidden();
 
-        $appendsTypes = [];
-        $appendsMethods = [];
-
-        foreach ($reflector->getMethods() as $key => $method) {
-            $name = $method->getName();
-
-            if (! str_starts_with($name, 'get') || ! str_contains($name, 'Attribute')) {
-                continue;
-            }
-
-            if (! $method->getReturnType()) {
-                continue;
-            }
-
-            $appendsMethods[$name] = $method;
-
-            $field = str_replace('Attribute', '', str_replace('get', '', $name));
-            $field = Str::snake($field);
-            $doc = $method->getDocComment();
-            $return = null;
-
-            $regex = '/(?m)@return *\K(?>(\S+) *)??(\S+)$/';
-
-            if (preg_match($regex, $doc, $matches)) {
-                $return = $matches[0] ?? null;
-            }
-
-            $type = $method->getReturnType();
-
-            if ($return) {
-                $type = $return;
-            }
-
-            $is_mediable = method_exists($model, 'getMediablesListAttribute');
-
-            if ($field === 'mediable' && $is_mediable) {
-                $mediable_object = '{';
-
-                foreach ($model->getMediablesListAttribute() as $media) {
-                    $mediable_object .= " {$media}?: string, ";
-                }
-                $mediable_object .= '}';
-                $mediable_object .= ' | undefined';
-
-                $appendsTypes[$name] = TypePropertyConverter::create(
-                    model: $model,
-                    name: $field,
-                    type: $mediable_object,
-                    override_type: true,
-                );
-            } else {
-                $appendsTypes[$name] = TypePropertyConverter::create(
-                    model: $model,
-                    name: $field,
-                    type: $type,
-                );
-            }
-        }
-
         $counts = [];
 
         foreach ($types as $name => $type) {
@@ -97,8 +37,9 @@ class TypeModelConverter
             }
         }
 
+        $appends = TypeAppendsConverter::make($model);
         $counts = TypePropertyConverter::make($counts);
-        $appendsTypes = TypePropertyConverter::make($appendsTypes);
+        $appendsTypes = TypePropertyConverter::make($appends->appendsTypes);
         $types = array_merge($types, $appendsTypes, $counts);
 
         $typescript = [];

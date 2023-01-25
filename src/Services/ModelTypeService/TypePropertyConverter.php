@@ -114,7 +114,7 @@ class TypePropertyConverter
             $this->ts_type = "{$this->ts_type} | undefined";
         }
 
-        if ($this->ts_type === 'any') {
+        if ($this->ts_type === 'any' || $this->ts_type === 'any | undefined') {
             $this->ts_type = $this->parseAdvancedTypes();
         }
 
@@ -124,6 +124,8 @@ class TypePropertyConverter
     private function parseAdvancedTypes(): string
     {
         $ts_type = 'any';
+
+        dump($this->php_type);
 
         if (str_contains($this->php_type, 'array')) {
             $type = null;
