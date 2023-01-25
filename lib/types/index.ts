@@ -4,30 +4,29 @@ import type {
   RouteParamsWithQueryOverload,
 } from 'ziggy-js'
 
-interface StewardOptionsInertia {
-  /**
-   * Enable JS `ziggy` routes.
-   * @docs https://github.com/tighten/ziggy#advanced-setup
-   * @default false
-   */
-  ziggyJs?: boolean
-  /**
-   * Enable `ziggy` routes types.
-   * @default false
-   */
-  ziggyTypes?: boolean
-  /**
-   * Enable types for Eloquent models.
-   * @default false
-   */
-  modelsTypes?: boolean
-}
 export interface StewardOptions {
   /**
    * Enable `@inertiajs/vue3` types.
-   * @default false
+   * @default { ziggyJs: false, ziggyTypes: false, modelsTypes: false }
    */
-  inertia?: StewardOptionsInertia
+  inertia?: {
+    /**
+     * Enable JS `ziggy` routes.
+     * @docs https://github.com/tighten/ziggy#advanced-setup
+     * @default false
+     */
+    ziggyJs?: boolean
+    /**
+     * Enable `ziggy` routes types.
+     * @default false
+     */
+    ziggyTypes?: boolean
+    /**
+     * Enable types for Eloquent models.
+     * @default false
+     */
+    modelsTypes?: boolean
+  }
 }
 
 export type Route = keyof ZiggyLaravelRoutes
