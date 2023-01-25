@@ -5,8 +5,15 @@ declare type LaravelRoutes = {
   'login': { 'uri': 'login', 'methods': ["POST","HEAD"] }
   'logout': { 'uri': 'logout', 'methods': ["POST","HEAD"] }
 };
+declare interface IPage {
+  props: {
+    user: any
+    jetstream: any
+  }
+}
 
 declare global {
   declare interface ZiggyLaravelRoutes extends LaravelRoutes {}
+  declare interface InertiaPage extends IPage {}
 }
 

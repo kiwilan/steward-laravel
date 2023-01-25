@@ -50,7 +50,7 @@ class ZiggyTypeService
         $content .= $routes.PHP_EOL;
         $content .= '};'.PHP_EOL.PHP_EOL;
 
-        $content .= 'export interface IPage {'.PHP_EOL;
+        $content .= 'export interface InertiaPage {'.PHP_EOL;
         $content .= '  props: {'.PHP_EOL;
         $content .= '    user: App.Models.User'.PHP_EOL;
         $content .= '    jetstream: { canCreateTeams: boolean, hasTeamFeatures: boolean, managesProfilePhotos: boolean, hasApiFeatures: boolean }'.PHP_EOL;
@@ -66,7 +66,7 @@ class ZiggyTypeService
         $content .= '    $route: (name: keyof ZiggyLaravelRoutes, params?: RouteParamsWithQueryOverload | RouteParam, absolute?: boolean, customZiggy?: Config) => string;'.PHP_EOL;
         $content .= '    $isRoute: (name: keyof ZiggyLaravelRoutes, params?: RouteParamsWithQueryOverload) => boolean;'.PHP_EOL;
         $content .= '    $currentRoute: () => string;'.PHP_EOL;
-        $content .= '    $page: IPage'.PHP_EOL;
+        $content .= '    $page: InertiaPage'.PHP_EOL;
         $content .= '  }'.PHP_EOL;
         $content .= '}'.PHP_EOL;
 
