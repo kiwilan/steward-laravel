@@ -3,8 +3,8 @@
 namespace Kiwilan\Steward\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Kiwilan\Steward\Services\ZiggyTypeService;
-use Kiwilan\Typeable\Services\TypeableService;
 
 class GenerateTypeCommand extends CommandSteward
 {
@@ -14,7 +14,8 @@ class GenerateTypeCommand extends CommandSteward
      * @var string
      */
     protected $signature = 'generate:type
-                            {type=models : Generate `models` or `ziggy` types}';
+                            {type=models : Generate `models` or `ziggy` types.}
+                            {--fake-team : Add fake Team to User model.}';
 
     /**
      * The console command description.
@@ -30,9 +31,10 @@ class GenerateTypeCommand extends CommandSteward
     {
         $this->title();
         $type = $this->argument('type');
+        $fakeTeam = $this->option('fake-team') ?? false;
 
         if ($type === 'models') {
-            $this->models();
+            $this->models($fakeTeam);
         }
 
         if ($type === 'ziggy') {
@@ -44,19 +46,11 @@ class GenerateTypeCommand extends CommandSteward
         return CommandSteward::SUCCESS;
     }
 
-    private function models()
+    private function models(bool $fakeTeam)
     {
-        $service = TypeableService::make();
-
-        $namespaces = [];
-
-        foreach ($service->typeables as $typeable) {
-            $namespace = "{$typeable->namespace}\\{$typeable->name}";
-            $namespaces[] = [$namespace];
-        }
-        $this->table(['Models'], $namespaces);
-
-        $this->info('Generated model types.');
+        Artisan::call('typeable:models', [
+            '--fake-team' => $fakeTeam,
+        ]);
     }
 
     private function ziggy()
