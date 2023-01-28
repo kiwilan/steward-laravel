@@ -3,8 +3,8 @@
 namespace Kiwilan\Steward\Commands;
 
 use Illuminate\Console\Command;
-use Kiwilan\Steward\Services\TypeableService;
 use Kiwilan\Steward\Services\ZiggyTypeService;
+use Kiwilan\Typeable\Services\TypeableService;
 
 class GenerateTypeCommand extends CommandSteward
 {
