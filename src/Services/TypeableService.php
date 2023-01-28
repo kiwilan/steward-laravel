@@ -25,14 +25,31 @@ class TypeableService
 
         $service = new TypeableService($path);
         $service->typeables = $service->setTypeables();
-        $service->typeables['team'] = TypeableClass::fake('Team', TypeableTeam::setFakeTeam());
+        $service->typeables['Team'] = TypeableClass::fake('Team', TypeableTeam::setFakeTeam());
 
-        $service->setModelTypes();
+        $service->setTsModelTypes();
+        // $service->setPhpModelTypes();
 
         return $service;
     }
 
-    private function setModelTypes()
+    protected function setPhpModelTypes()
+    {
+        foreach ($this->typeables as $name => $typeable) {
+            unset($typeable->reflector);
+            dump($typeable);
+            $path = app_path('Types');
+
+            if (! File::exists($path)) {
+                File::makeDirectory($path);
+            }
+            $filename = "{$name}.php";
+            $path = "{$path}/{$filename}";
+            File::put($path, $typeable->typeableModel->phpString);
+        }
+    }
+
+    protected function setTsModelTypes()
     {
         $content = [];
 
@@ -56,7 +73,7 @@ class TypeableService
     /**
      * @return TypeableClass[]
      */
-    private function setTypeables(): array
+    protected function setTypeables(): array
     {
         $classes = [];
 
@@ -67,10 +84,11 @@ class TypeableService
         /** @var \SplFileInfo $file */
         foreach ($iterator as $file) {
             if (! $file->isDir()) {
-                $classes[$file->getFilename()] = TypeableClass::make(
+                $model = TypeableClass::make(
                     path: $file->getPathname(),
                     file: $file,
                 );
+                $classes[$model->name] = $model;
             }
         }
 

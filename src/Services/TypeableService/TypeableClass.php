@@ -53,7 +53,7 @@ class TypeableClass
 
     public static function make(string $path, SplFileInfo $file): self
     {
-        $namespace = self::getFileNamespace($file);
+        $namespace = TypeableClass::getFileNamespace($file);
         $class = new $namespace();
         $reflector = new ReflectionClass($class);
         $isModel = $class instanceof \Illuminate\Database\Eloquent\Model;

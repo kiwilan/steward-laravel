@@ -22,14 +22,24 @@ class TypeableProperty
         public array $enum = [],
         public bool $isExternal = false,
         public bool $isEnum = false,
+        public bool $isRelation = false,
+        public bool $isArray = false,
+        public bool $isAppend = false,
         public bool $overrideTsType = false,
         public ?string $tsType = null,
         public ?string $tsString = null,
+        public ?string $phpString = null,
     ) {
     }
 
-    public static function make(string $table, TypeableDbColumn $dbColumn, bool $overrideTsType = false): self
-    {
+    public static function make(
+        string $table,
+        TypeableDbColumn $dbColumn,
+        bool $overrideTsType = false,
+        bool $isRelation = false,
+        bool $isAppend = false,
+        bool $isArray = false,
+    ): self {
         $property = new self(
             table: $table,
             name: $dbColumn->Field,
@@ -45,6 +55,11 @@ class TypeableProperty
             $property->phpType = TypeableTypes::phpType($dbColumn->Type);
         }
 
+        $property->isRelation = $isRelation;
+        $property->isAppend = $isAppend;
+        $property->isArray = $isArray;
+        $property->setPhpString();
+
         return $property;
     }
 
@@ -57,6 +72,30 @@ class TypeableProperty
             $this->tsType = $type;
             $this->overrideTsType = true;
         }
+
+        return $this;
+    }
+
+    public function setPhpString(): self
+    {
+        $isNullable = $this->isNullable ? '?' : '';
+
+        if ($this->isRelation) {
+            $relationPrefix = 'App\\Types\\';
+            $type = "{$relationPrefix}{$this->phpType}";
+            $comment = $this->isArray ? '    /** @var \\'.$type.'*/' : '';
+            $type = $this->isArray ? 'array' : '\\'.$type;
+            $this->phpString = "{$comment}".PHP_EOL."    public {$type} \${$this->name};";
+        } else {
+            $type = "{$isNullable}{$this->phpType}";
+
+            if ($this->name === 'mediable') {
+                $type = 'mixed';
+            }
+            $this->phpString = "    public {$type} \${$this->name};";
+        }
+
+        $this->phpString = $this->phpString.PHP_EOL;
 
         return $this;
     }
