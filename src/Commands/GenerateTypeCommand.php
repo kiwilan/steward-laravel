@@ -3,7 +3,7 @@
 namespace Kiwilan\Steward\Commands;
 
 use Illuminate\Console\Command;
-use Kiwilan\Steward\Services\ModelTypeService;
+use Kiwilan\Steward\Services\TypeableService;
 use Kiwilan\Steward\Services\ZiggyTypeService;
 
 class GenerateTypeCommand extends CommandSteward
@@ -46,12 +46,13 @@ class GenerateTypeCommand extends CommandSteward
 
     private function models()
     {
-        $converter = ModelTypeService::make();
+        $service = TypeableService::make();
 
         $namespaces = [];
 
-        foreach ($converter->models_namespaces as $name) {
-            $namespaces[] = [$name];
+        foreach ($service->typeables as $typeable) {
+            $namespace = "{$typeable->namespace}\\{$typeable->name}";
+            $namespaces[] = [$namespace];
         }
         $this->table(['Models'], $namespaces);
 
