@@ -37,7 +37,7 @@ const Steward = (userOptions: StewardOptions = {}): Plugin => {
       if (opts.inertia?.ziggyJs)
         command('php artisan ziggy:generate')
       if (opts.inertia?.modelsTypes)
-        command('php artisan generate:type models')
+        command('php artisan typescriptable:models')
       if (opts.inertia?.ziggyTypes)
         command('php artisan generate:type ziggy')
     },
