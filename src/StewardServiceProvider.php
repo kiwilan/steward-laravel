@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\View\Compilers\BladeCompiler;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\GenerateTypeCommand;
@@ -13,10 +14,10 @@ use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
 use Kiwilan\Steward\Commands\RoutePrintCommand;
 use Kiwilan\Steward\Commands\ScoutFreshCommand;
 use Kiwilan\Steward\Commands\StewardCommand;
-use Kiwilan\Steward\Commands\StewardPhpCsFixerCommand;
 use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
 use Kiwilan\Steward\Commands\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
+use Kiwilan\Steward\Components\BladeApp;
 use Kiwilan\Steward\Components\Button;
 use Kiwilan\Steward\Components\Field\FieldCheckbox;
 use Kiwilan\Steward\Components\Field\FieldRichEditor;
@@ -24,6 +25,7 @@ use Kiwilan\Steward\Components\Field\FieldSelect;
 use Kiwilan\Steward\Components\Field\FieldText;
 use Kiwilan\Steward\Components\Field\FieldToggle;
 use Kiwilan\Steward\Components\Field\FieldUploadFile;
+use Kiwilan\Steward\Directives\DarkModeDirective;
 use Kiwilan\Steward\Http\Livewire\Field\FieldEditor;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
@@ -45,7 +47,6 @@ class StewardServiceProvider extends PackageServiceProvider
             ->hasMigration('create_steward-laravel_table')
             ->hasTranslations()
             ->hasCommands([
-                // StewardPhpCsFixerCommand::class,
                 FilamentConfigCommand::class,
                 StewardCommand::class,
                 LogClearCommand::class,
@@ -64,6 +65,23 @@ class StewardServiceProvider extends PackageServiceProvider
 
     public function bootingPackage()
     {
+        if ($this->app->resolved('blade.compiler')) {
+            $this->registerDirective($this->app['blade.compiler']);
+        } else {
+            $this->app->afterResolving('blade.compiler', function (BladeCompiler $bladeCompiler) {
+                $this->registerDirective($bladeCompiler);
+            });
+        }
+
+        // Event::listen(RequestReceived::class, function () {
+        //     DarkModeDirective::$generated = false;
+        // });
+
+        // Blade::directive('vite', function ($expression) {
+        //     return '{!! App\Facades\ViteManifest::embed('.$expression.') !!}';
+        // });
+        // $this->registerDirective();
+
         $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
 
         $this->configureComponents();
@@ -77,6 +95,7 @@ class StewardServiceProvider extends PackageServiceProvider
     private function configureComponents()
     {
         $components = [
+            'stw-app' => BladeApp::class,
             'stw-button' => Button::class,
             'stw-field.checkbox' => FieldCheckbox::class,
             'stw-field.rich-editor' => FieldRichEditor::class,
@@ -99,6 +118,13 @@ class StewardServiceProvider extends PackageServiceProvider
             if (class_exists(Livewire::class)) {
                 // Livewire::component('stw-field-editor', FieldEditor::class); // <livewire:stw-field-editor wire:model="about" />
             }
+        });
+    }
+
+    protected function registerDirective(BladeCompiler $bladeCompiler)
+    {
+        $bladeCompiler->directive('darkMode', function ($expression) {
+            return '{!! Kiwilan\Steward\Facades\DarkMode::embed('.$expression.') !!}';
         });
     }
 }
