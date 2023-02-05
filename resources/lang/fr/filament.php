@@ -3,8 +3,11 @@
 return [
     'form_helper' => [
         'generate' => 'Génère',
-        'slug' => 'le métalien',
+        'metalink' => 'le métalien',
         'meta_title' => 'le titre en SEO',
-        'only_create' => 'uniquement à la création',
+        'meta_description' => 'la description en SEO',
+        'only_on' => 'uniquement pour',
+        'create' => 'la création',
+        'edit' => "l'édition",
     ],
 ];

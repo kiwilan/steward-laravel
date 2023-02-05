@@ -15,48 +15,85 @@ use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutCard;
 
 class FilamentForm
 {
-    public static function getName(
+    public static function name(
         string $field = 'name',
+        string|false $metaLink = 'slug',
+        string|false $metaTitle = 'meta_title',
         string $label = 'Name',
-        bool $slug = true,
-        bool $meta_title = true,
         string $helper = null,
-        string $context_custom = 'edit',
+        string $skipContext = 'edit',
         int $width = 1,
+        bool $required = true,
     ) {
         if (null === $helper) {
-            $trans_generate = __('steward::filament.form_helper.generate');
-            $trans_slug = $slug ? ' '.__('steward::filament.form_helper.slug') : '';
-            $trans_meta_title = $meta_title ? ' '.__('steward::filament.form_helper.meta_title') : '';
-            $trans_meta_title .= $meta_title && $slug ? ' and ' : '';
-            $trans_only_create = 'edit' === $context_custom ? ', '.__('steward::filament.form_helper.only_create') : '';
-            $helper = "{$trans_generate}{$trans_slug}{$trans_meta_title}{$trans_only_create}.";
+            $transGenerate = __('steward::filament.form_helper.generate');
+
+            $transMetaLink = ! $metaLink ? __('steward::filament.form_helper.metalink') : '';
+            $transMetaField = ! $metaTitle ? __('steward::filament.form_helper.meta_title') : '';
+            $twin = [$transMetaLink, $transMetaField];
+            $twin = array_filter($twin);
+            $twin = implode(', ', $twin);
+
+            $onlyOn = __('steward::filament.form_helper.only_on');
+            $context = $skipContext === 'edit' ? 'create' : 'edit';
+            $context = __("steward::filament.form_helper.{$context}");
+            $helper = "{$transGenerate} {$twin} {$onlyOn} {$context}.";
         }
 
         return Forms\Components\TextInput::make($field)
             ->label($label)
             ->helperText($helper)
-            ->required()
+            ->required($required)
             ->reactive()
-            ->afterStateUpdated(function (string $context, Closure $set, $state) use ($slug, $meta_title, $context_custom) {
-                if ($context_custom && $context === $context_custom) {
+            ->afterStateUpdated(function (string $context, Closure $set, $state) use ($metaLink, $metaTitle, $skipContext) {
+                if ($skipContext === $context) {
                     return;
                 }
 
-                if ('edit' === $context) {
-                    return;
+                if ($metaLink) {
+                    $set($metaLink, Str::slug($state));
                 }
 
-                if ($slug) {
-                    $set('slug', Str::slug($state));
-                }
-
-                if ($meta_title) {
-                    $set('meta_title', $state);
+                if ($metaTitle) {
+                    $set($metaTitle, $state);
                 }
             })
-            ->columnSpan($width)
-        ;
+            ->columnSpan($width);
+    }
+
+    public static function description(
+        string $field = 'description',
+        string|false $metaField = 'meta_description',
+        string $label = 'Description',
+        string $helper = null,
+        string $skipContext = 'edit',
+        int $width = 1,
+        bool $required = false,
+    ) {
+        if (null === $helper && $metaField) {
+            $transGenerate = __('steward::filament.form_helper.generate');
+            $transMetaField = __('steward::filament.form_helper.meta_description');
+            $onlyOn = __('steward::filament.form_helper.only_on');
+            $context = $skipContext === 'edit' ? 'create' : 'edit';
+            $context = __("steward::filament.form_helper.{$context}");
+            $helper = "{$transGenerate} {$transMetaField} {$onlyOn} {$context}.";
+        }
+
+        return Forms\Components\Textarea::make($field)
+            ->label($label)
+            ->helperText($helper)
+            ->required($required)
+            ->reactive()
+            ->afterStateUpdated(function (string $context, Closure $set, $state) use ($skipContext, $metaField) {
+                if ($skipContext === $context) {
+                    return;
+                }
+
+                if ($metaField) {
+                    $set($metaField, $state);
+                }
+            })
+            ->columnSpan($width);
     }
 
     /**
@@ -155,8 +192,7 @@ class FilamentForm
                         $data['created_until'],
                         fn (Builder $query, $date): Builder => $query->whereDate($field, '<=', $date),
                     )
-            )
-        ;
+            );
     }
 
     public static function checkRole(UserRoleEnum $role = UserRoleEnum::super_admin)
@@ -191,8 +227,7 @@ class FilamentForm
             ->acceptedFileTypes($fileTypes)
             ->image()
             ->maxSize(1024)
-            ->directory($type->name)
-        ;
+            ->directory($type->name);
     }
 
     public static function display()
@@ -201,8 +236,7 @@ class FilamentForm
             ->helperText('Show this block on the page')
             ->label('Display')
             ->default(true)
-            ->columnSpan(2)
-        ;
+            ->columnSpan(2);
     }
 
     public static function showAction()
@@ -212,7 +246,6 @@ class FilamentForm
             ->icon('heroicon-o-eye')
             ->openUrlInNewTab()
             ->color('warning')
-            ->label('Voir')
-        ;
+            ->label('Voir');
     }
 }

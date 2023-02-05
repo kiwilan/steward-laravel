@@ -3,8 +3,11 @@
 return [
     'form_helper' => [
         'generate' => 'Generate',
-        'slug' => 'the metalink',
+        'metalink' => 'metalink',
         'meta_title' => 'SEO title',
-        'only_create' => 'only on create',
+        'meta_description' => 'SEO description',
+        'only_on' => 'only on',
+        'create' => 'create',
+        'edit' => 'edit',
     ],
 ];
