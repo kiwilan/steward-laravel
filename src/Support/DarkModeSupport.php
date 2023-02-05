@@ -8,6 +8,8 @@ class DarkModeSupport
     {
         return <<<'HTML'
         <script>
+            const colorScheme = localStorage.getItem('color-scheme')
+
             if (colorScheme) {
                 document.documentElement.classList.toggle(colorScheme, true)
             } else {
