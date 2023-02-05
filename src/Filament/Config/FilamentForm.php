@@ -56,6 +56,7 @@ class FilamentForm
             ->label($label)
             ->helperText($helper)
             ->required($required)
+            ->maxLength(256)
             ->reactive()
             ->afterStateUpdated(function (string $context, Closure $set, $state) use ($metaLink, $metaTitle, $skipContext) {
                 if ($skipContext === $context) {
@@ -182,11 +183,14 @@ class FilamentForm
             Forms\Components\TextInput::make('slug')
                 ->label('Metalien')
                 ->required()
-                ->unique(column: 'slug', ignoreRecord: true),
+                ->unique(column: 'slug', ignoreRecord: true)
+                ->maxLength(256),
             Forms\Components\TextInput::make('meta_title')
-                ->label('Titre'),
+                ->label('Titre')
+                ->maxLength(256),
             Forms\Components\Textarea::make('meta_description')
-                ->label('Description'),
+                ->label('Description')
+                ->maxLength(256),
         ];
 
         return $card ? FilamentLayoutCard::make($seo, 'SEO') : Forms\Components\Group::make($seo);
