@@ -7,7 +7,7 @@
 
 ![Run tests](https://github.com/kiwilan/steward-laravel/actions/workflows/run-tests.yml/badge.svg)
 ![Fix PHP code style issues](https://github.com/kiwilan/steward-laravel/actions/workflows/fix-php-code-style-issues.yml/badge.svg)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/2b7e3e6b-6789-4ea5-a92c-64d57ac58aad/deploy-status)](https://app.netlify.com/sites/steward-laravel/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/849d4a45-1236-4f9e-992c-4a242588aeac/deploy-status)](https://app.netlify.com/sites/steward-laravel/deploys)
 
 PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application, works with [vite-plugin-steward-laravel](https://www.npmjs.com/package/@kiwilan/vite-plugin-steward-laravel) for front assets.
 
@@ -62,8 +62,8 @@ echo $steward->echoPhrase('Hello, Kiwilan!');
 ### Vite plugin
 
 ```js
-import { defineConfig } from 'vite'
-import { steward } from '@kiwilan/vite-plugin-steward-laravel'
+import { defineConfig } from "vite";
+import { steward } from "@kiwilan/vite-plugin-steward-laravel";
 
 export default defineConfig({
   plugins: [
@@ -71,7 +71,7 @@ export default defineConfig({
       // Options
     }),
   ],
-})
+});
 ```
 
 ## Testing
