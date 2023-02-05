@@ -11,34 +11,44 @@ class SlugService
         protected Model $model,
         protected string $slugWith = 'name',
         protected string $slugColumn = 'slug',
+        protected bool $empty = false,
         public ?string $name = null,
         public ?string $slug = null,
     ) {
     }
 
-    public static function make(Model $model, string $slugWith = 'name', string $slugColumn = 'slug'): ?string
+    public static function make(Model $model, string $slugWith = 'name', string $slugColumn = 'slug'): string
     {
         $service = new self($model, $slugWith, $slugColumn);
 
-        $slugIsEmpty = empty($model->{$slugColumn});
-        $modelName = $model->{$model->{$slugWith}};
+        $service->empty = empty($model->{$slugColumn});
+        $service->name = $service->setName();
+        $service->slug = Str::slug($service->name);
 
-        if (is_array($modelName)) {
-            $modelName = reset($modelName);
-        }
-        $service->name = $modelName;
-
-        if ($slugIsEmpty) {
+        if ($service->empty) {
             $service->slug = $service->unique($service->name, 0);
         } else {
             $slugExist = $service->model->where($service->slugColumn, $model->{$slugColumn})->exists();
 
             if ($slugExist) {
                 $service->slug = $service->unique($service->name, 0);
+            } else {
+                $service->slug = $model->{$slugColumn};
             }
         }
 
         return $service->slug;
+    }
+
+    private function setName(): string
+    {
+        $modelName = $this->model->{$this->slugWith};
+
+        if (is_array($modelName)) {
+            $modelName = reset($modelName);
+        }
+
+        return $modelName;
     }
 
     private function unique(?string $name = null, int $counter = 0): string
