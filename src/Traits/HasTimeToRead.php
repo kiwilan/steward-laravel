@@ -45,4 +45,9 @@ trait HasTimeToRead
 
         return intval($minutes_to_read * 60);
     }
+
+    public function getTimeToReadMinutesAttribute(): int
+    {
+        return intval($this->{$this->getTimeToReadColumn()} / 60);
+    }
 }
