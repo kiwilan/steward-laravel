@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Kiwilan\Steward
+ * @see \Kiwilan\Steward\Support\DarkModeSupport
  */
 class DarkMode extends Facade
 {

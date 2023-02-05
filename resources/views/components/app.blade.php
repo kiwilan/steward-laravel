@@ -14,10 +14,12 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
 
+    @stack('head')
+
     @isset($title)
         {{ $title }}
     @else
-        @if ($inertia)
+        @if ($inertiaEnabled)
             <title inertia>
             @else
                 <title>
@@ -27,19 +29,6 @@
     @endisset
 
     @if ($darkMode)
-        {{-- <script>
-            const colorScheme = localStorage.getItem('color-scheme')
-
-            if (colorScheme) {
-                document.documentElement.classList.toggle(colorScheme, true)
-            } else {
-                const system = window.matchMedia &&
-                    window.matchMedia('(prefers-color-scheme: dark)').matches ?
-                    'dark' :
-                    'light'
-                document.documentElement.classList.toggle(system, true)
-            }
-        </script> --}}
         @darkMode
     @endif
 
@@ -48,15 +37,15 @@
         @routes
     @endif
     @if ($vite)
-        @vite
+        @vite($vite)
     @endif
-    @if ($inertia)
+    @if ($inertiaEnabled)
         @inertiaHead
     @endif
 </head>
 
 <body class="font-sans antialiased {{ config('app.env') === 'local' ? 'debug-screens' : '' }}">
-    @if ($inertia)
+    @if ($inertiaEnabled)
         @inertia
     @else
         {{ $slot }}

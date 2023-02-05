@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward;
 
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Event;
 use Illuminate\View\Compilers\BladeCompiler;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\GenerateTypeCommand;
@@ -25,7 +24,6 @@ use Kiwilan\Steward\Components\Field\FieldSelect;
 use Kiwilan\Steward\Components\Field\FieldText;
 use Kiwilan\Steward\Components\Field\FieldToggle;
 use Kiwilan\Steward\Components\Field\FieldUploadFile;
-use Kiwilan\Steward\Directives\DarkModeDirective;
 use Kiwilan\Steward\Http\Livewire\Field\FieldEditor;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
@@ -65,22 +63,7 @@ class StewardServiceProvider extends PackageServiceProvider
 
     public function bootingPackage()
     {
-        if ($this->app->resolved('blade.compiler')) {
-            $this->registerDirective($this->app['blade.compiler']);
-        } else {
-            $this->app->afterResolving('blade.compiler', function (BladeCompiler $bladeCompiler) {
-                $this->registerDirective($bladeCompiler);
-            });
-        }
-
-        // Event::listen(RequestReceived::class, function () {
-        //     DarkModeDirective::$generated = false;
-        // });
-
-        // Blade::directive('vite', function ($expression) {
-        //     return '{!! App\Facades\ViteManifest::embed('.$expression.') !!}';
-        // });
-        // $this->registerDirective();
+        $this->registerDirective();
 
         $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
 
@@ -121,9 +104,9 @@ class StewardServiceProvider extends PackageServiceProvider
         });
     }
 
-    protected function registerDirective(BladeCompiler $bladeCompiler)
+    protected function registerDirective()
     {
-        $bladeCompiler->directive('darkMode', function ($expression) {
+        Blade::directive('darkMode', function ($expression) {
             return '{!! Kiwilan\Steward\Facades\DarkMode::embed('.$expression.') !!}';
         });
     }
