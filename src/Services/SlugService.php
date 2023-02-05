@@ -1,0 +1,57 @@
+<?php
+
+namespace Kiwilan\Steward\Services;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+
+class SlugService
+{
+    protected function __construct(
+        protected Model $model,
+        protected string $slugWith = 'name',
+        protected string $slugColumn = 'slug',
+        public ?string $name = null,
+        public ?string $slug = null,
+    ) {
+    }
+
+    public static function make(Model $model, string $slugWith = 'name', string $slugColumn = 'slug'): ?string
+    {
+        $service = new self($model, $slugWith, $slugColumn);
+
+        $slugIsEmpty = empty($model->{$slugColumn});
+        $modelName = $model->{$model->{$slugWith}};
+
+        if (is_array($modelName)) {
+            $modelName = reset($modelName);
+        }
+        $service->name = $modelName;
+
+        if ($slugIsEmpty) {
+            $service->slug = $service->unique($service->name, 0);
+        } else {
+            $slugExist = $service->model->where($service->slugColumn, $model->{$slugColumn})->exists();
+
+            if ($slugExist) {
+                $service->slug = $service->unique($service->name, 0);
+            }
+        }
+
+        return $service->slug;
+    }
+
+    private function unique(?string $name = null, int $counter = 0): string
+    {
+        if (null === $name) {
+            $name = uniqid();
+        }
+        $updated_name = 0 == $counter ? $name : $name.'-'.$counter;
+
+        if ($this->model->where($this->slugColumn, Str::slug($updated_name))->exists()) {
+            return $this->unique($name, $counter + 1);
+        }
+
+        return Str::slug($updated_name);
+    }
+}

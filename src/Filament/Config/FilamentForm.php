@@ -15,6 +15,18 @@ use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutCard;
 
 class FilamentForm
 {
+    /**
+     * Generate metalink and meta title from current field.
+     *
+     * @param  string  $field It will be `name` by default.
+     * @param  string|false  $metaLink It will be `slug` by default.
+     * @param  string|false  $metaTitle
+     * @param  string  $label
+     * @param  string|null  $helper
+     * @param  string  $skipContext
+     * @param  int  $width
+     * @param  bool  $required
+     */
     public static function name(
         string $field = 'name',
         string|false $metaLink = 'slug',
@@ -58,8 +70,7 @@ class FilamentForm
                     $set($metaTitle, $state);
                 }
             })
-            ->columnSpan($width)
-        ;
+            ->columnSpan($width);
     }
 
     public static function description(
@@ -94,8 +105,7 @@ class FilamentForm
                     $set($metaField, $state);
                 }
             })
-            ->columnSpan($width)
-        ;
+            ->columnSpan($width);
     }
 
     /**
@@ -194,8 +204,7 @@ class FilamentForm
                         $data['created_until'],
                         fn (Builder $query, $date): Builder => $query->whereDate($field, '<=', $date),
                     )
-            )
-        ;
+            );
     }
 
     public static function checkRole(UserRoleEnum $role = UserRoleEnum::super_admin)
@@ -230,8 +239,7 @@ class FilamentForm
             ->acceptedFileTypes($fileTypes)
             ->image()
             ->maxSize(1024)
-            ->directory($type->name)
-        ;
+            ->directory($type->name);
     }
 
     public static function display()
@@ -240,8 +248,7 @@ class FilamentForm
             ->helperText('Show this block on the page')
             ->label('Display')
             ->default(true)
-            ->columnSpan(2)
-        ;
+            ->columnSpan(2);
     }
 
     public static function showAction()
@@ -251,7 +258,6 @@ class FilamentForm
             ->icon('heroicon-o-eye')
             ->openUrlInNewTab()
             ->color('warning')
-            ->label('Voir')
-        ;
+            ->label('Voir');
     }
 }
