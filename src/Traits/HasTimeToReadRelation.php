@@ -6,6 +6,15 @@ trait HasTimeToReadRelation
 {
     protected $default_time_to_read_relation_column = 'time_to_read';
 
+    public function initializeHasTimeToReadRelation()
+    {
+        $relation = $this->getHasTimeToReadRelation();
+
+        if ($relation) {
+            $this->with[] = $relation;
+        }
+    }
+
     public function getHasTimeToReadRelation(): ?string
     {
         return $this->time_to_read_relation ?? null;
@@ -24,6 +33,7 @@ trait HasTimeToReadRelation
             return 0;
         }
 
+        $model = $this->with($relation);
         $items = $this->{$relation}()->get();
         $times = array_map(
             fn ($item) => $item[$this->getTimeToReadRelationColumn()],
