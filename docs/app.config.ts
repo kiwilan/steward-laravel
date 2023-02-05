@@ -2,17 +2,12 @@ import { defineAppConfig } from '#app'
 
 export default defineAppConfig({
   docus: {
-    title: 'Laravel Steward',
+    title: 'Steward',
     description: 'Laravel package with utility classes.',
     image: '/cover.jpg',
     socials: {
       twitter: 'ewilanriviere',
-      github: 'kiwilan/laravel-steward',
-      nuxt: {
-        href: 'https://laravel.com',
-        icon: 'simple-icons:laravel',
-        label: 'Laravel',
-      },
+      github: 'kiwilan/steward-laravel',
     },
     aside: {
       level: 0,
@@ -25,7 +20,7 @@ export default defineAppConfig({
     footer: {
       credits: {
         text: 'Powered by Docus, made with ❤️ by Kiwilan',
-        href: 'https://github.com/kiwilan/nuxt-svg-transformer',
+        href: 'https://github.com/kiwilan',
       },
     },
   },

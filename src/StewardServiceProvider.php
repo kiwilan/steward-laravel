@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Compilers\BladeCompiler;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\GenerateTypeCommand;
-use Kiwilan\Steward\Commands\LaravelStewardCommand;
+use Kiwilan\Steward\Commands\StewardCommand;
 use Kiwilan\Steward\Commands\LogClearCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
 use Kiwilan\Steward\Commands\Publish\PublishCommand;
@@ -29,7 +29,7 @@ use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class LaravelStewardServiceProvider extends PackageServiceProvider
+class StewardServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -42,12 +42,12 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_laravel-steward_table')
+            ->hasMigration('create_steward-laravel_table')
             ->hasTranslations()
             ->hasCommands([
                 // StewardPhpCsFixerCommand::class,
                 FilamentConfigCommand::class,
-                LaravelStewardCommand::class,
+                StewardCommand::class,
                 LogClearCommand::class,
                 MediaCleanCommand::class,
                 PublishCommand::class,
@@ -58,13 +58,12 @@ class LaravelStewardServiceProvider extends PackageServiceProvider
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
                 GenerateTypeCommand::class,
-            ])
-        ;
+            ]);
     }
 
     public function bootingPackage()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'steward');
 
         $this->configureComponents();
     }

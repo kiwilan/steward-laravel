@@ -2,6 +2,6 @@
 
 namespace Kiwilan\Steward;
 
-class LaravelSteward
+class Steward
 {
 }

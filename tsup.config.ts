@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  name: 'vite-plugin-laravel-steward',
+  name: 'vite-plugin-steward-laravel',
   entry: {
     index: 'lib/index.ts',
     // 'style/index': 'src/style.ts',

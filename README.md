@@ -1,32 +1,32 @@
-# **laravel-steward**
+# **steward-laravel**
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/kiwilan/laravel-steward.svg?style=flat-square)](https://packagist.org/packages/kiwilan/laravel-steward)
-[![npm](https://img.shields.io/npm/v/@kiwilan/vite-plugin-laravel-steward.svg?style=flat-square&color=CB3837&logo=npm&logoColor=ffffff&label=npm)](https://www.npmjs.com/package/@kiwilan/vite-plugin-laravel-steward)
-[![codecov](https://codecov.io/gh/kiwilan/laravel-steward/branch/main/graph/badge.svg?token=CBWSPNZSRA)](https://codecov.io/gh/kiwilan/laravel-steward)
-[![Total Downloads](https://img.shields.io/packagist/dt/kiwilan/laravel-steward.svg?style=flat-square)](https://packagist.org/packages/kiwilan/laravel-steward)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/kiwilan/steward-laravel.svg?style=flat-square)](https://packagist.org/packages/kiwilan/steward-laravel)
+[![npm](https://img.shields.io/npm/v/@kiwilan/vite-plugin-steward-laravel.svg?style=flat-square&color=CB3837&logo=npm&logoColor=ffffff&label=npm)](https://www.npmjs.com/package/@kiwilan/vite-plugin-steward-laravel)
+[![codecov](https://codecov.io/gh/kiwilan/steward-laravel/branch/main/graph/badge.svg?token=CBWSPNZSRA)](https://codecov.io/gh/kiwilan/steward-laravel)
+[![Total Downloads](https://img.shields.io/packagist/dt/kiwilan/steward-laravel.svg?style=flat-square)](https://packagist.org/packages/kiwilan/steward-laravel)
 
-![Run tests](https://github.com/kiwilan/laravel-steward/actions/workflows/run-tests.yml/badge.svg)
-![Fix PHP code style issues](https://github.com/kiwilan/laravel-steward/actions/workflows/fix-php-code-style-issues.yml/badge.svg)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/2b7e3e6b-6789-4ea5-a92c-64d57ac58aad/deploy-status)](https://app.netlify.com/sites/laravel-steward/deploys)
+![Run tests](https://github.com/kiwilan/steward-laravel/actions/workflows/run-tests.yml/badge.svg)
+![Fix PHP code style issues](https://github.com/kiwilan/steward-laravel/actions/workflows/fix-php-code-style-issues.yml/badge.svg)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2b7e3e6b-6789-4ea5-a92c-64d57ac58aad/deploy-status)](https://app.netlify.com/sites/steward-laravel/deploys)
 
-Laravel package to allow you to use some useful traits and methods in your Laravel application, works with [vite-plugin-laravel-steward](https://www.npmjs.com/package/@kiwilan/vite-plugin-laravel-steward) for front assets.
+PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application, works with [vite-plugin-steward-laravel](https://www.npmjs.com/package/@kiwilan/vite-plugin-steward-laravel) for front assets.
 
 ## Documentation
 
-See [laravel-steward.netlify.app](https://laravel-steward.netlify.app/) for documentation.
+See [steward-laravel.netlify.app](https://steward-laravel.netlify.app/) for documentation.
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require kiwilan/laravel-steward
+composer require kiwilan/steward-laravel
 ```
 
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-steward-migrations"
+php artisan vendor:publish --tag="steward-laravel-migrations"
 php artisan migrate
 ```
 
@@ -39,23 +39,23 @@ php artisan vendor:publish --tag="steward-config"
 Optionally, you can publish the views using
 
 ```bash
-php artisan vendor:publish --tag="laravel-steward-views"
+php artisan vendor:publish --tag="steward-laravel-views"
 ```
 
 ### Vite plugin
 
 ```bash
-npm install --save-dev @kiwilan/vite-plugin-laravel-steward
+npm install --save-dev @kiwilan/vite-plugin-steward-laravel
 ```
 
 ```bash
-pnpm add @kiwilan/vite-plugin-laravel-steward -D
+pnpm add @kiwilan/vite-plugin-steward-laravel -D
 ```
 
 ## Usage
 
 ```php
-$steward = new Kiwilan\Steward\LaravelSteward();
+$steward = new Kiwilan\Steward\Steward();
 echo $steward->echoPhrase('Hello, Kiwilan!');
 ```
 
@@ -63,7 +63,7 @@ echo $steward->echoPhrase('Hello, Kiwilan!');
 
 ```js
 import { defineConfig } from "vite";
-import { steward } from "@kiwilan/vite-plugin-laravel-steward";
+import { steward } from "@kiwilan/vite-plugin-steward-laravel";
 
 export default defineConfig({
   plugins: [

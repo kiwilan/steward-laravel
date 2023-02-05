@@ -1,3 +1,3 @@
 # Changelog
 
-All notable changes to `laravel-steward` will be documented in this file.
+All notable changes to `steward-laravel` will be documented in this file.

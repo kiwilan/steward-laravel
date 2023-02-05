@@ -4,9 +4,9 @@ namespace Kiwilan\Steward\Commands;
 
 use Illuminate\Console\Command;
 
-class LaravelStewardCommand extends Command
+class StewardCommand extends Command
 {
-    public $signature = 'laravel-steward';
+    public $signature = 'steward';
 
     public $description = 'My command';
 

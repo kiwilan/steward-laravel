@@ -1,13 +1,13 @@
 {
-  "name": "kiwilan/laravel-steward",
-  "description": "This is my package laravel-steward",
-  "version": "0.0.200",
+  "name": "kiwilan/steward-laravel",
+  "description": "This is my package steward-laravel",
+  "version": "0.0.30",
   "keywords": [
     "kiwilan",
     "laravel",
-    "laravel-steward"
+    "steward-laravel"
   ],
-  "homepage": "https://github.com/kiwilan/laravel-steward",
+  "homepage": "https://github.com/kiwilan/steward-laravel",
   "license": "MIT",
   "authors": [
     {
@@ -85,11 +85,11 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Kiwilan\\Steward\\LaravelStewardServiceProvider",
+        "Kiwilan\\Steward\\StewardServiceProvider",
         "Maatwebsite\\Excel\\ExcelServiceProvider"
       ],
       "aliases": {
-        "Steward": "Kiwilan\\Steward\\Facades\\LaravelSteward",
+        "Steward": "Kiwilan\\Steward\\Facades\\Steward",
         "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
       }
     }

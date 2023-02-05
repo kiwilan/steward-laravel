@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
-use Kiwilan\Steward\LaravelStewardServiceProvider;
+use Kiwilan\Steward\StewardServiceProvider;
 use Livewire\LivewireServiceProvider;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -21,14 +21,14 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Kiwilan\\Steward\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Kiwilan\\Steward\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            LaravelStewardServiceProvider::class,
+            StewardServiceProvider::class,
             LivewireServiceProvider::class,
             ExcelServiceProvider::class,
         ];
@@ -39,7 +39,7 @@ class TestCase extends Orchestra
         config()->set('database.default', 'testing');
 
         /*
-        $migration = include __DIR__.'/../database/migrations/create_laravel-steward_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_steward-laravel_table.php.stub';
         $migration->up();
         */
     }

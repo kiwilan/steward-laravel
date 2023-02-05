@@ -5,12 +5,12 @@ namespace Kiwilan\Steward\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Kiwilan\Steward\LaravelSteward
+ * @see \Kiwilan\Steward
  */
-class LaravelSteward extends Facade
+class Steward extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \Kiwilan\Steward\LaravelSteward::class;
+        return \Kiwilan\Steward\Steward::class;
     }
 }
