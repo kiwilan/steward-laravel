@@ -62,8 +62,8 @@ echo $steward->echoPhrase('Hello, Kiwilan!');
 ### Vite plugin
 
 ```js
-import { defineConfig } from "vite";
-import { steward } from "@kiwilan/vite-plugin-steward-laravel";
+import { defineConfig } from 'vite'
+import { steward } from '@kiwilan/vite-plugin-steward-laravel'
 
 export default defineConfig({
   plugins: [
@@ -71,7 +71,7 @@ export default defineConfig({
       // Options
     }),
   ],
-});
+})
 ```
 
 ## Testing
