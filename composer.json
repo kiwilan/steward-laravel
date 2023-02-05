@@ -1,6 +1,6 @@
 {
   "name": "kiwilan/steward-laravel",
-  "description": "This is my package steward-laravel",
+  "description": "PHP utility package for Laravel.",
   "version": "0.0.30",
   "keywords": [
     "kiwilan",
