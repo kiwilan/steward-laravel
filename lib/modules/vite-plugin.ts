@@ -42,8 +42,8 @@ const Steward = (userOptions: StewardOptions = {}): Plugin => {
         command('php artisan generate:type ziggy')
     },
     handleHotUpdate({ file, server }) {
-      // if (file.endsWith('.php'))
-      //   server.restart()
+      if (file.endsWith('app/Models/**/*.php'))
+        server.restart()
     },
   }
 }
