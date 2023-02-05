@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Compilers\BladeCompiler;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\GenerateTypeCommand;
-use Kiwilan\Steward\Commands\StewardCommand;
 use Kiwilan\Steward\Commands\LogClearCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
 use Kiwilan\Steward\Commands\Publish\PublishCommand;
 use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
 use Kiwilan\Steward\Commands\RoutePrintCommand;
 use Kiwilan\Steward\Commands\ScoutFreshCommand;
+use Kiwilan\Steward\Commands\StewardCommand;
 use Kiwilan\Steward\Commands\StewardPhpCsFixerCommand;
 use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
 use Kiwilan\Steward\Commands\SubmissionSendCommand;
@@ -58,12 +58,13 @@ class StewardServiceProvider extends PackageServiceProvider
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
                 GenerateTypeCommand::class,
-            ]);
+            ])
+        ;
     }
 
     public function bootingPackage()
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'steward');
+        $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
 
         $this->configureComponents();
     }
