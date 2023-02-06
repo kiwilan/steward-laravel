@@ -15,12 +15,15 @@ const InertiaTyped: Plugin = {
       params?: RouteParamsWithQueryOverload | RouteParam,
       absolute?: boolean,
       customZiggy?: Config,
+      // @ts-expect-error - Ziggy doesn't support this overload
     ) => route(name, params, absolute, customZiggy)
     app.config.globalProperties.$isRoute = (
       name: Route,
       params?: RouteParamsWithQueryOverload,
+      // @ts-expect-error - Ziggy doesn't support this overload
     ) => route().current(name, params)
     app.config.globalProperties.$currentRoute = () =>
+    // @ts-expect-error - Ziggy doesn't support this overload
       route().current() as string
 
     app.provide('inertia', {

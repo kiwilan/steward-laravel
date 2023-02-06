@@ -10,11 +10,11 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "@": ["./lib"],
-      "@/*": ["./lib/*"]
+      "@": ["./src"],
+      "@/*": ["./src/*"]
     },
     "types": ["vite/client"]
   },
-  "include": ["lib"],
+  "include": ["src"],
   "exclude": ["**/dist", "**/node_modules"]
 }
