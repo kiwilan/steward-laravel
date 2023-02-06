@@ -11,3 +11,7 @@ node_modules
 .DS_Store
 dist
 *.tgz
+lib/dist
+lib/vite
+lib/vue
+lib/node_modules

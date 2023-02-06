@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite'
-import type { StewardOptions } from '@/types'
+import type { StewardOptions } from '../types/index.js'
 
 const DEFAULT_OPTIONS: StewardOptions = {
   inertia: {

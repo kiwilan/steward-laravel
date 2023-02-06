@@ -4,8 +4,8 @@ import StarterKit from '@tiptap/starter-kit'
 import Typography from '@tiptap/extension-typography'
 import CharacterCount from '@tiptap/extension-character-count'
 import Link from '@tiptap/extension-link'
-import type { ActionButton } from './tiptap-actions'
-import { ExecuteCommand, Extras, Marks, Nodes } from './tiptap-actions'
+import type { ActionButton } from './tiptap-actions.js'
+import { ExecuteCommand, Extras, Marks, Nodes } from './tiptap-actions.js'
 
 let refs: {
   editorReference: HTMLElement

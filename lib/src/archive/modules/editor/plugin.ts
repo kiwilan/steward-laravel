@@ -1,8 +1,8 @@
 import type { Alpine } from 'alpinejs'
-import type { ChainedCommands, EditorT } from '../tiptap'
-import Tiptap from '../tiptap'
-import type { ActionButton } from './actions'
-import { ExecuteCommand, Extras, Marks, Nodes } from './actions'
+import type { ChainedCommands, EditorT } from '../../tiptap.js'
+import Tiptap from '../../tiptap.js'
+import type { ActionButton } from './actions.js'
+import { ExecuteCommand, Extras, Marks, Nodes } from './actions.js'
 
 interface EditorActions {
   bold: boolean

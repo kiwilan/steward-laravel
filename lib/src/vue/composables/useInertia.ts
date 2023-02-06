@@ -1,7 +1,7 @@
 import { inject } from 'vue'
-import type { IInertiaTyped, InertiaTypedOptions, RequestPayload, Route } from '@/types'
+import type { IInertiaTyped, InertiaTypedOptions, RequestPayload, Route } from '../../types/index.js'
 
-export const useInertiaRouter = () => {
+export const useInertia = () => {
   const inertia = inject('inertia') as IInertiaTyped
   const options = inertia.options as InertiaTypedOptions
   const inertiaRouter = options.router

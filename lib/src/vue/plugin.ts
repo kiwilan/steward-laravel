@@ -5,7 +5,7 @@ import type {
   RouteParamsWithQueryOverload,
 } from 'ziggy-js'
 import route from 'ziggy-js'
-import type { InertiaTypedOptions, Route } from '@/types'
+import type { InertiaTypedOptions, Route } from '../types/index.js'
 
 const InertiaTyped: Plugin = {
   install: (app, options: InertiaTypedOptions) => {

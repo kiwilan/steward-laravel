@@ -132,9 +132,9 @@
       }
     },
     {
-      "label": "NPM pack-local",
+      "label": "NPM package",
       "type": "shell",
-      "command": "pnpm build && rm -f ~/kiwilan-vite-plugin-steward-laravel-*.tgz || true && npm pack && mv kiwilan-vite-plugin-steward-laravel-*.tgz ~/",
+      "command": "pnpm package",
       "problemMatcher": [],
       "presentation": {
         "reveal": "never",
@@ -145,7 +145,7 @@
     {
       "label": "NPM deploy",
       "type": "shell",
-      "command": "pnpm build && npm pack --dry-run && npm publish",
+      "command": "pnpm run deploy",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
