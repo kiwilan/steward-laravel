@@ -1,5 +1,0 @@
-parameters:
-	ignoreErrors:
-		-
-			message: '#^Internal error\: Internal error\: Target class \[excel\] does not exist\.$#'
-			path: src/Queries/BaseQuery.php
