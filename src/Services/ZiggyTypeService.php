@@ -39,7 +39,8 @@ class ZiggyTypeService
 
                 return "  '{$key}': { 'uri': '{$route['uri']}', 'methods': {$methods} }";
             })
-            ->join("\n");
+            ->join("\n")
+        ;
 
         $route = '$route';
         $isRoute = '$isRoute';
