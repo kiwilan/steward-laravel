@@ -10,7 +10,7 @@ class BladeApp extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public ?array $vite = ['resources/js/app.ts'],
+        public array|false|null $vite = ['resources/js/app.ts'],
         public bool $livewire = false,
         public array $inertia = [],
         public bool $inertiaEnabled = false,
