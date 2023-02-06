@@ -11,6 +11,7 @@ class BladeApp extends Component
      */
     public function __construct(
         public ?array $vite = ['resources/js/app.ts'],
+        public bool $livewire = false,
         public array $inertia = [],
         public bool $inertiaEnabled = false,
         public array $page = [],
