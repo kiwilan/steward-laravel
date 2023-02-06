@@ -9,23 +9,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  @if ($darkMode)
+    <link rel="shortcut icon" href="{{ asset('/favicon.svg') }}" type="image/x-icon"
+      media="(prefers-color-scheme: light)">
+    <link rel="shortcut icon" href="{{ asset('/favicon-dark.svg') }}" type="image/x-icon"
+      media="(prefers-color-scheme: dark)">
+  @else
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  @endif
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/apple-touch-icon.png') }}">
   <link rel="manifest" href="/site.webmanifest">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/favicon-16x16.png') }}">
+  <meta name="msapplication-TileColor" content="{{ $tile }}">
+  <meta name="theme-color" content="{{ $theme }}">
 
   @stack('head')
 
-  @isset($title)
+  @if ($title)
     {{ $title }}
+  @elseif ($seo)
+    {!! SEO::generate() !!}
   @else
     @if ($inertiaEnabled)
-      <title inertia>
-      @else
-        <title>
+      <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    @else
+      <title>{{ config('app.name', 'Laravel') }}</title>
     @endif
-    {{ config('app.name', 'Laravel') }}
-    </title>
   @endisset
 
   @if ($darkMode)
@@ -48,17 +59,17 @@
 </head>
 
 <body class="font-sans antialiased {{ config('app.env') === 'local' ? 'debug-screens' : '' }}">
-  @if ($inertiaEnabled)
-    @inertia
-  @endif
-  {{ $slot }}
-  @stack('modals')
+@if ($inertiaEnabled)
+  @inertia
+@endif
+{{ $slot }}
+@stack('modals')
 
-  @stack('scripts')
-  @if ($livewire)
-    @livewire('notifications')
-    @livewireScripts
-  @endif
+@stack('scripts')
+@if ($livewire)
+  @livewire('notifications')
+  @livewireScripts
+@endif
 </body>
 
 </html>
