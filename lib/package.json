@@ -1,7 +1,7 @@
 {
   "name": "@kiwilan/vite-plugin-steward-laravel",
   "type": "module",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "Vite plugin for steward-laravel.",
   "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
   "license": "MIT",
@@ -25,8 +25,8 @@
       "import": "./dist/index.js"
     },
     "./vue": {
-      "require": "./dist/vue.cjs",
-      "import": "./dist/vue.js"
+      "require": "./vue/index.cjs",
+      "import": "./vue/index.js"
     }
   },
   "files": [
