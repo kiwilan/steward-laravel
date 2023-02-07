@@ -47,7 +47,7 @@ class WordpressBuilderFaker
 
         return [
             'data' => [
-                'paragraph' => $factory->text->paragraphs(),
+                'paragraph' => $factory->text()->paragraphs(),
             ],
             'type' => 'paragraph',
         ];

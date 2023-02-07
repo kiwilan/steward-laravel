@@ -87,7 +87,7 @@ class SeederService
                 $created_model = $model::create($data_entity);
 
                 if ($created_model->isFillable('picture')) {
-                    $created_model = $factory->media_local->setMedia($created_model);
+                    $created_model = $factory->mediaLocal()->setMedia($created_model);
                 }
 
                 if (array_key_exists('foreign', $data)) {

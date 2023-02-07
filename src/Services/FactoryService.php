@@ -15,11 +15,10 @@ use Kiwilan\Steward\Services\FactoryService\FactoryText;
 class FactoryService
 {
     public function __construct(
-        public Generator $faker,
-        public ?FactoryText $text = null,
-        public ?FactoryMediaLocal $media_local = null,
-        public ?FactoryMediaDownloader $media_downloader = null,
-        // protected ?string $path = null,
+        protected Generator $faker,
+        protected ?FactoryText $text = null,
+        protected ?FactoryMediaLocal $mediaLocal = null,
+        protected ?FactoryMediaDownloader $mediaDownloader = null,
     ) {
     }
 
@@ -45,10 +44,30 @@ class FactoryService
         $faker = \Faker\Factory::create();
         $service = new FactoryService($faker);
         $service->text = $service->setFactoryText($use_sindarin);
-        $service->media_local = $service->setFactoryMediaLocal($media_path);
-        $service->media_downloader = $service->setFactoryMediaDownloader();
+        $service->mediaLocal = $service->setFactoryMediaLocal($media_path);
+        $service->mediaDownloader = $service->setFactoryMediaDownloader();
 
         return $service;
+    }
+
+    public function faker()
+    {
+        return $this->faker;
+    }
+
+    public function text()
+    {
+        return $this->text;
+    }
+
+    public function mediaLocal()
+    {
+        return $this->mediaLocal;
+    }
+
+    public function mediaDownloader()
+    {
+        return $this->mediaDownloader;
     }
 
     // private function builder(string $builder): array

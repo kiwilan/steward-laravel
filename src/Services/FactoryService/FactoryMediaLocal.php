@@ -24,7 +24,7 @@ class FactoryMediaLocal
         $medias = $this->getSampleMedias($path);
 
         /** @var SplFileInfo */
-        $media = $this->factory->faker->randomElement($medias);
+        $media = $this->factory->faker()->randomElement($medias);
 
         return FactoryMediaLocal::createMedia($media, $path);
     }
@@ -38,7 +38,7 @@ class FactoryMediaLocal
         $medias = $this->getSampleMedias($path);
 
         /** @var SplFileInfo[] */
-        $gallery = $this->factory->faker->randomElements($medias, $this->factory->faker->numberBetween(0, count($medias) > 5 ? 5 : count($medias)));
+        $gallery = $this->factory->faker()->randomElements($medias, $this->factory->faker()->numberBetween(0, count($medias) > 5 ? 5 : count($medias)));
 
         $entries = [];
 
@@ -95,7 +95,7 @@ class FactoryMediaLocal
             'woman' => 16,
         ];
 
-        $type = (string) $this->factory->faker->numberBetween(1, $types[$type]);
+        $type = (string) $this->factory->faker()->numberBetween(1, $types[$type]);
         $i = str_pad($type, 2, '0', STR_PAD_LEFT);
 
         return database_path("seeders/media/{$category}/{$type}-{$i}.{$extension}");

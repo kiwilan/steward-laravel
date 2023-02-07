@@ -34,11 +34,11 @@ class FactoryText
     public function timestamps(string $minimum = '-20 years'): object
     {
         $created_at = Carbon::createFromTimeString(
-            $this->factory->faker->dateTimeBetween($minimum)
+            $this->factory->faker()->dateTimeBetween($minimum)
                 ->format('Y-m-d H:i:s')
         );
         $updated_at = Carbon::createFromTimeString(
-            $this->factory->faker->dateTimeBetween($created_at)
+            $this->factory->faker()->dateTimeBetween($created_at)
                 ->format('Y-m-d H:i:s')
         );
 
@@ -77,7 +77,7 @@ class FactoryText
     {
         $content = null;
 
-        for ($k = 0; $k < $this->factory->faker->numberBetween($min, $max); $k++) {
+        for ($k = 0; $k < $this->factory->faker()->numberBetween($min, $max); $k++) {
             if ($type === 'html') {
                 $content .= "{$this->html()}<br><br>";
             }
@@ -101,27 +101,27 @@ class FactoryText
     {
         $html = '';
 
-        for ($k = 0; $k < $this->factory->faker->numberBetween(2, 5); $k++) {
+        for ($k = 0; $k < $this->factory->faker()->numberBetween(2, 5); $k++) {
             $paragraph = $this->paragraph();
 
-            if ($this->factory->faker->boolean(25)) {
+            if ($this->factory->faker()->boolean(25)) {
                 $paragraph .= " <strong>{$this->sentence()}</strong>";
             }
 
-            if ($this->factory->faker->boolean(25)) {
+            if ($this->factory->faker()->boolean(25)) {
                 $paragraph .= " <em>{$this->sentence()}</em>";
             }
 
-            if ($this->factory->faker->boolean(25)) {
+            if ($this->factory->faker()->boolean(25)) {
                 $paragraph .= " <code>{$this->words()}</code>";
             }
 
-            if ($withLink && $this->factory->faker->boolean(25)) {
-                $paragraph .= " <a href=\"{$this->factory->faker->url()}\">{$this->words()}</a>";
+            if ($withLink && $this->factory->faker()->boolean(25)) {
+                $paragraph .= " <a href=\"{$this->factory->faker()->url()}\">{$this->words()}</a>";
             }
 
-            if ($withImage && $this->factory->faker->boolean(15)) {
-                $paragraph = "<a href=\"{$this->factory->faker->imageUrl()}\" target=\"_blank\"><img src=\"{$this->factory->faker->imageUrl()}\" alt=\"{$this->sentence()}\" /></a>";
+            if ($withImage && $this->factory->faker()->boolean(15)) {
+                $paragraph = "<a href=\"{$this->factory->faker()->imageUrl()}\" target=\"_blank\"><img src=\"{$this->factory->faker()->imageUrl()}\" alt=\"{$this->sentence()}\" /></a>";
             }
             $html .= "<p>{$paragraph}</p>";
         }
@@ -140,37 +140,37 @@ class FactoryText
         $bold_text = " **{$this->sentence()}** ";
         $italic_text = " *{$this->sentence()}* ";
         $code_text = " `{$this->words()}` ";
-        $link_text = " [{$this->sentence()}]({$this->factory->faker->url()}) ";
-        $image_text = "  ![{$this->sentence()}]({$this->factory->faker->imageUrl()})  ";
+        $link_text = " [{$this->sentence()}]({$this->factory->faker()->url()}) ";
+        $image_text = "  ![{$this->sentence()}]({$this->factory->faker()->imageUrl()})  ";
 
         $html = [];
 
-        if ($this->factory->faker->boolean(25)) {
+        if ($this->factory->faker()->boolean(25)) {
             $html[] = $bold_text;
         }
 
-        if ($this->factory->faker->boolean(25)) {
+        if ($this->factory->faker()->boolean(25)) {
             $html[] = $italic_text;
         }
 
-        if ($code && $this->factory->faker->boolean(25)) {
+        if ($code && $this->factory->faker()->boolean(25)) {
             $html[] = $code_text;
         }
 
-        if ($link && $this->factory->faker->boolean(25)) {
+        if ($link && $this->factory->faker()->boolean(25)) {
             $html[] = $link_text;
         }
 
-        if ($image && $this->factory->faker->boolean(25)) {
+        if ($image && $this->factory->faker()->boolean(25)) {
             $html[] = $image_text;
         }
 
-        for ($k = 0; $k < $this->factory->faker->numberBetween($min, $max); $k++) {
+        for ($k = 0; $k < $this->factory->faker()->numberBetween($min, $max); $k++) {
             $paragraph = $this->sentence();
             $html[] = "{$paragraph}";
         }
 
-        for ($k = 0; $k < $this->factory->faker->numberBetween($min, $max); $k++) {
+        for ($k = 0; $k < $this->factory->faker()->numberBetween($min, $max); $k++) {
             $paragraph = $this->paragraph();
             $html[] = "{$paragraph}";
         }
@@ -181,18 +181,25 @@ class FactoryText
         return implode('', $html);
     }
 
+    public function word(): string
+    {
+        return $this->use_sindarin
+            ? ProviderSindarin::words(limit: 1, asText: true)
+            : $this->factory->faker()->word();
+    }
+
     public function words(): string
     {
         return $this->use_sindarin
             ? ProviderSindarin::words(asText: true)
-            : $this->factory->faker->words(asText: true);
+            : $this->factory->faker()->words(asText: true);
     }
 
     public function sentence(): string
     {
         return $this->use_sindarin
             ? ucfirst(ProviderSindarin::words(limit: 8, asText: true).'.')
-            : $this->factory->faker->sentence();
+            : $this->factory->faker()->sentence();
     }
 
     public function paragraph(): string
@@ -200,7 +207,7 @@ class FactoryText
         $content = '';
 
         if ($this->use_sindarin) {
-            for ($k = 0; $k < $this->factory->faker->numberBetween(2, 5); $k++) {
+            for ($k = 0; $k < $this->factory->faker()->numberBetween(2, 5); $k++) {
                 $content .= $this->sentence().' ';
             }
         }
