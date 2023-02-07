@@ -6,7 +6,7 @@ use Illuminate\Support\Carbon;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\Services\FactoryService\Providers\ProviderSindarin;
-use stdClass;
+use Kiwilan\Steward\Services\FactoryService\Utils\FactoryTimestamps;
 
 /**
  * Generate fake text.
@@ -29,10 +29,8 @@ class FactoryText
 
     /**
      * Generate timestamps.
-     *
-     * @return object {`created_at`: string, `updated_at`: string}
      */
-    public function timestamps(string $minimum = '-20 years'): object
+    public function timestamps(string $minimum = '-20 years'): FactoryTimestamps
     {
         $created_at = Carbon::createFromTimeString(
             $this->factory->faker()->dateTimeBetween($minimum)
@@ -43,26 +41,12 @@ class FactoryText
                 ->format('Y-m-d H:i:s')
         );
 
-        $timestamps = new stdClass();
-        $timestamps = (new class() extends stdClass
-        {
-            /** @var string */
-            public $created_at;
-
-            /** @var string */
-            public $updated_at;
-
-            /** @var Carbon */
-            public $created_at_carbon;
-
-            /** @var Carbon */
-            public $updated_at_carbon;
-        });
-
-        $timestamps->created_at = $created_at->format('Y-m-d H:i:s');
-        $timestamps->updated_at = $updated_at->format('Y-m-d H:i:s');
-        $timestamps->created_at_carbon = $created_at;
-        $timestamps->updated_at_carbon = $updated_at;
+        $timestamps = new FactoryTimestamps(
+            $created_at->format('Y-m-d H:i:s'),
+            $updated_at->format('Y-m-d H:i:s'),
+            $created_at,
+            $updated_at,
+        );
 
         return $timestamps;
     }
