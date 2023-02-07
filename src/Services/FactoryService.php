@@ -39,12 +39,12 @@ class FactoryService
         return true;
     }
 
-    public static function make(string|\UnitEnum|null $media_path = null, bool $use_sindarin = false): self
+    public static function make(string|\UnitEnum|null $mediaPath = null, bool $useSindarin = false): self
     {
         $faker = \Faker\Factory::create();
         $service = new FactoryService($faker);
-        $service->text = $service->setFactoryText($use_sindarin);
-        $service->mediaLocal = $service->setFactoryMediaLocal($media_path);
+        $service->text = $service->setFactoryText($useSindarin);
+        $service->mediaLocal = $service->setFactoryMediaLocal($mediaPath);
         $service->mediaDownloader = $service->setFactoryMediaDownloader();
 
         return $service;
