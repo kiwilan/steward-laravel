@@ -6,26 +6,40 @@ import type {
 
 export interface StewardOptions {
   /**
-   * Enable `@inertiajs/vue3` types.
-   * @default { ziggyJs: false, ziggyTypes: false, modelsTypes: false }
+   * Enable `ziggy` types.
+   * - `js` will generate `ziggy.js` file, it's native ziggy feature.
+   * - `types` will generate `types-ziggy.d.ts` file
+   *    - `ZiggyLaravelRoutes` interface for Laravel routes
+   *    - an interface `InertiaPage` for `usePage` with Inertia
+   *    - `$route`, `$isRoute`, `$currentRoute`, `$page`, `sessions` inject as `globalProperties` into Inertia if you install `InertiaTyped` Vue `
+   * @docs https://github.com/tighten/ziggy#advanced-setup
+   *
+   * @default {
+   *   js: false,
+   *   types: false,
+   * }
    */
-  inertia?: {
-    /**
-     * Enable JS `ziggy` routes.
-     * @docs https://github.com/tighten/ziggy#advanced-setup
-     * @default false
-     */
-    ziggyJs?: boolean
-    /**
-     * Enable `ziggy` routes types.
-     * @default false
-     */
-    ziggyTypes?: boolean
-    /**
-     * Enable types for Eloquent models.
-     * @default false
-     */
-    modelsTypes?: boolean
+  ziggy?: {
+    js?: boolean
+    types?: boolean
+  }
+  /**
+   * Enable types for Eloquent models.
+   *
+   * @default {
+   *   modelsPath: 'app/Models',
+   *   output: 'resources/js',
+   *   outputFile: 'types-models.d.ts',
+   *   fakeTeam: false,
+   *   paginate: true,
+   * }
+   */
+  modelsTypes?: {
+    modelsPath?: string
+    output?: string
+    outputFile?: string
+    fakeTeam?: boolean
+    paginate?: boolean
   }
 }
 
@@ -41,13 +55,6 @@ export interface IInertiaTyped {
   ) => string
   isRoute: (name: Route, params?: RouteParamsWithQueryOverload) => boolean
   currentRoute: () => string
-  // router: {
-  //   get: (url: Route, data?: RequestPayload) => Promise<any>
-  //   post: (url: Route, data?: RequestPayload) => Promise<any>
-  //   patch: (url: Route, data?: RequestPayload) => Promise<any>
-  //   put: (url: Route, data?: RequestPayload) => Promise<any>
-  //   delete: (url: Route) => Promise<any>
-  // }
 }
 export interface InertiaTypedOptions {
   inject: boolean
