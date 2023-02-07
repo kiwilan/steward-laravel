@@ -4,6 +4,7 @@ namespace Kiwilan\Steward\Services;
 
 use Faker\Generator;
 use Illuminate\Support\Facades\File;
+use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\FactoryService\FactoryBuilder;
 use Kiwilan\Steward\Services\FactoryService\FactoryMediaDownloader;
 use Kiwilan\Steward\Services\FactoryService\FactoryMediaLocal;
@@ -39,15 +40,22 @@ class FactoryService
         return true;
     }
 
-    public static function make(string|\UnitEnum|null $mediaPath = null, bool $useSindarin = false): self
+    public static function make(string|\UnitEnum|null $mediaPath = null): self
     {
         $faker = \Faker\Factory::create();
         $service = new FactoryService($faker);
-        $service->text = $service->setFactoryText($useSindarin);
+        $service->text = $service->setFactoryText();
         $service->mediaLocal = $service->setFactoryMediaLocal($mediaPath);
         $service->mediaDownloader = $service->setFactoryMediaDownloader();
 
         return $service;
+    }
+
+    public function useSindarin(): self
+    {
+        $this->text = $this->setFactoryText(FactoryTextEnum::sindarin);
+
+        return $this;
     }
 
     public function faker()
@@ -75,9 +83,9 @@ class FactoryService
     //     return FactoryBuilder::make($this, $builder);
     // }
 
-    public function setFactoryText(bool $use_sindarin): FactoryText
+    private function setFactoryText(FactoryTextEnum $type = FactoryTextEnum::lorem): FactoryText
     {
-        return new FactoryText($this, $use_sindarin);
+        return new FactoryText($this, $type);
     }
 
     private function setFactoryMediaLocal(string|\UnitEnum|null $media_path = null): FactoryMediaLocal
@@ -89,7 +97,7 @@ class FactoryService
         return new FactoryMediaLocal($this, $media_path);
     }
 
-    public function setFactoryMediaDownloader(): FactoryMediaDownloader
+    private function setFactoryMediaDownloader(): FactoryMediaDownloader
     {
         return new FactoryMediaDownloader($this);
     }

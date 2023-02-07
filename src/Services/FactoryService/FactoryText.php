@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Services\FactoryService;
 
 use Illuminate\Support\Carbon;
+use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\Services\FactoryService\Providers\ProviderSindarin;
 use stdClass;
@@ -14,7 +15,7 @@ class FactoryText
 {
     public function __construct(
         public FactoryService $factory,
-        public bool $use_sindarin = false,
+        public FactoryTextEnum $type = FactoryTextEnum::lorem,
     ) {
     }
 
@@ -181,23 +182,28 @@ class FactoryText
         return implode('', $html);
     }
 
+    private function useSindarin(): bool
+    {
+        return $this->type === FactoryTextEnum::sindarin;
+    }
+
     public function word(): string
     {
-        return $this->use_sindarin
+        return $this->useSindarin()
             ? ProviderSindarin::words(limit: 1, asText: true)
             : $this->factory->faker()->word();
     }
 
     public function words(): string
     {
-        return $this->use_sindarin
+        return $this->useSindarin()
             ? ProviderSindarin::words(asText: true)
             : $this->factory->faker()->words(asText: true);
     }
 
     public function sentence(): string
     {
-        return $this->use_sindarin
+        return $this->useSindarin()
             ? ucfirst(ProviderSindarin::words(limit: 8, asText: true).'.')
             : $this->factory->faker()->sentence();
     }
@@ -206,7 +212,7 @@ class FactoryText
     {
         $content = '';
 
-        if ($this->use_sindarin) {
+        if ($this->useSindarin()) {
             for ($k = 0; $k < $this->factory->faker()->numberBetween(2, 5); $k++) {
                 $content .= $this->sentence().' ';
             }
