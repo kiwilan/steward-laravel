@@ -41,14 +41,12 @@ class FactoryText
                 ->format('Y-m-d H:i:s')
         );
 
-        $timestamps = new FactoryTimestamps(
+        return new FactoryTimestamps(
             $created_at->format('Y-m-d H:i:s'),
             $updated_at->format('Y-m-d H:i:s'),
             $created_at,
             $updated_at,
         );
-
-        return $timestamps;
     }
 
     /**
