@@ -6,6 +6,9 @@ const DEFAULT_OPTIONS: StewardOptions = {
   ziggyTypes: {
     output: 'resources/js',
     outputFile: 'types-ziggy.d.ts',
+    skipRouter: false,
+    skipPage: false,
+    embed: false,
   },
   modelsTypes: {
     modelsPath: 'app/Models',
