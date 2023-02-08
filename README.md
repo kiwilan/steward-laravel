@@ -23,23 +23,10 @@ You can install the package via composer:
 composer require kiwilan/steward-laravel
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="steward-laravel-migrations"
-php artisan migrate
-```
-
 You can publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag="steward-config"
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="steward-laravel-views"
 ```
 
 ### Vite plugin
@@ -52,27 +39,7 @@ npm install --save-dev @kiwilan/vite-plugin-steward-laravel
 pnpm add @kiwilan/vite-plugin-steward-laravel -D
 ```
 
-## Usage
-
-```php
-$steward = new Kiwilan\Steward\Steward();
-echo $steward->echoPhrase('Hello, Kiwilan!');
-```
-
-### Vite plugin
-
-```js
-import { defineConfig } from "vite";
-import { Steward } from "@kiwilan/vite-plugin-steward-laravel";
-
-export default defineConfig({
-  plugins: [
-    Steward({
-      // Options
-    }),
-  ],
-});
-```
+Check [@kiwilan/vite-plugin-steward-laravel](https://github.com/kiwilan/steward-laravel/tree/main/lib) for usage.
 
 ## Testing
 
