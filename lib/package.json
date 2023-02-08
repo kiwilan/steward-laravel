@@ -1,7 +1,7 @@
 {
   "name": "@kiwilan/vite-plugin-steward-laravel",
   "type": "module",
-  "version": "0.0.38",
+  "version": "0.0.4",
   "description": "Vite plugin for steward-laravel.",
   "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
   "license": "MIT",
