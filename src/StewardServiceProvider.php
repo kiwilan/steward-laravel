@@ -5,7 +5,6 @@ namespace Kiwilan\Steward;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Compilers\BladeCompiler;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
-use Kiwilan\Steward\Commands\GenerateTypeCommand;
 use Kiwilan\Steward\Commands\LogClearCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
 use Kiwilan\Steward\Commands\Publish\PublishCommand;
@@ -56,9 +55,7 @@ class StewardServiceProvider extends PackageServiceProvider
                 SubmissionRgpdVerificationCommand::class,
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
-                GenerateTypeCommand::class,
-            ])
-        ;
+            ]);
     }
 
     public function bootingPackage()
