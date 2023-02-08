@@ -56,6 +56,12 @@ const Steward = (userOptions: StewardOptions = {}): Plugin => {
           options.push(`--output=${opts.ziggyTypes.output}`)
         if (opts.ziggyTypes.outputFile)
           options.push(`--output-file=${opts.ziggyTypes.outputFile}`)
+        if (opts.ziggyTypes.skipRouter)
+          options.push('--skip-router')
+        if (opts.ziggyTypes.skipPage)
+          options.push('--skip-page')
+        if (opts.ziggyTypes.embed)
+          options.push('--embed')
 
         command(`${ziggyTypesBase} ${options.join(' ')}`)
       }

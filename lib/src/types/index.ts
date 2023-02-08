@@ -21,11 +21,17 @@ export interface StewardOptions {
    * @default {
    *   output: 'resources/js',
    *   outputFile: 'types-ziggy.d.ts',
+   *   skipRouter: false,
+   *   skipPage: false,
+   *   embed: false,
    * }
    */
   ziggyTypes?: {
     output?: string
     outputFile?: string
+    skipRouter?: boolean
+    skipPage?: boolean
+    embed?: boolean
   } | false
   /**
    * Enable types for Eloquent models.
