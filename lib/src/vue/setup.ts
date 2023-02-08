@@ -10,7 +10,7 @@ type Page = Promise<DefineComponent>
  *
  * @example
  * createInertiaApp({
- *   resolve: name => resolve(name, import.meta.globEager('./Pages/*.vue'))
+ *   resolve: name => appResolve(name, import.meta.globEager('./Pages/*.vue'))
  * })
  */
 const appResolve = (name: string, glob: Record<string, unknown>): Page => {

@@ -6,41 +6,59 @@ import type {
 
 export interface StewardOptions {
   /**
-   * Enable `ziggy` types.
-   * - `js` will generate `ziggy.js` file, it's native ziggy feature.
-   * - `types` will generate `types-ziggy.d.ts` file
-   *    - `ZiggyLaravelRoutes` interface for Laravel routes
-   *    - an interface `InertiaPage` for `usePage` with Inertia
-   *    - `$route`, `$isRoute`, `$currentRoute`, `$page`, `sessions` inject as `globalProperties` into Inertia if you install `InertiaTyped` Vue `
+   * Generate `ziggy.js` file, it's native ziggy feature.
    * @docs https://github.com/tighten/ziggy#advanced-setup
    *
+   * @default false
+   */
+  ziggyJs?: boolean
+  /**
+   * Generate `types-ziggy.d.ts` file
+   *  - `ZiggyLaravelRoutes` interface for Laravel routes
+   *  - an interface `InertiaPage` for `usePage` with Inertia
+   *  - `$route`, `$isRoute`, `$currentRoute`, `$page`, `sessions` inject as `globalProperties` into Inertia if you install `InertiaTyped` Vue
+   *
    * @default {
-   *   js: false,
-   *   types: false,
+   *   output: 'resources/js',
+   *   outputFile: 'types-ziggy.d.ts',
    * }
    */
-  ziggy?: {
-    js?: boolean
-    types?: boolean
-  }
+  ziggyTypes?: {
+    output?: string
+    outputFile?: string
+  } | false
   /**
    * Enable types for Eloquent models.
    *
    * @default {
-   *   modelsPath: 'app/Models',
    *   output: 'resources/js',
    *   outputFile: 'types-models.d.ts',
-   *   fakeTeam: false,
+   *   modelsPath: 'app/Models',
    *   paginate: true,
+   *   fakeTeam: false,
    * }
    */
   modelsTypes?: {
-    modelsPath?: string
     output?: string
     outputFile?: string
-    fakeTeam?: boolean
+    modelsPath?: string
     paginate?: boolean
-  }
+    fakeTeam?: boolean
+  } | false
+  /**
+   * Enable Vite autoreload on PHP files changes.
+   *
+   * @default {
+   *  models: true,
+   * controllers: true,
+   * routes: true,
+   * }
+   */
+  autoreload?: {
+    models?: boolean
+    controllers?: boolean
+    routes?: boolean
+  } | false
 }
 
 export type Route = keyof ZiggyLaravelRoutes

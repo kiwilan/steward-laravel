@@ -2,9 +2,10 @@ import type { Plugin } from 'vite'
 import type { StewardOptions } from '../types/index.js'
 
 const DEFAULT_OPTIONS: StewardOptions = {
-  ziggy: {
-    js: false,
-    types: false,
+  ziggyJs: false,
+  ziggyTypes: {
+    output: 'resources/js',
+    outputFile: 'types-ziggy.d.ts',
   },
   modelsTypes: {
     modelsPath: 'app/Models',
@@ -12,6 +13,11 @@ const DEFAULT_OPTIONS: StewardOptions = {
     outputFile: 'types-models.d.ts',
     fakeTeam: false,
     paginate: true,
+  },
+  autoreload: {
+    models: true,
+    controllers: true,
+    routes: true,
   },
 }
 
@@ -36,16 +42,22 @@ const command = (command: string) => {
 
 const Steward = (userOptions: StewardOptions = {}): Plugin => {
   return {
-    name: 'vite-plugin-markdoc-content',
+    name: 'vite-plugin-steward-laravel',
     async buildStart() {
       const opts: StewardOptions = Object.assign({}, DEFAULT_OPTIONS, userOptions)
 
-      if (opts.ziggy) {
-        if (opts.ziggy.js)
-          command('php artisan ziggy:generate')
+      if (opts.ziggyJs)
+        command('php artisan ziggy:generate')
 
-        if (opts.ziggy.types)
-          command('php artisan generate:type ziggy')
+      if (opts.ziggyTypes) {
+        const ziggyTypesBase = 'php artisan typescriptable:ziggy'
+        const options = []
+        if (opts.ziggyTypes.output)
+          options.push(`--output=${opts.ziggyTypes.output}`)
+        if (opts.ziggyTypes.outputFile)
+          options.push(`--output-file=${opts.ziggyTypes.outputFile}`)
+
+        command(`${ziggyTypesBase} ${options.join(' ')}`)
       }
 
       if (opts.modelsTypes) {
@@ -66,8 +78,15 @@ const Steward = (userOptions: StewardOptions = {}): Plugin => {
       }
     },
     handleHotUpdate({ file, server }) {
-      if (file.endsWith('app/Models/**/*.php'))
-        server.restart()
+      const opts = Object.assign({}, DEFAULT_OPTIONS, userOptions)
+      if (opts.autoreload) {
+        if (opts.autoreload.models && file.endsWith('app/Models/**/*.php'))
+          server.restart()
+        if (opts.autoreload.controllers && file.endsWith('app/Http/Controllers/**/*.php'))
+          server.restart()
+        if (opts.autoreload.routes && file.endsWith('routes/**/*.php'))
+          server.restart()
+      }
     },
   }
 }

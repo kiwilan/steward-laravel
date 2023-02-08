@@ -55,7 +55,8 @@ class StewardServiceProvider extends PackageServiceProvider
                 SubmissionRgpdVerificationCommand::class,
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
-            ]);
+            ])
+        ;
     }
 
     public function bootingPackage()
