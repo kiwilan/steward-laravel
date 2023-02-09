@@ -20,7 +20,7 @@ See [steward-laravel.netlify.app](https://steward-laravel.netlify.app/) for docu
 You can install the package via composer:
 
 ```bash
-composer require kiwilan/steward-laravel:dev-main
+composer require kiwilan/steward-laravel:dev-main -W
 ```
 
 You can publish the config file with:
