@@ -26,6 +26,9 @@
   <meta name="theme-color" content="{{ $theme }}">
 
   @stack('head')
+  @if ($head)
+    {{ $head }}
+  @endif
 
   @if ($title)
     {{ $title }}
