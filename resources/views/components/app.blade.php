@@ -1,4 +1,4 @@
-@props(['title', 'head'])
+@props(['title'])
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -26,9 +26,6 @@
   <meta name="theme-color" content="{{ $theme }}">
 
   @stack('head')
-  @if ($head)
-    {{ $head }}
-  @endif
 
   @if ($title)
     {{ $title }}

@@ -11,7 +11,6 @@ class BladeApp extends Component
      */
     public function __construct(
         public mixed $title = null,
-        public mixed $head = null,
         public bool $seo = false,
         public array|false|null $vite = ['resources/js/app.ts'],
         public bool $livewire = false,
