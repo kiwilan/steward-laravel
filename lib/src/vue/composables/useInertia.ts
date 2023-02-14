@@ -1,4 +1,5 @@
 import { inject } from 'vue'
+import { usePage } from '@inertiajs/vue3'
 import type { IInertiaTyped, InertiaTypedOptions, RequestPayload, Route } from '../../types/index.js'
 
 export const useInertia = () => {
@@ -9,6 +10,7 @@ export const useInertia = () => {
   const convertURL = (url: Route) => {
     return inertia.route(url)
   }
+
   const router = {
     get: (url: Route, data?: RequestPayload) => inertiaRouter?.get(convertURL(url), data),
     post: (url: Route, data?: RequestPayload) => inertiaRouter?.post(convertURL(url), data),
@@ -22,5 +24,6 @@ export const useInertia = () => {
     route: inertia.route,
     isRoute: inertia.isRoute,
     currentRoute: inertia.currentRoute,
+    page: usePage() as InertiaPage,
   }
 }

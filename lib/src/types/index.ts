@@ -79,6 +79,7 @@ export interface IInertiaTyped {
   ) => string
   isRoute: (name: Route, params?: RouteParamsWithQueryOverload) => boolean
   currentRoute: () => string
+  page: InertiaPage
 }
 export interface InertiaTypedOptions {
   inject: boolean

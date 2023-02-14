@@ -5,6 +5,7 @@ import type {
   RouteParamsWithQueryOverload,
 } from 'ziggy-js'
 import route from 'ziggy-js'
+import { router } from '@inertiajs/vue3'
 import type { InertiaTypedOptions, Route } from '../types/index.js'
 
 const InertiaTyped: Plugin = {
@@ -31,6 +32,7 @@ const InertiaTyped: Plugin = {
       route: app.config.globalProperties.$route,
       isRoute: app.config.globalProperties.$isRoute,
       currentRoute: app.config.globalProperties.$currentRoute,
+      router,
     })
 
     return app

@@ -6,8 +6,6 @@ Refer to [steward-laravel](https://github.com/kiwilan/steward-laravel).
 
 [Typescriptable Laravel](https://github.com/kiwilan/typescriptable-laravel) is required.
 
-You can only install [Steward Laravel](https://github.com/kiwilan/steward-laravel), Typescriptable Laravel is included in this package. Just note that Steward Laravel is not required for this plugin.
-
 ```bash
 npm install @kiwilan/vite-plugin-steward-laravel --save-dev
 ```
