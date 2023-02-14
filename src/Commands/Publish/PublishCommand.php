@@ -54,7 +54,7 @@ class PublishCommand extends CommandSteward
         $models = $instance::all();
 
         if ($unpublish) {
-            $this->info("Unpublishing all models of class {$meta->meta_class_namespaced}");
+            $this->info("Unpublishing all models of class {$meta->classNamespaced()}");
 
             foreach ($models as $current) {
                 if (! method_exists($current, 'unpublish')) {
@@ -65,7 +65,7 @@ class PublishCommand extends CommandSteward
                 $current->unpublish();
             }
         } else {
-            $this->info("Publishing all models of class {$meta->meta_class_namespaced}");
+            $this->info("Publishing all models of class {$meta->classNamespaced()}");
 
             foreach ($models as $current) {
                 if (! method_exists($current, 'publish')) {

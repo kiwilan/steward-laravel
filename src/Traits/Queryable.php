@@ -18,14 +18,34 @@ namespace Kiwilan\Steward\Traits;
  * - `$query_resource`: `string` Resource class to use
  *
  * ```php
- * protected $query_default_sort = 'name';
+ * protected $query_default_sort = 'slug';
  * protected $query_allowed_filters = ['name'];
+ * protected $query_allowed_sorts = ['id', 'name', 'slug'];
+ * protected $query_limit = 32;
  *
+ * // Advanced, override $query_allowed_filters
  * protected function setQueryAllowedSorts(): array
  * {
  *    return [
  *       AllowedSort::custom('name-length', new StringLengthSort(), 'name'),
  *    ];
+ * }
+ *
+ * // Advanced, override $query_allowed_filters
+ * protected function setQueryAllowedFilters(): array
+ * {
+ *   return [
+ *     AllowedFilter::custom('q', new GlobalSearchFilter(['name', 'serie'])),
+ *     AllowedFilter::exact('id'),
+ *     AllowedFilter::partial('name'),
+ *     AllowedFilter::callback(
+ *       'relation',
+ *       fn (Builder $query, $value) => $query->whereHas(
+ *         'relation',
+ *         fn (Builder $query) => $query->where('name', 'like', "%{$value}%")
+ *       )
+ *     ),
+ *   ];
  * }
  * ```
  */
