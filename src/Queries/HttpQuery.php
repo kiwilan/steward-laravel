@@ -2,6 +2,8 @@
 
 namespace Kiwilan\Steward\Queries;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Kiwilan\Steward\Class\MetaClass;
 use Kiwilan\Steward\Traits\Queryable;
@@ -13,26 +15,31 @@ class HttpQuery extends BaseQuery
     /**
      * Create the query with `HttpQuery`.
      *
-     * Works with `spatie/laravel-query-builder`.
+     * Works with `spatie/laravel-query-builder` for API and Laravel Builder for front.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/introduction
      *
      * @param  string  $class
      */
     public static function make(string $class, ?Request $request = null): self
     {
-        $query = new HttpQuery();
-        $query->metadata = MetaClass::make($class);
-        $query->request = $request;
+        $api = new HttpQuery();
+        $api->class = $class;
+        $api->setMetadata(MetaClass::make($class));
+        $api->setRequest($request);
 
-        $query->defaultSort = $query->getSortDirection(config('steward.query.default_sort'), config('steward.query.default_sort_direction'));
-        $query->full = config('steward.query.full');
-        $query->limit = config('steward.query.limit');
-        $query->resourceGuess();
+        $api->defaultSort = $api->getSortDirection(config('steward.query.default_sort'), config('steward.query.default_sort_direction'));
+        $api->full = config('steward.query.full');
+        $api->limit = config('steward.query.limit');
+        $api->resourceGuess();
 
-        $query->query = QueryBuilder::for($query->metadata->meta_class);
-        $query->setDefault();
+        $api->setQuery(QueryBuilder::for($api->metadata()->class()));
+        $api->setDefault();
 
-        return $query;
+        /** @var Builder $builder */
+        $builder = $api->class::query();
+        $api->setBuilder($builder);
+
+        return $api;
     }
 
     /**
@@ -55,7 +62,7 @@ class HttpQuery extends BaseQuery
     public function defaultSort(string $defaultSort = 'id', string $direction = 'asc'): self
     {
         $this->defaultSort = $this->getSortDirection($defaultSort, $direction);
-        $this->query = $this->query->defaultSort($this->defaultSort);
+        $this->setQuery($this->query()->defaultSort($this->defaultSort));
 
         return $this;
     }
@@ -84,7 +91,7 @@ class HttpQuery extends BaseQuery
     public function filters(array $filters = []): self
     {
         $this->allowFilters = $filters;
-        $this->query = $this->query->allowedFilters($filters);
+        $this->setQuery($this->query()->allowedFilters($filters));
 
         return $this;
     }
@@ -112,7 +119,7 @@ class HttpQuery extends BaseQuery
     public function sorts(array $sorts = []): self
     {
         $this->allowSorts = $sorts;
-        $this->query = $this->query->allowedSorts($sorts);
+        $this->setQuery($this->query()->allowedSorts($sorts));
 
         return $this;
     }
@@ -124,7 +131,7 @@ class HttpQuery extends BaseQuery
     public function with(array $with = []): self
     {
         $this->with = $with;
-        $this->query = $this->query->with($this->with);
+        $this->setQuery($this->query()->with($this->with));
 
         return $this;
     }
@@ -136,7 +143,7 @@ class HttpQuery extends BaseQuery
     public function withCount(array $withCount = []): self
     {
         $this->withCount = $withCount;
-        $this->query = $this->query->withCount($this->withCount);
+        $this->setQuery($this->query()->withCount($this->withCount));
 
         return $this;
     }
@@ -206,7 +213,9 @@ class HttpQuery extends BaseQuery
      */
     private function getInstance(): object
     {
-        return new $this->metadata->meta_class_namespaced();
+        $namespaced = $this->metadata()->classNamespaced();
+
+        return new $namespaced();
     }
 
     /**
@@ -214,7 +223,7 @@ class HttpQuery extends BaseQuery
      */
     private function isQueryable(): bool
     {
-        $instance = new $this->metadata->meta_class_namespaced();
+        $instance = $this->getInstance();
         $class = new ReflectionClass($instance);
 
         return in_array(

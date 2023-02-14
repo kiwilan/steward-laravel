@@ -8,30 +8,30 @@ use ReflectionClass;
 /**
  * Meta Class, to give easy access to Model meta names.
  *
- * @property string               $meta_class              like `App\Models\WikipediaItem::class`
- * @property string               $meta_class_namespaced   like `App\Models\WikipediaItem`
- * @property string               $meta_class_name         like `WikipediaItem`
- * @property string               $meta_class_plural       like `WikipediaItems`
- * @property string               $meta_class_snake        like `wikipedia_item`
- * @property string               $meta_class_snake_plural like `wikipedia_items`
- * @property string               $meta_class_slug         like `wikipedia-item`
- * @property string               $meta_class_slug_plural  like `wikipedia-items`
- * @property string               $meta_first_char         like `w`
- * @property array<string,string> $meta_traits
+ * @property string $class like `App\Models\WikipediaItem::class`
+ * @property string $classNamespaced like `App\Models\WikipediaItem`
+ * @property string $className like `WikipediaItem`
+ * @property string $classPlural like `WikipediaItems`
+ * @property string $classSnake like `wikipedia_item`
+ * @property string $classSnakePlural like `wikipedia_items`
+ * @property string $classSlug like `wikipedia-item`
+ * @property string $classSlugPlural like `wikipedia-items`
+ * @property string $firstChar like `w`
+ * @property array<string,string> $traits
  */
 class MetaClass
 {
-    public function __construct(
-        public string $meta_class,
-        public ?string $meta_class_namespaced = null,
-        public ?string $meta_class_name = null,
-        public ?string $meta_class_plural = null,
-        public ?string $meta_class_snake = null,
-        public ?string $meta_class_snake_plural = null,
-        public ?string $meta_class_slug = null,
-        public ?string $meta_class_slug_plural = null,
-        public ?string $meta_first_char = null,
-        public array $meta_traits = [],
+    protected function __construct(
+        protected string $class,
+        protected ?string $classNamespaced = null,
+        protected ?string $className = null,
+        protected ?string $classPlural = null,
+        protected ?string $classSnake = null,
+        protected ?string $classSnakePlural = null,
+        protected ?string $classSlug = null,
+        protected ?string $classSlugPlural = null,
+        protected ?string $firstChar = null,
+        protected array $traits = [],
     ) {
     }
 
@@ -42,18 +42,18 @@ class MetaClass
         $instance = new $class();
         $reflection_class = new ReflectionClass($instance);
 
-        $metadata->meta_class_namespaced = $reflection_class->getName();
-        $metadata->meta_class_name = $reflection_class->getShortName();
-        $metadata->meta_class_plural = Str::plural($metadata->meta_class_name);
+        $metadata->classNamespaced = $reflection_class->getName();
+        $metadata->className = $reflection_class->getShortName();
+        $metadata->classPlural = Str::plural($metadata->className);
 
-        $metadata->meta_class_snake = Str::snake($metadata->meta_class_name);
-        $metadata->meta_class_snake_plural = Str::snake($metadata->meta_class_plural);
+        $metadata->classSnake = Str::snake($metadata->className);
+        $metadata->classSnakePlural = Str::snake($metadata->classPlural);
 
-        $metadata->meta_class_slug = Str::slug($metadata->meta_class_name);
-        $metadata->meta_class_slug_plural = Str::slug($metadata->meta_class_plural);
+        $metadata->classSlug = Str::slug($metadata->className);
+        $metadata->classSlugPlural = Str::slug($metadata->classPlural);
 
-        $metadata->meta_first_char = strtolower(substr($metadata->meta_class_name, 0, 1));
-        $metadata->meta_traits = class_uses_recursive($instance);
+        $metadata->firstChar = strtolower(substr($metadata->className, 0, 1));
+        $metadata->traits = class_uses_recursive($instance);
 
         return $metadata;
     }
@@ -65,6 +65,59 @@ class MetaClass
      */
     public function useTrait(string $trait): bool
     {
-        return in_array($trait, $this->meta_traits);
+        return in_array($trait, $this->traits);
+    }
+
+    public function class(): string
+    {
+        return $this->class;
+    }
+
+    public function classNamespaced(): string
+    {
+        return $this->classNamespaced;
+    }
+
+    public function className(): string
+    {
+        return $this->className;
+    }
+
+    public function classPlural(): string
+    {
+        return $this->classPlural;
+    }
+
+    public function classSnake(): string
+    {
+        return $this->classSnake;
+    }
+
+    public function classSnakePlural(): string
+    {
+        return $this->classSnakePlural;
+    }
+
+    public function classSlug(): string
+    {
+        return $this->classSlug;
+    }
+
+    public function classSlugPlural(): string
+    {
+        return $this->classSlugPlural;
+    }
+
+    public function firstChar(): string
+    {
+        return $this->firstChar;
+    }
+
+    /**
+     * @return array<string,string>
+     */
+    public function traits(): array
+    {
+        return $this->traits;
     }
 }
