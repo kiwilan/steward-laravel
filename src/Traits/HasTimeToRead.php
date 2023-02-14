@@ -36,7 +36,8 @@ trait HasTimeToRead
 
     public function getTimeToRead(): int
     {
-        $word_count = str_word_count($this->{$this->getTimeToReadWith()});
+        $words = strip_tags($this->{$this->getTimeToReadWith()});
+        $word_count = str_word_count($words);
         $minutes_to_read = round($word_count / 200);
 
         if ($minutes_to_read < 1) {

@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\LogClearCommand;
@@ -55,8 +56,7 @@ class StewardServiceProvider extends PackageServiceProvider
                 SubmissionRgpdVerificationCommand::class,
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
-            ])
-        ;
+            ]);
     }
 
     public function bootingPackage()
@@ -66,6 +66,14 @@ class StewardServiceProvider extends PackageServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
 
         $this->configureComponents();
+
+        Str::macro('readDuration', function (...$text) {
+            $words = strip_tags(implode(' ', $text));
+            $totalWords = str_word_count($words);
+            $minutesToRead = round($totalWords / 200);
+
+            return (int) max(1, $minutesToRead);
+        });
     }
 
     public function registeringPackage()
