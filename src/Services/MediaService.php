@@ -32,12 +32,7 @@ class MediaService
     /**
      * Add a media file to the model.
      *
-     * @param  Model  $model
-     * @param  string  $name
      * @param  string|UnitEnum  $disk
-     * @param  null|string  $collection
-     * @param  null|string  $extension
-     * @param  null|SpatieMediaMethodEnum  $method
      */
     public static function make(
         Model $model,

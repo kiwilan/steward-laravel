@@ -20,12 +20,6 @@ class FilamentForm
      *
      * @param  string  $field It will be `name` by default.
      * @param  string|false  $metaLink It will be `slug` by default.
-     * @param  string|false  $metaTitle
-     * @param  string  $label
-     * @param  string|null  $helper
-     * @param  string  $skipContext
-     * @param  int  $width
-     * @param  bool  $required
      */
     public static function name(
         string $field = 'name',
