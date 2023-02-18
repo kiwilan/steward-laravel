@@ -1,29 +1,83 @@
-import { inject } from 'vue'
-import { usePage } from '@inertiajs/vue3'
-import type { IInertiaTyped, InertiaTypedOptions, RequestPayload, Route } from '../../types/index.js'
+import { router, usePage } from '@inertiajs/vue3'
 
+type RequestPayload = Record<string, any>
 export const useInertia = () => {
-  const inertia = inject('inertia') as IInertiaTyped
-  const options = inertia.options as InertiaTypedOptions
-  const inertiaRouter = options.router
-
-  const convertURL = (url: Route) => {
-    return inertia.route(url)
+  // @ts-expect-error Routes is window defined
+  const allRoutes = window.Routes as Record<Route.Name, Route.Entity>
+  const convertURL = (route: Route.Type) => {
+    const currentRoute = allRoutes[route.name]
+    return currentRoute.path
   }
 
-  const router = {
-    get: (url: Route, data?: RequestPayload) => inertiaRouter?.get(convertURL(url), data),
-    post: (url: Route, data?: RequestPayload) => inertiaRouter?.post(convertURL(url), data),
-    patch: (url: Route, data?: RequestPayload) => inertiaRouter?.patch(convertURL(url), data),
-    put: (url: Route, data?: RequestPayload) => inertiaRouter?.put(convertURL(url), data),
-    delete: (url: Route) => inertiaRouter?.delete(convertURL(url)),
+  const ifetch = {
+    get: (route: Route.Type, data?: RequestPayload) => router.get(convertURL(route), data),
+    post: (route: Route.Type, data?: RequestPayload) => router.post(convertURL(route), data),
+    patch: (route: Route.Type, data?: RequestPayload) => router.patch(convertURL(route), data),
+    put: (route: Route.Type, data?: RequestPayload) => router.put(convertURL(route), data),
+    delete: (route: Route.Type) => router.delete(convertURL(route)),
+  }
+
+  const page = usePage<Inertia.PageProps>()
+
+  const findRoute = (): Route.Entity | undefined => {
+    const url = location.pathname
+    const routes = Object.entries(allRoutes)
+    const current = routes.find(r => r[1].path === url)
+    if (current) {
+      const findRoute = current[1]
+      // todo params
+      return findRoute
+    }
+
+    return undefined
+  }
+
+  const isRoute = (route: Route.Name) => {
+    const routes = Object.entries(allRoutes)
+    const current = routes.find(r => r[1].name === route)
+    if (current)
+      return true
+
+    return false
+  }
+  const currentRoute = () => {
+    return findRoute()
+  }
+
+  const route = (route: Route.Type): string => {
+    const currentRoute = allRoutes[route.name]
+
+    if (currentRoute.params) {
+      const params: Record<string, string> = {}
+      Object.entries(currentRoute.params).forEach(([key]) => {
+        if (route.params)
+          params[key] = route.params[key]
+      })
+
+      let url: string = currentRoute.path
+      const matches = currentRoute.path.match(/{(.*?)}/g)
+
+      if (matches) {
+        matches.forEach((match) => {
+          const key = match.replace('{', '').replace('}', '')
+          url = url.replace(match, params[key])
+        })
+      }
+
+      return url
+    }
+
+    if (!currentRoute.params)
+      return currentRoute.path as string
+
+    return '/'
   }
 
   return {
-    router,
-    route: inertia.route,
-    isRoute: inertia.isRoute,
-    currentRoute: inertia.currentRoute,
-    page: usePage() as InertiaPage,
+    ifetch,
+    route,
+    isRoute,
+    currentRoute,
+    page,
   }
 }

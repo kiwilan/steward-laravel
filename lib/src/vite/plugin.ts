@@ -2,26 +2,10 @@ import type { Plugin } from 'vite'
 import type { StewardOptions } from '../types/index.js'
 
 const DEFAULT_OPTIONS: StewardOptions = {
-  ziggyJs: false,
-  ziggyTypes: {
-    output: 'resources/js',
-    outputFile: 'types-ziggy.d.ts',
-    skipRouter: false,
-    skipPage: false,
-    embed: false,
-  },
-  modelsTypes: {
-    modelsPath: 'app/Models',
-    output: 'resources/js',
-    outputFile: 'types-models.d.ts',
-    fakeTeam: false,
-    paginate: true,
-  },
-  autoreload: {
-    models: true,
-    controllers: true,
-    routes: true,
-  },
+  ziggy: false,
+  models: true,
+  routes: true,
+  inertia: true,
 }
 
 const command = (command: string) => {
@@ -49,42 +33,17 @@ const Steward = (userOptions: StewardOptions = {}): Plugin => {
     async buildStart() {
       const opts: StewardOptions = Object.assign({}, DEFAULT_OPTIONS, userOptions)
 
-      if (opts.ziggyJs)
+      if (opts.ziggy)
         command('php artisan ziggy:generate')
 
-      if (opts.ziggyTypes) {
-        const ziggyTypesBase = 'php artisan typescriptable:ziggy'
-        const options = []
-        if (opts.ziggyTypes.output)
-          options.push(`--output=${opts.ziggyTypes.output}`)
-        if (opts.ziggyTypes.outputFile)
-          options.push(`--output-file=${opts.ziggyTypes.outputFile}`)
-        if (opts.ziggyTypes.skipRouter)
-          options.push('--skip-router')
-        if (opts.ziggyTypes.skipPage)
-          options.push('--skip-page')
-        if (opts.ziggyTypes.embed)
-          options.push('--embed')
+      if (opts.models)
+        command('php artisan typescriptable:models')
 
-        command(`${ziggyTypesBase} ${options.join(' ')}`)
-      }
+      if (opts.routes)
+        command('php artisan typescriptable:routes')
 
-      if (opts.modelsTypes) {
-        const modelsTypesBase = 'php artisan typescriptable:models'
-        const options = []
-        if (opts.modelsTypes.modelsPath)
-          options.push(`--models-path=${opts.modelsTypes.modelsPath}`)
-        if (opts.modelsTypes.output)
-          options.push(`--output=${opts.modelsTypes.output}`)
-        if (opts.modelsTypes.outputFile)
-          options.push(`--output-file=${opts.modelsTypes.outputFile}`)
-        if (opts.modelsTypes.fakeTeam)
-          options.push('--fake-team')
-        if (opts.modelsTypes.paginate)
-          options.push('--paginate')
-
-        command(`${modelsTypesBase} ${options.join(' ')}`)
-      }
+      if (opts.inertia)
+        command('php artisan typescriptable:inertia')
     },
     handleHotUpdate({ file, server }) {
       const opts = Object.assign({}, DEFAULT_OPTIONS, userOptions)

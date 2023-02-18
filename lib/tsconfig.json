@@ -5,16 +5,26 @@
     "lib": ["ESNext", "DOM"],
     "esModuleInterop": true,
     "strict": true,
+    "noImplicitAny": false,
     "strictNullChecks": true,
     "moduleResolution": "nodenext",
+    "jsx": "preserve",
     "resolveJsonModule": true,
-    "skipLibCheck": true,
+    "emitDeclarationOnly": true,
     "paths": {
       "@": ["./src"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "~": ["./"],
+      "~/*": ["./*"]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client", "vue"]
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "../global.d.ts",
+    "./src/**/*.ts",
+    "./src/**/*.vue",
+    "./node_modules/@inertiajs/vue3"
+  ],
   "exclude": ["**/dist", "**/node_modules"]
 }

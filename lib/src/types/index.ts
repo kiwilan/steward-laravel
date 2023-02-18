@@ -1,9 +1,3 @@
-import type {
-  Config,
-  RouteParam,
-  RouteParamsWithQueryOverload,
-} from 'ziggy-js'
-
 export interface StewardOptions {
   /**
    * Generate `ziggy.js` file, it's native ziggy feature.
@@ -11,53 +5,32 @@ export interface StewardOptions {
    *
    * @default false
    */
-  ziggyJs?: boolean
-  /**
-   * Generate `types-ziggy.d.ts` file
-   *  - `ZiggyLaravelRoutes` interface for Laravel routes
-   *  - an interface `InertiaPage` for `usePage` with Inertia
-   *  - `$route`, `$isRoute`, `$currentRoute`, `$page`, `sessions` inject as `globalProperties` into Inertia if you install `InertiaTyped` Vue
-   *
-   * @default {
-   *   output: 'resources/js',
-   *   outputFile: 'types-ziggy.d.ts',
-   *   skipRouter: false,
-   *   skipPage: false,
-   *   embed: false,
-   * }
-   */
-  ziggyTypes?: {
-    output?: string
-    outputFile?: string
-    skipRouter?: boolean
-    skipPage?: boolean
-    embed?: boolean
-  } | false
+  ziggy?: boolean
   /**
    * Enable types for Eloquent models.
    *
-   * @default {
-   *   output: 'resources/js',
-   *   outputFile: 'types-models.d.ts',
-   *   modelsPath: 'app/Models',
-   *   paginate: true,
-   *   fakeTeam: false,
-   * }
+   * @default true
    */
-  modelsTypes?: {
-    output?: string
-    outputFile?: string
-    modelsPath?: string
-    paginate?: boolean
-    fakeTeam?: boolean
-  } | false
+  models?: boolean
+  /**
+   * Enable types for Laravel Routes.
+   *
+   * @default true
+   */
+  routes?: boolean
+  /**
+   * Enable types for Inertia.
+   *
+   * @default true
+   */
+  inertia?: boolean
   /**
    * Enable Vite autoreload on PHP files changes.
    *
    * @default {
    *  models: true,
-   * controllers: true,
-   * routes: true,
+   *  controllers: true,
+   *  routes: true,
    * }
    */
   autoreload?: {
@@ -67,21 +40,16 @@ export interface StewardOptions {
   } | false
 }
 
-export type Route = keyof ZiggyLaravelRoutes
+export type Route = Route.Name
+export type RouteParam = Route.Params[Route.Name]
 export type RequestPayload = Record<string, any>
-export interface IInertiaTyped {
-  options: InertiaTypedOptions
+
+export interface PluginInertiaTyped {
   route: (
     name: Route,
-    params?: RouteParamsWithQueryOverload | RouteParam,
-    absolute?: boolean,
-    customZiggy?: Config
+    params?: RouteParam,
   ) => string
-  isRoute: (name: Route, params?: RouteParamsWithQueryOverload) => boolean
+  isRoute: (name: Route.Name, params?: Route.Params[Route.Name]) => boolean
   currentRoute: () => string
-  page: InertiaPage
-}
-export interface InertiaTypedOptions {
-  inject: boolean
-  router: any
+  page: Inertia.Page<Inertia.PageProps>
 }
