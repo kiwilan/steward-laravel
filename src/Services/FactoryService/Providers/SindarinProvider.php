@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Services\FactoryService\Providers;
 /**
  * Generate Sindarin text.
  */
-class ProviderSindarin
+class SindarinProvider
 {
     /**
      * @return string|string[]

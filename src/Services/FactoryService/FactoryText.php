@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Services\FactoryService;
 
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\FactoryService;
-use Kiwilan\Steward\Services\FactoryService\Providers\ProviderSindarin;
+use Kiwilan\Steward\Services\FactoryService\Providers\SindarinProvider;
 
 /**
  * Generate fake text.
@@ -148,21 +148,21 @@ class FactoryText
     public function word(): string
     {
         return $this->useSindarin()
-            ? ProviderSindarin::words(limit: 1, asText: true)
+            ? SindarinProvider::words(limit: 1, asText: true)
             : $this->factory->faker()->word();
     }
 
     public function words(): string
     {
         return $this->useSindarin()
-            ? ProviderSindarin::words(asText: true)
+            ? SindarinProvider::words(asText: true)
             : $this->factory->faker()->words(asText: true);
     }
 
     public function sentence(): string
     {
         return $this->useSindarin()
-            ? ucfirst(ProviderSindarin::words(limit: 8, asText: true).'.')
+            ? ucfirst(SindarinProvider::words(limit: 8, asText: true).'.')
             : $this->factory->faker()->sentence();
     }
 

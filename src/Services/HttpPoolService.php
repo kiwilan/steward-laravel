@@ -6,30 +6,64 @@ use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Kiwilan\Steward\Utils\Console;
 
 class HttpPoolService
 {
     /** @var string[] */
     protected array $urls = [];
 
+    /** @var string[] */
+    protected array $headers = [];
+
+    /** @var Collection<string,Response> */
+    protected mixed $responses = null;
+
+    protected function __construct(
+        protected int $limit = 250,
+        protected int $failedRequests = 0,
+    ) {
+    }
+
     /**
      * @param  string[]  $urls
-     * @return Collection<int,Response>
+     * @param  string[]  $headers
      */
-    public static function make(array $urls)
+    public static function make(array $urls, array $headers = []): self
     {
         $self = new self();
         $self->urls = $urls;
+        $self->headers = $headers;
+        $self->limit = config('steward.http.pool_limit', 250);
 
         $responses = $self->executePool();
         $responses = $self->parseResponses($responses);
 
-        return collect($responses);
+        if ($self->failedRequests > 0) {
+            Console::make()->error('Failed requests: '.$self->failedRequests);
+        }
+
+        $self->responses = collect($responses);
+
+        return $self;
     }
 
     /**
-     * @param  array<int,Response>  $responses
-     * @return Collection<int,Response>
+     * @return Collection<string,Response>
+     */
+    public function responses(): Collection
+    {
+        return $this->responses;
+    }
+
+    public function failedRequests(): int
+    {
+        return $this->failedRequests;
+    }
+
+    /**
+     * @param  array<string,mixed>  $responses
+     * @return Collection<string,Response>
      */
     private function parseResponses(array $responses): Collection
     {
@@ -38,6 +72,8 @@ class HttpPoolService
         foreach ($responses as $key => $response) {
             if ($response instanceof Response) {
                 $parsedResponses->put($key, $response);
+            } else {
+                $this->failedRequests++;
             }
         }
 
@@ -45,18 +81,20 @@ class HttpPoolService
     }
 
     /**
-     * @return array<int,Response>
+     * @return array<string,Response>
      */
     private function executePool(): array
     {
-        $limit = config('steward.http.pool_limit', 250);
-        $chunks = array_chunk($this->urls, $limit);
+        $chunks = array_chunk($this->urls, $this->limit);
         $responses = [];
 
         foreach ($chunks as $key => $chunk) {
             $res = Http::pool(function (Pool $pool) use ($chunk) {
                 foreach ($chunk as $key => $url) {
-                    $pool->as($key)->get($url);
+                    $pool->as($key)
+                        ->withHeaders($this->headers)
+                        ->get($url)
+                    ;
                 }
             });
 

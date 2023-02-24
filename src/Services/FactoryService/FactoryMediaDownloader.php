@@ -7,6 +7,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\FactoryService;
+use Kiwilan\Steward\Services\FactoryService\Providers\ImageProvider;
 use Kiwilan\Steward\Services\HttpPoolService;
 use Kiwilan\Steward\Services\HttpService;
 
@@ -28,12 +29,17 @@ class FactoryMediaDownloader
      */
     public function multiple(int $count)
     {
-        $this->mediaUrls = $this->setMediaUrls($count, 600, 600);
-        $responses = HttpPoolService::make($this->mediaUrls);
+        $this->mediaUrls = $this->setMediaUrls($count);
+        $http = HttpPoolService::make($this->mediaUrls);
+
+        if ($http->failedRequests() > 10) {
+            $this->mediaUrls = $this->setMediaUrls($count);
+            $http = HttpPoolService::make($this->mediaUrls);
+        }
 
         $images = [];
 
-        foreach ($responses as $key => $response) {
+        foreach ($http->responses() as $key => $response) {
             $images[] = $this->saveMediaFromResponse($response);
         }
 
@@ -42,11 +48,9 @@ class FactoryMediaDownloader
 
     public function single(): string
     {
-        $this->mediaUrls = $this->setMediaUrls(1, 600, 600);
-        $responses = HttpPoolService::make($this->mediaUrls);
-        $response = $responses->first();
+        $images = $this->multiple(1);
 
-        return $this->saveMediaFromResponse($response);
+        return $this->saveMediaFromResponse($images->first());
     }
 
     /**
@@ -63,8 +67,12 @@ class FactoryMediaDownloader
         }
     }
 
-    private function saveMediaFromResponse(Response $response): string
+    private function saveMediaFromResponse(?Response $response): string
     {
+        if (! $response) {
+            return '';
+        }
+
         $base64 = HttpService::responseToImage($response);
         $random_name = uniqid();
 
@@ -82,16 +90,16 @@ class FactoryMediaDownloader
     /**
      * @return string[]
      */
-    private function setMediaUrls(int $media_count = 1, int $width = 600, int $height = 600)
+    private function setMediaUrls(int $count = 1, int $width = 600, int $height = 600, bool $usePicsum = true)
     {
-        $endpoint = "https://picsum.photos/{$width}/{$height}";
+        $provider = ImageProvider::make($count, $width, $height);
 
-        $list = [];
-
-        for ($i = 0; $i < $media_count; $i++) {
-            $list[] = $endpoint;
+        if (! $usePicsum) {
+            $provider = $provider->useApiNinja();
         }
 
-        return $list;
+        $provider = $provider->get();
+
+        return $provider->urlsList();
     }
 }

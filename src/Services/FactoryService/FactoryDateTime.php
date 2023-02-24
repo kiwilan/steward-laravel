@@ -31,8 +31,8 @@ class FactoryDateTime
         }
 
         return new FactoryTimestamps(
-            $createdAt->format('Y-m-d H:i:s'),
-            $updatedAt->format('Y-m-d H:i:s'),
+            $this->toSqlDate($createdAt->format('Y-m-d H:i:s')),
+            $this->toSqlDate($updatedAt->format('Y-m-d H:i:s')),
             $createdAt,
             $updatedAt,
         );
@@ -83,5 +83,12 @@ class FactoryDateTime
         } catch (\Throwable $th) {
             return false;
         }
+    }
+
+    private function toSqlDate(string $date): string
+    {
+        $date = strtotime($date);
+
+        return date('Y-m-d h:i:s', $date);
     }
 }
