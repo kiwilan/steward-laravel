@@ -7,7 +7,7 @@ use Illuminate\Support\Carbon;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\Services\FactoryService\Utils\FactoryTimestamps;
 
-class FactoryDate
+class FactoryDateTime
 {
     public function __construct(
         public FactoryService $factory,
@@ -20,10 +20,10 @@ class FactoryDate
     public function timestamps(string $minimum = '-20 years'): FactoryTimestamps
     {
         $createdAtStr = $this->generateDateTime($minimum);
-        $createdAt = Carbon::createFromTimeString($createdAtStr);
+        $createdAt = Carbon::createFromDate($createdAtStr);
 
         $updatedAtStr = $this->generateDateTime($createdAt);
-        $updatedAt = Carbon::createFromTimeString($updatedAtStr);
+        $updatedAt = Carbon::createFromDate($updatedAtStr);
 
         return new FactoryTimestamps(
             $createdAt->format('Y-m-d H:i:s'),
@@ -51,15 +51,12 @@ class FactoryDate
 
     private function checkDateValidity(DateTime $date): bool
     {
-        $isValid = false;
-
         try {
             Carbon::parse($date);
-            $isValid = true;
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
 
-        return $isValid;
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 }

@@ -6,7 +6,7 @@ use Faker\Generator;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\FactoryService\FactoryBuilder;
-use Kiwilan\Steward\Services\FactoryService\FactoryDate;
+use Kiwilan\Steward\Services\FactoryService\FactoryDateTime;
 use Kiwilan\Steward\Services\FactoryService\FactoryMediaDownloader;
 use Kiwilan\Steward\Services\FactoryService\FactoryMediaLocal;
 use Kiwilan\Steward\Services\FactoryService\FactoryText;
@@ -19,7 +19,7 @@ class FactoryService
     public function __construct(
         protected Generator $faker,
         protected ?FactoryText $text = null,
-        protected ?FactoryDate $date = null,
+        protected ?FactoryDateTime $dateTime = null,
         protected ?FactoryMediaLocal $mediaLocal = null,
         protected ?FactoryMediaDownloader $mediaDownloader = null,
     ) {
@@ -47,7 +47,7 @@ class FactoryService
         $faker = \Faker\Factory::create();
         $service = new FactoryService($faker);
         $service->text = $service->setFactoryText();
-        $service->date = $service->setFactoryDate();
+        $service->dateTime = $service->setFactoryDate();
         $service->mediaLocal = $service->setFactoryMediaLocal($mediaPath);
         $service->mediaDownloader = $service->setFactoryMediaDownloader();
 
@@ -71,9 +71,9 @@ class FactoryService
         return $this->text;
     }
 
-    public function date()
+    public function dateTime()
     {
-        return $this->date;
+        return $this->dateTime;
     }
 
     public function mediaLocal()
@@ -96,9 +96,9 @@ class FactoryService
         return new FactoryText($this, $type);
     }
 
-    private function setFactoryDate(): FactoryDate
+    private function setFactoryDate(): FactoryDateTime
     {
-        return new FactoryDate($this);
+        return new FactoryDateTime($this);
     }
 
     private function setFactoryMediaLocal(string|\UnitEnum|null $media_path = null): FactoryMediaLocal
