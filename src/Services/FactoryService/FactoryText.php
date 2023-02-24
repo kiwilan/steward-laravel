@@ -2,11 +2,9 @@
 
 namespace Kiwilan\Steward\Services\FactoryService;
 
-use Illuminate\Support\Carbon;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\Services\FactoryService\Providers\ProviderSindarin;
-use Kiwilan\Steward\Services\FactoryService\Utils\FactoryTimestamps;
 
 /**
  * Generate fake text.
@@ -25,28 +23,6 @@ class FactoryText
     public function title(): string
     {
         return ucfirst($this->words());
-    }
-
-    /**
-     * Generate timestamps.
-     */
-    public function timestamps(string $minimum = '-20 years'): FactoryTimestamps
-    {
-        $created_at = Carbon::createFromTimeString(
-            $this->factory->faker()->dateTimeBetween($minimum)
-                ->format('Y-m-d H:i:s')
-        );
-        $updated_at = Carbon::createFromTimeString(
-            $this->factory->faker()->dateTimeBetween($created_at)
-                ->format('Y-m-d H:i:s')
-        );
-
-        return new FactoryTimestamps(
-            $created_at->format('Y-m-d H:i:s'),
-            $updated_at->format('Y-m-d H:i:s'),
-            $created_at,
-            $updated_at,
-        );
     }
 
     /**

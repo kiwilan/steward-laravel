@@ -6,18 +6,20 @@ use Faker\Generator;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\FactoryService\FactoryBuilder;
+use Kiwilan\Steward\Services\FactoryService\FactoryDate;
 use Kiwilan\Steward\Services\FactoryService\FactoryMediaDownloader;
 use Kiwilan\Steward\Services\FactoryService\FactoryMediaLocal;
 use Kiwilan\Steward\Services\FactoryService\FactoryText;
 
 /**
- * Improve the default Laravel factory service.
+ * Improve Faker Laravel factory service.
  */
 class FactoryService
 {
     public function __construct(
         protected Generator $faker,
         protected ?FactoryText $text = null,
+        protected ?FactoryDate $date = null,
         protected ?FactoryMediaLocal $mediaLocal = null,
         protected ?FactoryMediaDownloader $mediaDownloader = null,
     ) {
@@ -45,6 +47,7 @@ class FactoryService
         $faker = \Faker\Factory::create();
         $service = new FactoryService($faker);
         $service->text = $service->setFactoryText();
+        $service->date = $service->setFactoryDate();
         $service->mediaLocal = $service->setFactoryMediaLocal($mediaPath);
         $service->mediaDownloader = $service->setFactoryMediaDownloader();
 
@@ -68,6 +71,11 @@ class FactoryService
         return $this->text;
     }
 
+    public function date()
+    {
+        return $this->date;
+    }
+
     public function mediaLocal()
     {
         return $this->mediaLocal;
@@ -86,6 +94,11 @@ class FactoryService
     private function setFactoryText(FactoryTextEnum $type = FactoryTextEnum::lorem): FactoryText
     {
         return new FactoryText($this, $type);
+    }
+
+    private function setFactoryDate(): FactoryDate
+    {
+        return new FactoryDate($this);
     }
 
     private function setFactoryMediaLocal(string|\UnitEnum|null $media_path = null): FactoryMediaLocal
