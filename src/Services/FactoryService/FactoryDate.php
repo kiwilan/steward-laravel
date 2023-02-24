@@ -35,13 +35,15 @@ class FactoryDate
     private function generateDateTime(string $between, string $format = 'Y-m-d H:i:s'): string
     {
         $date = $this->factory->faker()
-                ->dateTimeBetween($between)
-                ->format($format);
+            ->dateTimeBetween($between)
+            ->format($format)
+        ;
 
         while (! $this->checkDateValidity($date)) {
             $date = $this->factory->faker()
                 ->dateTimeBetween($between)
-                ->format($format);
+                ->format($format)
+            ;
         }
 
         return $date;
