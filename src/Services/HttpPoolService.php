@@ -40,7 +40,7 @@ class HttpPoolService
         $responses = $self->parseResponses($responses);
 
         if ($self->failedRequests > 0) {
-            Console::make()->error('Failed requests: '.$self->failedRequests);
+            Console::make()->print('Failed requests: '.$self->failedRequests);
         }
 
         $self->responses = collect($responses);
