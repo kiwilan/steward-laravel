@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Services\FactoryService;
 
+use DateTime;
 use Illuminate\Support\Carbon;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\Services\FactoryService\Utils\FactoryTimestamps;
@@ -32,27 +33,31 @@ class FactoryDate
         );
     }
 
-    private function generateDateTime(string $between, string $format = 'Y-m-d H:i:s'): string
+    private function generateDateTime(string $between, string $format = 'Y-m-d H:i:s'): DateTime
     {
         $date = $this->factory->faker()
-            ->dateTimeBetween($between)
-            ->format($format)
-        ;
+            ->dateTimeBetween($between);
 
         while (! $this->checkDateValidity($date)) {
             $date = $this->factory->faker()
                 ->dateTimeBetween($between)
-                ->format($format)
-            ;
+                ->format($format);
         }
 
         return $date;
     }
 
-    private function checkDateValidity(string $date): bool
+    private function checkDateValidity(DateTime $date): bool
     {
-        $date = Carbon::createFromTimeString($date);
+        $isValid = false;
 
-        return $date->isValid();
+        try {
+            Carbon::parse($date);
+            $isValid = true;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        return $isValid;
     }
 }
