@@ -71,6 +71,14 @@ class ImageProvider
         return $this->urlsList;
     }
 
+    /**
+     * @return string[]
+     */
+    public function headers(): array
+    {
+        return $this->headers;
+    }
+
     private function picsumProvider()
     {
         $this->url = "https://picsum.photos/{$this->width}/{$this->height}";

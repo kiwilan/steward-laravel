@@ -21,6 +21,7 @@ class FactoryMediaDownloader
 
     public function __construct(
         public FactoryService $factory,
+        protected int $attempt = 0,
     ) {
     }
 
@@ -29,12 +30,13 @@ class FactoryMediaDownloader
      */
     public function multiple(int $count)
     {
-        $this->mediaUrls = $this->setMediaUrls($count);
-        $http = HttpPoolService::make($this->mediaUrls);
+        $provider = $this->setMediaUrls($count);
+        $http = HttpPoolService::make($provider->urlsList(), $provider->headers());
 
-        if ($http->failedRequests() > 10) {
-            $this->mediaUrls = $this->setMediaUrls($count);
-            $http = HttpPoolService::make($this->mediaUrls);
+        if ($http->failedRequests() > 10 && $this->attempt < 3) {
+            $this->attempt++;
+            $provider = $this->setMediaUrls($count);
+            $http = HttpPoolService::make($provider->urlsList(), $provider->headers());
         }
 
         $images = [];
@@ -87,10 +89,7 @@ class FactoryMediaDownloader
         return "seeders/{$name}";
     }
 
-    /**
-     * @return string[]
-     */
-    private function setMediaUrls(int $count = 1, int $width = 600, int $height = 600, bool $usePicsum = true)
+    private function setMediaUrls(int $count = 1, int $width = 600, int $height = 600, bool $usePicsum = true): ImageProvider
     {
         $provider = ImageProvider::make($count, $width, $height);
 
@@ -98,8 +97,6 @@ class FactoryMediaDownloader
             $provider = $provider->useApiNinja();
         }
 
-        $provider = $provider->get();
-
-        return $provider->urlsList();
+        return $provider->get();
     }
 }
