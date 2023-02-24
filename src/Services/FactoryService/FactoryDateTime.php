@@ -25,6 +25,11 @@ class FactoryDateTime
         $updatedAtStr = $this->generateDateTime($createdAt);
         $updatedAt = Carbon::createFromDate($updatedAtStr);
 
+        while (! $this->checkIfCreatedAtIsBeforeUpdatedAt($createdAt, $updatedAt)) {
+            $updatedAtStr = $this->generateDateTime($createdAt);
+            $updatedAt = Carbon::createFromDate($updatedAtStr);
+        }
+
         return new FactoryTimestamps(
             $createdAt->format('Y-m-d H:i:s'),
             $updatedAt->format('Y-m-d H:i:s'),
@@ -46,6 +51,11 @@ class FactoryDateTime
             'created_at' => $timestamps->createdAt,
             'updated_at' => $timestamps->updatedAt,
         ];
+    }
+
+    private function checkIfCreatedAtIsBeforeUpdatedAt(DateTime $createdAt, DateTime $updatedAt): bool
+    {
+        return $createdAt < $updatedAt;
     }
 
     private function generateDateTime(string $between, string $format = 'Y-m-d H:i:s'): DateTime

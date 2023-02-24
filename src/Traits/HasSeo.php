@@ -2,6 +2,8 @@
 
 namespace Kiwilan\Steward\Traits;
 
+use Illuminate\Support\Str;
+
 trait HasSeo
 {
     protected $default_meta_title_from = 'name';
@@ -56,8 +58,8 @@ trait HasSeo
 
     private function limitStringSize(?string $string = null, int $limit = 250): ?string
     {
-        if ($string && strlen($string) > $limit) {
-            return substr($string, 0, $limit).'...';
+        if ($string && Str::length($string) > $limit) {
+            return Str::limit($string, $limit, '...');
         }
 
         return $string;
