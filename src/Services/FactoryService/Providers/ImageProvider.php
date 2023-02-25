@@ -15,7 +15,7 @@ class ImageProvider
         protected int $width = 600,
         protected int $height = 600,
         protected ?string $apiKey = null,
-        protected string $provider = 'picsum',
+        protected string $provider = 'picsum', // picsum, api_ninja, pixabay
         protected ?string $url = null,
     ) {
     }
@@ -44,11 +44,19 @@ class ImageProvider
         return $this;
     }
 
+    public function usePixabay(): self
+    {
+        $this->provider = 'pixabay';
+
+        return $this;
+    }
+
     public function get(): self
     {
         match ($this->provider) {
             'picsum' => $this->picsumProvider(),
             'api_ninja' => $this->apiNinjaProvider(),
+            'pixabay' => $this->pixabayProvider(),
             default => $this->picsumProvider(),
         };
 
@@ -101,5 +109,21 @@ class ImageProvider
             'X-Api-Key' => $this->apiKey,
             'Accept' => 'image/jpg',
         ];
+    }
+
+    private function pixabayProvider()
+    {
+        $this->apiKey = '33909943-d3b97e5038a6e445f66d52f0c';
+
+        $endpoint = 'https://pixabay.com/api/';
+
+        $query = [
+            'key' => $this->apiKey,
+            'q' => 'yellow+flowers',
+            'image_type' => 'photo',
+            'pretty' => 'true',
+        ];
+
+        $this->url = "{$endpoint}?".http_build_query($query);
     }
 }
