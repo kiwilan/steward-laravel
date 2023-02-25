@@ -10,10 +10,10 @@ use Kiwilan\Steward\Utils\Console;
 
 class HttpPoolService
 {
-    /** @var string[] */
+    /** @var array<string,string> */
     protected array $urls = [];
 
-    /** @var string[] */
+    /** @var array<string,string> */
     protected array $headers = [];
 
     /** @var Collection<string,Response> */
@@ -26,7 +26,7 @@ class HttpPoolService
     }
 
     /**
-     * @param  string[]  $urls
+     * @param  array<string,string>  $urls
      * @param  string[]  $headers
      */
     public static function make(array $urls, array $headers = []): self
@@ -89,7 +89,7 @@ class HttpPoolService
      */
     private function executePool(): array
     {
-        $chunks = array_chunk($this->urls, $this->limit);
+        $chunks = array_chunk($this->urls, $this->limit, true);
         $responses = [];
 
         foreach ($chunks as $key => $chunk) {

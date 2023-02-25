@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\Services\FactoryService\Providers\ImageProvider;
+use Kiwilan\Steward\Services\FactoryService\Providers\PictureDownloadProvider;
 use Kiwilan\Steward\Services\HttpPoolService;
 use Kiwilan\Steward\Services\HttpService;
 
@@ -29,12 +30,12 @@ class FactoryMediaDownloader
      */
     public function multiple(int $count)
     {
-        $http = $this->pool($count);
+        $provider = PictureDownloadProvider::make($this->factory->mediaDownloaderType(), $count);
 
         $images = [];
 
-        foreach ($http->responses() as $key => $response) {
-            $images[] = $this->saveMediaFromResponse($response);
+        foreach ($provider->medias() as $key => $path) {
+            $images[] = $this->saveMediaFromFile($path);
         }
 
         return collect($images);
@@ -42,9 +43,23 @@ class FactoryMediaDownloader
 
     public function single(): string
     {
-        $http = $this->pool(1);
+        $provider = PictureDownloadProvider::make($this->factory->mediaDownloaderType(), 1);
 
-        return $this->saveMediaFromResponse($http->responses()->first());
+        return $this->saveMediaFromFile($provider->medias()->first());
+    }
+
+    /**
+     * @param  Collection<int,Model>  $models
+     * @return void
+     */
+    public function associate(mixed $models, string $field = 'picture')
+    {
+        $images = $this->multiple($models->count());
+
+        foreach ($models as $key => $model) {
+            $model->{$field} = $images->shift();
+            $model->save();
+        }
     }
 
     /**
@@ -61,37 +76,51 @@ class FactoryMediaDownloader
         }
     }
 
-    private function pool(int $count): HttpPoolService
+    // private function pool(int $count): HttpPoolService
+    // {
+    //     $provider = $this->setMediaUrls($count);
+
+    //     return HttpPoolService::make($provider->urlsList(), $provider->headers());
+    // }
+
+    // private function saveMediaFromResponse(?Response $response): string
+    // {
+    //     if (! $response) {
+    //         return '';
+    //     }
+
+    //     $base64 = HttpService::responseToImage($response);
+    //     $random_name = uniqid();
+
+    //     $path = public_path('storage/seeders');
+
+    //     if (! File::exists($path)) {
+    //         File::makeDirectory($path, 0755, true, true);
+    //     }
+    //     $name = "{$random_name}.jpg";
+    //     File::put("{$path}/{$name}", file_get_contents($base64));
+
+    //     return "seeders/{$name}";
+    // }
+
+    private function saveMediaFromFile(string $filePath): string
     {
-        $provider = $this->setMediaUrls($count);
-
-        return HttpPoolService::make($provider->urlsList(), $provider->headers());
-    }
-
-    private function saveMediaFromResponse(?Response $response): string
-    {
-        if (! $response) {
-            return '';
-        }
-
-        $base64 = HttpService::responseToImage($response);
         $random_name = uniqid();
-
         $path = public_path('storage/seeders');
 
         if (! File::exists($path)) {
             File::makeDirectory($path, 0755, true, true);
         }
         $name = "{$random_name}.jpg";
-        File::put("{$path}/{$name}", file_get_contents($base64));
+        File::put("{$path}/{$name}", File::get($filePath));
 
         return "seeders/{$name}";
     }
 
-    private function setMediaUrls(int $count = 1, int $width = 600, int $height = 600): ImageProvider
-    {
-        $provider = ImageProvider::make($count, $width, $height);
+    // private function setMediaUrls(int $count = 1, int $width = 600, int $height = 600): ImageProvider
+    // {
+    //     $provider = ImageProvider::make($count, $width, $height);
 
-        return $provider->get();
-    }
+    //     return $provider->get();
+    // }
 }

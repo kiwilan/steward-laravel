@@ -5,6 +5,7 @@ namespace Kiwilan\Steward\Services;
 use Faker\Generator;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
+use Kiwilan\Steward\Enums\PictureDownloadEnum;
 use Kiwilan\Steward\Services\FactoryService\FactoryBuilder;
 use Kiwilan\Steward\Services\FactoryService\FactoryDateTime;
 use Kiwilan\Steward\Services\FactoryService\FactoryMediaDownloader;
@@ -22,6 +23,7 @@ class FactoryService
         protected ?FactoryDateTime $dateTime = null,
         protected ?FactoryMediaLocal $mediaLocal = null,
         protected ?FactoryMediaDownloader $mediaDownloader = null,
+        protected PictureDownloadEnum $type = PictureDownloadEnum::all,
     ) {
     }
 
@@ -30,7 +32,7 @@ class FactoryService
         $paths = [
             public_path('storage/seeders'),
             public_path('storage/temp'),
-            public_path('storage/media'),
+            storage_path('app/download'),
         ];
 
         foreach ($paths as $key => $path) {
@@ -81,9 +83,14 @@ class FactoryService
         return $this->mediaLocal;
     }
 
-    public function mediaDownloader()
+    public function mediaDownloader(PictureDownloadEnum $type = PictureDownloadEnum::all)
     {
         return $this->mediaDownloader;
+    }
+
+    public function mediaDownloaderType(): PictureDownloadEnum
+    {
+        return $this->type;
     }
 
     // private function builder(string $builder): array
