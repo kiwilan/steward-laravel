@@ -26,6 +26,8 @@ class ImageProvider
         $self->count = $count;
         $self->width = $width;
         $self->height = $height;
+        $self->provider = config('steward.factory.provider', 'picsum');
+        $self->apiKey = config('steward.factory.provider_key');
 
         return $self;
     }
@@ -47,6 +49,13 @@ class ImageProvider
     public function usePixabay(): self
     {
         $this->provider = 'pixabay';
+
+        return $this;
+    }
+
+    public function useApiKey(string $apiKey): self
+    {
+        $this->apiKey = $apiKey;
 
         return $this;
     }
@@ -94,8 +103,6 @@ class ImageProvider
 
     private function apiNinjaProvider()
     {
-        $this->apiKey = 'VB9oCAfvzDtMbcmh/gUBaA==Y8g64n95vhBS49GH';
-
         $endpoint = 'https://api.api-ninjas.com/v1/randomimage';
 
         $query = [
@@ -113,8 +120,6 @@ class ImageProvider
 
     private function pixabayProvider()
     {
-        $this->apiKey = '33909943-d3b97e5038a6e445f66d52f0c';
-
         $endpoint = 'https://pixabay.com/api/';
 
         $query = [

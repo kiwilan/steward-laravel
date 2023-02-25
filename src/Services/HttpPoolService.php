@@ -36,11 +36,13 @@ class HttpPoolService
         $self->headers = $headers;
         $self->limit = config('steward.http.pool_limit', 250);
 
+        Console::make()->print("Limit: $self->limit");
+
         $responses = $self->executePool();
         $responses = $self->parseResponses($responses);
 
         if ($self->failedRequests > 0) {
-            Console::make()->print('Failed requests: '.$self->failedRequests);
+            Console::make()->print("Failed requests: $self->failedRequests");
         }
 
         $self->responses = collect($responses);
@@ -77,6 +79,8 @@ class HttpPoolService
             }
         }
 
+        Console::make()->print('Count '.count($responses).' responses, '.$this->failedRequests.' failed requests');
+
         return $parsedResponses;
     }
 
@@ -89,6 +93,7 @@ class HttpPoolService
         $responses = [];
 
         foreach ($chunks as $key => $chunk) {
+            Console::make()->print("Chunk: $key, ".count($chunk).' requests');
             $res = Http::pool(function (Pool $pool) use ($chunk) {
                 foreach ($chunk as $key => $url) {
                     $pool->as($key)

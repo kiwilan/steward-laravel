@@ -58,31 +58,41 @@ class FactoryDateTime
         return $createdAt < $updatedAt;
     }
 
-    private function generateDateTime(string $between, string $format = 'Y-m-d H:i:s'): DateTime
+    private function generateDateTime(string $between): DateTime
     {
         $date = $this->factory->faker()
             ->dateTimeBetween($between)
         ;
 
-        while (! $this->checkDateValidity($date)) {
+        while (! $this->validateDateTime($date)) {
             $date = $this->factory->faker()
                 ->dateTimeBetween($between)
-                ->format($format)
             ;
         }
 
         return $date;
     }
 
-    private function checkDateValidity(DateTime $date): bool
-    {
-        try {
-            Carbon::parse($date);
+    // private function checkDateValidity(DateTime $date): bool
+    // {
+    //     try {
+    //         Carbon::parse($date);
 
-            return true;
-        } catch (\Throwable $th) {
-            return false;
+    //         return true;
+    //     } catch (\Throwable $th) {
+    //         return false;
+    //     }
+    // }
+
+    private function validateDateTime(DateTime|string $date, string $format = 'Y-m-d H:i:s'): bool
+    {
+        if ($date instanceof DateTime) {
+            $date = $date->format($format);
         }
+
+        $d = DateTime::createFromFormat($format, $date);
+
+        return $d && $d->format($format) === $date;
     }
 
     private function toSqlDate(string $date): string

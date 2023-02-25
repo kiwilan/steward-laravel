@@ -194,4 +194,26 @@ return [
         ],
         'path' => resource_path('js'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Steward factory
+    |--------------------------------------------------------------------------
+    |
+    | Providers:
+    | - picsum: https://picsum.photos / unkwnown rate limit / no key
+    | - api_ninja: https://api-ninja.com / 50,000 requests per months / key required
+    | - pixabay: https://pixabay.com / 100 requests per minute / key required
+    | - unsplash: https://unsplash.com / 50 requests per hour (extensible) / key required
+    |
+    */
+
+    'factory' => [
+        'provider' => 'picsum', // picsum, api_ninja, pixabay, unsplash
+        'provider_key' => null,
+        'image' => [
+            'width' => 640,
+            'height' => 480,
+        ],
+    ],
 ];
