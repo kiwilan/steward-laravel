@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Class\WikipediaItem;
 use Kiwilan\Steward\Services\Http\HttpResponse;
-use Kiwilan\Steward\Services\WikipediaService\WikipediaQuery;
+use Kiwilan\Steward\Services\Wikipedia\WikipediaQuery;
 use Kiwilan\Steward\Utils\Console;
 use ReflectionClass;
 

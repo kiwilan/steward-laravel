@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Services;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
-use Kiwilan\Steward\Services\QueryService\FilterModule;
+use Kiwilan\Steward\Services\Query\FilterModule;
 
 class QueryService
 {

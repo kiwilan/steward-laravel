@@ -2,8 +2,8 @@
 
 namespace Kiwilan\Steward\Services;
 
-use Kiwilan\Steward\Services\OpenGraphService\OpenGraphItem;
-use Kiwilan\Steward\Services\OpenGraphService\OpenGraphTwitter;
+use Kiwilan\Steward\Services\OpenGraph\OpenGraphItem;
+use Kiwilan\Steward\Services\OpenGraph\OpenGraphTwitter;
 
 class OpenGraphService
 {

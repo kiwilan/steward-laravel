@@ -6,11 +6,11 @@ use Faker\Generator;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Enums\PictureDownloadEnum;
-use Kiwilan\Steward\Services\FactoryService\FactoryBuilder;
-use Kiwilan\Steward\Services\FactoryService\FactoryDateTime;
-use Kiwilan\Steward\Services\FactoryService\FactoryMediaDownloader;
-use Kiwilan\Steward\Services\FactoryService\FactoryMediaLocal;
-use Kiwilan\Steward\Services\FactoryService\FactoryText;
+use Kiwilan\Steward\Services\Factory\FactoryBuilder;
+use Kiwilan\Steward\Services\Factory\FactoryDateTime;
+use Kiwilan\Steward\Services\Factory\FactoryMediaDownloader;
+use Kiwilan\Steward\Services\Factory\FactoryMediaLocal;
+use Kiwilan\Steward\Services\Factory\FactoryText;
 
 /**
  * Improve Faker Laravel factory service.

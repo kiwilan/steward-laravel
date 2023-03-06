@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Class\GoogleBook;
-use Kiwilan\Steward\Services\GoogleBookService\GoogleBookQuery;
+use Kiwilan\Steward\Services\GoogleBook\GoogleBookQuery;
 use Kiwilan\Steward\Services\Http\HttpResponse;
 
 /**
