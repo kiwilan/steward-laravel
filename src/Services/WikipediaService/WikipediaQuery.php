@@ -7,8 +7,8 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Kiwilan\Steward\Services\HttpService\HttpServiceQuery;
-use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
+use Kiwilan\Steward\Services\Http\HttpModelQuery;
+use Kiwilan\Steward\Services\Http\HttpResponse;
 use Kiwilan\Steward\Services\WikipediaService;
 use ReflectionClass;
 
@@ -29,7 +29,7 @@ use ReflectionClass;
  * @property ?string $extract
  * @property ?string $picture_url
  */
-class WikipediaQuery extends HttpServiceQuery
+class WikipediaQuery extends HttpModelQuery
 {
     public function __construct(
         public ?string $search_query = null,
@@ -138,14 +138,14 @@ class WikipediaQuery extends HttpServiceQuery
     /**
      * Find page id among Wikipedia results, if found set $page_id_url.
      */
-    public function parseQueryResults(HttpServiceResponse $response): self
+    public function parseQueryResults(HttpResponse $response): self
     {
         $pageId = false;
 
-        if (! $response->success) {
+        if (! $response->isSuccess()) {
             return $this;
         }
-        $response = $response->body();
+        $response = $response->getBody();
 
         if ($this->debug) {
             $this->print($response, 'results');
@@ -203,13 +203,13 @@ class WikipediaQuery extends HttpServiceQuery
     /**
      * Parse page id response to extract data.
      */
-    public function parsePageIdData(HttpServiceResponse $response): self
+    public function parsePageIdData(HttpResponse $response): self
     {
-        if (! $response->success) {
+        if (! $response->isSuccess()) {
             return $this;
         }
 
-        $response = $response->body();
+        $response = $response->getBody();
 
         if ($this->debug) {
             $this->print($response, 'page-id');

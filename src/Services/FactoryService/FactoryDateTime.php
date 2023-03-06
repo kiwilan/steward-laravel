@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Services\FactoryService;
 
 use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Carbon;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\Services\FactoryService\Utils\FactoryTimestamps;
@@ -19,15 +20,17 @@ class FactoryDateTime
      */
     public function timestamps(string $minimum = '-20 years'): FactoryTimestamps
     {
+        $tz = new DateTimeZone('UTC');
+
         $createdAtStr = $this->generateDateTime($minimum);
-        $createdAt = Carbon::createFromDate($createdAtStr);
+        $createdAt = Carbon::createFromDate($createdAtStr, tz: $tz);
 
         $updatedAtStr = $this->generateDateTime($createdAt);
-        $updatedAt = Carbon::createFromDate($updatedAtStr);
+        $updatedAt = Carbon::createFromDate($updatedAtStr, tz: $tz);
 
         while (! $this->checkIfCreatedAtIsBeforeUpdatedAt($createdAt, $updatedAt)) {
             $updatedAtStr = $this->generateDateTime($createdAt);
-            $updatedAt = Carbon::createFromDate($updatedAtStr);
+            $updatedAt = Carbon::createFromDate($updatedAtStr, tz: $tz);
         }
 
         return new FactoryTimestamps(

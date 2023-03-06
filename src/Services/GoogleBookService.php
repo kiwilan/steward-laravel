@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Class\GoogleBook;
 use Kiwilan\Steward\Services\GoogleBookService\GoogleBookQuery;
-use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
+use Kiwilan\Steward\Services\Http\HttpResponse;
 
 /**
  * Use GoogleBook API to improve `$subject` data.
@@ -141,13 +141,14 @@ class GoogleBookService
 
         $http = HttpService::make($this->queries)
             ->setModelId('model_id')
+            ->execute()
         ;
-        $responses = $http->execute();
+        $responses = $http->responses();
 
         $parsing = HttpService::parseResponses(
             $responses,
             $this->queries,
-            fn (GoogleBookQuery $query, HttpServiceResponse $response) => $query->parseResponse($response)
+            fn (GoogleBookQuery $query, HttpResponse $response) => $query->parseResponse($response)
         );
 
         $this->queries->replace($parsing->get('fullfilled'));

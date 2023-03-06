@@ -2,15 +2,15 @@
 
 namespace Kiwilan\Steward\Services\FactoryService\Providers;
 
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\PictureDownloadEnum;
-use Kiwilan\Steward\Services\HttpPoolService;
+use Kiwilan\Steward\Services\Http\HttpResponse;
+use Kiwilan\Steward\Services\HttpService;
 
 class PictureDownloadProvider
 {
-    /** @var Collection<string,Response> */
+    /** @var Collection<string,HttpResponse> */
     protected mixed $files = null;
 
     /** @var PictureDownloadItem[] */
@@ -65,27 +65,26 @@ class PictureDownloadProvider
     private function setItems()
     {
         $apiBaseURL = self::API_URL.'/pictures';
+        $count = $this->count ?? 1;
 
         $queryParams = [
-            'count' => $this->count,
+            'count' => $count,
             'category' => $this->type->value,
-            'size' => 'large',
+            'size' => 'medium',
         ];
 
         $apiURL = "{$apiBaseURL}?".http_build_query($queryParams);
 
-        $http = HttpPoolService::make([$apiURL]);
-        $res = $http->responses()
-            ->first()
-        ;
+        $http = HttpService::make([$apiURL])->execute();
+        $responses = $http->responses();
 
-        $json = $res->json();
+        $data = $responses->first()->array();
 
-        return PictureDownloadItem::make($json['data']);
+        return PictureDownloadItem::make($data['data']);
     }
 
     /**
-     * @return Collection<string,Response>
+     * @return Collection<string,HttpResponse>
      */
     private function setFiles(): Collection
     {
@@ -95,14 +94,14 @@ class PictureDownloadProvider
             $mediasUrl[$item->pathFilename] = $item->links->render;
         }
 
-        $http = HttpPoolService::make($mediasUrl);
-        $res = $http->responses();
+        $http = HttpService::make($mediasUrl)->execute();
+        $responses = $http->responses();
 
         File::deleteDirectory($this->mediaPath);
         File::ensureDirectoryExists($this->mediaPath, 0755, true);
 
-        foreach ($res as $key => $value) {
-            $content = $value->body();
+        foreach ($responses as $key => $value) {
+            $content = $value->getBody();
 
             $path = "{$this->mediaPath}/{$key}";
             $path = str_replace('/large', '', $path);
@@ -112,7 +111,7 @@ class PictureDownloadProvider
             $this->index[] = $path;
         }
 
-        return $res;
+        return $responses;
     }
 
     /**

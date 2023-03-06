@@ -1,17 +1,17 @@
 <?php
 
-namespace Kiwilan\Steward\Services\HttpService;
+namespace Kiwilan\Steward\Services\Http;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * HttpServiceQuery from Model.
+ * HttpModelQuery from Model.
  *
  * @property ?Model  $model
  * @property ?string $model_name
  * @property ?int    $model_id
  */
-abstract class HttpServiceQuery
+abstract class HttpModelQuery
 {
     public function __construct(
         public ?Model $model = null,

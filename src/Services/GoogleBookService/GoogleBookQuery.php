@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Storage;
 use Kiwilan\Steward\Services\GoogleBookService;
-use Kiwilan\Steward\Services\HttpService\HttpServiceQuery;
-use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
+use Kiwilan\Steward\Services\Http\HttpModelQuery;
+use Kiwilan\Steward\Services\Http\HttpResponse;
 
 /**
  * Create GoogleBookQuery from Model and ISBN.
@@ -32,7 +32,7 @@ use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
  * @property string[]  $isbn_available
  * @property ?bool     $debug
  */
-class GoogleBookQuery extends HttpServiceQuery
+class GoogleBookQuery extends HttpModelQuery
 {
     public function __construct(
         public ?bool $debug = false,
@@ -101,13 +101,13 @@ class GoogleBookQuery extends HttpServiceQuery
     /**
      * Parse Google Book API response.
      */
-    public function parseResponse(HttpServiceResponse $response): self
+    public function parseResponse(HttpResponse $response): self
     {
-        if (! $response->success) {
+        if (! $response->isSuccess()) {
             return $this;
         }
 
-        $body = $response->body();
+        $body = $response->getBody();
 
         if ($this->debug) {
             $this->print($response, 'gbooks');

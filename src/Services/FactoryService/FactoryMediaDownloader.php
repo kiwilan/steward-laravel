@@ -10,7 +10,6 @@ use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\Services\FactoryService\Providers\ImageProvider;
 use Kiwilan\Steward\Services\FactoryService\Providers\PictureDownloadProvider;
 use Kiwilan\Steward\Services\HttpPoolService;
-use Kiwilan\Steward\Services\HttpService;
 
 /**
  * Class FactoryMedia

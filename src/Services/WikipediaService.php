@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Class\WikipediaItem;
-use Kiwilan\Steward\Services\HttpService\HttpServiceResponse;
+use Kiwilan\Steward\Services\Http\HttpResponse;
 use Kiwilan\Steward\Services\WikipediaService\WikipediaQuery;
 use Kiwilan\Steward\Utils\Console;
 use ReflectionClass;
@@ -185,13 +185,14 @@ class WikipediaService
         $http = HttpService::make($this->queries)
             ->setModelId('model_id')
             ->setModelUrl($model_url)
+            ->execute()
         ;
-        $responses = $http->execute();
+        $responses = $http->responses();
 
         $parsing = HttpService::parseResponses(
             $responses,
             $this->queries,
-            fn (WikipediaQuery $query, HttpServiceResponse $response) => $closure($query, $response),
+            fn (WikipediaQuery $query, HttpResponse $response) => $closure($query, $response),
         );
 
         $this->queries->replace($parsing->get('fullfilled'));

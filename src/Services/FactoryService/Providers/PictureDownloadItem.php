@@ -52,6 +52,30 @@ class PictureDownloadItem
 
         return $dataItems;
     }
+
+    public static function makeFromObject(object $data): self
+    {
+        return new self(
+            $data->filename,
+            $data->extension,
+            $data->sizeRender,
+            $data->pathFilename,
+            $data->id,
+            $data->category,
+            $data->size,
+            $data->sizeHuman,
+            $data->date,
+            new PictureDownloadItemCredits(
+                $data->credits->provider,
+                $data->credits->author,
+                $data->credits->url,
+            ),
+            new PictureDownloadItemLinks(
+                $data->links->show,
+                $data->links->render,
+            ),
+        );
+    }
 }
 
 class PictureDownloadItemCredits

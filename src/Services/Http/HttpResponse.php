@@ -1,45 +1,39 @@
 <?php
 
-namespace Kiwilan\Steward\Services\HttpService;
+namespace Kiwilan\Steward\Services\Http;
 
 use GuzzleHttp\Psr7\Response;
 use SimpleXMLElement;
 
 /**
  * Manage responses from HttpService with external API.
- *
- * @property int|string                 $id         id
- * @property ?\GuzzleHttp\Psr7\Response $response   response
- * @property HttpServiceMetadata        $metadata   response
- * @property bool                       $success    success
- * @property bool                       $body_exist body_exist
- * @property ?object                    $body_json  body_json
- * @property ?SimpleXMLElement          $body_xml   body_xml
  */
-class HttpServiceResponse
+class HttpResponse
 {
-    public function __construct(
-        public mixed $id,
-        public ?Response $guzzle,
-        public HttpServiceMetadata $metadata,
-        public bool $success = false,
-        public bool $body_exist = false,
-        protected ?object $body_json = null,
-        protected ?SimpleXMLElement $body_xml = null,
+    protected function __construct(
+        protected mixed $id,
+        protected ?Response $guzzle,
+        protected HttpMetadata $metadata,
+        protected bool $success = false,
+        protected bool $bodyExist = false,
+        protected mixed $bodyRaw = null,
+        protected ?string $bodyString = null,
+        protected ?object $bodyJson = null,
+        protected ?SimpleXMLElement $bodyXml = null,
     ) {
     }
 
     /**
-     * Create HttpServiceResponse from Response.
+     * Create HttpResponse from Response.
      *
      * @param  int|string  $id
      * @param  ?\GuzzleHttp\Psr7\Response  $guzzle
      */
     public static function make(mixed $id, ?Response $guzzle): self
     {
-        $metadata = HttpServiceMetadata::make($guzzle);
+        $metadata = HttpMetadata::make($guzzle);
         $success = ! $guzzle ? false : 200 === $guzzle->getStatusCode();
-        $response = new HttpServiceResponse(
+        $self = new HttpResponse(
             id: $id,
             guzzle: $guzzle,
             metadata: $metadata,
@@ -47,24 +41,30 @@ class HttpServiceResponse
         );
 
         if (! $guzzle) {
-            return $response;
+            return $self;
         }
 
-        $body = $guzzle->getBody()->getContents();
-        $contents = (string) $body;
+        $self->bodyRaw = $guzzle->getBody()->getContents();
+        $contents = $self->bodyRaw;
 
-        if ($response->isValidXml($contents)) {
-            $response->body_xml = simplexml_load_string($contents);
-        } elseif ($response->isValidJson($contents)) {
+        if ($self->isValidXml($contents)) {
+            $self->bodyXml = simplexml_load_string($contents);
+        }
+
+        if ($self->isValidJson($contents)) {
             $contents = json_decode($contents);
-            $response->body_json = is_object($contents) ? $contents : null;
+            $self->bodyJson = is_object($contents) ? $contents : null;
         }
 
-        if ($response->body_xml || $response->body_json) {
-            $response->body_exist = true;
+        if (! $self->bodyXml && ! $self->bodyJson && gettype($contents) === 'string') {
+            $self->bodyString = $contents;
         }
 
-        return $response;
+        if ($self->bodyRaw) {
+            $self->bodyExist = true;
+        }
+
+        return $self;
     }
 
     /**
@@ -72,9 +72,54 @@ class HttpServiceResponse
      *
      * @return object|SimpleXMLElement|null
      */
-    public function body()
+    public function getBody()
     {
-        return $this->body_json ?? $this->body_xml;
+        return $this->bodyJson ?? $this->bodyXml ?? $this->bodyString ?? $this->bodyRaw;
+    }
+
+    public function getId(): mixed
+    {
+        return $this->id;
+    }
+
+    public function getGuzzle(): ?Response
+    {
+        return $this->guzzle;
+    }
+
+    public function getMetadata(): HttpMetadata
+    {
+        return $this->metadata;
+    }
+
+    public function isSuccess(): bool
+    {
+        return $this->success;
+    }
+
+    public function isBodyExist(): bool
+    {
+        return $this->bodyExist;
+    }
+
+    public function getBodyRaw(): mixed
+    {
+        return $this->bodyRaw;
+    }
+
+    public function getBodyString(): ?string
+    {
+        return $this->bodyString;
+    }
+
+    public function getBodyJson(): ?object
+    {
+        return $this->bodyJson;
+    }
+
+    public function getBodyXml(): ?SimpleXMLElement
+    {
+        return $this->bodyXml;
     }
 
     /**
@@ -82,7 +127,7 @@ class HttpServiceResponse
      */
     public function json(): ?string
     {
-        return json_encode($this->body());
+        return json_encode($this->getBody());
     }
 
     /**
@@ -90,7 +135,7 @@ class HttpServiceResponse
      */
     public function array(): ?array
     {
-        return json_decode(json_encode($this->body() ?? []), true);
+        return json_decode(json_encode($this->getBody() ?? []), true);
     }
 
     /**

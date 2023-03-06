@@ -19,9 +19,17 @@ class HttpPoolService
     /** @var Collection<string,Response> */
     protected mixed $responses = null;
 
+    /** @var Collection<string,mixed> */
+    protected mixed $responsesFailed = null;
+
     protected function __construct(
         protected int $limit = 250,
-        protected int $failedRequests = 0,
+        protected int $timeout = 100,
+        protected int $retry = 3,
+        protected int $retryDelay = 100,
+        protected int $requestCount = 0,
+        protected int $successCount = 0,
+        protected int $failedCount = 0,
     ) {
     }
 
@@ -35,17 +43,23 @@ class HttpPoolService
         $self->urls = $urls;
         $self->headers = $headers;
         $self->limit = config('steward.http.pool_limit', 200);
+        // $self->timeout = config('steward.http.pool_timeout', 10);
+        $self->requestCount = count($urls);
 
+        Console::make()->print('Execute Guzzle pool requests');
+        Console::make()->print("Requests: $self->requestCount");
         Console::make()->print("Limit: $self->limit");
 
         $responses = $self->executePool();
         $responses = $self->parseResponses($responses);
 
-        if ($self->failedRequests > 0) {
-            Console::make()->print("Failed requests: $self->failedRequests");
+        if ($self->failedCount > 0) {
+            Console::make()->print("Failed requests: $self->failedCount");
         }
 
         $self->responses = collect($responses);
+
+        Console::make()->print("Done.\n");
 
         return $self;
     }
@@ -58,9 +72,24 @@ class HttpPoolService
         return $this->responses;
     }
 
-    public function failedRequests(): int
+    public function responsesFailed(): Collection
     {
-        return $this->failedRequests;
+        return $this->responsesFailed;
+    }
+
+    public function requestCount(): int
+    {
+        return $this->requestCount;
+    }
+
+    public function successCount(): int
+    {
+        return $this->successCount;
+    }
+
+    public function failedCount(): int
+    {
+        return $this->failedCount;
     }
 
     /**
@@ -70,16 +99,21 @@ class HttpPoolService
     private function parseResponses(array $responses): Collection
     {
         $parsedResponses = collect();
+        $parsedResponsesFailed = collect();
 
         foreach ($responses as $key => $response) {
             if ($response instanceof Response) {
                 $parsedResponses->put($key, $response);
+                $this->successCount++;
             } else {
-                $this->failedRequests++;
+                $this->failedCount++;
+                $parsedResponsesFailed->put($key, $response);
             }
         }
 
-        Console::make()->print('Count '.count($responses).' responses, '.$this->failedRequests.' failed requests');
+        Console::make()->print('Count '.count($responses).' responses, '.$this->failedCount.' failed requests');
+
+        $this->responsesFailed = $parsedResponsesFailed;
 
         return $parsedResponses;
     }
@@ -98,6 +132,8 @@ class HttpPoolService
                 foreach ($chunk as $key => $url) {
                     $pool->as($key)
                         ->withHeaders($this->headers)
+                        ->timeout($this->timeout)
+                        ->retry($this->retry, $this->retryDelay)
                         ->get($url)
                     ;
                 }
