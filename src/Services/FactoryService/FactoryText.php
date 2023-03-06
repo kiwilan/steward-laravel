@@ -22,7 +22,9 @@ class FactoryText
      */
     public function title(): string
     {
-        return ucfirst($this->words());
+        $string = $this->words();
+
+        return mb_strtoupper(mb_substr($string, 0, 1)).mb_substr($string, 1);
     }
 
     /**

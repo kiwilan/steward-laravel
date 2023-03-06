@@ -4,6 +4,10 @@ namespace Kiwilan\Steward\Enums;
 
 enum PictureDownloadEnum: string
 {
+    case animal = 'animal';
+
+    case building = 'building';
+
     case city = 'city';
 
     case cultural = 'cultural';
@@ -12,25 +16,23 @@ enum PictureDownloadEnum: string
 
     case food = 'food';
 
-    case love = 'love';
-
     case monument = 'monument';
 
     case nature = 'nature';
 
     case people = 'people';
 
+    case relationship = 'relationship';
+
     case space = 'space';
 
     case technology = 'technology';
 
-    // global
+    case all = 'all';
 
-    case humans = 'humans'; // people, love, cultural
+    case architecture = 'architecture'; // building, city, decoration, monument
 
-    case landscape = 'landscape'; // nature, city, space, monument
+    case human = 'human'; // cultural, people, relationship
 
-    case mainstream = 'mainstream'; // decoration, food, technology
-
-    case all = 'all'; // all
+    case wildlife = 'wildlife'; // animal, nature, space
 }

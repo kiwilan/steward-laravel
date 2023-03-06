@@ -35,6 +35,10 @@ class FactoryService
             storage_path('app/download'),
         ];
 
+        if (config('app.env') === 'production') {
+            $paths[] = storage_path('app/media');
+        }
+
         foreach ($paths as $key => $path) {
             if (File::exists($path)) {
                 File::cleanDirectory($path);
@@ -85,6 +89,8 @@ class FactoryService
 
     public function mediaDownloader(PictureDownloadEnum $type = PictureDownloadEnum::all)
     {
+        $this->type = $type;
+
         return $this->mediaDownloader;
     }
 

@@ -2,94 +2,52 @@
 
 namespace Kiwilan\Steward\Services\FactoryService\Providers;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\PictureDownloadEnum;
 use Kiwilan\Steward\Services\HttpPoolService;
-use SplFileInfo;
-use ZipArchive;
 
 class PictureDownloadProvider
 {
-    /** @var SplFileInfo[] */
-    protected array $files = [];
+    /** @var Collection<string,Response> */
+    protected mixed $files = null;
 
-    /** @var array<string,array> */
-    protected array $mediasByCategories = [];
+    /** @var PictureDownloadItem[] */
+    protected array $items = [];
+
+    /** @var string[] */
+    protected array $index = [];
 
     /** @var Collection<string,string> */
     protected ?Collection $medias = null;
 
-    /** @var PictureDownloadEnum[] */
-    protected array $allowedCategories = [];
-
-    /** @var string[] */
-    protected array $archivesPath = [];
-
     protected function __construct(
-        protected string $archivePath,
         protected string $mediaPath,
         protected PictureDownloadEnum $type,
-        protected int $countFiles = 0,
-        protected int $countMedias = 0,
         protected ?int $count = null,
     ) {
     }
 
-    const seeds = [
-        'seeds' => 'https://www.dropbox.com/s/5hwazybflgjm0ki/seeds.zip?dl=1',
-    ];
+    const API_URL = 'https://seeds.git-projects.xyz/api';
 
     public static function make(PictureDownloadEnum $type = PictureDownloadEnum::all, ?int $count = null): self
     {
         $self = new self(
-            storage_path('app/downloads'),
             storage_path('app/media'),
             $type,
         );
 
+        $self->count = $count;
+        $self->items = $self->setItems();
         $self->files = $self->setFiles();
-
-        if (count($self->files) === 0) {
-            $self->download();
-            $self->unzip();
-
-            File::deleteDirectory($self->archivePath);
-            $self->files = $self->setFiles();
-        }
-
-        $self->allowedCategories = $self->setAllowedCategories();
-
-        $self->mediasByCategories = $self->setMediasByCategories();
         $self->medias = $self->setMedias();
-
-        $self->countFiles = count($self->files);
-        $self->countMedias = count($self->medias);
-
-        if ($count !== null) {
-            $self->count = $count;
-
-            if ($count < $self->countMedias) {
-                $self->medias = $self->medias->slice(0, $count);
-            } else {
-                $temp = collect([]);
-
-                for ($i = 0; $i < $count; $i++) {
-                    $temp->push($self->medias->get($i % $self->countMedias));
-                }
-
-                $self->medias = $temp;
-            }
-        }
-
-        $self->countMedias = count($self->medias);
 
         return $self;
     }
 
     public static function clean()
     {
-        File::deleteDirectory(storage_path('app/downloads'));
         File::deleteDirectory(storage_path('app/media'));
     }
 
@@ -101,125 +59,73 @@ class PictureDownloadProvider
         return $this->medias;
     }
 
-    public function countFiles(): int
+    /**
+     * @return PictureDownloadItem[]
+     */
+    private function setItems()
     {
-        return $this->countFiles;
-    }
+        $apiBaseURL = self::API_URL.'/pictures';
 
-    public function countMedias(): int
-    {
-        return $this->countMedias;
+        $queryParams = [
+            'count' => $this->count,
+            'category' => $this->type->value,
+            'size' => 'large',
+        ];
+
+        $apiURL = "{$apiBaseURL}?".http_build_query($queryParams);
+
+        $http = HttpPoolService::make([$apiURL]);
+        $res = $http->responses()
+            ->first()
+        ;
+
+        $json = $res->json();
+
+        return PictureDownloadItem::make($json['data']);
     }
 
     /**
-     * @return SplFileInfo[]
+     * @return Collection<string,Response>
      */
-    private function setFiles(): array
+    private function setFiles(): Collection
     {
-        $medias = [];
+        $mediasUrl = [];
 
-        foreach (File::directories($this->mediaPath) as $directory) {
-            $medias = array_merge($medias, File::files($directory));
+        foreach ($this->items as $item) {
+            $mediasUrl[$item->pathFilename] = $item->links->render;
         }
 
-        return $medias;
-    }
+        $http = HttpPoolService::make($mediasUrl);
+        $res = $http->responses();
 
-    private function setMediasByCategories(): array
-    {
-        $mediasByCategories = [];
+        File::deleteDirectory($this->mediaPath);
+        File::ensureDirectoryExists($this->mediaPath, 0755, true);
 
-        foreach ($this->files as $file) {
-            $category = implode('/', array_slice(explode('/', $file->getPathname()), -2, 1));
-            $mediasByCategories[$category][] = $file->getPathname();
+        foreach ($res as $key => $value) {
+            $content = $value->body();
+
+            $path = "{$this->mediaPath}/{$key}";
+            $path = str_replace('/large', '', $path);
+            File::makeDirectory(dirname($path), 0755, true, true);
+            File::put($path, $content);
+
+            $this->index[] = $path;
         }
 
-        return $mediasByCategories;
+        return $res;
     }
 
+    /**
+     * @return Collection<string,string>
+     */
     private function setMedias(): Collection
     {
         $medias = [];
 
-        foreach ($this->mediasByCategories as $category => $media) {
-            $category = PictureDownloadEnum::tryFrom($category);
-
-            if (! in_array($category, $this->allowedCategories)) {
-                continue;
-            }
-
-            $medias[] = $media;
+        foreach ($this->index as $path) {
+            $medias[$path] = $path;
         }
-
-        $medias = array_merge(...$medias);
-        shuffle($medias);
 
         return collect($medias);
-    }
-
-    private function setAllowedCategories(): array
-    {
-        $categories = PictureDownloadEnum::cases();
-
-        if ($this->type !== PictureDownloadEnum::all
-            && $this->type !== PictureDownloadEnum::humans
-            && $this->type !== PictureDownloadEnum::landscape
-            && $this->type !== PictureDownloadEnum::mainstream
-        ) {
-            return [$this->type];
-        }
-
-        return match ($this->type) {
-            PictureDownloadEnum::all => $categories,
-            PictureDownloadEnum::humans => [
-                PictureDownloadEnum::people,
-                PictureDownloadEnum::love,
-                PictureDownloadEnum::cultural,
-            ],
-            PictureDownloadEnum::landscape => [
-                PictureDownloadEnum::nature,
-                PictureDownloadEnum::city,
-                PictureDownloadEnum::space,
-                PictureDownloadEnum::monument,
-            ],
-            PictureDownloadEnum::mainstream => [
-                PictureDownloadEnum::decoration,
-                PictureDownloadEnum::food,
-                PictureDownloadEnum::technology,
-            ],
-        };
-    }
-
-    private function download()
-    {
-        File::deleteDirectory($this->archivePath);
-        File::deleteDirectory($this->mediaPath);
-
-        File::ensureDirectoryExists($this->archivePath, 0755, true);
-
-        $http = HttpPoolService::make(self::seeds, [
-            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36',
-            'Accept' => 'application/zip, application/octet-stream',
-            'Content-Type' => 'Content-Disposition: attachment;',
-        ]);
-
-        foreach ($http->responses() as $name => $response) {
-            $path = "{$this->archivePath}/{$name}.zip";
-            File::put($path, $response->body());
-
-            $this->archivesPath[$name] = $path;
-        }
-    }
-
-    private function unzip()
-    {
-        foreach ($this->archivesPath as $name => $path) {
-            $zip = new ZipArchive();
-            $zip->open($path);
-            $zip->extractTo($this->mediaPath);
-            $zip->close();
-        }
-
-        File::deleteDirectory("{$this->mediaPath}/__MACOSX");
     }
 }

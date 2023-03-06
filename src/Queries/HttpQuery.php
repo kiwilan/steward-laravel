@@ -18,11 +18,25 @@ class HttpQuery extends BaseQuery
      * Works with `spatie/laravel-query-builder` for API and Laravel Builder for front.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/introduction
      */
-    public static function make(string $class, ?Request $request = null): self
+    public static function make(string|Builder $class, ?Request $request = null, ?string $scope = null): self
     {
+        $current = $class;
+        $builder = $current;
+
+        if ($class instanceof Builder) {
+            /** @var Model $current */
+            $current = $class->getModel();
+            $current = get_class($current);
+            $builder = $class;
+        } else {
+            $current = $class;
+            $builder = $current::query();
+        }
+
         $api = new HttpQuery();
-        $api->class = $class;
-        $api->setMetadata(MetaClass::make($class));
+        $api->class = $current;
+
+        $api->setMetadata(MetaClass::make($current));
         $api->setRequest($request);
 
         $api->defaultSort = $api->getSortDirection(config('steward.query.default_sort'), config('steward.query.default_sort_direction'));
@@ -30,11 +44,13 @@ class HttpQuery extends BaseQuery
         $api->limit = config('steward.query.limit');
         $api->resourceGuess();
 
-        $api->setQuery(QueryBuilder::for($api->metadata()->class()));
+        $class = $api->metadata()->class();
+
+        $api->setQuery(QueryBuilder::for($builder));
         $api->setDefault();
 
         /** @var Builder $builder */
-        $builder = $api->class::query();
+        $builder = $builder;
         $api->setBuilder($builder);
 
         return $api;

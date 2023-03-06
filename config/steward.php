@@ -165,7 +165,7 @@ return [
     */
 
     'http' => [
-        'pool_limit' => env('STEWARD_HTTP_POOL_LIMIT', 250),
+        'pool_limit' => env('STEWARD_HTTP_POOL_LIMIT', 200),
         'async_allow' => env('STEWARD_HTTP_ASYNC_ALLOW', true),
     ],
 

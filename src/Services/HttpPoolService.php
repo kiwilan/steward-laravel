@@ -34,7 +34,7 @@ class HttpPoolService
         $self = new self();
         $self->urls = $urls;
         $self->headers = $headers;
-        $self->limit = config('steward.http.pool_limit', 250);
+        $self->limit = config('steward.http.pool_limit', 200);
 
         Console::make()->print("Limit: $self->limit");
 

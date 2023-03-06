@@ -47,9 +47,17 @@ class FactoryDateTime
     {
         $timestamps = $this->timestamps($minimum);
 
+        $int = rand(1262055681, 1262055681);
+        $createdAt = date('Y-m-d H:i:s', $int);
+
+        $int = rand(1262055681, 1262055681);
+        $updatedAt = date('Y-m-d H:i:s', $int);
+
         return [
-            'created_at' => $timestamps->createdAt,
-            'updated_at' => $timestamps->updatedAt,
+            // 'created_at' => $timestamps->createdAt,
+            // 'updated_at' => $timestamps->updatedAt,
+            'created_at' => $createdAt,
+            'updated_at' => $updatedAt,
         ];
     }
 
