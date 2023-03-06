@@ -98,17 +98,33 @@ class GuzzleRequest
     private function inSeries(Collection $urls): Collection
     {
         /** @var Collection<int,Response> */
+        $guzzle = collect([]);
+
+        /** @var Collection<int,Response> */
         $responses = collect([]);
+
+        /** @var Collection<int,Response> */
+        $failed = collect([]);
 
         foreach ($urls as $id => $url) {
             $client = new Client();
             $response = $client->get($url);
-            $responses->put($id, $response);
+            $guzzle->put($id, $response);
+        }
+
+        foreach ($guzzle as $key => $value) {
+            if ($value->getStatusCode() === 200) {
+                $responses->put($key, $value);
+                $this->successCount++;
+            } else {
+                $failed->put($key, $value);
+                $this->failedCount++;
+            }
         }
 
         return collect([
             'fullfilled' => $responses,
-            'rejected' => collect([]),
+            'rejected' => $failed,
         ]);
     }
 
