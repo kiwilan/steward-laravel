@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Services\Factory;
 
 use Kiwilan\Steward\Enums\FactoryTextEnum;
+use Kiwilan\Steward\Services\Factory\Text\MeaningProvider;
 use Kiwilan\Steward\Services\Factory\Text\TextProvider;
 use Kiwilan\Steward\Services\FactoryService;
 
@@ -23,6 +24,11 @@ class FactoryText
     public function title(): string
     {
         return TextProvider::capitalizeFirst($this->words());
+    }
+
+    public function category(): string
+    {
+        return MeaningProvider::find();
     }
 
     /**

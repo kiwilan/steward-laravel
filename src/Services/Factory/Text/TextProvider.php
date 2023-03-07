@@ -31,7 +31,11 @@ class TextProvider
     public function words(int|false $limit = 3, bool $asText = false)
     {
         if ($this->type === FactoryTextEnum::random) {
-            $this->provider = RandomProvider::select();
+            $this->type = RandomProvider::select();
+
+            $self = self::make($this->type);
+
+            return $self->generate($limit, $asText);
         }
 
         return $this->generate($limit, $asText);

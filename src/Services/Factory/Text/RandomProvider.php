@@ -2,6 +2,8 @@
 
 namespace Kiwilan\Steward\Services\Factory\Text;
 
+use Kiwilan\Steward\Enums\FactoryTextEnum;
+
 /**
  * Generate Lorem text.
  */
@@ -18,17 +20,15 @@ class RandomProvider implements TextProviderInterface
         ];
     }
 
-    public static function select(): TextProviderInterface
+    public static function select(): FactoryTextEnum
     {
-        $providers = [
-            LoremProvider::class,
-            SindarinProvider::class,
-            KlingonProvider::class,
-            NaviProvider::class,
+        $enums = [
+            FactoryTextEnum::lorem,
+            FactoryTextEnum::sindarin,
+            FactoryTextEnum::klingon,
+            FactoryTextEnum::navi,
         ];
 
-        $provider = $providers[array_rand($providers)];
-
-        return new $provider();
+        return $enums[array_rand($enums)];
     }
 }
