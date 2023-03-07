@@ -31,6 +31,11 @@ class FactoryText
         return MeaningProvider::find();
     }
 
+    public function tag(): string
+    {
+        return MeaningProvider::find('tag');
+    }
+
     /**
      * Generate paragraphs.
      *
