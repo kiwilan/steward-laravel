@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Commands\Setup;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Commands\CommandSteward;
 
 class SetupCleanCommand extends CommandSteward
@@ -31,21 +32,24 @@ class SetupCleanCommand extends CommandSteward
         $this->title();
 
         $this->info('Removing logs...');
-        $this->call('logs:clear');
+        $this->call('log:clear', [
+            '--all' => true,
+        ]);
 
         $this->info('Reloading .env...');
+        File::delete(base_path('bootstrap/cache/config.php'));
+        $this->call('config:cache');
         $this->call('config:clear');
-
-        $this->info('Clearing cache...');
         $this->call('cache:clear');
 
-        // rm bootstrap/cache/config.php
-        // /usr/bin/php8.1 artisan config:cache
-        // /usr/bin/php8.1 artisan config:clear
-        // /usr/bin/php8.1 artisan cache:clear
-
-        // sudo chown -R $USER:www-data * ; sudo chmod -R ug+rwx storage bootstrap/cache
+        // sudo chown -R $USER:www-data .
+        // sudo chgrp -R www-data storage bootstrap/cache
+        // sudo chmod -R ug+rwx storage bootstrap/cache
         // git checkout .
+
+        $this->info('Optimize app...');
+        $this->call('optimize:clear');
+        $this->call('optimize');
 
         $this->info('Done.');
 
