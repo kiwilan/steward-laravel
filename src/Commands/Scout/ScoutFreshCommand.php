@@ -3,9 +3,13 @@
 namespace Kiwilan\Steward\Commands\Scout;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Commands\CommandSteward;
+use Kiwilan\Steward\Services\ClassService;
 use ReflectionClass;
+use SplFileInfo;
 
 class ScoutFreshCommand extends CommandSteward
 {
@@ -25,6 +29,8 @@ class ScoutFreshCommand extends CommandSteward
 
     protected $models = [];
 
+    protected $scout = [];
+
     /**
      * Execute the console command.
      *
@@ -34,20 +40,27 @@ class ScoutFreshCommand extends CommandSteward
     {
         $this->title();
 
-        // $this->info('Models to search engine: '.implode(', ', $list));
-        // $this->newLine();
+        $configAuto = (bool) config('steward.scoutable.auto');
+        $configList = (array) config('steward.scoutable.models');
 
-        $this->models = $this->findModels();
+        if ($configAuto) {
+            $this->models = $this->findModels();
+        } else {
+            $this->models = $configList;
+        }
 
-        // foreach ($list as $model) {
-        //     $this->scoutName($model);
-        // }
+        $this->info('Models to search engine: '.implode(', ', $this->models));
+        $this->newLine();
 
-        // try {
-        //     $this->freshModels();
-        // } catch (\Throwable $th) {
-        //     $this->error($th->getMessage());
-        // }
+        foreach ($this->models as $model) {
+            $this->scoutName($model);
+        }
+
+        try {
+            $this->freshModels();
+        } catch (\Throwable $th) {
+            $this->error($th->getMessage());
+        }
 
         $this->info('Done.');
 
@@ -56,41 +69,65 @@ class ScoutFreshCommand extends CommandSteward
 
     private function findModels(): array
     {
-        $list = config('steward.scoutable.models');
-        dump($list);
+        $path = app_path('Models');
 
-        return $list;
+        /** @var Collection<int,SplFileInfo> */
+        $files = collect(File::allFiles($path));
+
+        /** @var Collection<int,SplFileInfo> */
+        $filesModels = collect();
+
+        $files->map(function ($file) use ($filesModels) {
+            if ($file->getExtension() === 'php') {
+                $filesModels->push($file);
+            }
+        });
+
+        $models = [];
+
+        foreach ($filesModels as $file) {
+            $service = ClassService::make($file->getPath());
+            $namespace = $service->namespace();
+            $class = new $namespace();
+            $traits = class_uses($class);
+
+            if (in_array('Laravel\Scout\Searchable', $traits)) {
+                $models[] = $namespace;
+            }
+        }
+
+        return $models;
     }
 
-    // private function scoutName(string $model)
-    // {
-    //     $instance = new $model();
-    //     $class = new ReflectionClass($instance);
-    //     $name = $class->getName();
-    //     $name = str_replace('\\', '\\\\', $name);
+    private function scoutName(string $model)
+    {
+        $instance = new $model();
+        $class = new ReflectionClass($instance);
+        $name = $class->getName();
+        $name = str_replace('\\', '\\\\', $name);
 
-    //     if (method_exists($instance, 'searchableAs')) {
-    //         $this->models[$name] = $instance->searchableAs();
-    //     }
-    // }
+        if (method_exists($instance, 'searchableAs')) {
+            $this->scout[$name] = $instance->searchableAs();
+        }
+    }
 
-    // private function freshModels()
-    // {
-    //     $this->warn('Clean all models in search engine.');
-    //     $this->newLine();
+    private function freshModels()
+    {
+        $this->warn('Clean all models in search engine.');
+        $this->newLine();
 
-    //     foreach ($this->models as $key => $value) {
-    //         Artisan::call('scout:flush "'.$key.'"', [], $this->getOutput());
-    //         Artisan::call('scout:delete-index "'.$value.'"', [], $this->getOutput());
-    //         $this->newLine();
-    //     }
+        foreach ($this->scout as $key => $value) {
+            Artisan::call('scout:flush "'.$key.'"', [], $this->getOutput());
+            Artisan::call('scout:delete-index "'.$value.'"', [], $this->getOutput());
+            $this->newLine();
+        }
 
-    //     $this->warn('Import all models in search engine.');
-    //     $this->newLine();
+        $this->warn('Import all models in search engine.');
+        $this->newLine();
 
-    //     foreach ($this->models as $key => $value) {
-    //         Artisan::call('scout:import "'.$key.'"', [], $this->getOutput());
-    //         $this->newLine();
-    //     }
-    // }
+        foreach ($this->scout as $key => $value) {
+            Artisan::call('scout:import "'.$key.'"', [], $this->getOutput());
+            $this->newLine();
+        }
+    }
 }

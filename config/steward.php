@@ -42,6 +42,7 @@ return [
     */
 
     'scoutable' => [
+        'auto' => true,
         'models' => [
             // \App\Models\Example::class,
         ],
