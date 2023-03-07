@@ -1,33 +1,18 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory\Providers;
+namespace Kiwilan\Steward\Services\Factory\Text;
 
 /**
  * Generate Sindarin text.
  */
-class SindarinProvider
+class SindarinProvider implements TextProviderInterface
 {
-    /**
-     * @return string|string[]
-     */
-    public static function words(int|false $limit = 3, bool $asText = false)
-    {
-        $words = self::sindarin();
-        shuffle($words);
-
-        if ($limit) {
-            $words = array_slice($words, 0, $limit);
-        }
-
-        return $asText ? implode(' ', $words) : $words;
-    }
-
     /**
      * Sindarin words.
      *
      * @return string[]
      */
-    public static function sindarin()
+    public static function words()
     {
         return [
             'a',

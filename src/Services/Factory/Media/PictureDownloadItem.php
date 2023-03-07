@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory\Providers;
+namespace Kiwilan\Steward\Services\Factory\Media;
 
 class PictureDownloadItem
 {

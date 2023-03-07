@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Kiwilan\Steward\Services\Factory\Media\PictureDownloadProvider;
 use Kiwilan\Steward\Services\Factory\Providers\ImageProvider;
-use Kiwilan\Steward\Services\Factory\Providers\PictureDownloadProvider;
 use Kiwilan\Steward\Services\FactoryService;
 
 /**

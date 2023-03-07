@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory\Providers;
+namespace Kiwilan\Steward\Services\Factory\Media;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;

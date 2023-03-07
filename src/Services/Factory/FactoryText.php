@@ -3,7 +3,7 @@
 namespace Kiwilan\Steward\Services\Factory;
 
 use Kiwilan\Steward\Enums\FactoryTextEnum;
-use Kiwilan\Steward\Services\Factory\Providers\SindarinProvider;
+use Kiwilan\Steward\Services\Factory\Text\TextProvider;
 use Kiwilan\Steward\Services\FactoryService;
 
 /**
@@ -22,9 +22,7 @@ class FactoryText
      */
     public function title(): string
     {
-        $string = $this->words();
-
-        return mb_strtoupper(mb_substr($string, 0, 1)).mb_substr($string, 1);
+        return TextProvider::capitalizeFirst($this->words());
     }
 
     /**
@@ -142,40 +140,34 @@ class FactoryText
         return implode('', $html);
     }
 
-    private function useSindarin(): bool
+    private function text(int|false $limit = 3, bool $asText = false): string
     {
-        return $this->type === FactoryTextEnum::sindarin;
+        $provider = TextProvider::make($this->type);
+
+        return $provider->words($limit, $asText);
     }
 
     public function word(): string
     {
-        return $this->useSindarin()
-            ? SindarinProvider::words(limit: 1, asText: true)
-            : $this->factory->faker()->word();
+        return $this->text(1, true);
     }
 
     public function words(): string
     {
-        return $this->useSindarin()
-            ? SindarinProvider::words(asText: true)
-            : $this->factory->faker()->words(asText: true);
+        return $this->text(3, true);
     }
 
     public function sentence(): string
     {
-        return $this->useSindarin()
-            ? ucfirst(SindarinProvider::words(limit: 8, asText: true).'.')
-            : $this->factory->faker()->sentence();
+        return TextProvider::capitalizeFirst($this->text(8, true));
     }
 
     public function paragraph(): string
     {
         $content = '';
 
-        if ($this->useSindarin()) {
-            for ($k = 0; $k < $this->factory->faker()->numberBetween(2, 5); $k++) {
-                $content .= $this->sentence().' ';
-            }
+        for ($k = 0; $k < $this->factory->faker()->numberBetween(2, 5); $k++) {
+            $content .= $this->sentence().' ';
         }
 
         return $content;

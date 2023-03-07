@@ -67,6 +67,20 @@ class FactoryService
         return $this;
     }
 
+    public function useKlingon(): self
+    {
+        $this->text = $this->setFactoryText(FactoryTextEnum::klingon);
+
+        return $this;
+    }
+
+    public function useNavi(): self
+    {
+        $this->text = $this->setFactoryText(FactoryTextEnum::navi);
+
+        return $this;
+    }
+
     public function faker()
     {
         return $this->faker;
