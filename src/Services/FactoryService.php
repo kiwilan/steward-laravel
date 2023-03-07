@@ -60,23 +60,37 @@ class FactoryService
         return $service;
     }
 
-    public function useSindarin(): self
+    public function useTextLorem(): self
+    {
+        $this->text = $this->setFactoryText(FactoryTextEnum::lorem);
+
+        return $this;
+    }
+
+    public function useTextSindarin(): self
     {
         $this->text = $this->setFactoryText(FactoryTextEnum::sindarin);
 
         return $this;
     }
 
-    public function useKlingon(): self
+    public function useTextKlingon(): self
     {
         $this->text = $this->setFactoryText(FactoryTextEnum::klingon);
 
         return $this;
     }
 
-    public function useNavi(): self
+    public function useTextNavi(): self
     {
         $this->text = $this->setFactoryText(FactoryTextEnum::navi);
+
+        return $this;
+    }
+
+    public function useTextRamdom(): self
+    {
+        $this->text = $this->setFactoryText(FactoryTextEnum::random);
 
         return $this;
     }

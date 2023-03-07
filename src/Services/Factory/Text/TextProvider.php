@@ -12,13 +12,14 @@ class TextProvider
     ) {
     }
 
-    public static function make(FactoryTextEnum $type = FactoryTextEnum::lorem): TextProvider
+    public static function make(FactoryTextEnum $type = FactoryTextEnum::random): TextProvider
     {
         $provider = match ($type) {
+            FactoryTextEnum::lorem => new LoremProvider(),
             FactoryTextEnum::sindarin => new SindarinProvider(),
             FactoryTextEnum::klingon => new KlingonProvider(),
             FactoryTextEnum::navi => new NaviProvider(),
-            default => new LoremProvider(),
+            default => new RandomProvider(),
         };
 
         return new self($type, $provider);
@@ -29,10 +30,20 @@ class TextProvider
      */
     public function words(int|false $limit = 3, bool $asText = false)
     {
-        if ($this->type === FactoryTextEnum::lorem) {
-            $faker = \Faker\Factory::create();
+        if ($this->type === FactoryTextEnum::random) {
+            $this->provider = RandomProvider::select();
+        }
 
-            return $faker->words($limit, $asText);
+        return $this->generate($limit, $asText);
+    }
+
+    /**
+     * @return string|string[]
+     */
+    private function generate(int|false $limit = 3, bool $asText = false): string|array
+    {
+        if ($this->type === FactoryTextEnum::lorem) {
+            return LoremProvider::generate($limit, $asText);
         }
 
         $words = $this->provider->words();

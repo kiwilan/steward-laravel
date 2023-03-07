@@ -17,4 +17,14 @@ class LoremProvider implements TextProviderInterface
         return [
         ];
     }
+
+    /**
+     * @return string|string[]
+     */
+    public static function generate(int|false $limit = 3, bool $asText = false): mixed
+    {
+        $faker = \Faker\Factory::create();
+
+        return $faker->words($limit, $asText);
+    }
 }
