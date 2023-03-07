@@ -46,7 +46,7 @@ class MeaningProvider
             'Pet supplies',
             'Software',
             'Sports and Outdoors',
-            'Tools & Home Improvement',
+            'Tools',
             'Toys and Games',
             'Video Games',
             'Sciences',

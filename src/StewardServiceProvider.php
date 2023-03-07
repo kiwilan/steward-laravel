@@ -11,7 +11,7 @@ use Kiwilan\Steward\Commands\MediaCleanCommand;
 use Kiwilan\Steward\Commands\Publish\PublishCommand;
 use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
 use Kiwilan\Steward\Commands\RoutePrintCommand;
-use Kiwilan\Steward\Commands\ScoutFreshCommand;
+use Kiwilan\Steward\Commands\Scout\ScoutFreshCommand;
 use Kiwilan\Steward\Commands\Setup\SetupCleanCommand;
 use Kiwilan\Steward\Commands\StewardCommand;
 use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;

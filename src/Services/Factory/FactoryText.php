@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Services\Factory;
 
+use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\Factory\Text\MeaningProvider;
 use Kiwilan\Steward\Services\Factory\Text\TextProvider;
@@ -26,14 +27,40 @@ class FactoryText
         return TextProvider::capitalizeFirst($this->words());
     }
 
-    public function category(): string
+    public function category(?string $class = null, string $field = 'name'): string
     {
-        return MeaningProvider::find();
+        if (! $class) {
+            return MeaningProvider::find();
+        }
+
+        /** @var Model */
+        $model = new $class();
+        $category = MeaningProvider::find();
+        $exists = $model::where($field, $category)->first();
+
+        while ($exists) {
+            $category = $this->category($class, $field);
+        }
+
+        return $category;
     }
 
-    public function tag(): string
+    public function tag(?string $class = null, string $field = 'name'): string
     {
-        return MeaningProvider::find('tag');
+        if (! $class) {
+            return MeaningProvider::find('tag');
+        }
+
+        /** @var Model */
+        $model = new $class();
+        $tag = MeaningProvider::find('tag');
+        $exists = $model::where($field, $tag)->first();
+
+        while ($exists) {
+            $tag = $this->category($class, $field);
+        }
+
+        return $tag;
     }
 
     /**
