@@ -145,7 +145,7 @@ class WikipediaQuery extends HttpModelQuery
         if (! $response->isSuccess()) {
             return $this;
         }
-        $response = $response->getBody();
+        $response = $response->body();
 
         if ($this->debug) {
             $this->print($response, 'results');
@@ -209,7 +209,7 @@ class WikipediaQuery extends HttpModelQuery
             return $this;
         }
 
-        $response = $response->getBody();
+        $response = $response->body();
 
         if ($this->debug) {
             $this->print($response, 'page-id');

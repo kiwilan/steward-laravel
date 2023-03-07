@@ -72,22 +72,22 @@ class HttpResponse
      *
      * @return object|SimpleXMLElement|null
      */
-    public function getBody()
+    public function body()
     {
         return $this->bodyJson ?? $this->bodyXml ?? $this->bodyString ?? $this->bodyRaw;
     }
 
-    public function getId(): mixed
+    public function id(): mixed
     {
         return $this->id;
     }
 
-    public function getGuzzle(): ?Response
+    public function guzzle(): ?Response
     {
         return $this->guzzle;
     }
 
-    public function getMetadata(): HttpMetadata
+    public function metadata(): HttpMetadata
     {
         return $this->metadata;
     }
@@ -102,22 +102,22 @@ class HttpResponse
         return $this->bodyExist;
     }
 
-    public function getBodyRaw(): mixed
+    public function bodyRaw(): mixed
     {
         return $this->bodyRaw;
     }
 
-    public function getBodyString(): ?string
+    public function bodyString(): ?string
     {
         return $this->bodyString;
     }
 
-    public function getBodyJson(): ?object
+    public function bodyJson(): ?object
     {
         return $this->bodyJson;
     }
 
-    public function getBodyXml(): ?SimpleXMLElement
+    public function bodyXml(): ?SimpleXMLElement
     {
         return $this->bodyXml;
     }
@@ -127,7 +127,7 @@ class HttpResponse
      */
     public function json(): ?string
     {
-        return json_encode($this->getBody());
+        return json_encode($this->body());
     }
 
     /**
@@ -135,7 +135,7 @@ class HttpResponse
      */
     public function array(): ?array
     {
-        return json_decode(json_encode($this->getBody() ?? []), true);
+        return json_decode(json_encode($this->body() ?? []), true);
     }
 
     /**

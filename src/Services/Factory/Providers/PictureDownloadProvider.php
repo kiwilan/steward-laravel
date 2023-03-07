@@ -101,7 +101,7 @@ class PictureDownloadProvider
         File::ensureDirectoryExists($this->mediaPath, 0755, true);
 
         foreach ($responses as $key => $value) {
-            $content = $value->getBody();
+            $content = $value->body();
 
             $path = "{$this->mediaPath}/{$key}";
             $path = str_replace('/large', '', $path);

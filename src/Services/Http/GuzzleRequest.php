@@ -21,16 +21,16 @@ class GuzzleRequest
     protected ?Collection $requests = null;
 
     /** @var Collection<string,Response> */
-    protected ?Collection $responses = null;
+    protected ?Collection $fullfilled = null;
 
     /** @var Collection<string,mixed> */
-    protected ?Collection $responsesFailed = null;
+    protected ?Collection $rejected = null;
 
     protected function __construct(
         protected GuzzleOptions $options,
         protected int $requestCount = 0,
-        protected int $successCount = 0,
-        protected int $failedCount = 0,
+        protected int $fullfilledCount = 0,
+        protected int $rejectedCount = 0,
     ) {
     }
 
@@ -43,8 +43,8 @@ class GuzzleRequest
 
         $self->requests = $requests;
         $self->requestCount = count($requests);
-        $self->responses = collect([]);
-        $self->responsesFailed = collect([]);
+        $self->fullfilled = collect([]);
+        $self->rejected = collect([]);
 
         if ($self->options->poolable) {
             $res = $self->inParallels($requests);
@@ -52,8 +52,8 @@ class GuzzleRequest
             $res = $self->inSeries($requests);
         }
 
-        $self->responses = $res->get('fullfilled');
-        $self->responsesFailed = $res->get('rejected');
+        $self->fullfilled = $res->get('fullfilled');
+        $self->rejected = $res->get('rejected');
 
         return $self;
     }
@@ -61,22 +61,22 @@ class GuzzleRequest
     /**
      * @return Collection<string,Response>
      */
-    public function getResponses(): Collection
+    public function fullfilled(): Collection
     {
-        return $this->responses;
+        return $this->fullfilled;
     }
 
-    public function getSuccessCount(): int
+    public function fullfilledCount(): int
     {
-        return $this->successCount;
+        return $this->fullfilledCount;
     }
 
-    public function getFailedCount(): int
+    public function rejectedCount(): int
     {
-        return $this->failedCount;
+        return $this->rejectedCount;
     }
 
-    public function getRequestCount(): int
+    public function requestCount(): int
     {
         return $this->requestCount;
     }
@@ -84,9 +84,9 @@ class GuzzleRequest
     /**
      * @return Collection<string,mixed>
      */
-    public function getResponsesFailed(): Collection
+    public function rejected(): Collection
     {
-        return $this->responsesFailed;
+        return $this->rejected;
     }
 
     /**
@@ -101,10 +101,10 @@ class GuzzleRequest
         $guzzle = collect([]);
 
         /** @var Collection<int,Response> */
-        $responses = collect([]);
+        $fullfilled = collect([]);
 
         /** @var Collection<int,Response> */
-        $failed = collect([]);
+        $rejected = collect([]);
 
         foreach ($urls as $id => $url) {
             $client = new Client();
@@ -114,17 +114,17 @@ class GuzzleRequest
 
         foreach ($guzzle as $key => $value) {
             if ($value->getStatusCode() === 200) {
-                $responses->put($key, $value);
-                $this->successCount++;
+                $fullfilled->put($key, $value);
+                $this->fullfilledCount++;
             } else {
-                $failed->put($key, $value);
-                $this->failedCount++;
+                $rejected->put($key, $value);
+                $this->rejectedCount++;
             }
         }
 
         return collect([
-            'fullfilled' => $responses,
-            'rejected' => $failed,
+            'fullfilled' => $fullfilled,
+            'rejected' => $rejected,
         ]);
     }
 
@@ -225,28 +225,26 @@ class GuzzleRequest
         }
 
         /** @var Collection<int,?Response> */
-        $responses = collect([]);
+        $fullfilled = collect([]);
 
         /** @var Collection<int,?mixed> */
-        $responsesFailed = collect([]);
+        $rejected = collect([]);
 
         // Create GuzzleHttp pool.
         $pool = new Pool($client, $requests, [
             'concurrency' => $this->options->guzzleConcurrency,
-            'fulfilled' => function (Response $response, $index) use ($responses, $urls) {
-                // dump($response->getBody()->getContents());
+            'fulfilled' => function (Response $response, $index) use ($fullfilled, $urls) {
                 $response = $response->withHeader('Origin', $urls[$index] ?? null); // Add Origin header for URL
-                // $responses[$index] = $response;
-                $responses->put($index, $response);
+                $fullfilled->put($index, $response);
 
-                $this->successCount++;
+                $this->fullfilledCount++;
             },
-            'rejected' => function (mixed $reason, $index) use ($responses, $responsesFailed, $urls) {
+            'rejected' => function (mixed $reason, $index) use ($fullfilled, $rejected, $urls) {
                 Log::warning('HttpService: one request rejected', [$reason, $index, $urls[$index]]);
-                $responses->put($index, null);
-                $responsesFailed->put($index, $reason);
+                $fullfilled->put($index, null);
+                $rejected->put($index, $reason);
 
-                $this->failedCount++;
+                $this->rejectedCount++;
             },
         ]);
 
@@ -254,8 +252,8 @@ class GuzzleRequest
         $pool->promise()->wait();
 
         $res = collect([]);
-        $res->put('fullfilled', $responses);
-        $res->put('rejected', $responsesFailed);
+        $res->put('fullfilled', $fullfilled);
+        $res->put('rejected', $rejected);
 
         return $res;
     }

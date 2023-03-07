@@ -107,7 +107,7 @@ class GoogleBookQuery extends HttpModelQuery
             return $this;
         }
 
-        $body = $response->getBody();
+        $body = $response->body();
 
         if ($this->debug) {
             $this->print($response, 'gbooks');
