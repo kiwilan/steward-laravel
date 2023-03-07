@@ -132,7 +132,7 @@ class FactoryService
     //     return FactoryBuilder::make($this, $builder);
     // }
 
-    private function setFactoryText(FactoryTextEnum $type = FactoryTextEnum::lorem): FactoryText
+    private function setFactoryText(FactoryTextEnum $type = FactoryTextEnum::random): FactoryText
     {
         return new FactoryText($this, $type);
     }
