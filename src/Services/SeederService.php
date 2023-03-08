@@ -26,7 +26,7 @@ class SeederService
 
         $is_searchable = false;
 
-        if (method_exists($instance, 'search')) {
+        if (trait_exists($instance, 'Laravel\Scout\Searchable')) {
             $is_searchable = true;
         }
 

@@ -2,90 +2,27 @@
 
 namespace Kiwilan\Steward\Services;
 
+use Kiwilan\Steward\Services\Image\ColorThief;
+
 class ImageService
 {
     /**
      * Detecte dominant color of an image.
      */
-    public static function colorThief(mixed $image, $default_color = 'eee'): string
+    public static function colorThief(mixed $image, string $default_color = 'fff'): string
     {
-        return self::simple_color_thief($image, $default_color);
+        return ColorThief::make($image, $default_color)->color();
     }
 
     /**
      * Detect if an hexadecimal code is valid.
      */
-    public static function isHex(string $hexa_code): bool
-    {
-        return self::is_hex($hexa_code);
-    }
-
-    /**
-     * PHP Simple Color Thief
-     * ======================
-     * Detect the Dominant Color used in an Image
-     * Copyright 2019 Igor Gaffling.
-     *
-     * @param  mixed  $img
-     * @param  string  $default
-     * @return string
-     */
-    private static function simple_color_thief($img, $default = 'eee')
-    {
-        $default = 'fff';
-
-        try {
-            if (@exif_imagetype($img)) { // CHECK IF IT IS AN IMAGE
-                $type = getimagesize($img)[2]; // GET TYPE
-
-                if (1 === $type) { // GIF
-                    $image = imagecreatefromgif($img);
-                    // IF IMAGE IS TRANSPARENT (alpha=127) RETURN fff FOR WHITE
-                    if (127 == imagecolorsforindex($image, imagecolorstotal($image) - 1)['alpha']) {
-                        return $default;
-                    }
-                } elseif (2 === $type) { // JPG
-                    $image = imagecreatefromjpeg($img);
-                } elseif (3 === $type) { // PNG
-                    $image = imagecreatefrompng($img);
-                    // IF IMAGE IS TRANSPARENT (alpha=127) RETURN fff FOR WHITE
-                    if ((imagecolorat($image, 0, 0) >> 24) & 0x7F === 127) {
-                        return $default;
-                    }
-                } elseif (18 === $type) { // WEBP
-                    $image = imagecreatefromwebp($img);
-                    // IF IMAGE IS TRANSPARENT (alpha=127) RETURN fff FOR WHITE
-                    if ((imagecolorat($image, 0, 0) >> 24) & 0x7F === 127) {
-                        return $default;
-                    }
-                } else { // NO CORRECT IMAGE TYPE (GIF, JPG or PNG)
-                    return $default;
-                }
-            } else { // NOT AN IMAGE
-                return $default;
-            }
-
-            $newImg = imagecreatetruecolor(1, 1); // FIND DOMINANT COLOR
-            imagecopyresampled($newImg, $image, 0, 0, 0, 0, 1, 1, imagesx($image), imagesy($image));
-            $hexa_color = dechex(imagecolorat($newImg, 0, 0));
-
-            if (! self::is_hex($hexa_color)) {
-                $hexa_color = $default;
-            }
-
-            return $hexa_color; // RETURN HEX COLOR
-        } catch (\Throwable $th) {
-        }
-
-        return $default;
-    }
-
-    private static function is_hex($hex_code): bool
+    public static function isHex(string $hexadecimal): bool
     {
         $isHex = false;
 
         try {
-            $isHex = @preg_match('/^[a-f0-9]{2,}$/i', $hex_code) && ! (strlen($hex_code) & 1);
+            $isHex = @preg_match('/^[a-f0-9]{2,}$/i', $hexadecimal) && ! (strlen($hexadecimal) & 1);
         } catch (\Throwable $th) {
             // throw $th;
         }
