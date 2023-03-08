@@ -2,9 +2,11 @@
 
 namespace Kiwilan\Steward\Services;
 
+use Closure;
 use Faker\Generator;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
+use Kiwilan\Steward\Services\Class\ClassItem;
 use Kiwilan\Steward\Services\Factory\FactoryBuilder;
 use Kiwilan\Steward\Services\Factory\FactoryData;
 use Kiwilan\Steward\Services\Factory\FactoryDateTime;
@@ -59,6 +61,17 @@ class FactoryService
         $service->data = $service->setFactoryData();
 
         return $service;
+    }
+
+    public static function noSearch(string $model, Closure $closure): mixed
+    {
+        $item = ClassItem::make($model);
+
+        if (! $item->isModel() && ! $item->useTrait('Laravel\Scout\Searchable')) {
+            throw new \Exception("{$model} must be an instance of Illuminate\Database\Eloquent\Model and use Laravel\Scout\Searchable trait");
+        }
+
+        return $model::withoutSyncingToSearch(fn () => $closure());
     }
 
     public function useText(FactoryTextEnum $type = FactoryTextEnum::random): self
