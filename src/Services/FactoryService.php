@@ -93,6 +93,11 @@ class FactoryService
         return $this->mediaDownloader;
     }
 
+    public function data(): FactoryData
+    {
+        return $this->data;
+    }
+
     // private function builder(string $builder): array
     // {
     //     return FactoryBuilder::make($this, $builder);
