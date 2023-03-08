@@ -25,7 +25,7 @@
     "illuminate/support": "^9.0 || ^10.0",
     "livewire/livewire": "^2.10",
     "maatwebsite/excel": "^3.1",
-    "psr/simple-cache": "^2.0",
+    "psr/simple-cache": "^2.0 || ^3.0",
     "spatie/image": "^2.2",
     "spatie/laravel-package-tools": "^1.13",
     "spatie/laravel-query-builder": "^5.1",
