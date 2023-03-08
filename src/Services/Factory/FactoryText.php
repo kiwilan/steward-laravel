@@ -118,7 +118,7 @@ class FactoryText
             }
 
             if ($withImage && $this->factory->faker()->boolean(15)) {
-                $paragraph = "<a href=\"{$this->factory->faker()->imageUrl()}\" target=\"_blank\"><img src=\"{$this->factory->faker()->imageUrl()}\" alt=\"{$this->sentence()}\" /></a>";
+                $paragraph = "<a href=\"{$this->imageUrl()}\" target=\"_blank\"><img src=\"{$this->imageUrl()}\" alt=\"{$this->sentence()}\" /></a>";
             }
             $html .= "<p>{$paragraph}</p>";
         }
@@ -138,7 +138,7 @@ class FactoryText
         $italic_text = " *{$this->sentence()}* ";
         $code_text = " `{$this->words()}` ";
         $link_text = " [{$this->sentence()}]({$this->factory->faker()->url()}) ";
-        $image_text = "  ![{$this->sentence()}]({$this->factory->faker()->imageUrl()})  ";
+        $image_text = "  ![{$this->sentence()}]({$this->imageUrl()})  ";
 
         $html = [];
 
@@ -176,6 +176,11 @@ class FactoryText
         $html = preg_replace('/\s\s+/', ' ', $html);
 
         return implode('', $html);
+    }
+
+    public function imageUrl(): string
+    {
+        return config('steward.factory.seeds').'/api/pictures/random';
     }
 
     private function text(int|false $limit = 3, bool $asText = false): string

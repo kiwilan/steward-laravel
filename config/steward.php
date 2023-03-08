@@ -161,4 +161,8 @@ return [
         ],
         'path' => resource_path('js'),
     ],
+
+    'factory' => [
+        'seeds' => 'https://seeds.git-projects.xyz',
+    ],
 ];

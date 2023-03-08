@@ -29,8 +29,6 @@ class PictureDownloadProvider
     ) {
     }
 
-    const API_URL = 'https://seeds.git-projects.xyz/api';
-
     public static function make(PictureDownloadEnum $type = PictureDownloadEnum::all, ?int $count = null): self
     {
         $self = new self(
@@ -64,7 +62,8 @@ class PictureDownloadProvider
      */
     private function setItems()
     {
-        $apiBaseURL = self::API_URL.'/pictures';
+        $apiURL = config('steward.factory.seeds').'/api';
+        $apiBaseURL = "{$apiURL}/pictures";
         $count = $this->count ?? 1;
 
         $queryParams = [
