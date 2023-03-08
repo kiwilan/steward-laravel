@@ -9,9 +9,9 @@ class ImageService
     /**
      * Detecte dominant color of an image.
      */
-    public static function colorThief(mixed $image, string $default_color = 'fff'): string
+    public static function colorThief(mixed $image, string $default = 'fff'): string
     {
-        return ColorThief::make($image, $default_color)->color();
+        return ColorThief::make($image, $default)->color();
     }
 
     /**

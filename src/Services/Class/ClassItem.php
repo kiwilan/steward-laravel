@@ -122,6 +122,11 @@ class ClassItem
         return method_exists($this->instance, $method);
     }
 
+    public function propertyExists(string $property): bool
+    {
+        return property_exists($this->instance, $property);
+    }
+
     private function isPath(string $path): bool
     {
         if (file_exists($path)) {

@@ -6,6 +6,7 @@ use Faker\Generator;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\Factory\FactoryBuilder;
+use Kiwilan\Steward\Services\Factory\FactoryData;
 use Kiwilan\Steward\Services\Factory\FactoryDateTime;
 use Kiwilan\Steward\Services\Factory\FactoryMediaDownloader;
 use Kiwilan\Steward\Services\Factory\FactoryMediaLocal;
@@ -22,6 +23,7 @@ class FactoryService
         protected ?FactoryDateTime $dateTime = null,
         protected ?FactoryMediaLocal $mediaLocal = null,
         protected ?FactoryMediaDownloader $mediaDownloader = null,
+        protected ?FactoryData $data = null,
     ) {
     }
 
@@ -54,6 +56,7 @@ class FactoryService
         $service->dateTime = $service->setFactoryDate();
         $service->mediaLocal = $service->setFactoryMediaLocal($mediaPath);
         $service->mediaDownloader = $service->setFactoryMediaDownloader();
+        $service->data = $service->setFactoryData();
 
         return $service;
     }
@@ -117,5 +120,10 @@ class FactoryService
     private function setFactoryMediaDownloader(): FactoryMediaDownloader
     {
         return new FactoryMediaDownloader($this);
+    }
+
+    private function setFactoryData(): FactoryData
+    {
+        return new FactoryData($this);
     }
 }
