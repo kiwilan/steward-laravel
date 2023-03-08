@@ -2,72 +2,56 @@
 
 namespace Kiwilan\Steward\Services;
 
-use ReflectionClass;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
+use Kiwilan\Steward\Services\Class\ClassItem;
 use SplFileInfo;
-use Symfony\Component\Finder\Finder;
 
 class ClassService
 {
-    /** @var string[] */
-    protected array $traits = [];
+    /** @var Collection<int,ClassItem> */
+    protected ?Collection $items = null;
 
-    protected function __construct(
-        protected string $path,
-        protected ?string $name = null,
-        protected ?string $namespace = null,
-        protected ?string $extends = null,
-        protected ?string $implements = null,
-        protected mixed $instance = null,
-        protected ?ReflectionClass $reflect = null,
-    ) {
-    }
-
-    public static function make(string $path): self
+    /**
+     * @param  Collection<int,SplFileInfo|string>  $files
+     * @return Collection<int,ClassItem>
+     */
+    public static function make(Collection $files): Collection
     {
-        $self = new self($path);
+        $self = new self();
 
-        /** @var SplFileInfo[] */
-        $file = iterator_to_array(
-            Finder::create()->files()->path($path),
-            false
-        );
-        $current = current($file);
+        $self->items = $files->map(function ($file) {
+            $path = null;
 
-        $self->namespace = $self->setNamespace($current);
-
-        return $self;
-    }
-
-    public function namespace(): string
-    {
-        return $this->namespace;
-    }
-
-    public function reflect(): ReflectionClass
-    {
-        return $this->reflect;
-    }
-
-    private function setNamespace(SplFileInfo $file): string
-    {
-        $path = $file->getPathName();
-        $name = $file->getBasename('.php');
-
-        $ns = null;
-        $handle = fopen($path, 'r');
-
-        if ($handle) {
-            while (($line = fgets($handle)) !== false) {
-                if (strpos($line, 'namespace') === 0) {
-                    $parts = explode(' ', $line);
-                    $ns = rtrim(trim($parts[1]), ';');
-
-                    break;
-                }
+            if ($file instanceof SplFileInfo) {
+                $path = $file->getPathname();
+            } elseif (is_string($file)) {
+                $path = $file;
             }
-            fclose($handle);
-        }
 
-        return "{$ns}\\{$name}";
+            return ClassItem::make($path);
+        });
+
+        return $self->items;
+    }
+
+    /**
+     * @return Collection<int,SplFileInfo>
+     */
+    public static function files(string $path): Collection
+    {
+        /** @var Collection<int,SplFileInfo> */
+        $files = collect(File::allFiles($path));
+
+        /** @var Collection<int,SplFileInfo> */
+        $classFiles = collect();
+
+        $files->map(function ($file) use ($classFiles) {
+            if ($file->getExtension() === 'php') {
+                $classFiles->push($file);
+            }
+        });
+
+        return $classFiles;
     }
 }

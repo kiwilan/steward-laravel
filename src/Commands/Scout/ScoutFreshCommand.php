@@ -5,11 +5,9 @@ namespace Kiwilan\Steward\Commands\Scout;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Commands\CommandSteward;
+use Kiwilan\Steward\Services\Class\ClassItem;
 use Kiwilan\Steward\Services\ClassService;
-use ReflectionClass;
-use SplFileInfo;
 
 class ScoutFreshCommand extends CommandSteward
 {
@@ -27,9 +25,11 @@ class ScoutFreshCommand extends CommandSteward
      */
     protected $description = 'Manage models to search engine with Laravel Scout.';
 
-    protected $models = [];
+    /** @var Collection<int,ClassItem> */
+    protected ?Collection $models = null;
 
-    protected $scout = [];
+    /** @var array<string,string> */
+    protected array $scout = [];
 
     /**
      * Execute the console command.
@@ -40,16 +40,13 @@ class ScoutFreshCommand extends CommandSteward
     {
         $this->title();
 
-        $configAuto = (bool) config('steward.scoutable.auto');
-        $configList = (array) config('steward.scoutable.models');
+        $this->models = collect([]);
+        $this->findModels();
 
-        if ($configAuto) {
-            $this->models = $this->findModels();
-        } else {
-            $this->models = $configList;
-        }
-
-        $this->info('Models to search engine: '.implode(', ', $this->models));
+        $list = $this->models->map(fn ($model) => $model->name())
+            ->toArray()
+        ;
+        $this->info('Models to search engine: '.implode(', ', $list));
         $this->newLine();
 
         foreach ($this->models as $model) {
@@ -67,47 +64,34 @@ class ScoutFreshCommand extends CommandSteward
         return Command::SUCCESS;
     }
 
-    private function findModels(): array
+    /**
+     * Find all models with trait Searchable.
+     */
+    private function findModels()
     {
-        $path = app_path('Models');
+        $files = ClassService::files(app_path('Models'));
+        $items = ClassService::make($files);
 
-        /** @var Collection<int,SplFileInfo> */
-        $files = collect(File::allFiles($path));
-
-        /** @var Collection<int,SplFileInfo> */
-        $filesModels = collect();
-
-        $files->map(function ($file) use ($filesModels) {
-            if ($file->getExtension() === 'php') {
-                $filesModels->push($file);
-            }
-        });
-
-        $models = [];
-
-        foreach ($filesModels as $file) {
-            $service = ClassService::make($file->getPath());
-            $namespace = $service->namespace();
-            $class = new $namespace();
-            $traits = class_uses($class);
-
-            if (in_array('Laravel\Scout\Searchable', $traits)) {
-                $models[] = $namespace;
+        foreach ($items as $item) {
+            if ($item->useTrait('Laravel\Scout\Searchable')) {
+                $this->models->push($item);
             }
         }
-
-        return $models;
     }
 
-    private function scoutName(string $model)
+    private function scoutName(ClassItem $model)
     {
-        $instance = new $model();
-        $class = new ReflectionClass($instance);
-        $name = $class->getName();
+        $instance = $model->instance();
+        $name = $model->namespace();
         $name = str_replace('\\', '\\\\', $name);
 
-        if (method_exists($instance, 'searchableAs')) {
+        if ($model->methodExists('searchableAs')) {
             $this->scout[$name] = $instance->searchableAs();
+        } else {
+            if ($model->isModel()) {
+                $tableName = $model->model()->getTable();
+                $this->scout[$name] = $tableName;
+            }
         }
     }
 

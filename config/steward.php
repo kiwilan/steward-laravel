@@ -18,36 +18,6 @@ return [
     ],
 
     /*
-    |--------------------------------------------------------------------------
-    | Steward publishable
-    |--------------------------------------------------------------------------
-    |
-    | For `publish:scheduled` command, set here all models with `Publishable` trait.
-    |
-    */
-
-    'publishable' => [
-        'models' => [
-            // \App\Models\Example::class,
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Steward scoutable
-    |--------------------------------------------------------------------------
-    |
-    | For `scout:fresh` command, set here all models with `Searchable` trait.
-    |
-    */
-
-    'scoutable' => [
-        'auto' => true,
-        'models' => [
-            // \App\Models\Example::class,
-        ],
-    ],
-
     /*
     |--------------------------------------------------------------------------
     | Steward scoutable
@@ -58,10 +28,6 @@ return [
     */
 
     'mediable' => [
-        'models' => [
-            // \App\Models\Example::class,
-        ],
-        'default' => false,
         'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'],
     ],
 
