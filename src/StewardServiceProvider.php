@@ -43,7 +43,6 @@ class StewardServiceProvider extends PackageServiceProvider
             ->name('steward')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_steward-laravel_table')
             ->hasTranslations()
             ->hasCommands([
                 FilamentConfigCommand::class,

@@ -1,97 +1,92 @@
 {
-  "name": "kiwilan/steward-laravel",
-  "description": "PHP utility package for Laravel.",
-  "version": "0.1.0",
-  "keywords": [
-    "kiwilan",
-    "laravel",
-    "steward-laravel"
-  ],
-  "homepage": "https://github.com/kiwilan/steward-laravel",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Ewilan Rivière",
-      "email": "ewilan.riviere@gmail.com",
-      "role": "Developer"
-    }
-  ],
-  "require": {
-    "php": "^8.1",
-    "filament/spatie-laravel-settings-plugin": "^2.16",
-    "guzzlehttp/guzzle": "^7.5",
-    "illuminate/contracts": "^9.0 || ^10.0",
-    "illuminate/database": "^9.0 || ^10.0",
-    "illuminate/support": "^9.0 || ^10.0",
-    "livewire/livewire": "^2.10",
-    "maatwebsite/excel": "^3.1",
-    "psr/simple-cache": "^2.0 || ^3.0",
-    "spatie/image": "^2.2",
-    "spatie/laravel-package-tools": "^1.13",
-    "spatie/laravel-query-builder": "^5.1",
-    "spatie/laravel-settings": "^2.6"
-  },
-  "require-dev": {
-    "filament/filament": "^2.16",
-    "friendsofphp/php-cs-fixer": "^3.13",
-    "knuckleswtf/scribe": "^4.10",
-    "laravel/pint": "^1.0",
-    "nunomaduro/collision": "^6.0",
-    "nunomaduro/larastan": "^2.0.1",
-    "orchestra/testbench": "^7.0",
-    "pestphp/pest": "^1.21",
-    "pestphp/pest-plugin-laravel": "^1.1",
-    "pestphp/pest-plugin-mock": "^1.0",
-    "phpro/grumphp": "^1.14",
-    "phpstan/extension-installer": "^1.1",
-    "phpstan/phpstan-deprecation-rules": "^1.0",
-    "phpstan/phpstan-phpunit": "^1.0",
-    "phpunit/phpunit": "^9.5",
-    "spatie/laravel-ray": "^1.26"
-  },
-  "autoload": {
-    "psr-4": {
-      "Kiwilan\\Steward\\": "src",
-      "Kiwilan\\Steward\\Database\\Factories\\": "database/factories"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Kiwilan\\Steward\\Tests\\": "tests"
-    }
-  },
-  "scripts": {
-    "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
-    "analyse": "vendor/bin/phpstan analyse",
-    "test": "vendor/bin/pest",
-    "test-coverage": "vendor/bin/pest --coverage",
-    "format": "vendor/bin/pint",
-    "grumphp": "./vendor/bin/grumphp run",
-    "test:watch": [
-      "Composer\\Config::disableProcessTimeout",
-      "phpunit-watcher watch < /dev/tty"
-    ]
-  },
-  "config": {
-    "sort-packages": true,
-    "allow-plugins": {
-      "pestphp/pest-plugin": true,
-      "phpstan/extension-installer": true,
-      "phpro/grumphp": true
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Kiwilan\\Steward\\StewardServiceProvider",
-        "Maatwebsite\\Excel\\ExcelServiceProvider"
-      ],
-      "aliases": {
-        "Steward": "Kiwilan\\Steward\\Facades\\Steward",
-        "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
-      }
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "name": "kiwilan/steward-laravel",
+    "description": "PHP utility package for Laravel.",
+    "version": "0.1.001",
+    "keywords": [
+        "kiwilan",
+        "laravel",
+        "steward-laravel"
+    ],
+    "homepage": "https://github.com/kiwilan/steward-laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ewilan Rivière",
+            "email": "ewilan.riviere@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "filament/spatie-laravel-settings-plugin": "^2.16",
+        "guzzlehttp/guzzle": "^7.5",
+        "illuminate/contracts": "^9.0 || ^10.0",
+        "illuminate/database": "^9.0 || ^10.0",
+        "illuminate/support": "^9.0 || ^10.0",
+        "livewire/livewire": "^2.10",
+        "maatwebsite/excel": "^3.1",
+        "psr/simple-cache": "^2.0 || ^3.0",
+        "spatie/image": "^2.2",
+        "spatie/laravel-package-tools": "^1.14.0",
+        "spatie/laravel-query-builder": "^5.1",
+        "spatie/laravel-settings": "^2.6"
+    },
+    "require-dev": {
+        "filament/filament": "^2.17",
+        "knuckleswtf/scribe": "^4.16",
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.9",
+        "nunomaduro/larastan": "^2.0.1",
+        "orchestra/testbench": "^8.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-arch": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "spatie/laravel-ray": "^1.26"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kiwilan\\Steward\\": "src",
+            "Kiwilan\\Steward\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kiwilan\\Steward\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint",
+        "test:watch": [
+            "Composer\\Config::disableProcessTimeout",
+            "phpunit-watcher watch < /dev/tty"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kiwilan\\Steward\\StewardServiceProvider",
+                "Maatwebsite\\Excel\\ExcelServiceProvider"
+            ],
+            "aliases": {
+                "Steward": "Kiwilan\\Steward\\Facades\\Steward",
+                "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

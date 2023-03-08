@@ -2,9 +2,9 @@ name: PHPStan
 
 on:
   push:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   phpstan:
@@ -23,4 +23,4 @@ jobs:
         uses: ramsey/composer-install@v2
 
       - name: Run PHPStan
-        run: ./vendor/bin/phpstan --error-format=github
+        run: ./vendor/bin/phpstan

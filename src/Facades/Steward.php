@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Kiwilan\Steward
+ * @see \Kiwilan\Steward\Steward
  */
 class Steward extends Facade
 {
