@@ -35,9 +35,11 @@ class MediaProvider
 
     private function setApi(): MediaApi
     {
-        return match ($this->type) {
-            // MediaApiEnum::seeds => SeedsApi::make(),
-            default => SeedsApi::make(),
-        };
+        // return match ($this->type) {
+        //     MediaApiEnum::seeds => SeedsApi::make(),
+        //     default => SeedsApi::make(),
+        // };
+
+        return SeedsApi::make();
     }
 }
