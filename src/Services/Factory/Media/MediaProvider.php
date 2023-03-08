@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Services\Factory\Media;
 use Kiwilan\Steward\Enums\Api\MediaApiEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
-use Kiwilan\Steward\Services\Api\Seeds\MediaApi;
+use Kiwilan\Steward\Services\Api\MediaApi;
 use Kiwilan\Steward\Services\Api\Seeds\SeedsApi;
 
 class MediaProvider
@@ -32,13 +32,6 @@ class MediaProvider
 
         return $this->api;
     }
-
-    // public function medias(): Collection
-    // {
-    //     return $this->files->map(function ($file) {
-    //         return $file->body();
-    //     });
-    // }
 
     private function setApi(): MediaApi
     {

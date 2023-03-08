@@ -133,7 +133,7 @@ class HttpResponse
     /**
      * Body as `array`.
      */
-    public function array(): ?array
+    public function toArray(): ?array
     {
         return json_decode(json_encode($this->body() ?? []), true);
     }
@@ -144,7 +144,7 @@ class HttpResponse
     public function bodyKeyExists(string $key): bool
     {
         try {
-            return array_key_exists($key, $this->array());
+            return array_key_exists($key, $this->toArray());
         } catch (\Throwable $th) {
             return false;
         }
@@ -155,7 +155,7 @@ class HttpResponse
      */
     public function bodyRecursiveKeyExists(string $key): bool
     {
-        return $this->keyExists($this->array(), $key);
+        return $this->keyExists($this->toArray(), $key);
     }
 
     /**
@@ -163,7 +163,7 @@ class HttpResponse
      */
     public function bodyRecursiveKeyFind(string $key): ?string
     {
-        return $this->keyFind($this->array(), $key);
+        return $this->keyFind($this->toArray(), $key);
     }
 
     private function isValidXml(string $contents): bool

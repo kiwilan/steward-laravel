@@ -22,58 +22,48 @@ class SeedsPictureResponse
     /**
      * @return SeedsPictureResponse[]
      */
-    public static function make(array $data): array
+    public static function convertList(array $data)
     {
+        $data = $data['data'];
+
         /** @var SeedsPictureResponse[] */
-        $dataItems = [];
+        $items = [];
 
         foreach ($data as $item) {
-            $dataItems[] = new self(
-                $item['filename'],
-                $item['extension'],
-                $item['sizeRender'],
-                $item['pathFilename'],
-                $item['id'],
-                $item['category'],
-                $item['size'],
-                $item['sizeHuman'],
-                $item['date'],
-                new SeedsPictureResponseCredits(
-                    $item['credits']['provider'],
-                    $item['credits']['author'],
-                    $item['credits']['url'],
-                ),
-                new SeedsPictureResponseLinks(
-                    $item['links']['show'],
-                    $item['links']['render'],
-                ),
-            );
+            $items[] = self::convertItem($item);
         }
 
-        return $dataItems;
+        return $items;
     }
 
-    public static function makeFromObject(object $data): self
+    public static function convertItem(array $item): self
     {
+        if (array_key_exists('data', $item)) {
+            $item = $item['data'];
+        }
+
+        $credits = new SeedsPictureResponseCredits(
+            $item['credits']['provider'],
+            $item['credits']['author'],
+            $item['credits']['url'],
+        );
+        $links = new SeedsPictureResponseLinks(
+            $item['links']['show'],
+            $item['links']['render'],
+        );
+
         return new self(
-            $data->filename,
-            $data->extension,
-            $data->sizeRender,
-            $data->pathFilename,
-            $data->id,
-            $data->category,
-            $data->size,
-            $data->sizeHuman,
-            $data->date,
-            new SeedsPictureResponseCredits(
-                $data->credits->provider,
-                $data->credits->author,
-                $data->credits->url,
-            ),
-            new SeedsPictureResponseLinks(
-                $data->links->show,
-                $data->links->render,
-            ),
+            $item['filename'],
+            $item['extension'],
+            $item['sizeRender'],
+            $item['pathFilename'],
+            $item['id'],
+            $item['category'],
+            $item['size'],
+            $item['sizeHuman'],
+            $item['date'],
+            $credits,
+            $links,
         );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Api\Seeds;
+namespace Kiwilan\Steward\Services\Api;
 
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Services\Http\HttpResponse;

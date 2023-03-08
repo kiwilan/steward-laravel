@@ -4,6 +4,7 @@ namespace Kiwilan\Steward\Services\Factory;
 
 use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
+use Kiwilan\Steward\Services\Api\Seeds\SeedsApi;
 use Kiwilan\Steward\Services\Factory\Text\MeaningProvider;
 use Kiwilan\Steward\Services\Factory\Text\TextProvider;
 use Kiwilan\Steward\Services\FactoryService;
@@ -180,7 +181,9 @@ class FactoryText
 
     public function imageUrl(): string
     {
-        return config('steward.factory.seeds').'/api/pictures/random';
+        return SeedsApi::make()
+            ->fetchPictureRandomUrl()
+        ;
     }
 
     private function text(int|false $limit = 3, bool $asText = false): string
