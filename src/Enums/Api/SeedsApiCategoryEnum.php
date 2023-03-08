@@ -1,8 +1,8 @@
 <?php
 
-namespace Kiwilan\Steward\Enums;
+namespace Kiwilan\Steward\Enums\Api;
 
-enum PictureDownloadEnum: string
+enum SeedsApiCategoryEnum: string
 {
     case animal = 'animal';
 

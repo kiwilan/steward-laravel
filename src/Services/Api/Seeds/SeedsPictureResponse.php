@@ -1,8 +1,8 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory\Media;
+namespace Kiwilan\Steward\Services\Api\Seeds;
 
-class PictureDownloadItem
+class SeedsPictureResponse
 {
     public function __construct(
         public string $filename,
@@ -14,17 +14,17 @@ class PictureDownloadItem
         public string $size,
         public string $sizeHuman,
         public string $date,
-        public PictureDownloadItemCredits $credits,
-        public PictureDownloadItemLinks $links,
+        public SeedsPictureResponseCredits $credits,
+        public SeedsPictureResponseLinks $links,
     ) {
     }
 
     /**
-     * @return PictureDownloadItem[]
+     * @return SeedsPictureResponse[]
      */
     public static function make(array $data): array
     {
-        /** @var PictureDownloadItem[] */
+        /** @var SeedsPictureResponse[] */
         $dataItems = [];
 
         foreach ($data as $item) {
@@ -38,12 +38,12 @@ class PictureDownloadItem
                 $item['size'],
                 $item['sizeHuman'],
                 $item['date'],
-                new PictureDownloadItemCredits(
+                new SeedsPictureResponseCredits(
                     $item['credits']['provider'],
                     $item['credits']['author'],
                     $item['credits']['url'],
                 ),
-                new PictureDownloadItemLinks(
+                new SeedsPictureResponseLinks(
                     $item['links']['show'],
                     $item['links']['render'],
                 ),
@@ -65,12 +65,12 @@ class PictureDownloadItem
             $data->size,
             $data->sizeHuman,
             $data->date,
-            new PictureDownloadItemCredits(
+            new SeedsPictureResponseCredits(
                 $data->credits->provider,
                 $data->credits->author,
                 $data->credits->url,
             ),
-            new PictureDownloadItemLinks(
+            new SeedsPictureResponseLinks(
                 $data->links->show,
                 $data->links->render,
             ),
@@ -78,7 +78,7 @@ class PictureDownloadItem
     }
 }
 
-class PictureDownloadItemCredits
+class SeedsPictureResponseCredits
 {
     public function __construct(
         public string $provider,
@@ -88,7 +88,7 @@ class PictureDownloadItemCredits
     }
 }
 
-class PictureDownloadItemLinks
+class SeedsPictureResponseLinks
 {
     public function __construct(
         public string $show,

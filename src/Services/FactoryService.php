@@ -5,7 +5,6 @@ namespace Kiwilan\Steward\Services;
 use Faker\Generator;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
-use Kiwilan\Steward\Enums\PictureDownloadEnum;
 use Kiwilan\Steward\Services\Factory\FactoryBuilder;
 use Kiwilan\Steward\Services\Factory\FactoryDateTime;
 use Kiwilan\Steward\Services\Factory\FactoryMediaDownloader;
@@ -23,7 +22,6 @@ class FactoryService
         protected ?FactoryDateTime $dateTime = null,
         protected ?FactoryMediaLocal $mediaLocal = null,
         protected ?FactoryMediaDownloader $mediaDownloader = null,
-        protected PictureDownloadEnum $type = PictureDownloadEnum::all,
     ) {
     }
 
@@ -60,37 +58,9 @@ class FactoryService
         return $service;
     }
 
-    public function useTextLorem(): self
+    public function useText(FactoryTextEnum $type = FactoryTextEnum::random): self
     {
-        $this->text = $this->setFactoryText(FactoryTextEnum::lorem);
-
-        return $this;
-    }
-
-    public function useTextSindarin(): self
-    {
-        $this->text = $this->setFactoryText(FactoryTextEnum::sindarin);
-
-        return $this;
-    }
-
-    public function useTextKlingon(): self
-    {
-        $this->text = $this->setFactoryText(FactoryTextEnum::klingon);
-
-        return $this;
-    }
-
-    public function useTextNavi(): self
-    {
-        $this->text = $this->setFactoryText(FactoryTextEnum::navi);
-
-        return $this;
-    }
-
-    public function useTextRamdom(): self
-    {
-        $this->text = $this->setFactoryText(FactoryTextEnum::random);
+        $this->text = $this->setFactoryText($type);
 
         return $this;
     }
@@ -115,16 +85,9 @@ class FactoryService
         return $this->mediaLocal;
     }
 
-    public function mediaDownloader(PictureDownloadEnum $type = PictureDownloadEnum::all)
+    public function mediaDownloader(): FactoryMediaDownloader
     {
-        $this->type = $type;
-
         return $this->mediaDownloader;
-    }
-
-    public function mediaDownloaderType(): PictureDownloadEnum
-    {
-        return $this->type;
     }
 
     // private function builder(string $builder): array
