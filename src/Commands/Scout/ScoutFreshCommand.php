@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Commands\Scout;
 
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Kiwilan\Steward\Commands\CommandSteward;
@@ -16,20 +17,23 @@ class ScoutFreshCommand extends CommandSteward
      *
      * @var string
      */
-    protected $signature = 'scout:fresh';
+    protected $signature = 'scout:fresh
+                            {--ls|list : List all models to search engine.}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Manage models to search engine with Laravel Scout.';
+    protected $description = 'Steward addon, flush all indexes and reimport models to search engine with Laravel Scout.';
 
     /** @var Collection<int,ClassItem> */
     protected ?Collection $models = null;
 
     /** @var array<string,string> */
     protected array $scout = [];
+
+    protected bool $list = false;
 
     /**
      * Execute the console command.
@@ -39,6 +43,8 @@ class ScoutFreshCommand extends CommandSteward
     public function handle()
     {
         $this->title();
+
+        $this->list = $this->option('list') ?? false;
 
         $this->models = collect([]);
         $this->findModels();
@@ -51,6 +57,15 @@ class ScoutFreshCommand extends CommandSteward
 
         foreach ($this->models as $model) {
             $this->scoutName($model);
+        }
+
+        if ($this->list) {
+            $this->table(
+                ['Name', 'Email'],
+                User::all(['name', 'email'])->toArray()
+            );
+
+            return Command::SUCCESS;
         }
 
         try {
