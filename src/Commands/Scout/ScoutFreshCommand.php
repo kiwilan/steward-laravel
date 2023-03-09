@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Commands\Scout;
 
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Kiwilan\Steward\Commands\CommandSteward;
@@ -18,7 +17,7 @@ class ScoutFreshCommand extends CommandSteward
      * @var string
      */
     protected $signature = 'scout:fresh
-                            {--ls|list : List all models to search engine.}';
+                            {--l|list : List all models to search engine.}';
 
     /**
      * The console command description.
@@ -46,26 +45,29 @@ class ScoutFreshCommand extends CommandSteward
 
         $this->list = $this->option('list') ?? false;
 
-        $this->models = collect([]);
-        $this->findModels();
+        $this->models = $this->findModels();
 
-        $list = $this->models->map(fn ($model) => $model->name())
-            ->toArray()
-        ;
-        $this->info('Models to search engine: '.implode(', ', $list));
+        $list = [];
+
+        foreach ($this->models as $model) {
+            $list[] = [
+                'Model' => $model->name(),
+                'Index' => $this->getIndexName($model),
+            ];
+        }
+        $this->table(
+            ['Model', 'Index'],
+            $list,
+        );
+
+        if ($this->list) {
+            return Command::SUCCESS;
+        }
+
         $this->newLine();
 
         foreach ($this->models as $model) {
             $this->scoutName($model);
-        }
-
-        if ($this->list) {
-            $this->table(
-                ['Name', 'Email'],
-                User::all(['name', 'email'])->toArray()
-            );
-
-            return Command::SUCCESS;
         }
 
         try {
@@ -81,17 +83,23 @@ class ScoutFreshCommand extends CommandSteward
 
     /**
      * Find all models with trait Searchable.
+     *
+     * @return Collection<int,ClassItem>
      */
-    private function findModels()
+    private function findModels(): Collection
     {
+        $models = collect([]);
+
         $files = ClassService::files(app_path('Models'));
         $items = ClassService::make($files);
 
         foreach ($items as $item) {
             if ($item->useTrait('Laravel\Scout\Searchable')) {
-                $this->models->push($item);
+                $models->push($item);
             }
         }
+
+        return $models;
     }
 
     private function scoutName(ClassItem $model)
@@ -100,14 +108,20 @@ class ScoutFreshCommand extends CommandSteward
         $name = $model->namespace();
         $name = str_replace('\\', '\\\\', $name);
 
+        $this->scout[$name] = $this->getIndexName($model);
+    }
+
+    private function getIndexName(ClassItem $model): string
+    {
         if ($model->methodExists('searchableAs')) {
-            $this->scout[$name] = $instance->searchableAs();
+            return $model->instance()->searchableAs();
         } else {
             if ($model->isModel()) {
-                $tableName = $model->model()->getTable();
-                $this->scout[$name] = $tableName;
+                return $model->model()->getTable();
             }
         }
+
+        throw new \Exception('Model '.$model->name().' not have searchableAs() method.');
     }
 
     private function freshModels()
