@@ -11,15 +11,16 @@ use ReflectionClass;
  * Create a `searchableAs` method in your model to return `APP_NAME` and Model's name slugify.
  *
  * ```php
- * public function searchableAs()
- * {
- *    return $this->searchableNameAs();
+ * class MyModel extends Model {
+ *   use HasSearchableName, Searchable {
+ *      HasSearchableName::searchableAs insteadof Searchable;
+ *   }
  * }
  * ```
  */
 trait HasSearchableName
 {
-    public function searchableNameAs()
+    public function searchableNameAs(): string
     {
         $instance = new $this();
         $class = new ReflectionClass($instance);
@@ -30,8 +31,13 @@ trait HasSearchableName
         return Str::slug("{$appname} {$name}", '_');
     }
 
-    public function isSearchable()
+    public function isSearchable(): bool
     {
         return method_exists($this, 'searchableAs');
+    }
+
+    public function searchableAs()
+    {
+        return $this->searchableNameAs();
     }
 }
