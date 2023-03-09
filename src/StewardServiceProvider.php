@@ -117,5 +117,13 @@ class StewardServiceProvider extends PackageServiceProvider
         Blade::directive('darkMode', function ($expression) {
             return '{!! Kiwilan\Steward\Facades\DarkMode::embed('.$expression.') !!}';
         });
+
+        Blade::directive('loop', function ($expression) {
+            return "<?php foreach ({$expression}): ?>";
+        });
+
+        Blade::directive('endloop', function ($expression) {
+            return '<?php endforeach; ?>';
+        });
     }
 }
