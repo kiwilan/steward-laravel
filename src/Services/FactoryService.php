@@ -12,6 +12,7 @@ use Kiwilan\Steward\Services\Factory\FactoryData;
 use Kiwilan\Steward\Services\Factory\FactoryDateTime;
 use Kiwilan\Steward\Services\Factory\FactoryMediaDownloader;
 use Kiwilan\Steward\Services\Factory\FactoryMediaLocal;
+use Kiwilan\Steward\Services\Factory\FactoryRichText;
 use Kiwilan\Steward\Services\Factory\FactoryText;
 use Kiwilan\Steward\Services\Http\HttpResponse;
 
@@ -23,6 +24,7 @@ class FactoryService
     public function __construct(
         protected Generator $faker,
         protected ?FactoryText $text = null,
+        protected ?FactoryRichText $richText = null,
         protected ?FactoryDateTime $dateTime = null,
         protected ?FactoryMediaLocal $mediaLocal = null,
         protected ?FactoryMediaDownloader $mediaDownloader = null,
@@ -56,6 +58,7 @@ class FactoryService
         $faker = \Faker\Factory::create();
         $service = new FactoryService($faker);
         $service->text = $service->setFactoryText();
+        $service->richText = $service->setFactoryRichText();
         $service->dateTime = $service->setFactoryDate();
         $service->mediaLocal = $service->setFactoryMediaLocal($mediaPath);
         $service->mediaDownloader = $service->setFactoryMediaDownloader();
@@ -78,6 +81,7 @@ class FactoryService
     public function useText(?FactoryTextEnum $type = null): self
     {
         $this->text = $this->setFactoryText($type);
+        $this->richText = $this->setFactoryRichText($type);
 
         return $this;
     }
@@ -90,6 +94,11 @@ class FactoryService
     public function text()
     {
         return $this->text;
+    }
+
+    public function richText()
+    {
+        return $this->richText;
     }
 
     public function dateTime()
@@ -124,6 +133,14 @@ class FactoryService
         $type = $type ?? config('steward.factory.text');
 
         return new FactoryText($this, $type);
+    }
+
+    private function setFactoryRichText(?FactoryTextEnum $type = null): FactoryRichText
+    {
+        $type = $type ?? config('steward.factory.text');
+        $text = $this->setFactoryText($type);
+
+        return new FactoryRichText($this, $type, $text);
     }
 
     private function setFactoryDate(): FactoryDateTime

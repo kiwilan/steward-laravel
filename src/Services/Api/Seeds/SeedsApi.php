@@ -100,7 +100,7 @@ class SeedsApi implements MediaApi
         return $http->responses();
     }
 
-    public function fetchPictureRandom(): HttpResponse
+    public function fetchPictureRandom(): FetchService
     {
         $apiBaseURL = "{$this->api}/pictures/random";
 
@@ -111,15 +111,14 @@ class SeedsApi implements MediaApi
 
         $apiURL = "{$apiBaseURL}?".http_build_query($queryParams);
 
-        $http = HttpService::make([$apiURL])->execute();
-
-        return $http->responses()->first();
+        return FetchService::request($apiURL);
     }
 
     public function fetchPictureRandomUrl(): string
     {
         $data = SeedsRandomUrls::get();
+        $url = $data[array_rand($data)];
 
-        return $data[array_rand($data)];
+        return "{$url}?size=small";
     }
 }
