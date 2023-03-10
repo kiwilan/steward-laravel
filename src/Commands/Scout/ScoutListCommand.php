@@ -5,6 +5,7 @@ namespace Kiwilan\Steward\Commands\Scout;
 use Illuminate\Console\Command;
 use Kiwilan\Steward\Commands\CommandSteward;
 use Kiwilan\Steward\Services\ScoutService;
+use Kiwilan\Steward\Services\TerminalService;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'scout:list')]
@@ -34,6 +35,9 @@ class ScoutListCommand extends CommandSteward
         $this->title();
 
         $scout = ScoutService::make();
+
+        // $terminal = TerminalService::make($this->output->isVerbose());
+        // $this->output->writeln($terminal->output());
 
         $list = [];
 

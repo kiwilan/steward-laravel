@@ -2,8 +2,10 @@
 
 namespace Kiwilan\Steward\Services;
 
+use Illuminate\Routing\ViewController;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use ReflectionClass;
 use Symfony\Component\Console\Terminal;
 
 class TerminalService
@@ -31,10 +33,12 @@ class TerminalService
     ) {
     }
 
-    public static function make(): self
+    public static function make(bool $verbose = false): self
     {
         $self = new self();
 
+        $self->list = collect([]);
+        $self->verbose = $verbose;
         $self->terminalWidth = $self->setTerminalWidth();
         $self->countOutput = $self->setCountOutput();
         $self->output = $self->setStyle();
@@ -58,7 +62,7 @@ class TerminalService
         $routes = collect([
             [
                 'domain' => 'domain',
-                'method' => 'method',
+                'method' => 'GET',
                 'uri' => 'uri',
                 'name' => 'name',
                 'action' => 'action',
@@ -68,11 +72,9 @@ class TerminalService
 
         $routes = $routes->map(
             fn ($route) => array_merge($route, [
-                // 'action' => $this->formatActionForCli($route),
-                // 'method' => $route['method'] == 'GET|HEAD|POST|PUT|PATCH|DELETE|OPTIONS' ? 'ANY' : $route['method'],
+                'action' => $this->formatActionForCli($route),
+                'method' => $route['method'] == 'GET|HEAD|POST|PUT|PATCH|DELETE|OPTIONS' ? 'ANY' : $route['method'],
                 // 'uri' => $route['domain'] ? ($route['domain'].'/'.ltrim($route['uri'], '/')) : $route['uri'],
-                'action' => 'action',
-                'method' => 'method',
                 'uri' => 'uri',
             ]),
         );
@@ -125,6 +127,39 @@ class TerminalService
             ->push('')->push($this->countOutput)->push('')
             ->toArray()
         ;
+    }
+
+    /**
+     * Get the formatted action for display on the CLI.
+     *
+     * @param  array  $route
+     * @return string
+     */
+    private function formatActionForCli($route)
+    {
+        ['action' => $action, 'name' => $name] = $route;
+
+        if ($action === 'Closure' || $action === ViewController::class) {
+            return $name;
+        }
+
+        $name = $name ? "$name   " : null;
+
+        $rootControllerNamespace = 'App\\Http\\Controllers';
+
+        if (str_starts_with($action, $rootControllerNamespace)) {
+            return $name.substr($action, mb_strlen($rootControllerNamespace) + 1);
+        }
+
+        $actionClass = explode('@', $action)[0];
+
+        if (class_exists($actionClass) && str_starts_with((new ReflectionClass($actionClass))->getFilename(), base_path('vendor'))) {
+            $actionCollection = collect(explode('\\', $action));
+
+            return $name.$actionCollection->take(2)->implode('\\').'   '.$actionCollection->last();
+        }
+
+        return $name.$action;
     }
 
     /**
