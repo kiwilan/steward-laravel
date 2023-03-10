@@ -11,6 +11,4 @@ enum FactoryTextEnum: string
     case klingon = 'klingon';
 
     case navi = 'navi';
-
-    case random = 'random';
 }

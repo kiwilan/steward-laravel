@@ -1,5 +1,7 @@
 <?php
 
+use Kiwilan\Steward\Enums\FactoryTextEnum;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -20,11 +22,8 @@ return [
     /*
     /*
     |--------------------------------------------------------------------------
-    | Steward scoutable
+    | Steward mediable
     |--------------------------------------------------------------------------
-    |
-    | For `scout:fresh` command, set here all models with `Searchable` trait.
-    |
     */
 
     'mediable' => [
@@ -164,6 +163,7 @@ return [
     ],
 
     'factory' => [
+        'text' => FactoryTextEnum::lorem,
         'seeds' => 'https://seeds.git-projects.xyz',
     ],
 ];

@@ -16,7 +16,7 @@ class FactoryText
 {
     public function __construct(
         public FactoryService $factory,
-        public FactoryTextEnum $type = FactoryTextEnum::random,
+        public FactoryTextEnum $type = FactoryTextEnum::lorem,
     ) {
     }
 

@@ -75,7 +75,7 @@ class FactoryService
         return $model::withoutSyncingToSearch(fn () => $closure());
     }
 
-    public function useText(FactoryTextEnum $type = FactoryTextEnum::random): self
+    public function useText(?FactoryTextEnum $type = null): self
     {
         $this->text = $this->setFactoryText($type);
 
@@ -119,8 +119,10 @@ class FactoryService
     //     return FactoryBuilder::make($this, $builder);
     // }
 
-    private function setFactoryText(FactoryTextEnum $type = FactoryTextEnum::random): FactoryText
+    private function setFactoryText(?FactoryTextEnum $type = null): FactoryText
     {
+        $type = $type ?? config('steward.factory.text');
+
         return new FactoryText($this, $type);
     }
 
