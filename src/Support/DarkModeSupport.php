@@ -18,6 +18,7 @@ class DarkModeSupport
                     'dark' :
                     'light'
                 document.documentElement.classList.toggle(system, true)
+                localStorage.setItem('color-scheme', system)
             }
         </script>
         HTML;
