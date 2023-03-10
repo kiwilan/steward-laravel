@@ -35,16 +35,12 @@ trait Mediable
     /**
      * @return string|string[]|null
      */
-    public function mediable(?string $field = 'picture', bool $get_path = false): string|array|null
+    public function mediable(string $field = 'picture', bool $usePath = false): string|array|null
     {
-        if (! $field) {
-            return null;
-        }
-
         if (null === $this->{$field}) {
             return config('steward.media.default') ? config('steward.media.default') : null;
         }
-        $path = $get_path ? $field : $this->{$field};
+        $path = $usePath ? $field : $this->{$field};
 
         if (is_array($this->{$field})) {
             $list = [];
