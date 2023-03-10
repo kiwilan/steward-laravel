@@ -3,8 +3,8 @@
 namespace Kiwilan\Steward\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Kiwilan\Steward\Services\Query\SortModule;
 use Kiwilan\Steward\Services\QueryService;
-use Kiwilan\Steward\Services\QueryService\SortModule;
 use ReflectionClass;
 
 trait Filterable
