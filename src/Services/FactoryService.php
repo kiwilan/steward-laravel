@@ -13,6 +13,7 @@ use Kiwilan\Steward\Services\Factory\FactoryDateTime;
 use Kiwilan\Steward\Services\Factory\FactoryMediaDownloader;
 use Kiwilan\Steward\Services\Factory\FactoryMediaLocal;
 use Kiwilan\Steward\Services\Factory\FactoryText;
+use Kiwilan\Steward\Services\Http\HttpResponse;
 
 /**
  * Improve Faker Laravel factory service.
@@ -96,8 +97,10 @@ class FactoryService
         return $this->dateTime;
     }
 
-    public function mediaLocal()
+    public function mediaLocal(string $path)
     {
+        $this->mediaLocal->path = $path;
+
         return $this->mediaLocal;
     }
 
@@ -143,5 +146,40 @@ class FactoryService
     private function setFactoryData(): FactoryData
     {
         return new FactoryData($this);
+    }
+
+    public static function mediaFromResponse(?HttpResponse $response): ?string
+    {
+        if (! $response) {
+            return null;
+        }
+
+        $type = $response->metadata()->contentType();
+        $ext = explode('/', $type)[1];
+        $data = $response->body();
+
+        return FactoryService::saveFile($data, $ext);
+    }
+
+    public static function mediaFromFile(string $path): ?string
+    {
+        $data = File::get($path);
+        $ext = pathinfo($path)['extension'];
+
+        return FactoryService::saveFile($data, $ext);
+    }
+
+    private static function saveFile(string $data, string $ext = 'jpg'): string
+    {
+        $random_name = uniqid();
+        $path = public_path('storage/seeders');
+
+        if (! File::exists($path)) {
+            File::makeDirectory($path, 0755, true, true);
+        }
+        $name = "{$random_name}.{$ext}";
+        File::put("{$path}/{$name}", $data);
+
+        return "seeders/{$name}";
     }
 }

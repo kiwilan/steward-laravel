@@ -25,7 +25,10 @@ class Console
         return $service;
     }
 
-    public function print(string $message, string $color = 'green', Throwable $th = null): void
+    /**
+     * @param  string  $color Color can be black, red, green, yellow, blue, magenta, cyan, white, default, gray, bright-red, bright-green, bright-yellow, bright-blue, bright-magenta, bright-cyan, bright-white
+     */
+    public function print(string $message, string $color = 'default', Throwable $th = null): void
     {
         $style = new OutputFormatterStyle($color, '', []);
         $this->console_output->getFormatter()

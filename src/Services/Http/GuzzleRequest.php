@@ -149,26 +149,36 @@ class GuzzleRequest
 
         $chunks_size = count($chunks);
 
+        $start_time = microtime(true);
+
         if ($urls_count > 0) {
-            $console->print('HttpService will setup async requests...');
-            $console->print("Pool is limited to {$this->options->poolLimit} from .env, {$urls_count} requests will become {$chunks_size} chunks.");
             $console->newLine();
+            $console->print('  HttpService will setup async requests...', 'bright-blue');
+            $console->print("  Pool is limited to {$this->options->poolLimit} from .env");
+            $console->print("    - {$urls_count} requests", 'yellow');
+            $console->print("    - Converted into {$chunks_size} chunks", 'yellow');
         }
 
         $responses = collect([]);
         $responsesFailed = collect([]);
 
-        // async query on each chunk.
         foreach ($chunks as $chunk_key => $chunk_urls) {
             $chunk_urls_count = count($chunk_urls);
             $current_chunk = $chunk_key + 1;
-            $console->print("Execute {$chunk_urls_count} requests from chunk {$current_chunk}...");
+            $console->print("  Execute {$chunk_urls_count} requests from chunk {$current_chunk}...");
 
             $res = $this->pool($chunk_urls);
 
             $responses = $responses->merge($res->get('fullfilled'));
             $responsesFailed = $responsesFailed->merge($res->get('rejected'));
         }
+
+        $end_time = microtime(true);
+        $execution_time = ($end_time - $start_time);
+        $execution_time = number_format((float) $execution_time, 2, '.', '');
+        $console->print("  {$this->fullfilledCount} requests fullfilled, {$this->rejectedCount} requests rejected.", 'bright-blue');
+        $console->print("  Done in {$execution_time} seconds.");
+        $console->newLine();
 
         return collect([
             'fullfilled' => $responses,

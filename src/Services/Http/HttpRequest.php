@@ -6,7 +6,6 @@ use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
-use Kiwilan\Steward\Utils\Console;
 use stdClass;
 
 class HttpRequest
@@ -226,11 +225,6 @@ class HttpRequest
         $this->fullfilledCount = $pool->fullfilledCount();
         $this->rejectedCount = $pool->rejectedCount();
         $this->rejected = $pool->rejected();
-
-        $console = Console::make();
-        $console->print('Done.');
-        $console->print("{$this->fullfilledCount} requests fullfilled, {$this->rejectedCount} requests rejected.");
-
         $this->responses = $this->toHttpResponse($this->fullfilled);
 
         return $this;

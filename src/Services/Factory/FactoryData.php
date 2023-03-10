@@ -91,13 +91,20 @@ class FactoryData
             ...$trans_values,
         ];
 
-        $factory = FactoryService::make();
-
         /** @var Model */
         $created_model = $this->class::create($data_entity);
 
-        if ($created_model->isFillable('picture')) {
-            $created_model = $factory->mediaLocal()->setMedia($created_model);
+        /** @var Model */
+        $instance = new $this->class();
+
+        if ($instance->mediable) { // @phpstan-ignore-line
+            /** @var object */
+            $mediable = $instance->mediable;
+
+            foreach ($mediable as $key => $value) {
+                $created_model->{$key} = $this->setMedia($created_model);
+            }
+            $created_model->save();
         }
 
         if (array_key_exists('foreign', $data)) {
@@ -113,5 +120,39 @@ class FactoryData
         }
 
         $created_model->save();
+    }
+
+    public function setMedia(mixed $model): ?string
+    {
+        if (! $model instanceof Model) {
+            return null;
+        }
+
+        if (! $model->isFillable('slug') || ! $model->isFillable('picture')) {
+            return null;
+        }
+
+        $table = Str::replace('_', '-', $model->getTable());
+        // @phpstan-ignore-next-line
+        $slug = $model->slug;
+
+        $media_path = database_path("seeders/media/{$table}/{$slug}.webp");
+
+        if (File::exists($media_path)) {
+            $media = File::get($media_path);
+
+            $directory = public_path("storage/{$table}");
+
+            if (! File::exists($directory)) {
+                File::makeDirectory($directory, 0755, true, true);
+            }
+
+            $filename = uniqid().'_'."{$slug}.webp";
+            File::put("{$directory}/{$filename}", $media);
+
+            return "{$table}/{$filename}";
+        }
+
+        return null;
     }
 }
