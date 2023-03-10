@@ -1,6 +1,6 @@
 <?php
 
-namespace KiwiLan\Steward\Services;
+namespace Kiwilan\Steward\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

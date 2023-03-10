@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Commands\Scout;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Kiwilan\Steward\Commands\CommandSteward;
-use KiwiLan\Steward\Services\ScoutService;
+use Kiwilan\Steward\Services\ScoutService;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'scout:fresh')]

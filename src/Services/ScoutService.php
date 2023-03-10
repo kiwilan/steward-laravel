@@ -1,10 +1,9 @@
 <?php
 
-namespace KiwiLan\Steward\Services;
+namespace Kiwilan\Steward\Services;
 
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Services\Class\ClassItem;
-use Kiwilan\Steward\Services\ClassService;
 
 class ScoutService
 {
