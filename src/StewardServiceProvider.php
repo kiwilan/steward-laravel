@@ -12,6 +12,7 @@ use Kiwilan\Steward\Commands\Publish\PublishCommand;
 use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
 use Kiwilan\Steward\Commands\RoutePrintCommand;
 use Kiwilan\Steward\Commands\Scout\ScoutFreshCommand;
+use Kiwilan\Steward\Commands\Scout\ScoutListCommand;
 use Kiwilan\Steward\Commands\Setup\SetupCleanCommand;
 use Kiwilan\Steward\Commands\StewardCommand;
 use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
@@ -53,6 +54,7 @@ class StewardServiceProvider extends PackageServiceProvider
                 PublishScheduledCommand::class,
                 RoutePrintCommand::class,
                 ScoutFreshCommand::class,
+                ScoutListCommand::class,
                 SubmissionRgpdVerificationCommand::class,
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
