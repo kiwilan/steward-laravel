@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\Services\Api\MediaApi;
+use Kiwilan\Steward\Services\FetchService;
 use Kiwilan\Steward\Services\Http\HttpResponse;
 use Kiwilan\Steward\Services\HttpService;
 
@@ -84,12 +85,11 @@ class SeedsApi implements MediaApi
 
         $apiURL = "{$apiBaseURL}?".http_build_query($queryParams);
 
-        $http = HttpService::make([$apiURL])->execute();
-        $res = $http->responses();
-        $data = $res->first();
+        $fetch = FetchService::request($apiURL);
+        $data = $fetch->json();
 
         $mediasURL = [];
-        $seeds = SeedsPictureResponse::convertList($data->toArray());
+        $seeds = SeedsPictureResponse::convertList($data);
 
         foreach ($seeds as $seed) {
             $mediasURL[] = $seed->links->render;
