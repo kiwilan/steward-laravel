@@ -158,6 +158,10 @@ class FactoryService
         $ext = explode('/', $type)[1];
         $data = $response->body();
 
+        if ($ext === 'jpeg') {
+            $ext = 'jpg';
+        }
+
         return FactoryService::saveFile($data, $ext);
     }
 
