@@ -6,6 +6,8 @@ enum SeedsApiCategoryEnum: string
 {
     case animal = 'animal';
 
+    case artist = 'artist';
+
     case building = 'building';
 
     case city = 'city';
@@ -13,6 +15,8 @@ enum SeedsApiCategoryEnum: string
     case cultural = 'cultural';
 
     case decoration = 'decoration';
+
+    case flower = 'flower';
 
     case food = 'food';
 
@@ -25,6 +29,8 @@ enum SeedsApiCategoryEnum: string
     case relationship = 'relationship';
 
     case space = 'space';
+
+    case sport = 'sport';
 
     case technology = 'technology';
 
