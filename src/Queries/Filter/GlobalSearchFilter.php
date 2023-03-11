@@ -7,19 +7,34 @@ use Spatie\QueryBuilder\Filters\Filter;
 
 class GlobalSearchFilter implements Filter
 {
-    private $fields;
-
-    public function __construct($fields)
-    {
-        $this->fields = $fields;
+    public function __construct(
+        public array $fields,
+    ) {
     }
 
     public function __invoke(Builder $query, $value, string $property)
     {
-        $query->where(function (Builder $query) use ($value) {
-            foreach ($this->fields as $field) {
-                $query->orWhere($field, 'like', "%{$value}%");
-            }
-        });
+        $fields = collect($this->fields);
+        $relations = $fields->filter(fn ($field) => str_contains($field, '.'))
+            ->map(fn ($field) => explode('.', $field)[0])
+            ->unique()
+            ->toArray()
+        ;
+
+        $query->with($relations)
+            ->where(function (Builder $query) use ($fields, $value) {
+                foreach ($fields as $field) {
+                    if (str_contains($field, '.')) {
+                        $field = explode('.', $field);
+                        $query->orWhereHas(
+                            $field[0],
+                            fn (Builder $query) => $query->where($field[1], 'like', "%{$value}%")
+                        );
+                    } else {
+                        $query->orWhere($field, 'like', "%{$value}%");
+                    }
+                }
+            })
+        ;
     }
 }

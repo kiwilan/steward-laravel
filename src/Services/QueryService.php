@@ -38,6 +38,8 @@ class QueryService
                             'partial' => $module->wherePartial($query),
                             'exact' => $module->whereExact($query),
                             'scope' => $module->whereScope($query),
+                            'custom' => $module->whereCustom($query, $module->spatieFilter),
+                            'search' => $module->whereSearch($query, $module->global),
                             default => null,
                         };
                     }

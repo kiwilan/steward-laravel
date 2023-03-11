@@ -9,39 +9,16 @@ use ReflectionClass;
 
 trait Filterable
 {
-    public function scopeFilter(Builder $query, array $filters, ?array $configuration = []): Builder
+    public function scopeLivewireFilter(Builder $query, array $filters, ?array $configuration = []): Builder
     {
         if (empty($configuration)) {
             $configuration = $this->filterable();
         }
 
-        // $queryAll = null;
-        // foreach ($filters as $field => $value) {
-        //     $queryAll[$field] = $query->where($field, $value);
-        // }
-        // // dd($queryAll);
-        // // return $query->where('status', '=', $status);
-        // return $queryAll;
-        // dump($filters);
-
-        // $manual = ModelsMiniature::where(
-        //     function (Builder $query) use ($filters) {
-        //         return $query
-        //             ->where('name', 'like', "%{$filters['name']}%")
-        //             ->where('status', '=', $filters['status'])
-        //             // ->where('price', '>', $filters['min_price'])
-        //         ;
-        //     }
-        // )
-        //     ->get()
-        // ;
-        // dump($manual);
-        // $instance = new $this();
-        // $class = new ReflectionClass($instance);
         return QueryService::make($query, $filters, $configuration);
     }
 
-    public function scopeSort(Builder $query, string $field, bool $reverse = false): Builder
+    public function scopeLivewireSort(Builder $query, string $field, bool $reverse = false): Builder
     {
         $class = new ReflectionClass($this);
         $instance = $class->getName();
