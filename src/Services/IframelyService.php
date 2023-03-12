@@ -25,10 +25,10 @@ class IframelyService
     public static function make(?string $api = null): self
     {
         if (! $api) {
-            $api = config('steward.iframely.api');
+            $api = \Kiwilan\Steward\StewardConfig::iframelyApi();
         }
 
-        $api_key = config('steward.iframely.key');
+        $api_key = \Kiwilan\Steward\StewardConfig::iframelyKey();
 
         $client = new Client([
             'base_uri' => $api,

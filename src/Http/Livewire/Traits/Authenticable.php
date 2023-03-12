@@ -19,12 +19,12 @@ trait Authenticable
     public function auth()
     {
         if (! Auth::check()) {
-            return redirect()->route(config('steward.auth.login_route'));
+            return redirect()->route(\Kiwilan\Steward\StewardConfig::authLoginRoute());
         }
 
         $this->auth = Auth::user();
 
-        if (property_exists($this->auth, 'refresh')) {
+        if (method_exists($this->auth, 'refresh')) {
             $this->auth = $this->auth->refresh();
         }
     }

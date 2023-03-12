@@ -34,7 +34,7 @@ class SeedsApi implements MediaApi
 
     public static function make(): self
     {
-        $api = config('steward.factory.seeds').'/api';
+        $api = \Kiwilan\Steward\StewardConfig::factorySeeds().'/api';
 
         return new self($api);
     }

@@ -42,7 +42,7 @@ class ApplicationParameter extends Strategy
 
     private function routes()
     {
-        $routes = config('steward.scribe.routes');
+        $routes = \Kiwilan\Steward\StewardConfig::scribeEndpoints();
 
         foreach ($routes as $name => $model) {
             $class = $model['class'];

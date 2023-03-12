@@ -280,8 +280,8 @@ class PoolRequest
      */
     private function setDefaultOptions(): self
     {
-        $this->options->poolable = config('steward.http.async_allow') ?? true;
-        $this->options->poolLimit = config('steward.http.pool_limit') ?? 250;
+        $this->options->poolable = \Kiwilan\Steward\StewardConfig::httpAsyncAllow();
+        $this->options->poolLimit = \Kiwilan\Steward\StewardConfig::httpPoolLimit();
 
         return $this;
     }

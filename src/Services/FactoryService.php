@@ -130,14 +130,14 @@ class FactoryService
 
     private function setFactoryText(?FactoryTextEnum $type = null): FactoryText
     {
-        $type = $type ?? config('steward.factory.text');
+        $type = $type ?? \Kiwilan\Steward\StewardConfig::factoryText();
 
         return new FactoryText($this, $type);
     }
 
     private function setFactoryRichText(?FactoryTextEnum $type = null): FactoryRichText
     {
-        $type = $type ?? config('steward.factory.text');
+        $type = $type ?? \Kiwilan\Steward\StewardConfig::factoryText();
         $text = $this->setFactoryText($type);
 
         return new FactoryRichText($this, $type, $text);

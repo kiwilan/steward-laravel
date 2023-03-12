@@ -29,7 +29,7 @@ class SubmissionSendCommand extends CommandSteward
     public function handle()
     {
         $this->title();
-        $model = config('steward.submission.model');
+        $model = \Kiwilan\Steward\StewardConfig::submissionModel();
 
         /** @var Submission $model */
         $submission = $model::factory(1)->make(parent: new $model());

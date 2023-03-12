@@ -40,7 +40,7 @@ class FetchService
         $end_time = microtime(true);
         $execution_time = ($end_time - $start_time);
         $execution_time = number_format((float) $execution_time, 2, '.', '');
-        $console->print("  Done in {$execution_time} seconds.", 'green');
+        $console->print("  Done in {$execution_time} seconds.", 'bright-green');
 
         return $self->response;
     }

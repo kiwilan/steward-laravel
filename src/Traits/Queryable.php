@@ -72,7 +72,7 @@ trait Queryable
      */
     public function getQueryDefaultSort(): string
     {
-        return $this->query_default_sort ?? config('steward.query.default_sort');
+        return $this->query_default_sort ?? \Kiwilan\Steward\StewardConfig::queryDefaultSort();
     }
 
     /**
@@ -80,7 +80,7 @@ trait Queryable
      */
     public function getQueryDefaultSortDirection(): string
     {
-        return $this->query_default_sort_direction ?? config('steward.query.default_sort_direction');
+        return $this->query_default_sort_direction ?? \Kiwilan\Steward\StewardConfig::queryDefaultSortDirection();
     }
 
     /**
@@ -112,7 +112,7 @@ trait Queryable
      */
     public function getQueryFull(): bool
     {
-        return $this->query_full ?? config('steward.query.full');
+        return $this->query_full ?? \Kiwilan\Steward\StewardConfig::queryFull();
     }
 
     /**
@@ -120,7 +120,7 @@ trait Queryable
      */
     public function getQueryLimit(): int
     {
-        return $this->query_limit ?? config('steward.query.limit');
+        return $this->query_limit ?? \Kiwilan\Steward\StewardConfig::queryLimit();
     }
 
     /**

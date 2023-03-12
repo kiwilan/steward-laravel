@@ -6,11 +6,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use ReflectionClass;
+use Kiwilan\Steward\Services\Class\ClassItem;
+use Kiwilan\Steward\Services\ClassService;
 
 /**
  * Search Engine with laravel/scout
- * - https://laravel.com/docs/9.x/scout.
+ * - https://laravel.com/docs/10.x/scout.
  */
 class SearchEngine
 {
@@ -84,9 +85,16 @@ class SearchEngine
         return $this;
     }
 
-    public function getRelevantResults()
+    /**
+     * Get relevant results.
+     *
+     * @return array<string,array<string,array<string,mixed>>>
+     */
+    public function getRelevantResults(): array
     {
+        /** @var Collection <string,mixed> */
         $list = collect();
+
         /** @var string $model */
         foreach ($this->results as $model => $results) {
             /** @var AnonymousResourceCollection $collection */
@@ -109,19 +117,21 @@ class SearchEngine
      */
     private function search(): SearchEngine
     {
-        foreach (config('steward.scoutable.models') as $value) {
-            $this->entitySearch($value);
+        $files = ClassService::files(app_path('Models'));
+        $items = ClassService::make($files);
+
+        foreach ($items as $item) {
+            $this->entitySearch($item);
         }
 
         return $this;
     }
 
-    private function entitySearch(string $model)
+    private function entitySearch(ClassItem $item): void
     {
-        $instance = new $model();
-        $class = new ReflectionClass($instance);
-        $static = $class->getName();
-        $name = $class->getShortName();
+        $reflect = $item->reflect();
+        $static = $reflect->getName();
+        $name = $reflect->getShortName();
         $key = Str::plural($name);
 
         $slug = preg_split('/(?=[A-Z])/', $name);

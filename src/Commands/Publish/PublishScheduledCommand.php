@@ -34,8 +34,6 @@ class PublishScheduledCommand extends CommandSteward
     {
         $this->title();
 
-        $models = config('steward.publishable.models');
-
         $files = ClassService::files(app_path('Models'));
         $items = ClassService::make($files);
 
@@ -44,7 +42,6 @@ class PublishScheduledCommand extends CommandSteward
                 continue;
             }
 
-            // $instance = new $model();
             $date_column = Schema::hasColumn($item->model()->getTable(), 'published_at') ? 'published_at' : 'created_at';
 
             $models_udpated = $item->model()::query()

@@ -13,7 +13,7 @@ trait HasTemplate
         $this->fillable[] = $this->getTemplateColumn();
         $this->fillable[] = $this->getContentColumn();
 
-        if ($enum = config('steward.template.enum')) {
+        if ($enum = \Kiwilan\Steward\StewardConfig::templateEnum()) {
             $this->casts[$this->getTemplateColumn()] = $enum;
         }
         $this->casts[$this->getContentColumn()] = 'array';
@@ -100,7 +100,7 @@ trait HasTemplate
      */
     private function setMedia(mixed $value = null): mixed
     {
-        $extensions = config('steward.mediable.extensions');
+        $extensions = \Kiwilan\Steward\StewardConfig::mediableExtensions();
 
         if (! is_array($extensions)) {
             $extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'];

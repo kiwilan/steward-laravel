@@ -39,9 +39,12 @@ class HttpQuery extends BaseQuery
         $api->setMetadata(MetaClass::make($current));
         $api->setRequest($request);
 
-        $api->defaultSort = $api->getSortDirection(config('steward.query.default_sort'), config('steward.query.default_sort_direction'));
-        $api->full = config('steward.query.full');
-        $api->limit = config('steward.query.limit');
+        $api->defaultSort = $api->getSortDirection(
+            \Kiwilan\Steward\StewardConfig::queryDefaultSort(),
+            \Kiwilan\Steward\StewardConfig::queryDefaultSortDirection(),
+        );
+        $api->full = \Kiwilan\Steward\StewardConfig::queryFull();
+        $api->limit = \Kiwilan\Steward\StewardConfig::queryLimit();
         $api->resourceGuess();
 
         $class = $api->metadata()->class();

@@ -154,14 +154,6 @@ return [
         'config' => [],
     ],
 
-    'typescript' => [
-        'file' => [
-            'models' => 'types-models.d.ts',
-            'ziggy' => 'types-ziggy.d.ts',
-        ],
-        'path' => resource_path('js'),
-    ],
-
     'factory' => [
         'text' => FactoryTextEnum::lorem,
         'seeds' => 'https://seeds.git-projects.xyz',

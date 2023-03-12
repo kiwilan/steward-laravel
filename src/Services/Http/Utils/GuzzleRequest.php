@@ -152,8 +152,14 @@ class GuzzleRequest
         $start_time = microtime(true);
 
         if ($urls_count > 0) {
+            $firstUrl = $urls->first();
+            $domain = parse_url($firstUrl, PHP_URL_HOST);
             $console->newLine();
-            $console->print('  HttpService will setup async requests...', 'bright-blue');
+            $console->print("  HttpService pool {$domain} with async requests...", 'bright-blue');
+
+            if (! $this->options->poolable) {
+                $console->print('  Pool is disabled!', 'red');
+            }
             $console->print("  Pool is limited to {$this->options->poolLimit} from .env");
             $console->print("    - {$urls_count} requests", 'default');
             $console->print("    - Converted into {$chunks_size} chunks", 'default');
@@ -176,7 +182,8 @@ class GuzzleRequest
         $end_time = microtime(true);
         $execution_time = ($end_time - $start_time);
         $execution_time = number_format((float) $execution_time, 2, '.', '');
-        $console->print("  {$this->fullfilledCount} requests fullfilled, {$this->rejectedCount} requests rejected.", 'yellow');
+        $color = $this->rejectedCount > 0 ? 'bright-red' : 'bright-green';
+        $console->print("  {$this->fullfilledCount} requests fullfilled, {$this->rejectedCount} requests rejected.", $color);
         $console->print("  Done in {$execution_time} seconds.");
         $console->newLine();
 

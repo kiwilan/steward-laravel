@@ -7,8 +7,7 @@
           @class([
               'flex items-end space-x-2 rtl:space-x-reverse text-gray-800 hover:text-primary-500 transition text-xl font-semibold',
               'dark:text-primary-500 dark:hover:text-primary-400' => config(
-                  'filament.dark_mode'
-              ),
+                  'filament.dark_mode'),
           ])
         >
           {{ config('app.name') }}
@@ -17,17 +16,16 @@
 
       <div class="flex space-x-2 text-sm rtl:space-x-reverse">
         <a
-          href="{{ config('steward.filament.widgets.welcome.url') }}"
+          href="{{ \Kiwilan\Steward\StewardConfig::filamentWidgetsWelcomeUrl() }}"
           target="_blank"
           rel="noopener noreferrer"
           @class([
               'text-gray-600 hover:text-primary-500 focus:outline-none focus:underline',
               'dark:text-gray-300 dark:hover:text-primary-500' => config(
-                  'filament.dark_mode'
-              ),
+                  'filament.dark_mode'),
           ])
         >
-          {{ __(config('steward.filament.widgets.welcome.label')) }}
+          {{ __(\Kiwilan\Steward\StewardConfig::filamentWidgetsWelcomeLabel()) }}
         </a>
 
         {{-- <span>
@@ -52,14 +50,14 @@
 
     <div class="absolute right-0 bottom-0 h-16 w-16 rtl:right-auto rtl:left-0">
       <img
-        src="{{ asset(config('steward.filament.logo.default')) }}"
-        alt=""
         class="dark:hidden"
+        src="{{ asset(\Kiwilan\Steward\StewardConfig::filamentLogoDefault()) }}"
+        alt=""
       >
       <img
-        src="{{ asset(config('steward.filament.logo.dark')) }}"
-        alt=""
         class="hidden dark:block"
+        src="{{ asset(\Kiwilan\Steward\StewardConfig::filamentLogoDark()) }}"
+        alt=""
       >
     </div>
   </x-filament::card>

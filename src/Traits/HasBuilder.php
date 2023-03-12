@@ -67,7 +67,7 @@ trait HasBuilder
 
     private function setMedia(mixed $value = null)
     {
-        $extensions = config('steward.mediable.extensions');
+        $extensions = \Kiwilan\Steward\StewardConfig::mediableExtensions();
 
         if (! is_array($extensions)) {
             $extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'];

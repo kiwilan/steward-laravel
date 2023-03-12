@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Kiwilan\Steward\Services\Class\ClassItem;
+use Kiwilan\Steward\Services\ClassService;
 
 class MediaCleanCommand extends CommandSteward
 {
@@ -32,7 +34,10 @@ class MediaCleanCommand extends CommandSteward
     {
         $this->title();
 
-        $models_list = config('steward.mediable.models');
+        $files = ClassService::files(app_path('Models'));
+        $items = ClassService::make($files);
+
+        $models_list = $items->filter(fn (ClassItem $item) => $item->useTrait('Kiwilan\Steward\Traits\Mediable'));
         $media_path = public_path('storage');
 
         $media_entries = [];
@@ -51,7 +56,7 @@ class MediaCleanCommand extends CommandSteward
             // Extract all entries with media
             foreach ($rows as $row) {
                 foreach ($row as $entry) {
-                    foreach (config('steward.media.extensions') as $extension) {
+                    foreach (\Kiwilan\Steward\StewardConfig::mediableExtensions() as $extension) {
                         if (str_contains($entry, ".{$extension}")) {
                             $media_entries[] = $entry;
                         }

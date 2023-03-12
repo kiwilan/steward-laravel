@@ -5,20 +5,20 @@
 
   @if (config('filament.layout.footer.should_show_logo'))
     <a
+      class="hover:text-primary-500 text-gray-300 transition"
       href="https://filamentphp.com"
       target="_blank"
       rel="noopener noreferrer"
-      class="hover:text-primary-500 text-gray-300 transition"
     >
       <img
-        src="{{ asset(config('steward.filament.logo-inline.default')) }}"
-        alt=""
         class="dark:hidden"
+        src="{{ asset(\Kiwilan\Steward\StewardConfig::filamentLogoInlineDefault()) }}"
+        alt=""
       >
       <img
-        src="{{ asset(config('steward.filament.logo-inline.dark')) }}"
-        alt=""
         class="hidden h-10 dark:block"
+        src="{{ asset(\Kiwilan\Steward\StewardConfig::filamentLogoInlineDark()) }}"
+        alt=""
       >
     </a>
   @endif
