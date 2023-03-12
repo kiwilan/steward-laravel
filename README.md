@@ -1,4 +1,4 @@
-# **steward-laravel**
+# **Steward**
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kiwilan/steward-laravel.svg?style=flat-square)](https://packagist.org/packages/kiwilan/steward-laravel)
 
