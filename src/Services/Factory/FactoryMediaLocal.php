@@ -11,6 +11,7 @@ class FactoryMediaLocal
 {
     public function __construct(
         public FactoryService $factory,
+        public ?string $basePath = null,
         public ?string $path = null,
     ) {
     }
@@ -42,8 +43,7 @@ class FactoryMediaLocal
      */
     private function fetchMedias()
     {
-        $base_path = database_path('seeders/media');
-        $path = "{$base_path}/{$this->path}";
+        $path = "{$this->basePath}/{$this->path}";
 
         if (! File::exists($path)) {
             throw new \Exception("Media path not found: {$path}");

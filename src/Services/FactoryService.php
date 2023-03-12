@@ -86,28 +86,35 @@ class FactoryService
         return $this;
     }
 
-    public function faker()
+    public function faker(): Generator
     {
         return $this->faker;
     }
 
-    public function text()
+    public function text(): FactoryText
     {
         return $this->text;
     }
 
-    public function richText()
+    public function richText(): FactoryRichText
     {
         return $this->richText;
     }
 
-    public function dateTime()
+    public function dateTime(): FactoryDateTime
     {
         return $this->dateTime;
     }
 
-    public function mediaLocal(string $path)
+    /**
+     * @param  string|null  $basePath If null, use `database_path('seeders/media')`
+     */
+    public function mediaLocal(string $path, ?string $basePath = null): FactoryMediaLocal
     {
+        if (! $basePath) {
+            $this->mediaLocal->basePath = database_path('seeders/media');
+        }
+
         $this->mediaLocal->path = $path;
 
         return $this->mediaLocal;
