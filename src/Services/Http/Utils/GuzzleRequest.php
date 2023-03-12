@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Http;
+namespace Kiwilan\Steward\Services\Http\Utils;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\CurlFactory;

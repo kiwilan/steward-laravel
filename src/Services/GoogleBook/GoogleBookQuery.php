@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Storage;
 use Kiwilan\Steward\Services\GoogleBookService;
-use Kiwilan\Steward\Services\Http\HttpModelQuery;
 use Kiwilan\Steward\Services\Http\HttpResponse;
+use Kiwilan\Steward\Services\Http\Utils\HttpModelQuery;
 
 /**
  * Create GoogleBookQuery from Model and ISBN.

@@ -81,7 +81,7 @@ class MediaService
         $image = $this->model->getFirstMediaPath($this->collection);
 
         if ($image) {
-            $color = ImageService::colorThief($image);
+            $color = PictureService::colorThief($image);
             // @phpstan-ignore-next-line
             $media = $this->model->getFirstMedia($this->collection);
             $media->setCustomProperty('color', $color);

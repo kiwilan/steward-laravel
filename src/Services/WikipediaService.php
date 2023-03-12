@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Class\WikipediaItem;
 use Kiwilan\Steward\Services\Http\HttpResponse;
+use Kiwilan\Steward\Services\Http\PoolService;
 use Kiwilan\Steward\Services\Wikipedia\WikipediaQuery;
 use Kiwilan\Steward\Utils\Console;
 use ReflectionClass;
@@ -182,14 +183,14 @@ class WikipediaService
      */
     private function search(string $model_url, Closure $closure): self
     {
-        $http = HttpService::make($this->queries)
+        $http = HttpService::pool($this->queries)
             ->setModelId('model_id')
             ->setModelUrl($model_url)
             ->execute()
         ;
         $responses = $http->responses();
 
-        $parsing = HttpService::parseResponses(
+        $parsing = PoolService::parseResponses(
             $responses,
             $this->queries,
             fn (WikipediaQuery $query, HttpResponse $response) => $closure($query, $response),

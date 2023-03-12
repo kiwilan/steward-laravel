@@ -6,9 +6,12 @@ use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
+use Kiwilan\Steward\Services\Http\Utils\GuzzleOptions;
+use Kiwilan\Steward\Services\Http\Utils\GuzzleRequest;
+use Kiwilan\Steward\Services\Http\Utils\HttpModelQuery;
 use stdClass;
 
-class HttpRequest
+class PoolRequest
 {
     /** @var Collection<int,HttpModelQuery>|Collection<int,object>|string[] */
     protected mixed $requestsOrigin = null;
@@ -38,7 +41,7 @@ class HttpRequest
     }
 
     /**
-     * Create HttpRequest instance.
+     * Create PoolRequest instance.
      *
      * @param  Collection<int,HttpModelQuery>|Collection<int,object>|string[]  $requests
      */

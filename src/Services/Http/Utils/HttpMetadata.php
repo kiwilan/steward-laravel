@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Http;
+namespace Kiwilan\Steward\Services\Http\Utils;
 
 use GuzzleHttp\Psr7\Response;
 

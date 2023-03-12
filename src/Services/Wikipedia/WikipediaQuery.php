@@ -7,8 +7,8 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Kiwilan\Steward\Services\Http\HttpModelQuery;
 use Kiwilan\Steward\Services\Http\HttpResponse;
+use Kiwilan\Steward\Services\Http\Utils\HttpModelQuery;
 use Kiwilan\Steward\Services\WikipediaService;
 use ReflectionClass;
 

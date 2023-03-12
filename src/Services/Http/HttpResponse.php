@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Services\Http;
 
 use GuzzleHttp\Psr7\Response;
+use Kiwilan\Steward\Services\Http\Utils\HttpMetadata;
 use SimpleXMLElement;
 
 /**

@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Kiwilan\Steward\Class\GoogleBook;
 use Kiwilan\Steward\Services\GoogleBook\GoogleBookQuery;
 use Kiwilan\Steward\Services\Http\HttpResponse;
+use Kiwilan\Steward\Services\Http\PoolService;
 
 /**
  * Use GoogleBook API to improve `$subject` data.
@@ -139,13 +140,13 @@ class GoogleBookService
     {
         $this->queries = $this->setQueries();
 
-        $http = HttpService::make($this->queries)
+        $http = HttpService::pool($this->queries)
             ->setModelId('model_id')
             ->execute()
         ;
         $responses = $http->responses();
 
-        $parsing = HttpService::parseResponses(
+        $parsing = PoolService::parseResponses(
             $responses,
             $this->queries,
             fn (GoogleBookQuery $query, HttpResponse $response) => $query->parseResponse($response)

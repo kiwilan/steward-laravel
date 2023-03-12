@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Services\Image\ColorThief;
 
-class ImageService
+class PictureService
 {
     /**
      * Detecte dominant color of an image.

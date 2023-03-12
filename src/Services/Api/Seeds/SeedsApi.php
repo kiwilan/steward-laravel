@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\Services\Api\MediaApi;
-use Kiwilan\Steward\Services\FetchService;
 use Kiwilan\Steward\Services\Http\HttpResponse;
 use Kiwilan\Steward\Services\HttpService;
 
@@ -74,19 +73,16 @@ class SeedsApi implements MediaApi
         SeedsApiSizeEnum $size = SeedsApiSizeEnum::medium,
         ?int $count = null
     ): Collection {
-        $apiBaseURL = "{$this->api}/pictures";
         $count = $count ?? null;
 
-        $queryParams = [
-            'count' => $count,
-            'category' => $category->value,
-            'size' => $size->value,
-        ];
-
-        $apiURL = "{$apiBaseURL}?".http_build_query($queryParams);
-
-        $fetch = FetchService::request($apiURL);
-        $data = $fetch->json();
+        $fetch = HttpService::fetch(
+            HttpService::buildURL("{$this->api}/pictures", [
+                'count' => $count,
+                'category' => $category->value,
+                'size' => $size->value,
+            ])
+        );
+        $data = $fetch->toArray();
 
         $mediasURL = [];
         $seeds = SeedsPictureResponse::convertList($data);
@@ -95,23 +91,19 @@ class SeedsApi implements MediaApi
             $mediasURL[] = $seed->links->render;
         }
 
-        $http = HttpService::make($mediasURL)->execute();
+        $http = HttpService::pool($mediasURL)->execute();
 
         return $http->responses();
     }
 
-    public function fetchPictureRandom(): FetchService
+    public function fetchPictureRandom(): HttpResponse
     {
-        $apiBaseURL = "{$this->api}/pictures/random";
-
-        $queryParams = [
-            'category' => $this->category->value,
-            'size' => $this->size->value,
-        ];
-
-        $apiURL = "{$apiBaseURL}?".http_build_query($queryParams);
-
-        return FetchService::request($apiURL);
+        return HttpService::fetch(
+            HttpService::buildURL("{$this->api}/pictures/random", [
+                'category' => $this->category->value,
+                'size' => $this->size->value,
+            ])
+        );
     }
 
     public function fetchPictureRandomUrl(): string
