@@ -1,7 +1,9 @@
 # **steward-laravel**
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kiwilan/steward-laravel.svg?style=flat-square)](https://packagist.org/packages/kiwilan/steward-laravel)
-[![npm](https://img.shields.io/npm/v/@kiwilan/vite-plugin-steward-laravel.svg?style=flat-square&color=CB3837&logo=npm&logoColor=ffffff&label=npm)](https://www.npmjs.com/package/@kiwilan/vite-plugin-steward-laravel)
+
+<!-- [![npm](https://img.shields.io/npm/v/@kiwilan/vite-plugin-steward-laravel.svg?style=flat-square&color=CB3837&logo=npm&logoColor=ffffff&label=npm)](https://www.npmjs.com/package/@kiwilan/vite-plugin-steward-laravel) -->
+
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/kiwilan/steward-laravel/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/kiwilan/steward-laravel/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/kiwilan/steward-laravel/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/kiwilan/steward-laravel/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/kiwilan/steward-laravel.svg?style=flat-square)](https://packagist.org/packages/kiwilan/steward-laravel)
@@ -9,11 +11,13 @@
 [![codecov](https://codecov.io/gh/kiwilan/steward-laravel/branch/main/graph/badge.svg?token=CBWSPNZSRA)](https://codecov.io/gh/kiwilan/steward-laravel)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/849d4a45-1236-4f9e-992c-4a242588aeac/deploy-status)](https://app.netlify.com/sites/steward-laravel/deploys)
 
-PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application, works with [vite-plugin-steward-laravel](https://www.npmjs.com/package/@kiwilan/vite-plugin-steward-laravel) for front assets.
+PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application.
+
+<!-- PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application, works with [vite-plugin-steward-laravel](https://www.npmjs.com/package/@kiwilan/vite-plugin-steward-laravel) for front assets. -->
 
 ## Documentation
 
-See [steward-laravel.netlify.app](https://steward-laravel.netlify.app/) for documentation.
+See [steward-for-laravel.netlify.app](https://steward-for-laravel.netlify.app) for documentation.
 
 ## Installation
 
