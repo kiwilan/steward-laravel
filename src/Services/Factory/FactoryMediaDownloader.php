@@ -38,7 +38,8 @@ class FactoryMediaDownloader
      */
     public function associate(Collection $models, string $field = 'picture', bool $multiple = false)
     {
-        $images = $this->fetchMedias($models->count());
+        $model = $models->first();
+        $images = $this->fetchMedias($models->count(), $model->getTable());
 
         foreach ($models as $key => $model) {
             $media = null;
@@ -56,7 +57,7 @@ class FactoryMediaDownloader
     /**
      * @return Collection<int,string>
      */
-    private function fetchMedias(int $count = 1)
+    private function fetchMedias(int $count = 1, ?string $basePath = null)
     {
         $this->config['count'] = $count;
 
@@ -68,7 +69,9 @@ class FactoryMediaDownloader
         $images = collect([]);
 
         foreach ($medias as $media) {
-            $images->push(FactoryService::mediaFromResponse($media));
+            $images->push(
+                FactoryService::mediaFromResponse($media, $basePath)
+            );
         }
 
         return $images;

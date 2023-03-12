@@ -182,7 +182,7 @@ class FactoryService
         return new FactoryData($this);
     }
 
-    public static function mediaFromResponse(?HttpResponse $response): ?string
+    public static function mediaFromResponse(?HttpResponse $response, ?string $basePath = null): ?string
     {
         if (! $response) {
             return null;
@@ -196,27 +196,29 @@ class FactoryService
             $ext = 'jpg';
         }
 
-        return FactoryService::saveFile($data, $ext);
+        return FactoryService::saveFile($data, $ext, $basePath);
     }
 
-    public static function mediaFromFile(string $path): ?string
+    public static function mediaFromFile(string $path, ?string $basePath = null): ?string
     {
         $data = File::get($path);
         $ext = pathinfo($path)['extension'];
 
-        return FactoryService::saveFile($data, $ext);
+        return FactoryService::saveFile($data, $ext, $basePath);
     }
 
-    private static function saveFile(string $data, string $ext = 'jpg'): string
+    private static function saveFile(string $data, string $ext = 'jpg', ?string $basePath = null): string
     {
-        $random_name = uniqid();
-        $path = public_path('storage/seeders');
+        $random = uniqid();
 
-        if (! File::exists($path)) {
-            File::makeDirectory($path, 0755, true, true);
+        $subDirectory = $basePath ? $basePath : 'seeders';
+        $basePath = public_path("storage/{$subDirectory}");
+
+        if (! File::exists($basePath)) {
+            File::makeDirectory($basePath, 0755, true, true);
         }
-        $name = "{$random_name}.{$ext}";
-        File::put("{$path}/{$name}", $data);
+        $name = "{$random}.{$ext}";
+        File::put("{$basePath}/{$name}", $data);
 
         return "seeders/{$name}";
     }

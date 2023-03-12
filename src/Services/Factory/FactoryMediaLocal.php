@@ -22,7 +22,8 @@ class FactoryMediaLocal
      */
     public function associate(Collection $models, string $field = 'picture', bool $multiple = false)
     {
-        $images = $this->fetchMedias();
+        $model = $models->first();
+        $images = $this->fetchMedias($model->getTable());
 
         foreach ($models as $key => $model) {
             $random = null;
@@ -41,7 +42,7 @@ class FactoryMediaLocal
     /**
      * @return Collection<int,string>
      */
-    private function fetchMedias()
+    private function fetchMedias(?string $basePath = null)
     {
         $path = "{$this->basePath}/{$this->path}";
 
@@ -53,7 +54,12 @@ class FactoryMediaLocal
         $images = collect([]);
 
         foreach ($files as $file) {
-            $images->push(FactoryService::mediaFromFile($file->getRealPath()));
+            $images->push(
+                FactoryService::mediaFromFile(
+                    $file->getRealPath(),
+                    $basePath
+                )
+            );
         }
 
         return $images;
