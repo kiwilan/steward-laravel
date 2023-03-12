@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\Class\ClassItem;
@@ -16,14 +15,16 @@ class MediaCleanCommand extends CommandSteward
      *
      * @var string
      */
-    protected $signature = 'media:clean';
+    protected $signature = 'media:clean
+                            {--A|all : Skip limit with Mediable trait.}
+                            {--F|force : Force delete without confirmation.}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Clean all medias without database link, useful after delete media from back-office.';
+    protected $description = 'Clean all medias, attached to Models with Mediable trait, without database link, useful after delete media from back-office.';
 
     /**
      * Execute the console command.
@@ -37,15 +38,18 @@ class MediaCleanCommand extends CommandSteward
         $files = ClassService::files(app_path('Models'));
         $items = ClassService::make($files);
 
-        $models_list = $items->filter(fn (ClassItem $item) => $item->useTrait('Kiwilan\Steward\Traits\Mediable'));
-        $media_path = public_path('storage');
+        $all = $this->option('all') ?? false;
+        $force = $this->option('force') ?? false;
 
-        $media_entries = [];
+        if (! $all) {
+            $items = $items->filter(fn (ClassItem $item) => $item->useTrait('Kiwilan\Steward\Traits\Mediable'));
+        }
+        $mediaPath = public_path('storage');
 
-        foreach ($models_list as $model) {
-            /** @var Model $instance */
-            $instance = new $model();
-            $table = $instance->getTable();
+        $mediaEntries = [];
+
+        foreach ($items as $item) {
+            $table = $item->model()->getTable();
 
             /** Parse all entries in database */
             $rows = DB::table($table)
@@ -58,7 +62,7 @@ class MediaCleanCommand extends CommandSteward
                 foreach ($row as $entry) {
                     foreach (\Kiwilan\Steward\StewardConfig::mediableExtensions() as $extension) {
                         if (str_contains($entry, ".{$extension}")) {
-                            $media_entries[] = $entry;
+                            $mediaEntries[] = $entry;
                         }
                     }
                 }
@@ -66,38 +70,54 @@ class MediaCleanCommand extends CommandSteward
         }
 
         /** Get all medias from $media_path */
-        $files_list = File::allFiles($media_path);
+        $filesList = File::allFiles($mediaPath);
         $files = [];
 
-        foreach ($files_list as $file) {
-            $file_path = $file->getRelativePathname();
-            $file_path = str_replace('\\', '/', $file_path);
+        foreach ($filesList as $file) {
+            $filePath = $file->getRelativePathname();
+            $file_path = str_replace('\\', '/', $filePath);
             $files[] = $file_path;
         }
 
-        $media_used = [];
-        $media_all = [];
+        $mediaUsed = [];
+        $mediaAll = [];
         // Find medias between used and all
         foreach ($files as $file) {
-            foreach ($media_entries as $media_entry) {
-                $path = "{$media_path}/{$file}";
+            foreach ($mediaEntries as $media_entry) {
+                $path = "{$mediaPath}/{$file}";
 
                 if (str_contains($media_entry, $file)) {
-                    $media_used[] = $path;
+                    $mediaUsed[] = $path;
                 } else {
-                    $media_all[] = $path;
+                    $mediaAll[] = $path;
                 }
             }
         }
-        $media_all = array_unique($media_all);
-        $media_all = array_values($media_all);
+        $mediaAll = array_unique($mediaAll);
+        $mediaAll = array_values($mediaAll);
+
+        $toDelete = [];
 
         // Delete medias which is not used
-        foreach ($media_all as $value) {
-            if (! in_array($value, $media_used)) {
+        foreach ($mediaAll as $value) {
+            if (! in_array($value, $mediaUsed)) {
                 $this->warn("Media {$value} will be deleted.");
-                File::delete($value);
+                $toDelete[] = $value;
             }
+        }
+
+        if (! empty($toDelete)) {
+            if (! $force && $this->confirm('Do you wish to continue?', true)) {
+                foreach ($toDelete as $value) {
+                    File::delete($value);
+                }
+            } else {
+                foreach ($toDelete as $value) {
+                    File::delete($value);
+                }
+            }
+        } else {
+            $this->info('No media to delete.');
         }
 
         return Command::SUCCESS;

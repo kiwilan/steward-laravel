@@ -4,7 +4,10 @@ namespace Kiwilan\Steward\Services;
 
 use Closure;
 use Faker\Generator;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Kiwilan\Steward\Commands\MediaCleanCommand;
+use Kiwilan\Steward\Commands\Scout\ScoutFreshCommand;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\Class\ClassItem;
 use Kiwilan\Steward\Services\Factory\FactoryBuilder;
@@ -32,11 +35,10 @@ class FactoryService
     ) {
     }
 
-    public static function clean(): bool
+    public static function beforeSeed(): bool
     {
         $paths = [
-            public_path('storage/seeders'),
-            public_path('storage/temp'),
+            public_path('storage'),
             storage_path('app/download'),
         ];
 
@@ -51,6 +53,12 @@ class FactoryService
         }
 
         return true;
+    }
+
+    public static function afterSeed(): void
+    {
+        Artisan::call(ScoutFreshCommand::class);
+        Artisan::call(MediaCleanCommand::class, ['--force' => true]);
     }
 
     public static function make(string|\UnitEnum|null $mediaPath = null): self
