@@ -2,35 +2,55 @@
 
 namespace Kiwilan\Steward\Services;
 
+use Illuminate\Support\Collection;
 use Kiwilan\Steward\Services\Http\FetchService;
 use Kiwilan\Steward\Services\Http\HttpResponse;
 use Kiwilan\Steward\Services\Http\PoolRequest;
 use Kiwilan\Steward\Services\Http\PoolService;
+use Kiwilan\Steward\Services\Http\Utils\HttpModelQuery;
 
 class HttpService
 {
-    protected function __construct(
-    ) {
-    }
-
+    /**
+     * Fetch an URL.
+     */
     public static function fetch(string $url): HttpResponse
     {
         return FetchService::make($url);
     }
 
+    /**
+     * Create a pool of requests.
+     *
+     * @param  Collection<int,HttpModelQuery>|Collection<int,object>|string[]  $requests
+     */
     public static function pool(iterable $requests): PoolRequest
     {
         return PoolService::make($requests);
     }
 
-    public static function buildURL(string $url, array $params = []): string
+    /**
+     * Build an URL
+     *
+     * @param  string[]  $params
+     * @param  string[]  $query
+     */
+    public static function buildURL(string $url, array $params = [], array $query = []): string
     {
-        if (! $params) {
-            return $url;
+        if (! empty($params)) {
+            $paramsStr = implode('/', $params);
+
+            $url .= "/{$paramsStr}";
         }
 
-        $query = http_build_query($params);
+        if (! empty($query)) {
+            $queryStr = http_build_query($query);
 
-        return $url.'?'.$query;
+            $url .= "?{$queryStr}";
+        }
+
+        $url = str_replace(' ', '%20', $url);
+
+        return str_replace('//', '/', $url);
     }
 }
