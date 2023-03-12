@@ -34,11 +34,15 @@ enum SeedsApiCategoryEnum: string
 
     case technology = 'technology';
 
+    case tvshow = 'tvshow';
+
     case all = 'all';
 
     case architecture = 'architecture'; // building, city, decoration, monument
 
-    case human = 'human'; // cultural, people, relationship
+    case human = 'human'; // cultural, people, relationship, sport
 
     case wildlife = 'wildlife'; // animal, nature, space
+
+    case entertainment = 'entertainment'; // tvshow
 }
