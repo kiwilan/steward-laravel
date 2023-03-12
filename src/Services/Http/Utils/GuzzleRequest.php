@@ -155,8 +155,8 @@ class GuzzleRequest
             $console->newLine();
             $console->print('  HttpService will setup async requests...', 'bright-blue');
             $console->print("  Pool is limited to {$this->options->poolLimit} from .env");
-            $console->print("    - {$urls_count} requests", 'yellow');
-            $console->print("    - Converted into {$chunks_size} chunks", 'yellow');
+            $console->print("    - {$urls_count} requests", 'default');
+            $console->print("    - Converted into {$chunks_size} chunks", 'default');
         }
 
         $responses = collect([]);
@@ -176,7 +176,7 @@ class GuzzleRequest
         $end_time = microtime(true);
         $execution_time = ($end_time - $start_time);
         $execution_time = number_format((float) $execution_time, 2, '.', '');
-        $console->print("  {$this->fullfilledCount} requests fullfilled, {$this->rejectedCount} requests rejected.", 'bright-blue');
+        $console->print("  {$this->fullfilledCount} requests fullfilled, {$this->rejectedCount} requests rejected.", 'yellow');
         $console->print("  Done in {$execution_time} seconds.");
         $console->newLine();
 

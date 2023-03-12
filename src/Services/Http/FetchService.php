@@ -28,8 +28,14 @@ class FetchService
         $start_time = microtime(true);
         $domain = parse_url($self->url, PHP_URL_HOST);
         $console->newLine();
-        $console->print("  Fetching {$domain}...", 'yellow');
+        $console->print("  HttpService fetching {$domain}...", 'bright-blue');
         $self->response = HttpResponse::make('self', $client->request($method, $url));
+
+        if ($self->response->metadata()->statusCode() === 200) {
+            $console->print('  Success!', 'green');
+        } else {
+            $console->print('  Failed!', 'red');
+        }
 
         $end_time = microtime(true);
         $execution_time = ($end_time - $start_time);

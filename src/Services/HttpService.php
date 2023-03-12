@@ -10,7 +10,6 @@ use Kiwilan\Steward\Services\Http\PoolService;
 class HttpService
 {
     protected function __construct(
-        // protected PoolRequest $request,
     ) {
     }
 
