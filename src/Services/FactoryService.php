@@ -220,6 +220,6 @@ class FactoryService
         $name = "{$random}.{$ext}";
         File::put("{$basePath}/{$name}", $data);
 
-        return "seeders/{$name}";
+        return "{$subDirectory}/{$name}";
     }
 }
