@@ -32,15 +32,15 @@ class FetchService
         $self->response = HttpResponse::make('self', $client->request($method, $url));
 
         if ($self->response->metadata()->statusCode() === 200) {
-            $console->print('  Success!', 'green');
+            $console->print('  Success!', 'bright-green');
         } else {
-            $console->print('  Failed!', 'red');
+            $console->print('  Failed!', 'bright-red');
         }
 
         $end_time = microtime(true);
         $execution_time = ($end_time - $start_time);
         $execution_time = number_format((float) $execution_time, 2, '.', '');
-        $console->print("  Done in {$execution_time} seconds.", 'bright-green');
+        $console->print("  Done in {$execution_time} seconds.");
 
         return $self->response;
     }
