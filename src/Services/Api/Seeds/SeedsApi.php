@@ -76,7 +76,7 @@ class SeedsApi implements MediaApi
         $count = $count ?? null;
 
         $fetch = HttpService::fetch(
-            HttpService::buildURL("{$this->api}/pictures", [
+            HttpService::buildURL("{$this->api}/pictures", query: [
                 'count' => $count,
                 'category' => $category->value,
                 'size' => $size->value,
@@ -99,7 +99,7 @@ class SeedsApi implements MediaApi
     public function fetchPictureRandom(): HttpResponse
     {
         return HttpService::fetch(
-            HttpService::buildURL("{$this->api}/pictures/random", [
+            HttpService::buildURL("{$this->api}/pictures/random", query: [
                 'category' => $this->category->value,
                 'size' => $this->size->value,
             ])
