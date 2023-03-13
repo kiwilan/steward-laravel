@@ -7,6 +7,7 @@ use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\Services\Api\MediaApi;
 use Kiwilan\Steward\Services\Api\Seeds\SeedsApi;
+use Kiwilan\Steward\StewardConfig;
 
 class MediaProvider
 {
@@ -22,12 +23,15 @@ class MediaProvider
     }
 
     public function seeds(
-        SeedsApiCategoryEnum $category = SeedsApiCategoryEnum::all,
-        SeedsApiSizeEnum $size = SeedsApiSizeEnum::medium,
+        SeedsApiCategoryEnum $category = null,
+        SeedsApiSizeEnum $size = null,
         int $count = 1,
     ): MediaApi {
         $this->type = MediaApiEnum::seeds;
         $this->api = $this->setApi();
+
+        $category = $category ?? StewardConfig::factoryMediaDownloaderDefaultCategory();
+        $size = $size ?? StewardConfig::factoryMediaDownloaderDefaultSize();
         $this->api->config($category, $size, $count);
 
         return $this->api;

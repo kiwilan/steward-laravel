@@ -2,6 +2,8 @@
 
 namespace Kiwilan\Steward;
 
+use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
+use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 
 class StewardConfig
@@ -136,8 +138,18 @@ class StewardConfig
         return config('steward.factory.text') ?? FactoryTextEnum::lorem;
     }
 
-    public static function factorySeeds(): string
+    public static function factoryMediaDownloaderDefaultCategory(): SeedsApiCategoryEnum
     {
-        return config('steward.factory.seeds') ?? 'https://seeds.git-projects.xyz';
+        return config('steward.factory.media_downloader.default_category') ?? SeedsApiCategoryEnum::all;
+    }
+
+    public static function factoryMediaDownloaderDefaultSize(): SeedsApiSizeEnum
+    {
+        return config('steward.factory.media_downloader.default_size') ?? SeedsApiSizeEnum::medium;
+    }
+
+    public static function factoryMediaDownloaderSeedsApi(): int
+    {
+        return config('steward.factory.media_downloader.seeds.api') ?? 'https://seeds.git-projects.xyz';
     }
 }

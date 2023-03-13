@@ -12,6 +12,8 @@ enum SeedsApiCategoryEnum: string
 
     case city = 'city';
 
+    case corporate = 'corporate';
+
     case cultural = 'cultural';
 
     case decoration = 'decoration';
@@ -19,6 +21,8 @@ enum SeedsApiCategoryEnum: string
     case flower = 'flower';
 
     case food = 'food';
+
+    case house = 'house';
 
     case monument = 'monument';
 
@@ -38,11 +42,13 @@ enum SeedsApiCategoryEnum: string
 
     case all = 'all';
 
-    case architecture = 'architecture'; // building, city, decoration, monument
+    case architecture = 'architecture'; // `building`, `city`, `decoration`, `house`, `monument`
 
-    case human = 'human'; // cultural, people, relationship, sport
+    case human = 'human'; // `artist`, `corporate`, `cultural`, `people`, `relationship`, `sport`
 
-    case wildlife = 'wildlife'; // animal, nature, space
+    case wildlife = 'wildlife'; // `animal`, `flower`, `nature`, `space`
 
-    case entertainment = 'entertainment'; // tvshow
+    case entertainment = 'entertainment'; // `tvshow`
+
+    case mainstream = 'mainstream'; // `building`, `city`, `corporate`, `decoration`, `food`, `house`, `monument`, `nature`, `people`, `technology`
 }

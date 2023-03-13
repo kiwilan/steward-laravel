@@ -8,6 +8,7 @@ use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\Services\Factory\Media\MediaProvider;
 use Kiwilan\Steward\Services\FactoryService;
+use Kiwilan\Steward\StewardConfig;
 
 /**
  * Class FactoryMedia
@@ -20,13 +21,17 @@ class FactoryMediaDownloader
     ) {
     }
 
+    /**
+     * @param  SeedsApiCategoryEnum|null  $category default is `all`
+     * @param  SeedsApiSizeEnum|null  $size default is `medium`
+     */
     public function config(
-        SeedsApiCategoryEnum $category = SeedsApiCategoryEnum::all,
-        SeedsApiSizeEnum $size = SeedsApiSizeEnum::medium,
+        SeedsApiCategoryEnum $category = null,
+        SeedsApiSizeEnum $size = null,
     ): self {
         $this->config = [
-            'category' => $category,
-            'size' => $size,
+            'category' => $category ?? StewardConfig::factoryMediaDownloaderDefaultCategory(),
+            'size' => $size ?? StewardConfig::factoryMediaDownloaderDefaultSize(),
         ];
 
         return $this;

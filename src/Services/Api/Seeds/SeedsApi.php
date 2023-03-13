@@ -13,16 +13,7 @@ use Kiwilan\Steward\Services\HttpService;
 class SeedsApi implements MediaApi
 {
     /** @var Collection<string,HttpResponse> */
-    protected mixed $medias = null;
-
-    // /** @var SeedsPictureResponse[] */
-    // protected array $items = [];
-
-    // /** @var string[] */
-    // protected array $index = [];
-
-    // /** @var Collection<string,string> */
-    // protected ?Collection $medias = null;
+    protected ?Collection $medias = null;
 
     protected function __construct(
         protected string $api,
@@ -34,7 +25,7 @@ class SeedsApi implements MediaApi
 
     public static function make(): self
     {
-        $api = \Kiwilan\Steward\StewardConfig::factorySeeds().'/api';
+        $api = \Kiwilan\Steward\StewardConfig::factoryMediaDownloaderSeedsApi().'/api';
 
         return new self($api);
     }

@@ -1,5 +1,7 @@
 <?php
 
+use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
+use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 
 return [
@@ -156,6 +158,12 @@ return [
 
     'factory' => [
         'text' => FactoryTextEnum::lorem,
-        'seeds' => 'https://seeds.git-projects.xyz',
+        'media_downloader' => [
+            'default_category' => SeedsApiCategoryEnum::all,
+            'default_size' => SeedsApiSizeEnum::medium,
+            'seeds' => [
+                'api' => 'https://seeds.git-projects.xyz',
+            ],
+        ],
     ],
 ];
