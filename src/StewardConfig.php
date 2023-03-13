@@ -148,7 +148,7 @@ class StewardConfig
         return config('steward.factory.media_downloader.default_size') ?? SeedsApiSizeEnum::medium;
     }
 
-    public static function factoryMediaDownloaderSeedsApi(): int
+    public static function factoryMediaDownloaderSeedsApi(): string
     {
         return config('steward.factory.media_downloader.seeds.api') ?? 'https://seeds.git-projects.xyz';
     }
