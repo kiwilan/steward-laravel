@@ -46,11 +46,7 @@ class FactoryService
             $paths[] = storage_path('app/media');
         }
 
-        foreach ($paths as $key => $path) {
-            if (File::exists($path)) {
-                File::cleanDirectory($path);
-            }
-        }
+        DirectoryClearService::make($paths);
 
         return true;
     }
