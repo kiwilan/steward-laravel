@@ -22,7 +22,7 @@ class SlugService
         $service = new self($model, $slugWith, $slugColumn);
 
         if (! property_exists($model, $slugColumn)) {
-            throw new \Exception("Property {$slugColumn} does not exist in model {$model->getTable()}");
+            throw new \Exception("Property {$slugWith} does not exist in model {$model->getTable()}");
         }
 
         $service->empty = empty($model->{$slugColumn});
