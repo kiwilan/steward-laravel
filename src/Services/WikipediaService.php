@@ -2,76 +2,55 @@
 
 namespace Kiwilan\Steward\Services;
 
-use Closure;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
-use Kiwilan\Steward\Class\WikipediaItem;
+use Illuminate\Support\Facades\Storage;
 use Kiwilan\Steward\Services\Http\HttpResponse;
-use Kiwilan\Steward\Services\Http\PoolService;
+use Kiwilan\Steward\Services\Wikipedia\WikipediaItem;
 use Kiwilan\Steward\Services\Wikipedia\WikipediaQuery;
 use Kiwilan\Steward\Utils\Console;
-use ReflectionClass;
 
 /**
  * Use Wikipedia to get some data about authors and series.
- * Doc in french: https://korben.info/comment-utiliser-lapi-de-recherche-de-wikipedia.html.
+ * Documentation (in french) from https://korben.info/comment-utiliser-lapi-de-recherche-de-wikipedia.html.
  *
  * For each Wikipedia search, need to execute two API calls to search to get page id and to parse page id data.
- *
- * @property EloquentBuilder|Relation|string $subject            Model class name, `Author::class`.
- * @property string                          $subject_identifier Unique identifier for Model, default is `id`
- * @property ?Collection<int,Model>          $models             List of scanned models
- * @property string[]                        $query_attributes   Attributes to search in Wikipedia, can be multiple for concat search
- * @property ?string                         $language           Wikipedia instance language
- * @property ?Collection<int,WikipediaQuery> $queries            List of queries
- * @property ?Collection<int,WikipediaQuery> $queries_failed     List of failed queries
- * @property ?Collection<int,WikipediaItem>  $wikipedia_items    List of WikipediaItem items
- * @property ?bool                           $debug              default `false`
  */
 class WikipediaService
 {
-    public function __construct(
-        public mixed $subject = null,
-        public string $subject_identifier = 'id',
-        public ?Collection $models = null,
-        public array $query_attributes = ['name'],
-        public ?string $language_field = null,
-        public ?Collection $queries = null,
-        public ?Collection $queries_failed = null,
-        public ?Collection $wikipedia_items = null,
-        public ?bool $debug = false,
+    /** @var array<string> */
+    protected array $queryAttributes = ['name'];
+
+    /** @var ?Collection<int,object> */
+    protected ?Collection $objects = null;
+
+    /** @var ?Collection<int,WikipediaItem> */
+    protected ?Collection $items = null;
+
+    protected function __construct(
+        protected string $languageField,
+        protected string $identifier = 'id',
+        protected int $count = 0,
+        protected bool $debug = false,
     ) {
-        $this->models = collect([]);
-        $this->queries = collect([]);
-        $this->queries_failed = collect([]);
-        $this->wikipedia_items = collect([]);
+        $this->objects = collect([]);
+        $this->items = collect([]);
     }
 
     /**
      * Create WikipediaService from Model and create WikipediaQuery for each entity only if hasn't WikipediaItem.
+     *
+     * @param  Collection<int,object>  $objects  List of objects
+     * @param  string  $languageField  Language field to use for Wikipedia instance
      */
-    public static function make(string $subject, ?bool $debug = false): self
+    public static function make(Collection $objects, string $languageField): self
     {
-        $service = new WikipediaService();
+        $self = new WikipediaService($languageField);
+        $self->objects = $objects;
+        $self->count = $self->objects->count();
 
-        $instance = new $subject();
-        $subject = new ReflectionClass($instance);
-
-        $service->subject = $subject->getName();
-        $service->debug = $debug;
-
-        return $service;
-    }
-
-    public function fetchModels(): self
-    {
-        /** @var Collection<int,Model> */
-        $models = $this->subject::all();
-        $this->models = $models;
-
-        return $this;
+        return $self;
     }
 
     /**
@@ -89,17 +68,17 @@ class WikipediaService
             $list = $attributes;
         }
 
-        $this->query_attributes = $list;
+        $this->queryAttributes = $list;
 
         return $this;
     }
 
     /**
-     * Set language to use for Wikipedia search instance.
+     * Set debug mode.
      */
-    public function setLanguageField(string $language_field): self
+    public function setDebug(bool $debug): self
     {
-        $this->language_field = $language_field;
+        $this->debug = $debug;
 
         return $this;
     }
@@ -107,13 +86,26 @@ class WikipediaService
     /**
      * Set unique identifier of the model.
      *
-     * @param  string  $subject_identifier Default is `id`
+     * @param  string  $identifier Default is `id`
      */
-    public function setSubjectIdentifier(string $subject_identifier = 'id'): self
+    public function setidentifier(string $identifier = 'id'): self
     {
-        $this->subject_identifier = $subject_identifier;
+        $this->identifier = $identifier;
 
         return $this;
+    }
+
+    public function count(): int
+    {
+        return $this->count;
+    }
+
+    /**
+     * @return Collection<int,WikipediaItem>
+     */
+    public function items(): Collection
+    {
+        return $this->items;
     }
 
     /**
@@ -121,122 +113,154 @@ class WikipediaService
      */
     public function execute(): self
     {
-        $this->fetchModels();
-
-        foreach ($this->models as $model) {
-            $query = $this->setWikipediaQuery($model);
-            $this->queries->add($query);
-        }
+        $queries = $this->setQueries();
 
         $console = Console::make();
 
         $console->print('List of query URL available, requests from query URL to get page id.');
         $console->newLine();
 
-        $this->search('query_url', fn (WikipediaQuery $query, $response) => $query->parseQueryResults($response));
+        $http = HttpService::pool($queries)
+            ->setIdentifier('identifier')
+            ->setUrl('queryUrl')
+            ->execute()
+        ;
+
+        $queryItems = $this->setQueryItems($http->responses());
 
         $console->print('List of page id URL available, requests from page id URL to get extra content.');
         $console->newLine();
 
-        $this->search('page_id_url', fn (WikipediaQuery $query, $response) => $query->parsePageIdData($response));
+        $http = HttpService::pool($queryItems)
+            ->setIdentifier('identifier')
+            ->setUrl('pageUrl')
+            ->execute()
+        ;
+
+        $queryItems = $queryItems->filter(fn ($item) => $item);
+        $pageIdItems = $this->setPageIdItems($http->responses(), $queryItems);
 
         $console->print('Convert into WikipediaItem...');
 
-        $this->wikipedia_items = $this->setWikipediaItems();
+        $this->items = $this->setItems($pageIdItems);
 
         return $this;
     }
 
     /**
-     * Create `WikipediaItem[]` from `WikipediaQuery[]`.
+     * Create `WikipediaItem` from `HttpResponse`.
      *
+     * @param  Collection<int,HttpResponse>  $responses  Response from Wikipedia API
      * @return Collection<int,WikipediaItem>
      */
-    private function setWikipediaItems()
+    private function setQueryItems(Collection $responses)
     {
         /** @var Collection<int,WikipediaItem> */
-        $wikipedia_items = collect([]);
+        $items = collect([]);
 
-        foreach ($this->queries as $query) {
-            $wikipedia_items->put($query->model_id, new WikipediaItem(
-                model_id: $query->model_id,
-                model_name: $query->model_name,
-                language: $query->language,
-                search_query: $query->search_query,
-                query_url: $query->query_url,
-                page_id: $query->page_id,
-                page_id_url: $query->page_id_url,
-                page_url: $query->page_url,
-                extract: $query->extract,
-                picture_url: $query->picture_url,
-            ));
+        foreach ($responses as $id => $response) {
+            if ($this->debug) {
+                $this->print($response, 'wikipedia-pageid', $response->id());
+            }
+            $item = WikipediaItem::make($response);
+            $items->put($response->id(), $item);
         }
 
-        return $wikipedia_items;
+        return $items;
     }
 
     /**
-     * Make GET request from Wikipedia API and parse it.
+     * Attach `WikipediaItem` to page ID from `HttpResponse`.
      *
-     * @param  string  $model_url is WikipediaQuery attribute which is an URL
-     * @param  Closure  $closure   is WikipediaQuery class method to parse response
+     * @param  Collection<int,HttpResponse>  $responses  Response from Wikipedia API
+     * @param  Collection<int,WikipediaItem>  $queryItems  List of `WikipediaItem`
+     * @return Collection<int,WikipediaItem>
      */
-    private function search(string $model_url, Closure $closure): self
+    private function setPageIdItems(Collection $responses, Collection $queryItems)
     {
-        $http = HttpService::pool($this->queries)
-            ->setModelId('model_id')
-            ->setModelUrl($model_url)
-            ->execute()
-        ;
-        $responses = $http->responses();
+        /** @var Collection<int,WikipediaItem> */
+        $items = collect([]);
 
-        $parsing = PoolService::parseResponses(
-            $responses,
-            $this->queries,
-            fn (WikipediaQuery $query, HttpResponse $response) => $closure($query, $response),
-        );
+        foreach ($responses as $id => $response) {
+            /** @var WikipediaItem */
+            $item = $queryItems->first(fn (WikipediaItem $item) => $item->identifier() === $response->id());
 
-        $this->queries->replace($parsing->get('fullfilled'));
-        $this->queries_failed->replace($parsing->get('rejected'));
+            if ($this->debug) {
+                $this->print($response, 'wikipedia', $response->id());
+            }
+            $item = WikipediaItem::makePageId($response, $item);
+            $items->put($response->id(), $item);
+        }
 
-        return $this;
+        return $items;
+    }
+
+    /**
+     * Create `WikipediaItem[]`.
+     *
+     * @param  Collection<int,WikipediaItem>  $pageIdItems  List of `WikipediaItem`
+     * @return Collection<int,WikipediaItem>
+     */
+    private function setItems(Collection $pageIdItems)
+    {
+        /** @var Collection<int,WikipediaItem> */
+        $items = collect([]);
+
+        foreach ($pageIdItems as $item) {
+            $items->put($item->identifier(), $item);
+        }
+
+        return $items;
     }
 
     /**
      * Set WikipediaQuery for current `$model`.
+     *
+     * @return Collection<int,WikipediaQuery>
      */
-    private function setWikipediaQuery(Model $model): WikipediaQuery|false
+    private function setQueries(): Collection
     {
-        // Test each attribute
-        foreach ($this->query_attributes as $attribute) {
-            if (! $this->attributeExistInModel($attribute, $model)) {
-                return false;
+        /** @var Collection<int,WikipediaQuery> */
+        $queries = collect([]);
+
+        foreach ($this->objects as $object) {
+            // Test each attribute
+            foreach ($this->queryAttributes as $attribute) {
+                if (! $this->attributeExistInModel($attribute, $object)) {
+                    continue;
+                }
             }
-        }
 
-        $lang = 'en';
-        // If language attribute is unknown, set it to english.
-        if ($this->attributeExistInModel($this->language_field, $model)) {
-            $lang = $model->{$this->language_field};
+            $lang = 'en';
+            // If language attribute is unknown, set it to english.
+            if ($this->attributeExistInModel($this->languageField, $object)) {
+                $lang = $object->{$this->languageField};
 
-            if ('unknown' === $lang || null === $lang) {
-                $lang = 'en';
+                if ('unknown' === $lang || null === $lang) {
+                    $lang = 'en';
+                }
             }
+
+            // set query string from `$queryAttributes`
+            $queryString = null;
+
+            foreach ($this->queryAttributes as $attr) {
+                $queryString .= $object->{$attr}.' ';
+            }
+
+            $queryString = trim($queryString);
+
+            $queries->put(
+                $object->{$this->identifier},
+                WikipediaQuery::make(
+                    queryString: $queryString,
+                    identifier: $object->{$this->identifier},
+                    language: $lang,
+                ),
+            );
         }
 
-        // set query string from `$query_attributes`
-        $query_string = null;
-
-        foreach ($this->query_attributes as $attr) {
-            $query_string .= $model->{$attr}.' ';
-        }
-        $query_string = trim($query_string);
-
-        return WikipediaQuery::make($query_string, $model, $this->debug)
-            ->setSubjectIdentifier($this->subject_identifier)
-            ->setLanguage($lang)
-            ->execute()
-        ;
+        return $queries;
     }
 
     /**
@@ -245,5 +269,14 @@ class WikipediaService
     private function attributeExistInModel(string $attribute, Model $model): bool
     {
         return array_key_exists($attribute, $model->getAttributes());
+    }
+
+    /**
+     * Print response into JSON format to debug, store it to `public/storage/debug/wikipedia/{$directory}/`.
+     */
+    private function print(HttpResponse $response, string $directory, int $id)
+    {
+        $response_json = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        Storage::disk('public')->put("debug/wikipedia/{$directory}/{$id}.json", $response_json);
     }
 }

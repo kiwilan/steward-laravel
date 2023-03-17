@@ -21,7 +21,7 @@ class SlugService
     {
         $service = new self($model, $slugWith, $slugColumn);
 
-        if (! property_exists($model, $slugColumn)) {
+        if (! isset($model->{$slugWith})) {
             throw new \Exception("Property {$slugWith} does not exist in model {$model->getTable()}, you can add `protected \$slug_with = 'name';` to your model.");
         }
 

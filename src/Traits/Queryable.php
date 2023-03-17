@@ -2,6 +2,8 @@
 
 namespace Kiwilan\Steward\Traits;
 
+use Kiwilan\Steward\StewardConfig;
+
 /**
  * Add Model capacity to use Model configuration with `HttpQuery`.
  * - `$query_with`: `array` relationships
@@ -72,7 +74,7 @@ trait Queryable
      */
     public function getQueryDefaultSort(): string
     {
-        return $this->query_default_sort ?? \Kiwilan\Steward\StewardConfig::queryDefaultSort();
+        return $this->query_default_sort ?? StewardConfig::queryDefaultSort();
     }
 
     /**
@@ -80,7 +82,7 @@ trait Queryable
      */
     public function getQueryDefaultSortDirection(): string
     {
-        return $this->query_default_sort_direction ?? \Kiwilan\Steward\StewardConfig::queryDefaultSortDirection();
+        return $this->query_default_sort_direction ?? StewardConfig::queryDefaultSortDirection();
     }
 
     /**
@@ -112,7 +114,7 @@ trait Queryable
      */
     public function getQueryFull(): bool
     {
-        return $this->query_full ?? \Kiwilan\Steward\StewardConfig::queryFull();
+        return $this->query_full ?? StewardConfig::queryFull();
     }
 
     /**
@@ -120,7 +122,7 @@ trait Queryable
      */
     public function getQueryLimit(): int
     {
-        return $this->query_limit ?? \Kiwilan\Steward\StewardConfig::queryLimit();
+        return $this->query_limit ?? StewardConfig::queryLimit();
     }
 
     /**

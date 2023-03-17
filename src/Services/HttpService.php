@@ -7,7 +7,7 @@ use Kiwilan\Steward\Services\Http\FetchService;
 use Kiwilan\Steward\Services\Http\HttpResponse;
 use Kiwilan\Steward\Services\Http\PoolRequest;
 use Kiwilan\Steward\Services\Http\PoolService;
-use Kiwilan\Steward\Services\Http\Utils\HttpModelQuery;
+use Kiwilan\Steward\Services\Http\Utils\HttpQuery;
 
 class HttpService
 {
@@ -22,7 +22,7 @@ class HttpService
     /**
      * Create a pool of requests.
      *
-     * @param  Collection<int,HttpModelQuery>|Collection<int,object>|string[]  $requests
+     * @param  Collection<int,HttpQuery>|Collection<int,object>|string[]  $requests
      */
     public static function pool(iterable $requests): PoolRequest
     {

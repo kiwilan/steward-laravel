@@ -18,6 +18,7 @@ class HttpMetadata
         protected ?string $date = null,
         protected ?string $contentType = null,
         protected ?string $origin = null,
+        protected string|int|null $id = null,
     ) {
     }
 
@@ -88,6 +89,11 @@ class HttpMetadata
     public function origin(): ?string
     {
         return $this->origin;
+    }
+
+    public function id(): string|int|null
+    {
+        return $this->id;
     }
 
     /**

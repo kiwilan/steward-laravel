@@ -8,21 +8,21 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Kiwilan\Steward\Services\Http\Utils\GuzzleOptions;
 use Kiwilan\Steward\Services\Http\Utils\GuzzleRequest;
-use Kiwilan\Steward\Services\Http\Utils\HttpModelQuery;
+use Kiwilan\Steward\Services\Http\Utils\HttpQuery;
 use stdClass;
 
 class PoolRequest
 {
-    /** @var Collection<int,HttpModelQuery>|Collection<int,object>|string[] */
+    /** @var Collection<int,HttpQuery>|Collection<int,object>|string[] */
     protected mixed $requestsOrigin = null;
 
     /** @var Collection<string,mixed> */
     protected ?Collection $requests = null;
 
-    /** @var Collection<string,Response> */
+    /** @var Collection<string,HttpResponse> */
     protected ?Collection $fullfilled = null;
 
-    /** @var Collection<string,mixed> */
+    /** @var Collection<string,HttpResponse> */
     protected ?Collection $rejected = null;
 
     /** @var Collection<string,HttpResponse> */
@@ -35,15 +35,15 @@ class PoolRequest
         protected int $fullfilledCount = 0,
         protected int $rejectedCount = 0,
         //
-        protected string $modelId = 'id',
-        protected string $modelUrl = 'url',
+        public string $identifier = 'id',
+        public string $url = 'url',
     ) {
     }
 
     /**
      * Create PoolRequest instance.
      *
-     * @param  Collection<int,HttpModelQuery>|Collection<int,object>|string[]  $requests
+     * @param  Collection<int,HttpQuery>|Collection<int,object>|string[]  $requests
      */
     public static function make(iterable $requests): self
     {
@@ -106,9 +106,9 @@ class PoolRequest
     /**
      * Set model attribute with id, default is `id`.
      */
-    public function setModelId(string $name = 'id'): self
+    public function setIdentifier(string $field = 'id'): self
     {
-        $this->modelId = $name;
+        $this->identifier = $field;
 
         return $this;
     }
@@ -116,9 +116,9 @@ class PoolRequest
     /**
      * Set model attribute with url, default is `url`.
      */
-    public function setModelUrl(string $name = 'url'): self
+    public function setUrl(string $field = 'url'): self
     {
-        $this->modelUrl = $name;
+        $this->url = $field;
 
         return $this;
     }
@@ -152,7 +152,7 @@ class PoolRequest
     }
 
     /**
-     * @return Collection<string,Response>
+     * @return Collection<string,HttpResponse>
      */
     public function fullfilled(): Collection
     {
@@ -162,7 +162,7 @@ class PoolRequest
     /**
      * Get rejected responses.
      *
-     * @return Collection<string,mixed>
+     * @return Collection<string,HttpResponse>
      */
     public function rejected(): Collection
     {
@@ -192,16 +192,6 @@ class PoolRequest
         return $this->requestCount;
     }
 
-    public function modelId(): string
-    {
-        return $this->modelId;
-    }
-
-    public function modelUrl(): string
-    {
-        return $this->modelUrl;
-    }
-
     public function options(): GuzzleOptions
     {
         return $this->options;
@@ -219,16 +209,41 @@ class PoolRequest
 
         // Prepare requests
         foreach ($this->requests as $item) {
-            $urls->put($item->{$this->modelId}, $item->{$this->modelUrl});
+            if (! $item) {
+                continue;
+            }
+
+            $identifier = null;
+
+            if (method_exists($item, 'get'.ucfirst($this->identifier))) {
+                $identifier = $item->{'get'.ucfirst($this->identifier)}();
+            } elseif (method_exists($item, $this->identifier)) {
+                $identifier = $item->{$this->identifier}();
+            } elseif (property_exists($item, $this->identifier)) {
+                $identifier = $item->{$this->identifier};
+            }
+
+            $url = null;
+
+            if (method_exists($item, 'get'.ucfirst($this->url))) {
+                $url = $item->{'get'.ucfirst($this->url)}();
+            } elseif (method_exists($item, $this->url)) {
+                $url = $item->{$this->url}();
+            } elseif (property_exists($item, $this->url)) {
+                $url = $item->{$this->url};
+            }
+
+            $urls->put($identifier, $url);
         }
 
         $pool = GuzzleRequest::make($urls, $this->options);
 
-        $this->fullfilled = $pool->fullfilled();
-        $this->fullfilledCount = $pool->fullfilledCount();
-        $this->rejectedCount = $pool->rejectedCount();
-        $this->rejected = $pool->rejected();
-        $this->responses = $this->toHttpResponse($this->fullfilled);
+        $this->responses = $this->toHttpResponse($pool->all());
+
+        $this->fullfilled = $this->responses->filter(fn (HttpResponse $response) => $response->isSuccess());
+        $this->fullfilledCount = $this->fullfilled->count();
+        $this->rejected = $this->responses->filter(fn (HttpResponse $response) => ! $response->isSuccess());
+        $this->rejectedCount = $this->rejected->count();
 
         return $this;
     }
@@ -245,6 +260,7 @@ class PoolRequest
         $list = collect([]);
 
         foreach ($responses as $id => $response) {
+            $id = $response->getHeader('ID')[0];
             $response = HttpResponse::make($id, $response);
             $list->put($id, $response);
         }
@@ -253,7 +269,7 @@ class PoolRequest
     }
 
     /**
-     * @param  Collection<int,HttpModelQuery>|Collection<int,object>|string[]  $requests
+     * @param  Collection<int,HttpQuery>|Collection<int,object>|string[]  $requests
      */
     private function transformRequests(mixed $requests): mixed
     {

@@ -8,16 +8,16 @@ use ReflectionClass;
 /**
  * Meta Class, to give easy access to Model meta names.
  *
- * @property string $class like `App\Models\WikipediaItem::class`
- * @property string $classNamespaced like `App\Models\WikipediaItem`
- * @property string $className like `WikipediaItem`
- * @property string $classPlural like `WikipediaItems`
- * @property string $classSnake like `wikipedia_item`
- * @property string $classSnakePlural like `wikipedia_items`
- * @property string $classSlug like `wikipedia-item`
- * @property string $classSlugPlural like `wikipedia-items`
- * @property string $firstChar like `w`
- * @property array<string,string> $traits
+ * - `class()` `string` like `App\Models\WikipediaItem::class`
+ * - `classNamespaced()` `string` like `App\Models\WikipediaItem`
+ * - `className()` `string` like `WikipediaItem`
+ * - `classPlural()` `string` like `WikipediaItems`
+ * - `classSnake()` `string` like `wikipedia_item`
+ * - `classSnakePlural()` `string` like `wikipedia_items`
+ * - `classSlug()` `string` like `wikipedia-item`
+ * - `classSlugPlural()` `string` like `wikipedia-items`
+ * - `firstChar()` `string` like `w`
+ * - `traits()` `array<string,string>`
  */
 class MetaClass
 {

@@ -110,7 +110,7 @@ class StewardConfig
 
     public static function httpPoolLimit(): int
     {
-        return config('steward.http.pool_limit') ?? 200;
+        return config('steward.http.pool_limit') ?? 250;
     }
 
     public static function httpAsyncAllow(): bool

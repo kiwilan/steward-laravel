@@ -23,8 +23,11 @@ class GuzzleRequest
     /** @var Collection<string,Response> */
     protected ?Collection $fullfilled = null;
 
-    /** @var Collection<string,mixed> */
+    /** @var Collection<string,Response> */
     protected ?Collection $rejected = null;
+
+    /** @var Collection<string,Response> */
+    protected ?Collection $all = null;
 
     protected function __construct(
         protected GuzzleOptions $options,
@@ -32,6 +35,9 @@ class GuzzleRequest
         protected int $fullfilledCount = 0,
         protected int $rejectedCount = 0,
     ) {
+        $this->fullfilled = collect([]);
+        $this->rejected = collect([]);
+        $this->all = collect([]);
     }
 
     /**
@@ -43,8 +49,6 @@ class GuzzleRequest
 
         $self->requests = $requests;
         $self->requestCount = count($requests);
-        $self->fullfilled = collect([]);
-        $self->rejected = collect([]);
 
         if ($self->options->poolable) {
             $res = $self->inParallels($requests);
@@ -54,6 +58,7 @@ class GuzzleRequest
 
         $self->fullfilled = $res->get('fullfilled');
         $self->rejected = $res->get('rejected');
+        $self->all = $res->get('all');
 
         return $self;
     }
@@ -82,11 +87,19 @@ class GuzzleRequest
     }
 
     /**
-     * @return Collection<string,mixed>
+     * @return Collection<string,Response>
      */
     public function rejected(): Collection
     {
         return $this->rejected;
+    }
+
+    /**
+     * @return Collection<string,Response>
+     */
+    public function all(): Collection
+    {
+        return $this->all;
     }
 
     /**
@@ -125,6 +138,7 @@ class GuzzleRequest
         return collect([
             'fullfilled' => $fullfilled,
             'rejected' => $rejected,
+            'all' => $fullfilled->merge($rejected),
         ]);
     }
 
@@ -165,8 +179,9 @@ class GuzzleRequest
             $console->print("    - Converted into {$chunks_size} chunks", 'default');
         }
 
-        $responses = collect([]);
-        $responsesFailed = collect([]);
+        $fullfilled = collect([]);
+        $rejected = collect([]);
+        $all = collect([]);
 
         foreach ($chunks as $chunk_key => $chunk_urls) {
             $chunk_urls_count = count($chunk_urls);
@@ -175,8 +190,9 @@ class GuzzleRequest
 
             $res = $this->pool($chunk_urls);
 
-            $responses = $responses->merge($res->get('fullfilled'));
-            $responsesFailed = $responsesFailed->merge($res->get('rejected'));
+            $fullfilled = $fullfilled->merge($res->get('fullfilled'));
+            $rejected = $rejected->merge($res->get('rejected'));
+            $all = $all->merge($res->get('all'));
         }
 
         $end_time = microtime(true);
@@ -188,8 +204,9 @@ class GuzzleRequest
         $console->newLine();
 
         return collect([
-            'fullfilled' => $responses,
-            'rejected' => $responsesFailed,
+            'fullfilled' => $fullfilled,
+            'rejected' => $rejected,
+            'all' => $all,
         ]);
     }
 
@@ -252,14 +269,23 @@ class GuzzleRequest
             'concurrency' => $this->options->guzzleConcurrency,
             'fulfilled' => function (Response $response, $index) use ($fullfilled, $urls) {
                 $response = $response->withHeader('Origin', $urls[$index] ?? null); // Add Origin header for URL
+                $response = $response->withHeader('ID', $index ?? null);
                 $fullfilled->put($index, $response);
 
                 $this->fullfilledCount++;
             },
             'rejected' => function (mixed $reason, $index) use ($fullfilled, $rejected, $urls) {
                 Log::warning('HttpService: one request rejected', [$reason, $index, $urls[$index]]);
-                $fullfilled->put($index, null);
-                $rejected->put($index, $reason);
+                $response = new Response(
+                    status: 500,
+                    headers:[
+                        'Origin' => $urls[$index] ?? null,
+                        'ID' => $index ?? null,
+                    ],
+                    reason: $reason,
+                );
+                $fullfilled->put($index, $response);
+                $rejected->put($index, $response);
 
                 $this->rejectedCount++;
             },
@@ -271,6 +297,7 @@ class GuzzleRequest
         $res = collect([]);
         $res->put('fullfilled', $fullfilled);
         $res->put('rejected', $rejected);
+        $res->put('all', $fullfilled->merge($rejected));
 
         return $res;
     }

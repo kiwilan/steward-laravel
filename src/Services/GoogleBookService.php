@@ -2,43 +2,45 @@
 
 namespace Kiwilan\Steward\Services;
 
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
-use Kiwilan\Steward\Class\GoogleBook;
+use Illuminate\Support\Facades\Storage;
+use Kiwilan\Steward\Services\GoogleBook\GoogleBook;
 use Kiwilan\Steward\Services\GoogleBook\GoogleBookQuery;
 use Kiwilan\Steward\Services\Http\HttpResponse;
-use Kiwilan\Steward\Services\Http\PoolService;
 
 /**
- * Use GoogleBook API to improve `$subject` data.
- *
- * @property EloquentBuilder|Relation|string  $subject            Model class name, `Book::class`.
- * @property string[]                         $isbn_fields        List of isbn fields into `$subject`
- * @property string                           $subject_identifier Unique identifier of the model, default is `id`
- * @property ?Collection<int,object>          $models             List of scanned models
- * @property ?Collection<int,GoogleBookQuery> $queries            List of queries
- * @property ?Collection<int,GoogleBookQuery> $queries_failed     List of failed queries
- * @property ?Collection<int,GoogleBook>      $google_books       List of GoogleBook items
- * @property bool                             $debug              Debug mode
+ * Use GoogleBook API to improve data.
  */
 class GoogleBookService
 {
-    public function __construct(
-        public mixed $subject = null,
-        public string $subject_identifier = 'id',
-        public ?Collection $models = null,
-        public array $isbn_fields = ['isbn'],
-        public ?Collection $queries = null,
-        public ?Collection $queries_failed = null,
-        public ?Collection $google_books = null,
-        public ?bool $debug = false,
+    /** @var ?Collection<int,object> */
+    protected ?Collection $objects = null;
+
+    /** @var ?Collection<int,object> */
+    protected ?Collection $scannables = null;
+
+    /** @var array<string> */
+    protected array $isbnFields = ['isbn'];
+
+    /** @var ?Collection<int,GoogleBookQuery> */
+    protected ?Collection $queries = null;
+
+    /** @var ?Collection<int,GoogleBookQuery> */
+    protected ?Collection $queriesFailed = null;
+
+    /** @var ?Collection<int,GoogleBook> */
+    protected ?Collection $items = null;
+
+    protected function __construct(
+        protected string $identifier = 'id',
+        protected int $count = 0,
+        protected bool $debug = false,
     ) {
-        $this->models = collect([]);
+        $this->objects = collect([]);
         $this->queries = collect([]);
-        $this->queries_failed = collect([]);
-        $this->google_books = collect([]);
+        $this->queriesFailed = collect([]);
+        $this->items = collect([]);
     }
 
     /**
@@ -48,49 +50,24 @@ class GoogleBookService
      * Get all useful data to improve Book, Identifier, Publisher and Tag
      * If data exist, create GoogleBook associate with Book with useful data to purchase eBook
      *
-     * @param  string  $subject Model class name, `Book::class`
-     * @param  bool  $debug   Debug mode, default `false`
+     * @param  Collection<int,object>  $objects  List of scanned models
      */
-    public static function make(string $subject, ?bool $debug = false): self
+    public static function make(Collection $objects): self
     {
-        $service = new GoogleBookService();
-        $service->subject = $subject;
-        $service->debug = $debug;
+        $self = new GoogleBookService();
+        $self->objects = $objects;
+        $self->scannables = $self->setScannables();
+        $self->count = $self->scannables->count();
 
-        return $service;
+        return $self;
     }
 
     /**
-     * Scan all models to keep only available.
-     *
-     * @param  string  $subject     Model class name, `Book::class`
-     * @param  string[]  $isbn_fields
+     * Set debug mode.
      */
-    public static function availableModels(string $subject, array $isbn_fields = ['isbn']): Collection
+    public function setDebug(bool $debug): self
     {
-        $models = collect([]);
-
-        foreach ($subject::all() as $model) {
-            foreach ($isbn_fields as $field) {
-                if ($model->{$field}) {
-                    $models->add($model);
-
-                    break;
-                }
-            }
-        }
-
-        return $models;
-    }
-
-    /**
-     * Set models to scan.
-     *
-     * @param  Collection<int,object>  $models List of scanned models
-     */
-    public function setModels(Collection $models): self
-    {
-        $this->models = $models;
+        $this->debug = $debug;
 
         return $this;
     }
@@ -98,11 +75,11 @@ class GoogleBookService
     /**
      * Set isbn fields to scan.
      *
-     * @param  string[]  $isbn_fields List of isbn fields into `$subject`, set more relevant first, default `['isbn']`
+     * @param  string[]  $isbnFields List of isbn fields into `$subject`, set more relevant first, default `['isbn']`
      */
-    public function setIsbnFields(array $isbn_fields = ['isbn']): self
+    public function setIsbnFields(array $isbnFields = ['isbn']): self
     {
-        $this->isbn_fields = $isbn_fields;
+        $this->isbnFields = $isbnFields;
 
         return $this;
     }
@@ -110,13 +87,29 @@ class GoogleBookService
     /**
      * Set unique identifier of the model.
      *
-     * @param  string  $subject_identifier Default is `id`
+     * @param  string  $identifier Default is `id`
      */
-    public function setSubjectIdentifier(string $subject_identifier = 'id'): self
+    public function setIdentifier(string $identifier = 'id'): self
     {
-        $this->subject_identifier = $subject_identifier;
+        $this->identifier = $identifier;
 
         return $this;
+    }
+
+    /**
+     * Get scannables count.
+     */
+    public function count(): int
+    {
+        return $this->count;
+    }
+
+    /**
+     * @return Collection<int,GoogleBook>
+     */
+    public function items(): Collection
+    {
+        return $this->items;
     }
 
     /**
@@ -124,10 +117,6 @@ class GoogleBookService
      */
     public function execute(): self
     {
-        if (null === $this->models) {
-            $this->models = self::availableModels($this->subject, $this->isbn_fields);
-        }
-
         $this->search();
 
         return $this;
@@ -141,59 +130,38 @@ class GoogleBookService
         $this->queries = $this->setQueries();
 
         $http = HttpService::pool($this->queries)
-            ->setModelId('model_id')
+            ->setIdentifier('identifier')
             ->execute()
         ;
-        $responses = $http->responses();
 
-        $parsing = PoolService::parseResponses(
-            $responses,
-            $this->queries,
-            fn (GoogleBookQuery $query, HttpResponse $response) => $query->parseResponse($response)
-        );
-
-        $this->queries->replace($parsing->get('fullfilled'));
-        $this->queries_failed->replace($parsing->get('rejected'));
-
-        $this->google_books = $this->setGoogleBooks();
+        $this->items = $this->setItems($http->responses());
 
         return $this;
     }
 
     /**
-     * Create `GoogleBook[]` from `GoogleBookQuery[]`.
+     * Create `GoogleBook` from `HttpResponse`.
      *
+     * @param  Collection<int,HttpResponse>  $responses  Response from GoogleBook API
      * @return Collection<int,GoogleBook>
      */
-    private function setGoogleBooks()
+    private function setItems(Collection $responses)
     {
         /** @var Collection<int,GoogleBook> */
-        $google_books = collect([]);
+        $items = collect([]);
 
-        foreach ($this->queries as $query) {
-            $google_books->put($query->model_id, new GoogleBook(
-                model_id: $query->model_id,
-                model_name: $query->model_name,
-                original_isbn: $query->original_isbn,
-                url: $query->url,
-                published_date: $query->published_date,
-                description: $query->description,
-                industry_identifiers: $query->industry_identifiers,
-                page_count: $query->page_count,
-                categories: $query->categories,
-                maturity_rating: $query->maturity_rating,
-                language: $query->language,
-                preview_link: $query->preview_link,
-                publisher: $query->publisher,
-                retail_price_amount: $query->retail_price_amount,
-                retail_price_currency_code: $query->retail_price_currency_code,
-                buy_link: $query->buy_link,
-                isbn10: $query->isbn10,
-                isbn13: $query->isbn13,
-            ));
+        foreach ($responses as $id => $response) {
+            if ($this->debug) {
+                $this->print($response, 'googlebook', $response->id());
+            }
+            $item = GoogleBook::make($response);
+
+            if ($item) {
+                $items->put($response->id(), $item);
+            }
         }
 
-        return $google_books;
+        return $items;
     }
 
     /**
@@ -206,11 +174,50 @@ class GoogleBookService
         /** @var Collection<int,GoogleBookQuery> */
         $queries = collect([]);
 
-        foreach ($this->models as $model) {
-            $query = GoogleBookQuery::make($model, $this);
+        foreach ($this->objects as $object) {
+            $isbn = [];
+
+            foreach ($this->isbnFields as $field) {
+                $isbn[] = $object->{$field};
+            }
+            $query = GoogleBookQuery::make(
+                isbn: $isbn,
+                identifier: $object->{$this->identifier},
+            );
             $queries->add($query);
         }
 
         return $queries;
+    }
+
+    /**
+     * Scan all models to keep only available.
+     *
+     * @return Collection<int,object>
+     */
+    private function setScannables(): Collection
+    {
+        $scannables = collect([]);
+
+        foreach ($this->objects as $object) {
+            foreach ($this->isbnFields as $field) {
+                if ($object->{$field}) {
+                    $scannables->add($object);
+
+                    break;
+                }
+            }
+        }
+
+        return $scannables;
+    }
+
+    /**
+     * Print response into JSON format to debug, store it to `public/storage/debug/wikipedia/{$directory}/`.
+     */
+    private function print(HttpResponse $response, string $directory, int $id)
+    {
+        $response_json = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        Storage::disk('public')->put("debug/wikipedia/{$directory}/{$id}.json", $response_json);
     }
 }

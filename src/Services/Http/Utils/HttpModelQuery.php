@@ -5,13 +5,13 @@ namespace Kiwilan\Steward\Services\Http\Utils;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * HttpModelQuery from Model.
+ * HttpQuery from Model.
  *
  * @property ?Model  $model
  * @property ?string $model_name
  * @property ?int    $model_id
  */
-abstract class HttpModelQuery
+abstract class HttpQuery
 {
     public function __construct(
         public ?Model $model = null,

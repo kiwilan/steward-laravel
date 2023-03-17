@@ -79,8 +79,6 @@ abstract class BaseQuery
         $data = $array['data'];
         unset($array['data']);
 
-        ray(request());
-
         return [
             'sort' => request()->get('sort', $this->defaultSort),
             'filter' => request()->get('filter'),
@@ -141,6 +139,8 @@ abstract class BaseQuery
      * Guess API Resource.
      * - `App\Http\Resources\{ClassName}\{ClassName}CollectionResource`
      * - `App\Http\Resources\{ClassName}CollectionResource`
+     * - `App\Http\Resources\{ClassName}\{ClassName}Collection`
+     * - `App\Http\Resources\{ClassName}Collection`
      * - `App\Http\Resources\{ClassName}\{ClassName}Resource`
      * - `App\Http\Resources\{ClassName}Resource`.
      */
@@ -148,20 +148,28 @@ abstract class BaseQuery
     {
         $name = $this->metadata()->className();
 
-        $resource_classname_collection = "App\\Http\\Resources\\{$name}\\{$name}CollectionResource";
-        $resource_collection = "App\\Http\\Resources\\{$name}CollectionResource";
-        $resource_classname = "App\\Http\\Resources\\{$name}\\{$name}Resource";
-        $resource = "App\\Http\\Resources\\{$name}Resource";
+        $ressources = [
+            "{$name}\\{$name}CollectionResource",
+            "{$name}CollectionResource",
+            "{$name}\\{$name}Collection",
+            "{$name}Collection",
+            "{$name}\\{$name}Resource",
+            "{$name}Resource",
+        ];
 
         if (! $this->resource) {
-            if (class_exists($resource_classname_collection)) {
-                $this->resource = $resource_classname_collection;
-            } elseif (class_exists($resource_collection)) {
-                $this->resource = $resource_collection;
-            } elseif (class_exists($resource_classname)) {
-                $this->resource = $resource_classname;
-            } elseif (class_exists($resource)) {
-                $this->resource = $resource;
+            foreach ($ressources as $resource) {
+                $resource = "App\\Http\\Resources\\{$resource}";
+
+                if (class_exists($resource)) {
+                    $this->resource = $resource;
+
+                    return $this;
+                }
+            }
+
+            if ($this->resource === null) {
+                throw new \Exception("BaseQuery, resource not found for {$name}.");
             }
         }
 

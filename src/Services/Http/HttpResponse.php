@@ -12,7 +12,7 @@ use SimpleXMLElement;
 class HttpResponse
 {
     protected function __construct(
-        protected mixed $id,
+        protected string|int|null $id,
         protected ?Response $guzzle,
         protected HttpMetadata $metadata,
         protected bool $success = false,

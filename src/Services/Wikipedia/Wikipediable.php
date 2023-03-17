@@ -2,8 +2,6 @@
 
 namespace Kiwilan\Steward\Services\Wikipedia;
 
-use Kiwilan\Steward\Class\WikipediaItem;
-
 /**
  * Manage Wikipedia API.
  */
@@ -12,5 +10,5 @@ interface Wikipediable
     /**
      * Convert WikipediaItem data into Model data.
      */
-    public function wikipediaConvert(WikipediaItem $wikipedia_item, bool $default = false): self;
+    public function wikipediaConvert(WikipediaItem $item, bool $default = false): self;
 }
