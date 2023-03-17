@@ -160,10 +160,10 @@ class WikipediaService
 
         foreach ($responses as $id => $response) {
             if ($this->debug) {
-                $this->print($response, 'wikipedia-pageid', $response->id());
+                $this->print($response, 'wikipedia-pageid', $id);
             }
             $item = WikipediaItem::make($response);
-            $items->put($response->id(), $item);
+            $items->put($id, $item);
         }
 
         return $items;
@@ -183,13 +183,13 @@ class WikipediaService
 
         foreach ($responses as $id => $response) {
             /** @var WikipediaItem */
-            $item = $queryItems->first(fn (WikipediaItem $item) => $item->identifier() === $response->id());
+            $item = $queryItems->first(fn (WikipediaItem $item) => $item->identifier() == $id);
 
             if ($this->debug) {
-                $this->print($response, 'wikipedia', $response->id());
+                $this->print($response, 'wikipedia', $id);
             }
             $item = WikipediaItem::makePageId($response, $item);
-            $items->put($response->id(), $item);
+            $items->put($id, $item);
         }
 
         return $items;
@@ -206,8 +206,8 @@ class WikipediaService
         /** @var Collection<int,WikipediaItem> */
         $items = collect([]);
 
-        foreach ($pageIdItems as $item) {
-            $items->put($item->identifier(), $item);
+        foreach ($pageIdItems as $id => $item) {
+            $items->put($id, $item);
         }
 
         return $items;

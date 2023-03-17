@@ -71,9 +71,9 @@ class WikipediaItem
         return $self->create($current);
     }
 
-    public static function makePageId(HttpResponse $response, WikipediaItem $item): ?self
+    public static function makePageId(HttpResponse $response, ?WikipediaItem $item): ?self
     {
-        if (! $response->isSuccess()) {
+        if (! $response->isSuccess() || ! $item) {
             return null;
         }
 
