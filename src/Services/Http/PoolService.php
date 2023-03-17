@@ -3,7 +3,7 @@
 namespace Kiwilan\Steward\Services\Http;
 
 use Illuminate\Support\Collection;
-use Kiwilan\Steward\Services\Http\Utils\HttpQuery;
+use Kiwilan\Steward\Services\Http\Utils\ObjectQuery;
 
 class PoolService
 {
@@ -15,7 +15,7 @@ class PoolService
     /**
      * Create HttpService instance.
      *
-     * @param  Collection<int,HttpQuery>|Collection<int,object>|string[]  $requests
+     * @param  Collection<int,ObjectQuery>|Collection<int,object>|string[]  $requests
      */
     public static function make(iterable $requests): PoolRequest
     {

@@ -8,12 +8,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Kiwilan\Steward\Services\Http\Utils\GuzzleOptions;
 use Kiwilan\Steward\Services\Http\Utils\GuzzleRequest;
-use Kiwilan\Steward\Services\Http\Utils\HttpQuery;
+use Kiwilan\Steward\Services\Http\Utils\ObjectQuery;
 use stdClass;
 
 class PoolRequest
 {
-    /** @var Collection<int,HttpQuery>|Collection<int,object>|string[] */
+    /** @var Collection<int,ObjectQuery>|Collection<int,object>|string[] */
     protected mixed $requestsOrigin = null;
 
     /** @var Collection<string,mixed> */
@@ -43,7 +43,7 @@ class PoolRequest
     /**
      * Create PoolRequest instance.
      *
-     * @param  Collection<int,HttpQuery>|Collection<int,object>|string[]  $requests
+     * @param  Collection<int,ObjectQuery>|Collection<int,object>|string[]  $requests
      */
     public static function make(iterable $requests): self
     {
@@ -269,7 +269,7 @@ class PoolRequest
     }
 
     /**
-     * @param  Collection<int,HttpQuery>|Collection<int,object>|string[]  $requests
+     * @param  Collection<int,ObjectQuery>|Collection<int,object>|string[]  $requests
      */
     private function transformRequests(mixed $requests): mixed
     {
