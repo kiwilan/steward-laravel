@@ -95,7 +95,7 @@ class GoogleBook
         return $this->pageCount;
     }
 
-    public function isMaturityRating(): ?string
+    public function isMaturityRating(): bool
     {
         return $this->isMaturityRating;
     }
