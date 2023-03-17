@@ -50,14 +50,14 @@ class GoogleBook
             return null;
         }
 
-        $first = $options->first();
+        $current = $options->first();
         $self = new GoogleBook(
-            requestUrl: $first->requestUrl(),
-            originalIsbn: $first->originalIsbn(),
+            requestUrl: $current->requestUrl(),
+            originalIsbn: $current->originalIsbn(),
             identifier: $response->id(),
         );
 
-        return $self->create($first);
+        return $self->create($current);
     }
 
     public function requestUrl(): string

@@ -40,14 +40,35 @@ class WikipediaItem
             return null;
         }
 
-        $first = $options->first();
+        $relevants = $options->slice(0, 5);
+        $current = $relevants->first();
+
+        foreach ($relevants as $key => $option) {
+            if (0 === $key) {
+                $current = $option;
+
+                break;
+            }
+
+            // if (str_contains($option->title, '(writer)')) {
+            //     $pageId = $option->pageid();
+
+            //     break;
+            // }
+
+            // if (str_contains($option->title, '(author)')) {
+            //     $pageId = $option->pageid();
+
+            //     break;
+            // }
+        }
 
         $self = new WikipediaItem(
-            requestUrl: $first->requestUrl(),
+            requestUrl: $current->requestUrl(),
             identifier: $response->id(),
         );
 
-        return $self->create($first);
+        return $self->create($current);
     }
 
     public static function makePageId(HttpResponse $response, WikipediaItem $item): ?self
