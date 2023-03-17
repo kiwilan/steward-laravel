@@ -26,7 +26,7 @@ class GoogleBook
         protected ?DateTime $publishedDate = null,
         protected ?string $description = null,
         protected ?int $pageCount = null,
-        protected ?string $maturityRating = null,
+        protected bool $isMaturityRating = false,
         protected ?string $language = null,
         protected ?string $previewLink = null,
         protected ?string $publisher = null,
@@ -95,9 +95,9 @@ class GoogleBook
         return $this->pageCount;
     }
 
-    public function maturityRating(): ?string
+    public function isMaturityRating(): ?string
     {
-        return $this->maturityRating;
+        return $this->isMaturityRating;
     }
 
     public function language(): ?string
@@ -163,7 +163,7 @@ class GoogleBook
         $this->description = $volumeInfo?->description();
         $this->pageCount = $volumeInfo?->pageCount();
         $this->categories = $volumeInfo?->categories() ?? [];
-        $this->maturityRating = $volumeInfo?->maturityRating();
+        $this->isMaturityRating = $volumeInfo?->maturityRating() === 'MATURE';
         $this->language = $volumeInfo?->language();
         $this->previewLink = $volumeInfo?->previewLink();
 
