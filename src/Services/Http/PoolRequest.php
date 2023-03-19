@@ -233,7 +233,9 @@ class PoolRequest
                 $url = $item->{$this->url};
             }
 
-            $urls->put($identifier, $url);
+            if ($url) {
+                $urls->put($identifier, $url);
+            }
         }
 
         $pool = GuzzleRequest::make($urls, $this->options);
@@ -314,6 +316,11 @@ class PoolRequest
         $requests = collect([]);
 
         foreach ($iterable as $key => $item) {
+            if (is_object($item)) {
+                $requests->put($key, $item);
+
+                continue;
+            }
             $object = new stdClass();
             $object->id = $key;
             $object->url = $item;

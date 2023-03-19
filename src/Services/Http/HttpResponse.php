@@ -35,7 +35,7 @@ class HttpResponse
         $metadata = HttpMetadata::make($guzzle);
         $success = ! $guzzle ? false : 200 === $guzzle->getStatusCode();
         $self = new HttpResponse(
-            id: $id,
+            id: is_numeric($id) ? intval($id) : $id,
             guzzle: $guzzle,
             metadata: $metadata,
             success: $success,

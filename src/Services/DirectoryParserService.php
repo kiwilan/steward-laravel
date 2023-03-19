@@ -7,21 +7,20 @@ use Generator;
 /**
  * Directory parser.
  *
- * @property string   $directory
- * @property string[] $files
- *
  * Example
  *
  * ```php
- * $service = DirectoryParserService::make($path);
- * $files = $service->files;
+ * $parser = DirectoryParserService::make($path);
+ * $files = $parser->files();
  * ```
  */
 class DirectoryParserService
 {
-    public function __construct(
-        public ?string $directory = null,
-        public mixed $files = null,
+    /** @var string[] */
+    protected mixed $files = [];
+
+    protected function __construct(
+        protected string $directory,
     ) {
     }
 
@@ -30,12 +29,21 @@ class DirectoryParserService
      */
     public static function make(string $directory): self
     {
-        $service = new DirectoryParserService();
-        $service->directory = $directory;
+        $service = new DirectoryParserService($directory);
 
         $service->files = $service->parse($service->directory);
 
         return $service;
+    }
+
+    /**
+     * Get files.
+     *
+     * @return string[]
+     */
+    public function files(): mixed
+    {
+        return $this->files;
     }
 
     /**
