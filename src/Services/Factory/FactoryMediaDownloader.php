@@ -38,11 +38,15 @@ class FactoryMediaDownloader
     }
 
     /**
-     * @param  Collection<int,Model>  $models
+     * @param  Collection<int,Model>|string  $models Collection of models or class name of model.
      * @return void
      */
-    public function associate(Collection $models, string $field = 'picture', bool $multiple = false)
+    public function associate(Collection|string $models, string $field = 'picture', bool $multiple = false)
     {
+        if (is_string($models)) {
+            $models = $models::all();
+        }
+
         $model = $models->first();
         $images = $this->fetchMedias($models->count(), $model->getTable());
 

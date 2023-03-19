@@ -37,25 +37,25 @@ class MetaClass
 
     public static function make(string $class): self
     {
-        $metadata = new MetaClass($class);
+        $self = new self($class);
 
         $instance = new $class();
         $reflection_class = new ReflectionClass($instance);
 
-        $metadata->classNamespaced = $reflection_class->getName();
-        $metadata->className = $reflection_class->getShortName();
-        $metadata->classPlural = Str::plural($metadata->className);
+        $self->classNamespaced = $reflection_class->getName();
+        $self->className = $reflection_class->getShortName();
+        $self->classPlural = Str::plural($self->className);
 
-        $metadata->classSnake = Str::snake($metadata->className);
-        $metadata->classSnakePlural = Str::snake($metadata->classPlural);
+        $self->classSnake = Str::snake($self->className);
+        $self->classSnakePlural = Str::snake($self->classPlural);
 
-        $metadata->classSlug = Str::slug($metadata->className);
-        $metadata->classSlugPlural = Str::slug($metadata->classPlural);
+        $self->classSlug = Str::slug($self->className);
+        $self->classSlugPlural = Str::slug($self->classPlural);
 
-        $metadata->firstChar = strtolower(substr($metadata->className, 0, 1));
-        $metadata->traits = class_uses_recursive($instance);
+        $self->firstChar = strtolower(substr($self->className, 0, 1));
+        $self->traits = class_uses_recursive($instance);
 
-        return $metadata;
+        return $self;
     }
 
     /**

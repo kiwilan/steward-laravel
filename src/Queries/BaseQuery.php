@@ -168,9 +168,9 @@ abstract class BaseQuery
                 }
             }
 
-            if ($this->resource === null) {
-                throw new \Exception("BaseQuery, resource not found for {$name}.");
-            }
+            // if ($this->resource === null) {
+            //     throw new \Exception("BaseQuery, resource not found for {$name}.");
+            // }
         }
 
         return $this;
