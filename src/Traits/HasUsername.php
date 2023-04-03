@@ -81,14 +81,14 @@ trait HasUsername
     protected static function bootHasUsername()
     {
         static::creating(function ($model) {
-            if (empty($model->{$model->getUsernameColumn()})) {
+            if ($model->{$model->getUsernameWith()} !== null) {
                 $model->{$model->getUsernameColumn()} = $model->generateUsername();
             }
         });
 
         static::updating(function ($model) {
-            if ($model->isDirty($model->getUsernameWith())) {
-                $model->{$model->getUsernameColumn()} = $model->updateUsername();
+            if ($model->{$model->getUsernameWith()} !== null) {
+                $model->{$model->getUsernameColumn()} = $model->generateUsername();
             }
         });
     }
