@@ -307,8 +307,8 @@ class PoolRequest
     /**
      * Transform Collection input to Collection of objects with `model_id` and `url` properties.
      *
-     * @param  Collection<int,string>|string[]  $iterable
-     * @return Collection<int,object>
+     * @param  Collection<int, mixed>|string[]  $iterable
+     * @return Collection<int, object>
      */
     private function basicArrayToRequests(mixed $iterable): Collection
     {
@@ -316,7 +316,7 @@ class PoolRequest
         $requests = collect([]);
 
         foreach ($iterable as $key => $item) {
-            if (is_object($item)) {
+            if (is_object($item)) { // @phpstan-ignore-line
                 $requests->put($key, $item);
 
                 continue;

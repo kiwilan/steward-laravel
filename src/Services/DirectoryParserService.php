@@ -16,8 +16,7 @@ use Generator;
  */
 class DirectoryParserService
 {
-    /** @var string[] */
-    protected mixed $files = [];
+    protected array $files = [];
 
     protected function __construct(
         protected string $directory,
@@ -31,7 +30,9 @@ class DirectoryParserService
     {
         $service = new DirectoryParserService($directory);
 
-        $service->files = $service->parse($service->directory);
+        /** @var array */
+        $files = $service->parse($service->directory);
+        $service->files = $files;
 
         return $service;
     }
