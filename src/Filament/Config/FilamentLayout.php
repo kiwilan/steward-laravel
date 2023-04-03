@@ -46,7 +46,7 @@ class FilamentLayout
 
     public static function setting(array $fields = [], int $width = 2, ?string $title = null): \Filament\Forms\Components\Group
     {
-        return FilamentLayoutSettings::make($fields);
+        return FilamentLayoutSettings::make($fields, $width, $title);
     }
 
     public function width(int $width = 3): self
