@@ -60,7 +60,7 @@ class ManageGeneral extends SettingsPage
                         'sm' => 1,
                         'lg' => 2,
                     ]),
-            ])->width(2)->title('General')->get(),
+            ], width: 2, title: 'General'),
             FilamentLayout::setting([
                 Forms\Components\FileUpload::make('site_favicon')
                     ->label('Site favicon')
@@ -98,7 +98,7 @@ class ManageGeneral extends SettingsPage
                         'sm' => 1,
                         'lg' => 2,
                     ]),
-            ])->width(2)->title('Theme')->get(),
+            ], width: 2, title: 'Theme'),
             FilamentLayout::setting([
                 Forms\Components\Repeater::make('social')
                     ->label('Links')
@@ -127,10 +127,7 @@ class ManageGeneral extends SettingsPage
                         'sm' => 1,
                         'lg' => 4,
                     ]),
-            ])
-                ->title('Social')
-                ->width(2)
-                ->get(),
+            ], width: 2, title: 'Social'),
         ];
     }
 }

@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Filament\Config\FilamentLayout;
 
 use Filament\Forms;
-use Filament\Forms\Components\Group;
 use Kiwilan\Steward\Filament\Config\FilamentLayout;
 
 class FilamentLayoutSettings
@@ -15,34 +14,17 @@ class FilamentLayoutSettings
     ) {
     }
 
-    public static function make(array $fields): self
+    public static function make(array $fields, int $width = 1, ?string $title = null)
     {
-        return new FilamentLayoutSettings($fields);
-    }
+        $self = new self($fields, $width, $title);
 
-    public function width(int $width = 1): self
-    {
-        $this->width = $width;
-
-        return $this;
-    }
-
-    public function title(?string $title = null): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function get(): Group
-    {
         return Forms\Components\Group::make()
             ->schema([
-                FilamentLayout::card($this->fields, $this->title),
+                FilamentLayout::card($self->fields, $self->title),
             ])
             ->columnSpan([
                 'sm' => 1,
-                'lg' => $this->width,
+                'lg' => $self->width,
             ])
         ;
     }

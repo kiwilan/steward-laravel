@@ -44,7 +44,7 @@ class FilamentLayout
         return FilamentLayoutCard::make($fields, $title, $width);
     }
 
-    public static function setting(array $fields = []): FilamentLayoutSettings
+    public static function setting(array $fields = [], int $width = 2, ?string $title = null): \Filament\Forms\Components\Group
     {
         return FilamentLayoutSettings::make($fields);
     }

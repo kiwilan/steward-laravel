@@ -40,4 +40,39 @@ trait HasSearchableName
     {
         return $this->searchableNameAs();
     }
+
+    /**
+     * @param  string  $model Model name like `User::class`
+     * @return array<int, mixed>
+     */
+    public static function searchAsSearchable(string $search, bool $asObject = true): array
+    {
+        if (! method_exists(static::class, 'search') && ! method_exists(static::class, 'toSearchableArray')) {
+            throw new \Exception('Model {static::class} does not have method `search` or `toSearchableArray`.');
+        }
+
+        $searched = static::class::search($search)->get();
+
+        $results = [];
+
+        foreach ($searched as $model) {
+            $data = $model
+                ->load([
+                    'creator',
+                    'owner',
+                    'armies',
+                    'universe',
+                    'gameplays',
+                ])
+                ->toSearchableArray()
+            ;
+
+            if ($asObject) {
+                $data = (object) $data;
+            }
+            $results[] = $data;
+        }
+
+        return $results;
+    }
 }
