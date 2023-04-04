@@ -1,5 +1,7 @@
 # https://docs.netlify.com/configure-builds/file-based-configuration
 
+PHP_VERSION = 8.1
+
 [build]
   base    = ""
   command = "cd docs && pnpm --ignore-workspace i && pnpm generate"
