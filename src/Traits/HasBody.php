@@ -2,8 +2,6 @@
 
 namespace Kiwilan\Steward\Traits;
 
-use Illuminate\Support\Str;
-
 /**
  * Override the default body column with `$body_column` attribute.
  *
@@ -48,35 +46,4 @@ trait HasBody
     {
         return $string != strip_tags($string) ? true : false;
     }
-
-    // public function getMetaTitle(): string
-    // {
-    //     $default = $this->default_meta_title_from;
-
-    //     if (null === $default) {
-    //         $default = 'title';
-    //     }
-
-    //     return $this->meta_title_from ?? $default;
-    // }
-
-    // /**
-    //  * @return array<string, string>
-    //  */
-    // public function getSeoAttribute(): array
-    // {
-    //     return [
-    //         'title' => $this->getMetaTitle(),
-    //         'description' => $this->getMetaDescription(),
-    //     ];
-    // }
-
-    // private function limitStringSize(?string $string = null, int $limit = 250): ?string
-    // {
-    //     if ($string && Str::length($string) > $limit) {
-    //         return Str::limit($string, $limit, '...');
-    //     }
-
-    //     return $string;
-    // }
 }
