@@ -23,7 +23,14 @@ trait HasRole
         return $this->role_column ?? $this->default_role_column;
     }
 
-    public function haveDashboardAccess(): bool
+    public function scopeHaveDashboardAccess(Builder $builder): Builder
+    {
+        return $builder->where($this->getRoleColumn(), '!=', UserRoleEnum::user->value)
+            ->where('is_blocked', '!=', true)
+        ;
+    }
+
+    public function isDashboardAllowed(): bool
     {
         return $this->isEditor() || $this->isAdmin() || $this->isSuperAdmin() && ! $this->isBlocked();
     }
