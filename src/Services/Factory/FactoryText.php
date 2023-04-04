@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Services\Factory;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\Api\Seeds\SeedsApi;
 use Kiwilan\Steward\Services\Factory\Text\MeaningProvider;
@@ -35,15 +36,27 @@ class FactoryText
         }
 
         /** @var Model */
-        $model = new $class();
-        $category = MeaningProvider::find();
-        $exists = $model::where($field, $category)->first();
+        $instance = new $class();
 
-        while ($exists) {
-            $category = $this->category($class, $field);
-        }
+        return MeaningProvider::find();
+        // $exists = $class::where($field, $category)->first();
+        // $exists = DB::table($instance->getTable())->where($field, $category)->first();
 
-        return $category;
+        // $i = 0;
+
+        // while ($exists) {
+        //     dump('searching for a new category...');
+        //     $i++;
+        //     $category = $this->category($class, $field);
+        //     $exists = $class::where($field, $category)->first();
+
+        //     if ($i > 10) {
+        //         $category = $this->category($class, $field);
+        //         $category = $category.' '.uniqid();
+
+        //         $exists = $class::where($field, $category)->first();
+        //     }
+        // }
     }
 
     public function tag(?string $class = null, string $field = 'name'): string
@@ -54,14 +67,13 @@ class FactoryText
 
         /** @var Model */
         $model = new $class();
-        $tag = MeaningProvider::find('tag');
-        $exists = $model::where($field, $tag)->first();
 
-        while ($exists) {
-            $tag = $this->category($class, $field);
-        }
+        return MeaningProvider::find('tag');
+        // $exists = $model->where($field, $tag)->first();
 
-        return $tag;
+        // while ($exists) {
+        //     $tag = $this->category($class, $field);
+        // }
     }
 
     public function imageUrl(): string

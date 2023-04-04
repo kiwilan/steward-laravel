@@ -11,7 +11,7 @@ trait HasTimeToRead
     public function initializeHasTimeToRead()
     {
         $this->fillable[] = $this->getTimeToReadColumn();
-
+        $this->appends[] = 'time_to_read_minutes';
         $this->casts[$this->getTimeToReadColumn()] = 'integer';
     }
 
