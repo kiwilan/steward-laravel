@@ -102,6 +102,6 @@ class SeedsApi implements MediaApi
         $data = SeedsRandomUrls::get();
         $url = $data[array_rand($data)];
 
-        return "{$url}?size=small";
+        return "{$url}?size=medium";
     }
 }

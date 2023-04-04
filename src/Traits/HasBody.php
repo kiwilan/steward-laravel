@@ -2,6 +2,8 @@
 
 namespace Kiwilan\Steward\Traits;
 
+use Illuminate\Database\Eloquent\Model;
+
 /**
  * Override the default body column with `$body_column` attribute.
  *
@@ -13,7 +15,7 @@ trait HasBody
 {
     protected $default_body_column = 'body';
 
-    public function getBody(): string
+    public function getBodyColumn(): string
     {
         return $this->body_column ?? $this->default_body_column;
     }
@@ -25,25 +27,22 @@ trait HasBody
 
     public static function bootHasBody()
     {
-        static::created(function ($model) {
-            if ($model->isHTML($model->body)) {
-                $content = $model->getBody();
-                $content = preg_replace('/<img(.*?)>/', '<img$1 loading="lazy">', $content);
-                $model->update(['body' => $content]);
-            }
-        });
-
-        static::updated(function ($model) {
-            if ($model->isHTML($model->body)) {
-                $content = $model->getBody();
-                $content = preg_replace('/<img(.*?)>/', '<img$1 loading="lazy">', $content);
-                $model->update(['body' => $content]);
+        static::creating(function (Model $model) {
+            if ($model->isDirty($model->getBodyColumn())) {
+                $model->{$model->getBodyColumn()} = self::parseHtml($model);
             }
         });
     }
 
-    private function isHTML(string $string)
+    private static function parseHtml(Model $model): string
     {
-        return $string != strip_tags($string) ? true : false;
+        $content = $model->{$model->getBodyColumn()};
+        $isHtml = $content != strip_tags($content) ? true : false;
+
+        if (! $isHtml) {
+            return $content;
+        }
+
+        return preg_replace('/<img(.*?)>/', '<img$1 loading="lazy">', $content);
     }
 }
