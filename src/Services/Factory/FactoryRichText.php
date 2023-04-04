@@ -88,7 +88,7 @@ class FactoryRichText
 
         for ($k = 0; $k < $this->factory->faker()->numberBetween($this->min, $this->max); $k++) {
             if ($this->typography === 'html') {
-                $content .= "{$this->html()}<br><br>";
+                $content .= "{$this->html()}<br>";
             }
 
             if ($this->typography === 'markdown') {
@@ -96,7 +96,7 @@ class FactoryRichText
             }
 
             if ($this->typography === 'text') {
-                $content .= "{$this->text->paragraph()}<br><br>";
+                $content .= "{$this->text->paragraph()}<br>";
             }
 
             if (! $content) {
