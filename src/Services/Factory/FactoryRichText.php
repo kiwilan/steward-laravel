@@ -134,7 +134,8 @@ class FactoryRichText
             }
 
             if ($this->image && $this->factory->faker()->boolean(15)) {
-                $paragraph = "<a href=\"{$this->text->imageUrl()}\" target=\"_blank\"><img src=\"{$this->text->imageUrl()}\" alt=\"{$this->text->sentence()}\" /></a>";
+                $image = $this->text->imageUrl();
+                $paragraph = "<a href=\"{$image}\" target=\"_blank\"><img src=\"{$image}\" alt=\"{$this->text->sentence()}\" /></a>";
             }
             $html .= "<p>{$paragraph}</p>";
         }
