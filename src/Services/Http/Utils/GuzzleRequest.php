@@ -278,7 +278,7 @@ class GuzzleRequest
                 Log::warning('HttpService: one request rejected', [$reason, $index, $urls[$index]]);
                 $response = new Response(
                     status: 500,
-                    headers:[
+                    headers: [
                         'Origin' => $urls[$index] ?? null,
                         'ID' => $index ?? null,
                     ],
