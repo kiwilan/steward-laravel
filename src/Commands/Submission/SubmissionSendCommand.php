@@ -1,8 +1,9 @@
 <?php
 
-namespace Kiwilan\Steward\Commands;
+namespace Kiwilan\Steward\Commands\Submission;
 
 use Illuminate\Console\Command;
+use Kiwilan\Steward\Commands\CommandSteward;
 use Kiwilan\Steward\Models\Submission;
 
 class SubmissionSendCommand extends CommandSteward

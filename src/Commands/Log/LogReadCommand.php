@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Commands;
+namespace Kiwilan\Steward\Commands\Log;
 
 use Illuminate\Console\Command;
 

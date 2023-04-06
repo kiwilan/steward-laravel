@@ -1,8 +1,9 @@
 <?php
 
-namespace Kiwilan\Steward\Commands;
+namespace Kiwilan\Steward\Commands\Log;
 
 use Illuminate\Console\Command;
+use Kiwilan\Steward\Commands\CommandSteward;
 
 class LogClearCommand extends CommandSteward
 {

@@ -1,19 +1,19 @@
 <?php
 
-namespace Kiwilan\Steward\Commands\Setup;
+namespace Kiwilan\Steward\Commands\Optimize;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Commands\CommandSteward;
 
-class SetupCleanCommand extends CommandSteward
+class OptimizeFeshCommand extends CommandSteward
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'setup:clean';
+    protected $signature = 'optimize:fresh';
 
     /**
      * The console command description.

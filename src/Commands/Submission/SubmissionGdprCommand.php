@@ -1,25 +1,26 @@
 <?php
 
-namespace Kiwilan\Steward\Commands;
+namespace Kiwilan\Steward\Commands\Submission;
 
 use Illuminate\Console\Command;
+use Kiwilan\Steward\Commands\CommandSteward;
 use Kiwilan\Steward\Models\Submission;
 
-class SubmissionRgpdVerificationCommand extends CommandSteward
+class SubmissionGdprCommand extends CommandSteward
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'submission:rgpd-verification';
+    protected $signature = 'submission:gdpr';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Delete old submissions that are not accepted the RGPD';
+    protected $description = 'Delete old submissions that are not accepted the GDPR.';
 
     /**
      * Execute the console command.

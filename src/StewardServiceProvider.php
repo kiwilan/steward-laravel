@@ -6,17 +6,17 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
-use Kiwilan\Steward\Commands\LogClearCommand;
+use Kiwilan\Steward\Commands\Log\LogClearCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
+use Kiwilan\Steward\Commands\Optimize\OptimizeFeshCommand;
 use Kiwilan\Steward\Commands\Publish\PublishCommand;
 use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
 use Kiwilan\Steward\Commands\RoutePrintCommand;
 use Kiwilan\Steward\Commands\Scout\ScoutFreshCommand;
 use Kiwilan\Steward\Commands\Scout\ScoutListCommand;
-use Kiwilan\Steward\Commands\Setup\SetupCleanCommand;
 use Kiwilan\Steward\Commands\StewardCommand;
-use Kiwilan\Steward\Commands\SubmissionRgpdVerificationCommand;
-use Kiwilan\Steward\Commands\SubmissionSendCommand;
+use Kiwilan\Steward\Commands\Submission\SubmissionGdprCommand;
+use Kiwilan\Steward\Commands\Submission\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Components\BladeApp;
 use Kiwilan\Steward\Components\Button;
@@ -55,10 +55,10 @@ class StewardServiceProvider extends PackageServiceProvider
                 RoutePrintCommand::class,
                 ScoutFreshCommand::class,
                 ScoutListCommand::class,
-                SubmissionRgpdVerificationCommand::class,
+                SubmissionGdprCommand::class,
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
-                SetupCleanCommand::class,
+                OptimizeFeshCommand::class,
             ])
         ;
     }
