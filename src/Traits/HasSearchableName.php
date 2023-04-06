@@ -56,16 +56,7 @@ trait HasSearchableName
         $results = [];
 
         foreach ($searched as $model) {
-            $data = $model
-                ->load([
-                    'creator',
-                    'owner',
-                    'armies',
-                    'universe',
-                    'gameplays',
-                ])
-                ->toSearchableArray()
-            ;
+            $data = $model->toSearchableArray();
 
             if ($asObject) {
                 $data = (object) $data;
