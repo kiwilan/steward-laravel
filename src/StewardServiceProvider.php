@@ -116,16 +116,20 @@ class StewardServiceProvider extends PackageServiceProvider
 
     protected function registerDirective()
     {
-        Blade::directive('darkMode', function ($expression) {
-            return '{!! Kiwilan\Steward\Facades\DarkMode::embed('.$expression.') !!}';
-        });
+        Blade::directive('darkMode',
+            fn (string $expression) => '{!! Kiwilan\Steward\Facades\DarkMode::embed('.$expression.') !!}'
+        );
 
-        Blade::directive('loop', function ($expression) {
-            return "<?php foreach ({$expression}): ?>";
-        });
+        Blade::directive('matomo',
+            fn (string $expression) => '{!! Kiwilan\Steward\Facades\Matomo::embed('.$expression.') !!}'
+        );
 
-        Blade::directive('endloop', function ($expression) {
-            return '<?php endforeach; ?>';
-        });
+        Blade::directive('loop',
+            fn (string $expression) => "<?php foreach ({$expression}): ?>"
+        );
+
+        Blade::directive('endloop',
+            fn (string $expression) => '<?php endforeach; ?>'
+        );
     }
 }
