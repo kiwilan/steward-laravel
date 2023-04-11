@@ -39,11 +39,11 @@ function matomo() {
     // @ts-expect-error - global variable
     matomoDomain: window.hasOwnProperty('gdprMatomoUrl') ? window.gdprMatomoUrl : 'https://matomo.example.com',
     // @ts-expect-error - global variable
-    matomoId: window.hasOwnProperty('gdprMatomoId') ? window.gdprMatomoId : 1,
+    matomoId: window.hasOwnProperty('gdprMatomoSiteId') ? window.gdprMatomoSiteId : 1,
   }
 
   let consent = getCookie(config.cookieName)
-  let domain = config.matomoDomain
+  let domain = `${config.matomoDomain}/`
   let id = config.matomoId
 
   if (consent && consent.categories && consent.categories.includes('analytics')) {
