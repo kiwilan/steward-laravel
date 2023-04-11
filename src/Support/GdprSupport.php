@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Support;
 
 class GdprSupport
 {
-    public function embed(): string
+    public function embed(bool $enabled = true): string
     {
         $appEnv = config('app.env');
         $appUrl = config('app.url');

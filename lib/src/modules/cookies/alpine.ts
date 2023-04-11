@@ -14,6 +14,11 @@ export default (Alpine: Alpine) => {
   Alpine.data('cookies', (): AlpineComponent<{
     list: Cookie[]
     listCookies(): Cookie[]
+    manageCookies(): void
+    getCookie(name: string): string | undefined
+    setCookie(name: string, value: any, days?: number): void
+    delCookie(name: string): void
+    delCookieAll(): void
   }> => ({
     list: [] as Cookie[],
 

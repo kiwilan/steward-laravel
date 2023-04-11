@@ -33,18 +33,18 @@ function deleteCookies(name: string) {
 }
 
 function matomo() {
-  // const consent = getCookie(window.consentCookie)
-  // const domain = window.matomo.url
-  // const https = window.matomo.https
-  // const url = `${https ? 'https' : 'http'}://${domain}/`
-  // const id = window.matomo.id
-  // @ts-expect-error - global variable
-  console.log(appEnv);
-  let consent = getCookie('cc_cookie')
-  let domain = 'matomo.git-projects.xyz'
-  let https = true
-  let url = `${https ? 'https' : 'http'}://${domain}/`
-  let id = 2
+  let config = {
+    // @ts-expect-error - global variable
+    cookieName: gdprCookieName || 'cc_cookie',
+    // @ts-expect-error - global variable
+    matomoDomain: gdprCookieDomain || 'https://matomo.domain.com',
+    // @ts-expect-error - global variable
+    matomoId: gdprMatomoId || 1,
+  }
+
+  let consent = getCookie(config.cookieName)
+  let domain = config.matomoDomain
+  let id = config.matomoId
 
   if (consent && consent.categories && consent.categories.includes('analytics')) {
     const _paq = window._paq = window._paq || []
@@ -52,7 +52,7 @@ function matomo() {
     _paq.push(['trackPageView'])
     _paq.push(['enableLinkTracking']);
     (function () {
-      const u = `${url}`
+      const u = `${domain}`
       _paq.push(['setTrackerUrl', `${u}matomo.php`])
       _paq.push(['setSiteId', `${id}`])
       const d = document
