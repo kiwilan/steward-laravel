@@ -20,15 +20,15 @@ class GdprSupport
         return <<<HTML
         <!-- Matomo -->
         <script>
-            let appEnv = '$appEnv';
-            let appUrl = '$appUrl';
-            let appUrlStorage = '$appUrlStorage';
-            let gdprService = '$gdprService';
-            let gdprCookieName = '$gdprCookieName';
-            let gdprCookieLifetime = '$gdprCookieLifetime';
-            let gdrpMatomoEnabled = '$gdrpMatomoEnabled';
-            let gdprMatomoUrl = '$gdprMatomoUrl';
-            let gdprMatomoSiteId = '$gdprMatomoSiteId';
+            window.appEnv = '$appEnv';
+            window.appUrl = '$appUrl';
+            window.appUrlStorage = '$appUrlStorage';
+            window.gdprService = '$gdprService';
+            window.gdprCookieName = '$gdprCookieName';
+            window.gdprCookieLifetime = '$gdprCookieLifetime';
+            window.gdrpMatomoEnabled = '$gdrpMatomoEnabled';
+            window.gdprMatomoUrl = '$gdprMatomoUrl';
+            window.gdprMatomoSiteId = '$gdprMatomoSiteId';
         </script>
         <!-- End Matomo Code -->
         HTML;

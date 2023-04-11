@@ -35,11 +35,11 @@ function deleteCookies(name: string) {
 function matomo() {
   let config = {
     // @ts-expect-error - global variable
-    cookieName: gdprCookieName || 'cc_cookie',
+    cookieName: window.hasOwnProperty('gdprCookieName') ? window.gdprCookieName : 'cc_cookie',
     // @ts-expect-error - global variable
-    matomoDomain: gdprCookieDomain || 'https://matomo.domain.com',
+    matomoDomain: window.hasOwnProperty('gdprMatomoUrl') ? window.gdprMatomoUrl : 'https://matomo.example.com',
     // @ts-expect-error - global variable
-    matomoId: gdprMatomoId || 1,
+    matomoId: window.hasOwnProperty('gdprMatomoId') ? window.gdprMatomoId : 1,
   }
 
   let consent = getCookie(config.cookieName)
