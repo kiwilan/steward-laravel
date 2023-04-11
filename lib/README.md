@@ -16,17 +16,4 @@ pnpm add @kiwilan/steward-laravel -D
 
 ## Usage
 
-In your `vite.config.js`:
-
-```js
-import { defineConfig } from "vite";
-import { Steward } from "@kiwilan/steward-laravel";
-
-export default defineConfig({
-  plugins: [
-    Steward({
-      // Options
-    }),
-  ],
-});
-```
+//

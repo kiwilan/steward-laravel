@@ -1,0 +1,36 @@
+{
+  "consentModal": {
+    "title": "On a des cookies",
+    "description": "Description",
+    "acceptAllBtn": "Accepter tout",
+    "acceptNecessaryBtn": "Uniquement les cookies nécessaires",
+    "showPreferencesBtn": "Gérer mes préférences"
+  },
+  "preferencesModal": {
+    "title": "Gérer mes préférences",
+    "acceptAllBtn": "Accepter tout",
+    "acceptNecessaryBtn": "Uniquement les cookies nécessaires",
+    "savePreferencesBtn": "Sauvegarder mes préférences",
+    "closeIconLabel": "Fermer",
+    "sections": [
+      {
+        "title": "Des cookies",
+        "description": "J'en veux"
+      },
+      {
+        "title": "Nécessaires",
+        "description": "Ces cookies sont essentiels au bon fonctionnement du site web et ne peuvent pas être désactivés.",
+        "linkedCategory": "necessary"
+      },
+      {
+        "title": "Performance et analyse",
+        "description": "Ces cookies recueillent des informations sur la manière dont vous utilisez notre site web. Toutes les données sont anonymes et ne peuvent être utilisées pour vous identifier.",
+        "linkedCategory": "analytics"
+      },
+      {
+        "title": "Plus d'informations",
+        "description": "Pour toute question relative à ma politique en matière de cookies et à vos choix, veuillez vous adresser à <a href=\"#contact-page\">nous contacter</a>"
+      }
+    ]
+  }
+}

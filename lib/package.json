@@ -1,8 +1,8 @@
 {
-    "name": "@kiwilan/vite-plugin-steward-laravel",
+    "name": "@kiwilan/steward-laravel",
     "type": "module",
-    "version": "0.1.1",
-    "description": "Vite plugin for steward-laravel.",
+    "version": "0.1.0",
+    "description": "Plugin for kiwilan/steward-laravel.",
     "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
     "license": "MIT",
     "homepage": "https://github.com/kiwilan/steward-laravel",
@@ -23,15 +23,10 @@
         ".": {
             "require": "./dist/index.cjs",
             "import": "./dist/index.js"
-        },
-        "./vue": {
-            "require": "./vue/index.cjs",
-            "import": "./vue/index.js"
         }
     },
     "files": [
-        "dist",
-        "vue"
+        "dist"
     ],
     "scripts": {
         "build": "tsup --clean && vite build",
@@ -45,7 +40,13 @@
         "package": "npm run clean && npm run build && npm pack && npm run local",
         "deploy": "npm run clean && npm run build && npm pack --dry-run && npm publish --access public"
     },
-    "peerDependencies": {},
     "peerDependenciesMeta": {},
-    "devDependencies": {}
+    "devDependencies": {
+        "@types/alpinejs": "^3.7.1",
+        "tsup": "^6.7.0"
+    },
+    "dependencies": {
+        "alpinejs": "^3.12.0",
+        "vanilla-cookieconsent": "3.0.0-rc.13"
+    }
 }
