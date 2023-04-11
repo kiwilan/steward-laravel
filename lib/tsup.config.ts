@@ -12,4 +12,5 @@ export default defineConfig({
   minify: true,
   treeshake: true,
   splitting: true,
+  // noExternal: ['vanilla-cookieconsent'],
 })
