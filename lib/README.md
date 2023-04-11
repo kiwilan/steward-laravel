@@ -17,3 +17,13 @@ pnpm add @kiwilan/steward-laravel -D
 ## Usage
 
 //
+
+## Local
+
+```json
+{
+  "devDependencies": {
+    "@kiwilan/steward-laravel": "file:~/kiwilan-steward-laravel-*.tgz"
+  }
+}
+```

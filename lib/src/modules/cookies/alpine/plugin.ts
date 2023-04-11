@@ -11,7 +11,7 @@ interface Cookie {
  * docs: https://cookieconsent.orestbida.com
  */
 export default (Alpine: Alpine) => {
-  Alpine.data('editor', (): AlpineComponent<{
+  Alpine.data('cookies', (): AlpineComponent<{
     list: Cookie[]
     listCookies(): Cookie[]
   }> => ({

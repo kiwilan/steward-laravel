@@ -29,21 +29,23 @@
         "dist"
     ],
     "scripts": {
-        "build": "tsup --clean && vite build",
+        "build": "tsup --clean",
         "watch": "tsup --watch",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "test": "vitest",
         "coverage": "vitest run --coverage",
-        "clean": "rimraf dist && rimraf vue",
-        "local": "rm -f ~/kiwilan-vite-plugin-steward-laravel-*.tgz || true && mv ./kiwilan-vite-plugin-steward-laravel-*.tgz ~/",
+        "clean": "rimraf dist",
+        "local": "rm -f ~/kiwilan-steward-laravel-*.tgz || true && mv ./kiwilan-steward-laravel-*.tgz ~/kiwilan-steward-laravel-*.tgz",
         "package": "npm run clean && npm run build && npm pack && npm run local",
         "deploy": "npm run clean && npm run build && npm pack --dry-run && npm publish --access public"
     },
     "peerDependenciesMeta": {},
     "devDependencies": {
         "@types/alpinejs": "^3.7.1",
-        "tsup": "^6.7.0"
+        "rimraf": "^5.0.0",
+        "tsup": "^6.7.0",
+        "typescript": "^5.0.4"
     },
     "dependencies": {
         "alpinejs": "^3.12.0",

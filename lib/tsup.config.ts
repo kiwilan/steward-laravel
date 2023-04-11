@@ -1,12 +1,12 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  name: 'vite-plugin-steward-laravel',
+  name: '@kiwilan/steward-laravel',
   entry: {
     index: 'src/index.ts',
   },
   format: ['cjs', 'esm'],
-  external: ['vue', '@inertiajs/vue3', 'ziggy-js'],
+  external: ['alpinejs'],
   outDir: 'dist',
   dts: true,
   minify: true,

@@ -17,7 +17,7 @@
             "~": ["./"],
             "~/*": ["./*"]
         },
-        "types": ["vite/client", "vue"]
+        "types": []
     },
     "include": [
         "src",
