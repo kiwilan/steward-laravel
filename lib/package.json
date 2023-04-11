@@ -1,7 +1,7 @@
 {
     "name": "@kiwilan/steward-laravel",
     "type": "module",
-    "version": "0.1.10",
+    "version": "0.1.11",
     "description": "Plugin for kiwilan/steward-laravel.",
     "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
     "license": "MIT",

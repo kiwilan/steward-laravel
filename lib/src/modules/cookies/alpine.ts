@@ -11,24 +11,24 @@ interface Cookie {
  * docs: https://cookieconsent.orestbida.com
  */
 export default (Alpine: Alpine) => {
-  Alpine.data('cookies', (): AlpineComponent<{
-    list: Cookie[]
-    listCookies(): Cookie[]
-    manageCookies(): void
+  Alpine.data('gdpr', (): AlpineComponent<{
+    cookies: Cookie[]
+    getCookies(): Cookie[]
+    manageGdpr(): void
     getCookie(name: string): string | undefined
     setCookie(name: string, value: any, days?: number): void
     delCookie(name: string): void
     delCookieAll(): void
   }> => ({
-    list: [] as Cookie[],
+    cookies: [] as Cookie[],
 
     init() {
-      this.list = this.listCookies()
+      this.cookies = this.getCookies()
     },
-    manageCookies() {
+    manageGdpr() {
       CookieConsent.show(true)
     },
-    listCookies(): Cookie[] {
+    getCookies(): Cookie[] {
       const items = document.cookie.split(';')
       const list: Cookie[] = []
 
