@@ -2,7 +2,10 @@ import 'vanilla-cookieconsent/dist/cookieconsent.css'
 import * as CookieConsent from 'vanilla-cookieconsent'
 import { languages, matomo } from './config/index.js'
 
-function init() {
+/**
+ * Setup the GDPR module
+ */
+function setup() {
   CookieConsent.run({
     onConsent() {
       matomo()
@@ -72,4 +75,4 @@ function init() {
   })
 }
 
-export default init
+export default setup

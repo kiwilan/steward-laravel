@@ -8,13 +8,16 @@ interface Cookie {
 }
 
 /**
+ * AlpineJS plugin for GDPR
+ *
  * docs: https://cookieconsent.orestbida.com
  */
 export default (Alpine: Alpine) => {
   Alpine.data('gdpr', (): AlpineComponent<{
     cookies: Cookie[]
     getCookies(): Cookie[]
-    manageGdpr(): void
+    showGdpr(): void
+    hideGdpr(): void
     getCookie(name: string): string | undefined
     setCookie(name: string, value: any, days?: number): void
     delCookie(name: string): void
@@ -25,8 +28,11 @@ export default (Alpine: Alpine) => {
     init() {
       this.cookies = this.getCookies()
     },
-    manageGdpr() {
+    showGdpr() {
       CookieConsent.show(true)
+    },
+    hideGdpr() {
+      CookieConsent.hide()
     },
     getCookies(): Cookie[] {
       const items = document.cookie.split(';')

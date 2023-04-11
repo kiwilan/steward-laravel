@@ -1,11 +1,11 @@
-import CookiesAlpinePlugin from './modules/cookies/alpine.js'
-import CookiesInit from './modules/cookies/init.js'
+import GdprAlpinePlugin from './modules/gdpr/alpine.js'
+import GdprSetup from './modules/gdpr/setup.js'
 
-const Cookies = {
-  Alpine: CookiesAlpinePlugin,
-  Init: CookiesInit
+const Gdpr = {
+  Alpine: GdprAlpinePlugin,
+  Setup: GdprSetup
 }
 
 export {
-  Cookies
+  Gdpr
 }
