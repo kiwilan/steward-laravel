@@ -40,7 +40,6 @@ function matomo() {
   // const id = window.matomo.id
   // @ts-expect-error - global variable
   console.log(appEnv);
-
   let consent = getCookie('cc_cookie')
   let domain = 'matomo.git-projects.xyz'
   let https = true
