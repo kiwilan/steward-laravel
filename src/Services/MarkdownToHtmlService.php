@@ -155,7 +155,8 @@ class MarkdownToHtmlService
         if ($document->doctype) {
             $document->removeChild($document->doctype);
         }
-        $html = utf8_decode($document->saveHTML($document->documentElement));
+
+        $html = mb_convert_encoding($document->saveHTML($document->documentElement), 'ISO-8859-1', 'UTF-8');
         $html = str_replace('<html><body>', '', $html);
         $html = str_replace('</body></html>', '', $html);
         $html = str_replace('<p><img', '<img', $html);

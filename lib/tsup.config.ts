@@ -6,11 +6,10 @@ export default defineConfig({
     index: 'src/index.ts',
   },
   format: ['cjs', 'esm'],
-  external: ['alpinejs'],
+  external: ['alpinejs', 'vanilla-cookieconsent'],
   outDir: 'dist',
   dts: true,
   minify: true,
   treeshake: true,
   splitting: true,
-  // noExternal: ['vanilla-cookieconsent'],
 })
