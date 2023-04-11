@@ -166,4 +166,15 @@ return [
             ],
         ],
     ],
+
+    'gdpr' => [
+        'service' => env('STEWARD_GDPR_SERVICE', 'orestbida/cookieconsent'), // https://github.com/orestbida/cookieconsent
+        'cookie_name' => env('STEWARD_GDPR_COOKIE_NAME', 'cc_cookie'),
+        'cookie_lifetime' => env('STEWARD_GDPR_COOKIE_LIFETIME', 182),
+        'matomo' => [
+            'enabled' => env('STEWARD_GDPR_MATOMO_ENABLED', true),
+            'url' => env('STEWARD_GDPR_MATOMO_URL'),
+            'site_id' => env('STEWARD_GDPR_MATOMO_SITE_ID'),
+        ],
+    ],
 ];

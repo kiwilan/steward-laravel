@@ -120,8 +120,8 @@ class StewardServiceProvider extends PackageServiceProvider
             fn (string $expression) => '{!! Kiwilan\Steward\Facades\DarkMode::embed('.$expression.') !!}'
         );
 
-        Blade::directive('matomo',
-            fn (string $expression) => '{!! Kiwilan\Steward\Facades\Matomo::embed('.$expression.') !!}'
+        Blade::directive('gdpr',
+            fn (string $expression) => '{!! Kiwilan\Steward\Facades\Gdpr::embed('.$expression.') !!}'
         );
 
         Blade::directive('loop',

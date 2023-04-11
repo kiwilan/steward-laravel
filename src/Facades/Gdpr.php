@@ -5,12 +5,12 @@ namespace Kiwilan\Steward\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Kiwilan\Steward\Support\MatomoSupport
+ * @see \Kiwilan\Steward\Support\GdprSupport
  */
-class Matomo extends Facade
+class Gdpr extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \Kiwilan\Steward\Support\MatomoSupport::class;
+        return \Kiwilan\Steward\Support\GdprSupport::class;
     }
 }

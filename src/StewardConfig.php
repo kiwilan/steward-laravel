@@ -152,4 +152,34 @@ class StewardConfig
     {
         return config('steward.factory.media_downloader.seeds.api') ?? 'https://seeds.git-projects.xyz';
     }
+
+    public static function gdprService(): string
+    {
+        return config('steward.gdpr.service') ?? 'orestbida/cookieconsent';
+    }
+
+    public static function gdprCookieName(): string
+    {
+        return config('steward.gdpr.cookie_name') ?? 'cc_cookie';
+    }
+
+    public static function gdprCookieLifetime(): int
+    {
+        return config('steward.gdpr.cookie_lifetime') ?? 182;
+    }
+
+    public static function gdprMatomoEnabled(): bool
+    {
+        return config('steward.gdpr.matomo.enabled') ?? false;
+    }
+
+    public static function gdprMatomoUrl(): ?string
+    {
+        return config('steward.gdpr.matomo.url') ?? null;
+    }
+
+    public static function gdprMatomoSiteId(): ?string
+    {
+        return config('steward.gdpr.matomo.site_id') ?? null;
+    }
 }
