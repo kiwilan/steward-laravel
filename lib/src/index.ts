@@ -1,7 +1,11 @@
-import CookiesAlpinePlugin from './modules/cookies/index.js'
-import CookiesInit from './modules/cookies/index.js'
+import CookiesAlpinePlugin from './modules/cookies/alpine.js'
+import CookiesInit from './modules/cookies/init.js'
+
+const Cookies = {
+  Alpine: CookiesAlpinePlugin,
+  Init: CookiesInit
+}
 
 export {
-  CookiesAlpinePlugin,
-  CookiesInit
+  Cookies
 }
