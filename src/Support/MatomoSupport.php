@@ -65,7 +65,6 @@ class MatomoSupport
                     deleteCookies('_pk')
                 }
             }
-
             matomo()
         </script>
         <!-- End Matomo Code -->
