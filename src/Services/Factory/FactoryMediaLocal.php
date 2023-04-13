@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\FactoryService;
+use Kiwilan\Steward\Services\ProcessService;
 use Kiwilan\Steward\Utils\Console;
 
 class FactoryMediaLocal
@@ -23,28 +24,32 @@ class FactoryMediaLocal
      */
     public function associate(Collection $models, string $field = 'picture', bool $multiple = false)
     {
-        $console = Console::make();
-        $model = $models->first();
+        ProcessService::executionTime(function () use ($models, $field, $multiple) {
+            $console = Console::make();
+            $model = $models->first();
 
-        $console->print('  FactoryMediaLocal fetch medias', 'bright-blue');
-        $images = $this->fetchMedias($model->getTable());
+            $console->newLine();
+            $console->print('  FactoryMediaLocal fetch medias', 'bright-blue');
+            $images = $this->fetchMedias($model->getTable());
 
-        $console->print('  Assigning medias to models...');
+            $console->print('  Assigning medias to models...');
 
-        foreach ($models as $key => $model) {
-            $random = null;
+            foreach ($models as $key => $model) {
+                $random = null;
 
-            if ($multiple) {
-                $random = $this->factory->faker()->randomElements($images, $this->factory->faker()->numberBetween(1, 5));
-            } else {
-                $random = $this->factory->faker()->randomElement($images);
+                if ($multiple) {
+                    $random = $this->factory->faker()->randomElements($images, $this->factory->faker()->numberBetween(1, 5));
+                } else {
+                    $random = $this->factory->faker()->randomElement($images);
+                }
+
+                $model->{$field} = $random;
+                $model->save();
             }
 
-            $model->{$field} = $random;
-            $model->save();
-        }
-
-        $console->print('  Done!');
+            $console->print('  Done!');
+            $console->newLine();
+        });
     }
 
     /**
