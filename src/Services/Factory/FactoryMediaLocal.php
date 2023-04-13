@@ -19,10 +19,9 @@ class FactoryMediaLocal
     }
 
     /**
-     * @param  Collection<int,Model>  $models
-     * @return void
+     * @param  Collection<int, Model>  $models
      */
-    public function associate(Collection $models, string $field = 'picture', bool $multiple = false)
+    public function associate(Collection $models, string $field = 'picture', bool $multiple = false): void
     {
         ProcessService::executionTime(function () use ($models, $field, $multiple) {
             $console = Console::make();
