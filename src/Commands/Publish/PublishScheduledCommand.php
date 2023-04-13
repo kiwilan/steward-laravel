@@ -5,11 +5,11 @@ namespace Kiwilan\Steward\Commands\Publish;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
-use Kiwilan\Steward\Commands\CommandSteward;
+use Kiwilan\Steward\Commands\Commandable;
 use Kiwilan\Steward\Enums\PublishStatusEnum;
 use Kiwilan\Steward\Services\ClassService;
 
-class PublishScheduledCommand extends CommandSteward
+class PublishScheduledCommand extends Commandable
 {
     /**
      * The name and signature of the console command.

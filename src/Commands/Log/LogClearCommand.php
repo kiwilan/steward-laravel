@@ -3,9 +3,9 @@
 namespace Kiwilan\Steward\Commands\Log;
 
 use Illuminate\Console\Command;
-use Kiwilan\Steward\Commands\CommandSteward;
+use Kiwilan\Steward\Commands\Commandable;
 
-class LogClearCommand extends CommandSteward
+class LogClearCommand extends Commandable
 {
     /**
      * The name and signature of the console command.

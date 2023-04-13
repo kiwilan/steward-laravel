@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class TagCleanCommand extends CommandSteward
+class TagCleanCommand extends Commandable
 {
     /**
      * The name and signature of the console command.

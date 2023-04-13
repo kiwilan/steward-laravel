@@ -3,10 +3,10 @@
 namespace Kiwilan\Steward\Commands\Submission;
 
 use Illuminate\Console\Command;
-use Kiwilan\Steward\Commands\CommandSteward;
+use Kiwilan\Steward\Commands\Commandable;
 use Kiwilan\Steward\Models\Submission;
 
-class SubmissionSendCommand extends CommandSteward
+class SubmissionSendCommand extends Commandable
 {
     /**
      * The name and signature of the console command.

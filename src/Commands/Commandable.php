@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Commands;
 use Closure;
 use Illuminate\Console\Command;
 
-class CommandSteward extends Command
+class Commandable extends Command
 {
     public function title(?string $signature = null, ?string $description = null)
     {

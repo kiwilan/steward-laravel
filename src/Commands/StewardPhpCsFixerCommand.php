@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-class StewardPhpCsFixerCommand extends CommandSteward
+class StewardPhpCsFixerCommand extends Commandable
 {
     public $signature = 'steward:php-cs-fixer';
 

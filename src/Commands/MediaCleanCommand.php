@@ -11,7 +11,7 @@ use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Console\Exception\RuntimeException;
 
-class MediaCleanCommand extends CommandSteward
+class MediaCleanCommand extends Commandable
 {
     /**
      * The name and signature of the console command.

@@ -4,9 +4,9 @@ namespace Kiwilan\Steward\Commands\Optimize;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Kiwilan\Steward\Commands\CommandSteward;
+use Kiwilan\Steward\Commands\Commandable;
 
-class OptimizeFeshCommand extends CommandSteward
+class OptimizeFeshCommand extends Commandable
 {
     /**
      * The name and signature of the console command.

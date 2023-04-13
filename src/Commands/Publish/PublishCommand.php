@@ -5,9 +5,9 @@ namespace Kiwilan\Steward\Commands\Publish;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Class\MetaClass;
-use Kiwilan\Steward\Commands\CommandSteward;
+use Kiwilan\Steward\Commands\Commandable;
 
-class PublishCommand extends CommandSteward
+class PublishCommand extends Commandable
 {
     /**
      * The name and signature of the console command.

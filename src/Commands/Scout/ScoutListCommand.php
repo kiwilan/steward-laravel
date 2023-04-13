@@ -3,13 +3,13 @@
 namespace Kiwilan\Steward\Commands\Scout;
 
 use Illuminate\Console\Command;
-use Kiwilan\Steward\Commands\CommandSteward;
+use Kiwilan\Steward\Commands\Commandable;
 use Kiwilan\Steward\Services\ScoutService;
 use Kiwilan\Steward\Services\TerminalService;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'scout:list')]
-class ScoutListCommand extends CommandSteward
+class ScoutListCommand extends Commandable
 {
     /**
      * The name and signature of the console command.
