@@ -33,6 +33,7 @@ class LighthouseCommand extends Commandable
             return;
         }
 
+        // docs: https://spatie.be/docs/lighthouse-php/v1/introduction
         $result = \Spatie\Lighthouse\Lighthouse::url('https://recette.koguart.com')->run();
 
         $scores = $result->scores();
