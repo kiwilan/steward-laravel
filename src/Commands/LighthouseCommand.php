@@ -19,7 +19,7 @@ class LighthouseCommand extends Commandable
      *
      * @var string
      */
-    protected $description = 'Run lighthouse';
+    protected $description = 'Run lighthouse with spatie/lighthouse';
 
     /**
      * Execute the console command.

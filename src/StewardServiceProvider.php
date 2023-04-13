@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward;
 
+use App\Console\Commands\LighthouseCommand;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
@@ -14,7 +15,6 @@ use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
 use Kiwilan\Steward\Commands\RoutePrintCommand;
 use Kiwilan\Steward\Commands\Scout\ScoutFreshCommand;
 use Kiwilan\Steward\Commands\Scout\ScoutListCommand;
-use Kiwilan\Steward\Commands\StewardCommand;
 use Kiwilan\Steward\Commands\Submission\SubmissionGdprCommand;
 use Kiwilan\Steward\Commands\Submission\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
@@ -47,7 +47,7 @@ class StewardServiceProvider extends PackageServiceProvider
             ->hasTranslations()
             ->hasCommands([
                 FilamentConfigCommand::class,
-                StewardCommand::class,
+                LighthouseCommand::class,
                 LogClearCommand::class,
                 MediaCleanCommand::class,
                 PublishCommand::class,
