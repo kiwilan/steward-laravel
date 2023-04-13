@@ -165,6 +165,7 @@ return [
                 'api' => 'https://seeds.git-projects.xyz',
             ],
         ],
+        'verbose' => env('STEWARD_FACTORY_VERBOSE', false),
     ],
 
     'gdpr' => [

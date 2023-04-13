@@ -185,7 +185,7 @@ class FactoryService
         }
 
         $type = $response->metadata()->contentType();
-        $ext = explode('/', $type)[1];
+        $ext = explode('/', $type)[1] ?? 'jpg';
         $data = $response->body();
 
         if ($ext === 'jpeg') {

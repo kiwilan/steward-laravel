@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\Services\ProcessService;
+use Kiwilan\Steward\StewardConfig;
 use Kiwilan\Steward\Utils\Console;
 
 class FactoryMediaLocal
@@ -23,15 +24,21 @@ class FactoryMediaLocal
      */
     public function associate(Collection $models, string $field = 'picture', bool $multiple = false): void
     {
-        ProcessService::executionTime(function () use ($models, $field, $multiple) {
+        $verbose = StewardConfig::factoryVerbose();
+        ProcessService::executionTime(function () use ($models, $field, $multiple, $verbose) {
             $console = Console::make();
             $model = $models->first();
 
             $console->newLine();
-            $console->print('  FactoryMediaLocal fetch medias', 'bright-blue');
+
+            if ($verbose) {
+                $console->print('  FactoryMediaLocal fetch medias', 'bright-blue');
+            }
             $images = $this->fetchMedias($model->getTable());
 
-            $console->print('  Assigning medias to models...');
+            if ($verbose) {
+                $console->print('  Assigning medias to models...');
+            }
 
             foreach ($models as $key => $model) {
                 $random = null;
@@ -42,14 +49,18 @@ class FactoryMediaLocal
                     $random = $this->factory->faker()->randomElement($images);
                 }
 
-                $console->print("    Assign to {$key}...");
+                if ($verbose) {
+                    $console->print("    Assign to {$key}...");
+                }
                 $model->{$field} = $random;
                 $model->save();
             }
 
-            $console->print('  Done!');
+            if ($verbose) {
+                $console->print('  Done!');
+            }
             $console->newLine();
-        });
+        }, $verbose);
     }
 
     /**

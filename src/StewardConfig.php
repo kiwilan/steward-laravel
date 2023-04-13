@@ -153,6 +153,11 @@ class StewardConfig
         return config('steward.factory.media_downloader.seeds.api') ?? 'https://seeds.git-projects.xyz';
     }
 
+    public static function factoryVerbose(): string
+    {
+        return config('steward.factory.verbose') ?? false;
+    }
+
     public static function gdprService(): string
     {
         return config('steward.gdpr.service') ?? 'orestbida/cookieconsent';

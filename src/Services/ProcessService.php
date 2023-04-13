@@ -7,7 +7,7 @@ use Kiwilan\Steward\Utils\Console;
 
 class ProcessService
 {
-    public static function executionTime(Closure $closure): void
+    public static function executionTime(Closure $closure, bool $printing = true): void
     {
         $startTime = microtime(true);
 
