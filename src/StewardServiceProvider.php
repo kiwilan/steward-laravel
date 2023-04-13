@@ -2,11 +2,11 @@
 
 namespace Kiwilan\Steward;
 
-use App\Console\Commands\LighthouseCommand;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
+use Kiwilan\Steward\Commands\LighthouseCommand;
 use Kiwilan\Steward\Commands\Log\LogClearCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
 use Kiwilan\Steward\Commands\Optimize\OptimizeFeshCommand;
