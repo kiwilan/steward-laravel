@@ -42,6 +42,7 @@ class FactoryMediaLocal
                     $random = $this->factory->faker()->randomElement($images);
                 }
 
+                $console->print("    Assign to {$key}...");
                 $model->{$field} = $random;
                 $model->save();
             }
