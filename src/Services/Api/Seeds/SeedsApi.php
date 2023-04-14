@@ -97,11 +97,11 @@ class SeedsApi implements MediaApi
         );
     }
 
-    public function fetchPictureRandomUrl(): string
+    public function fetchPictureRandomUrl(string $size = 'medium'): string
     {
         $data = SeedsRandomUrls::get();
         $url = $data[array_rand($data)];
 
-        return "{$url}?size=medium";
+        return "{$url}?size={$size}";
     }
 }

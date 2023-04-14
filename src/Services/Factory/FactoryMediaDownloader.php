@@ -4,11 +4,13 @@ namespace Kiwilan\Steward\Services\Factory;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\Services\Factory\Media\MediaProvider;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\StewardConfig;
+use Kiwilan\Steward\Utils\Console;
 
 /**
  * Class FactoryMedia
@@ -39,16 +41,40 @@ class FactoryMediaDownloader
 
     /**
      * @param  Collection<int,Model>|string  $models Collection of models or class name of model.
-     * @return void
      */
-    public function associate(Collection|string $models, string $field = 'picture', bool $multiple = false)
+    public function associate(Collection|string $models, string $field = 'picture', bool $multiple = false): void
     {
         if (is_string($models)) {
+            /** @var Collection<int, Model> */
             $models = $models::all();
         }
 
-        $model = $models->first();
-        $images = $this->fetchMedias($models->count(), $model->getTable());
+        $console = Console::make();
+
+        $chunkMax = StewardConfig::factoryMaxHandle();
+
+        if (StewardConfig::factoryVerbose()) {
+            $console->print("  FactoryMediaDownloader handle {$chunkMax} items maximum.", 'bright-blue');
+        }
+
+        if ($models->count() > $chunkMax) {
+            $models->chunk($chunkMax)->each(function (Collection $chunk) use ($field, $multiple) {
+                $this->associateByChunk($chunk, $field, $multiple);
+            });
+        } else {
+            $this->associateByChunk($models, $field, $multiple);
+        }
+    }
+
+    private function associateByChunk(Collection $models, string $field, bool $multiple): void
+    {
+        /** @var Model */
+        $instance = $models->first();
+        $images = $this->fetchMedias($models->count(), $instance->getTable());
+
+        $table = $instance->getTable();
+        $id = $instance->getKeyName();
+        DB::beginTransaction();
 
         foreach ($models as $key => $model) {
             $media = null;
@@ -58,9 +84,15 @@ class FactoryMediaDownloader
             } else {
                 $media = $images->shift();
             }
-            $model->{$field} = $media;
-            $model->save();
+
+            DB::table($table)
+                ->where($id, '=', $model->{$id})
+                ->update([
+                    $field => $media,
+                ])
+            ;
         }
+        DB::commit();
     }
 
     /**

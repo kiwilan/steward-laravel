@@ -153,6 +153,11 @@ class StewardConfig
         return config('steward.factory.media_downloader.seeds.api') ?? 'https://seeds.git-projects.xyz';
     }
 
+    public static function factoryMaxHandle(): int
+    {
+        return config('steward.factory.max_handle') ?? 1000;
+    }
+
     public static function factoryVerbose(): string
     {
         return config('steward.factory.verbose') ?? false;

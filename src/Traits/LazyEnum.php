@@ -27,23 +27,27 @@ trait LazyEnum
         return self::tryFrom($caseName) ?? throw new Exception('Enum '.$caseName.' not found in '.self::class);
     }
 
-    public static function toList()
+    public static function toList(): array
     {
         $list = [];
 
         foreach (self::cases() as $enum) {
             if ($enum instanceof BackedEnum) {
                 $list[$enum->value] = $enum->value;
-            // @phpstan-ignore-next-line
-            } else {
-                array_push($enum);
+            } else { // @phpstan-ignore-line
+                $list[$enum] = $enum;
             }
         }
 
         return $list;
     }
 
-    public static function toNames()
+    public static function toDatabase(): array
+    {
+        return self::toList();
+    }
+
+    public static function toNames(): array
     {
         $array = [];
 
@@ -54,7 +58,7 @@ trait LazyEnum
         return $array;
     }
 
-    public static function toValues()
+    public static function toValues(): array
     {
         $array = [];
 
@@ -82,7 +86,7 @@ trait LazyEnum
     /**
      * Get Enum list [case] => [locale].
      */
-    public static function toArray()
+    public static function toArray(): array
     {
         $array = [];
         $base = static::getLocaleBaseName();
@@ -128,7 +132,7 @@ trait LazyEnum
         return false;
     }
 
-    public function i18n()
+    public function i18n(): string
     {
         $class = new ReflectionClass(static::class);
         $class = $class->getShortName();

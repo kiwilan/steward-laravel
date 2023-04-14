@@ -4,6 +4,7 @@ namespace Kiwilan\Steward\Services\Factory;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\Services\ProcessService;
@@ -27,46 +28,57 @@ class FactoryMediaLocal
         $verbose = StewardConfig::factoryVerbose();
         ProcessService::executionTime(function () use ($models, $field, $multiple, $verbose) {
             $console = Console::make();
-            $model = $models->first();
 
-            $console->newLine();
-
-            if ($verbose) {
-                $console->print('  FactoryMediaLocal fetch medias', 'bright-blue');
-            }
-            $images = $this->fetchMedias($model->getTable());
+            $chunkMax = StewardConfig::factoryMaxHandle();
 
             if ($verbose) {
-                $console->print('  Assigning medias to models...');
+                $console->print("  FactoryMediaDownloader handle {$chunkMax} items maximum.", 'bright-blue');
             }
 
-            foreach ($models as $key => $model) {
-                $random = null;
-
-                if ($multiple) {
-                    $random = $this->factory->faker()->randomElements($images, $this->factory->faker()->numberBetween(1, 5));
-                } else {
-                    $random = $this->factory->faker()->randomElement($images);
-                }
-
-                if ($verbose) {
-                    $console->print("    Assign to {$key}...");
-                }
-                $model->{$field} = $random;
-                $model->save();
+            if ($models->count() > $chunkMax) {
+                $models->chunk($chunkMax)->each(function (Collection $chunk) use ($field, $multiple) {
+                    $this->associateByChunk($chunk, $field, $multiple);
+                });
+            } else {
+                $this->associateByChunk($models, $field, $multiple);
             }
-
-            if ($verbose) {
-                $console->print('  Done!');
-            }
-            $console->newLine();
         }, $verbose);
+    }
+
+    private function associateByChunk(Collection $models, string $field, bool $multiple): void
+    {
+        /** @var Model */
+        $instance = $models->first();
+        $images = $this->fetchMedias($instance->getTable());
+
+        $table = $instance->getTable();
+        $id = $instance->getKeyName();
+        DB::beginTransaction();
+
+        foreach ($models as $key => $model) {
+            $media = null;
+            $images = $images->shuffle();
+
+            if ($multiple) {
+                $media = $this->factory->faker()->randomElements($images, $this->factory->faker()->numberBetween(1, 5));
+            } else {
+                $media = $images->first();
+            }
+
+            DB::table($table)
+                ->where($id, '=', $model->{$id})
+                ->update([
+                    $field => $media,
+                ])
+            ;
+        }
+        DB::commit();
     }
 
     /**
      * @return Collection<int,string>
      */
-    private function fetchMedias(?string $basePath = null)
+    private function fetchMedias(?string $basePath = null): Collection
     {
         $path = "{$this->basePath}/{$this->path}";
 

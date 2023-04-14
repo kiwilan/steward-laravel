@@ -165,6 +165,7 @@ return [
                 'api' => 'https://seeds.git-projects.xyz',
             ],
         ],
+        'max_handle' => env('STEWARD_FACTORY_MAX_HANDLE', 1000),
         'verbose' => env('STEWARD_FACTORY_VERBOSE', false),
     ],
 

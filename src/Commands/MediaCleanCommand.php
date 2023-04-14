@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\Class\ClassItem;
 use Kiwilan\Steward\Services\ClassService;
+use Kiwilan\Steward\StewardConfig;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Console\Exception\RuntimeException;
@@ -35,20 +36,6 @@ class MediaCleanCommand extends Commandable
 
     protected string $mediaPath = '';
 
-    /** @var array<string> */
-    protected array $mediaDatabaseEntries = [];
-
-    /** @var array<string> */
-    protected array $mediaFiles = [];
-
-    /** @var array<string> */
-    protected array $mediaAll = [];
-
-    /** @var array<string> */
-    protected array $mediaUsed = [];
-
-    protected array $mediaToDelete = [];
-
     /**
      * Execute the console command.
      *
@@ -63,20 +50,68 @@ class MediaCleanCommand extends Commandable
 
         $this->mediaPath = public_path('storage');
 
-        $this->mediaDatabaseEntries = $this->setMediaDatabaseEntries();
-        $this->mediaFiles = $this->setMediaFiles();
+        $dbFiles = $this->setDbFiles();
+        $localFiles = $this->setLocalFiles();
 
-        $medias = $this->setMediaAllAndUsed();
-        $this->mediaAll = $medias['mediaAll'];
-        $this->mediaUsed = $medias['mediaUsed'];
+        $chunkMax = StewardConfig::factoryMaxHandle();
+        $chunks = array_chunk($localFiles, $chunkMax);
+        $filesToDelete = [];
 
-        $this->mediaToDelete = $this->setMediaToDelete();
-        $this->deleteMedias();
+        foreach ($chunks as $chunk) {
+            foreach ($chunk as $file) {
+                if (! $this->checkIfExistInDb($file, $dbFiles)) {
+                    // $this->error('File not exist in database: '.$file);
+                    $filesToDelete[] = "{$this->mediaPath}/{$file}";
+                } else {
+                    // $this->info('File exist in database: '.$file);
+                }
+            }
+
+            $this->table(['Files to delete'], $filesToDelete);
+            $this->deleteMedias($filesToDelete);
+        }
 
         return Command::SUCCESS;
     }
 
-    private function setMediaDatabaseEntries(): array
+    /**
+     * @param  array<string>  $dbFiles
+     */
+    private function checkIfExistInDb(string $file, array $dbFiles): bool
+    {
+        foreach ($dbFiles as $dbFile) {
+            $json = json_decode($dbFile, true);
+            $isArray = is_array($json);
+
+            if ($isArray) {
+                foreach ($json as $entry) {
+                    $entryIsArray = is_array($entry);
+
+                    if ($entryIsArray) {
+                        $medias = $this->parseArrayEntry($entry);
+
+                        foreach ($medias as $media) {
+                            if (str_contains($media, $file)) {
+                                return true;
+                            }
+                        }
+                    } else {
+                        if (str_contains($entry, $file)) {
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                if (str_contains($dbFile, $file)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private function setDbFiles(): array
     {
         $files = ClassService::files(app_path('Models'));
         $items = ClassService::make($files);
@@ -137,7 +172,7 @@ class MediaCleanCommand extends Commandable
         return false;
     }
 
-    private function setMediaFiles(): array
+    private function setLocalFiles(): array
     {
         /** Get all medias from $media_path */
         $filesList = File::allFiles($this->mediaPath);
@@ -150,67 +185,6 @@ class MediaCleanCommand extends Commandable
         }
 
         return $files;
-    }
-
-    private function setMediaAllAndUsed(): array
-    {
-        $mediaAll = [];
-        $mediaUsed = [];
-
-        // Find medias between used and all
-        foreach ($this->mediaFiles as $file) {
-            foreach ($this->mediaDatabaseEntries as $media_entry) {
-                $this->handleEntry($media_entry, $file, $mediaUsed, $mediaAll);
-            }
-        }
-        $mediaAll = array_unique($mediaAll);
-        $mediaAll = array_values($mediaAll);
-
-        $mediaUsed = array_unique($mediaUsed);
-        $mediaUsed = array_values($mediaUsed);
-
-        return [
-            'mediaAll' => $mediaAll,
-            'mediaUsed' => $mediaUsed,
-        ];
-    }
-
-    private function handleEntry(string $media_entry, string $file, array &$mediaUsed = [], array &$mediaAll = [])
-    {
-        $json = json_decode($media_entry, true);
-        $isArray = is_array($json);
-
-        $path = "{$this->mediaPath}/{$file}";
-
-        if ($isArray) {
-            foreach ($json as $entry) {
-                $entryIsArray = is_array($entry);
-
-                if ($entryIsArray) {
-                    $medias = $this->parseArrayEntry($entry);
-
-                    foreach ($medias as $media) {
-                        if (str_contains($media, $file)) {
-                            $mediaUsed[] = $path;
-                        } else {
-                            $mediaAll[] = $path;
-                        }
-                    }
-                } else {
-                    if (str_contains($entry, $file)) {
-                        $mediaUsed[] = $path;
-                    } else {
-                        $mediaAll[] = $path;
-                    }
-                }
-            }
-        } else {
-            if (str_contains($media_entry, $file)) {
-                $mediaUsed[] = $path;
-            } else {
-                $mediaAll[] = $path;
-            }
-        }
     }
 
     private function parseArrayEntry(array $entry): array
@@ -231,30 +205,15 @@ class MediaCleanCommand extends Commandable
     }
 
     /**
-     * Check all medias which is not used.
-     */
-    private function setMediaToDelete(): array
-    {
-        $mediasToDelete = [];
-
-        foreach ($this->mediaAll as $value) {
-            if (! in_array($value, $this->mediaUsed)) {
-                $this->warn("Media {$value} will be deleted.");
-                $mediasToDelete[] = $value;
-            }
-        }
-
-        return $mediasToDelete;
-    }
-
-    /**
      * Delete medias which is not used
+     *
+     * @param  array<string>  $mediaToDelete
      *
      * @throws RuntimeException
      */
-    private function deleteMedias(): void
+    private function deleteMedias(array $mediaToDelete): void
     {
-        if (! empty($this->mediaToDelete)) {
+        if (! empty($mediaToDelete)) {
             $continue = $this->force;
 
             if (! $this->force && $this->confirm('Do you wish to continue?', true)) {
@@ -262,7 +221,7 @@ class MediaCleanCommand extends Commandable
             }
 
             if ($continue) {
-                foreach ($this->mediaToDelete as $value) {
+                foreach ($mediaToDelete as $value) {
                     File::delete($value);
                 }
             } else {
