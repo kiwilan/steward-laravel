@@ -4,12 +4,8 @@ namespace Kiwilan\Steward\Support;
 
 class GdprSupport
 {
-    public function embed(bool $enabled = true): string
+    public function embed(): string
     {
-        $appEnv = config('app.env');
-        $appUrl = config('app.url');
-        $appUrlStorage = "$appUrl/storage";
-
         $gdprService = config('steward.gdpr.service');
         $gdprCookieName = config('steward.gdpr.cookie_name');
         $gdprCookieLifetime = config('steward.gdpr.cookie_lifetime');
@@ -20,9 +16,6 @@ class GdprSupport
         return <<<HTML
         <!-- Matomo -->
         <script>
-            window.appEnv = '$appEnv';
-            window.appUrl = '$appUrl';
-            window.appUrlStorage = '$appUrlStorage';
             window.gdprService = '$gdprService';
             window.gdprCookieName = '$gdprCookieName';
             window.gdprCookieLifetime = '$gdprCookieLifetime';
