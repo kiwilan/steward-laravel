@@ -4,11 +4,11 @@ namespace Kiwilan\Steward\Support;
 
 class DarkModeSupport
 {
-    public function embed(): string
+    public function embed(string $item = 'color-scheme'): string
     {
-        return <<<'HTML'
+        return <<<HTML
         <script>
-            const colorScheme = localStorage.getItem('color-scheme')
+            const colorScheme = localStorage.getItem('$item')
 
             if (colorScheme) {
                 document.documentElement.classList.toggle(colorScheme, true)
@@ -18,7 +18,7 @@ class DarkModeSupport
                     'dark' :
                     'light'
                 document.documentElement.classList.toggle(system, true)
-                localStorage.setItem('color-scheme', system)
+                localStorage.setItem('$item', system)
             }
         </script>
         HTML;

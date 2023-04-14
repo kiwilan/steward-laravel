@@ -18,9 +18,9 @@ class BladeApp extends Component
         public bool $inertiaEnabled = false,
         public array $page = [],
         public bool $ziggy = false,
-        public bool $darkMode = false,
         public string $tile = '#da532c',
-        public string $theme = '#ffffff'
+        public string $theme = '#ffffff',
+        public bool $darkMode = false,
     ) {
     }
 
