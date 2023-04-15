@@ -5,17 +5,17 @@ namespace Kiwilan\Steward\Services\Api\Seeds;
 class SeedsPictureResponse
 {
     public function __construct(
-        public string $filename,
-        public string $extension,
-        public string $sizeRender,
-        public string $pathFilename,
-        public string $id,
-        public string $category,
-        public string $size,
-        public string $sizeHuman,
-        public string $date,
-        public SeedsPictureResponseCredits $credits,
-        public SeedsPictureResponseLinks $links,
+        public ?string $filename = null,
+        public ?string $extension = null,
+        public ?string $sizeRender = null,
+        public ?string $pathFilename = null,
+        public ?string $id = null,
+        public ?string $category = null,
+        public ?string $size = null,
+        public ?string $sizeHuman = null,
+        public ?string $date = null,
+        public ?SeedsPictureResponseCredits $credits = null,
+        public ?SeedsPictureResponseLinks $links = null,
     ) {
     }
 
@@ -43,25 +43,25 @@ class SeedsPictureResponse
         }
 
         $credits = new SeedsPictureResponseCredits(
-            $item['credits']['provider'],
-            $item['credits']['author'],
-            $item['credits']['url'],
+            $item['credits']['provider'] ?? null,
+            $item['credits']['author'] ?? null,
+            $item['credits']['url'] ?? null,
         );
         $links = new SeedsPictureResponseLinks(
-            $item['links']['show'],
-            $item['links']['render'],
+            $item['links']['show'] ?? null,
+            $item['links']['render'] ?? null,
         );
 
         return new self(
-            $item['filename'],
-            $item['extension'],
-            $item['sizeRender'],
-            $item['pathFilename'],
-            $item['id'],
-            $item['category'],
-            $item['size'],
-            $item['sizeHuman'],
-            $item['date'],
+            $item['filename'] ?? null,
+            $item['extension'] ?? null,
+            $item['sizeRender'] ?? null,
+            $item['pathFilename'] ?? null,
+            $item['id'] ?? null,
+            $item['category'] ?? null,
+            $item['size'] ?? null,
+            $item['sizeHuman'] ?? null,
+            $item['date'] ?? null,
             $credits,
             $links,
         );
