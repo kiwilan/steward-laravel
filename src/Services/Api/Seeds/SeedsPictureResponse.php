@@ -71,9 +71,9 @@ class SeedsPictureResponse
 class SeedsPictureResponseCredits
 {
     public function __construct(
-        public string $provider,
-        public string $author,
-        public string $url,
+        public ?string $provider = null,
+        public ?string $author = null,
+        public ?string $url = null,
     ) {
     }
 }
@@ -81,8 +81,8 @@ class SeedsPictureResponseCredits
 class SeedsPictureResponseLinks
 {
     public function __construct(
-        public string $show,
-        public string $render,
+        public ?string $show = null,
+        public ?string $render = null,
     ) {
     }
 }

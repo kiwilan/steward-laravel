@@ -9,6 +9,7 @@ use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\Services\Api\MediaApi;
 use Kiwilan\Steward\Services\Http\HttpResponse;
 use Kiwilan\Steward\Services\HttpService;
+use Kiwilan\Steward\StewardConfig;
 
 class SeedsApi implements MediaApi
 {
@@ -100,8 +101,9 @@ class SeedsApi implements MediaApi
     public function fetchPictureRandomUrl(string $size = 'medium'): string
     {
         $data = SeedsRandomUrls::get();
+        $baseURL = StewardConfig::factoryMediaDownloaderSeedsApi();
         $url = $data[array_rand($data)];
 
-        return "{$url}?size={$size}";
+        return "{$baseURL}{$url}?size={$size}";
     }
 }
