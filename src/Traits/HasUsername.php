@@ -12,10 +12,10 @@ trait HasUsername
 
     protected bool $default_username_auto_update = true;
 
-    public function initializeHasUsername()
-    {
-        // $this->fillable[] = $this->getUsernameColumn();
-    }
+    // public function initializeHasUsername()
+    // {
+    //     $this->fillable[] = $this->getUsernameColumn();
+    // }
 
     public function getUsernameWith(): string
     {
@@ -37,6 +37,10 @@ trait HasUsername
      */
     public function generateUsername(): string
     {
+        if (! $this->isDirty($this->getUsernameWith())) {
+            return $this->{$this->getUsernameColumn()};
+        }
+
         $tag = rand(1000, 9999);
         $username_name = Str::slug($this->{$this->getUsernameWith()}, '-');
         $username = "{$username_name}-{$tag}";

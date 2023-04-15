@@ -40,18 +40,25 @@ trait Uploadable
                 unset($value[$index]);
             }
         } else {
-            $value = null;
+            $value = '';
         }
 
         if ($is_array) {
             $value = array_values($value);
         }
-        $this->user->collector->update([
+        $this->model->update([
             $property => $value,
         ]);
 
         $this->{$property} = $value;
-        $this->notify();
+    }
+
+    public function removeFile(string $field, string $name)
+    {
+        $this->clearUpload([
+            'property' => $field,
+            'key' => is_array($this->{$field}) ? array_search($name, $this->{$field}) : null,
+        ]);
     }
 
     protected function getListeners()
@@ -83,11 +90,11 @@ trait Uploadable
 
         if ($value) {
             if (is_array($this->{$property})) {
-                $field = $this->user->collector->{$property} ?? [];
+                $field = $this->model->{$property} ?? [];
                 $value = array_merge($field, $value);
             }
 
-            $this->user->collector->update([
+            $this->model->update([
                 $property => $value,
             ]);
         }

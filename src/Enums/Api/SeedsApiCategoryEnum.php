@@ -30,6 +30,8 @@ enum SeedsApiCategoryEnum: string
 
     case people = 'people';
 
+    case peoplemedia = 'peoplemedia';
+
     case relationship = 'relationship';
 
     case space = 'space';
@@ -44,7 +46,9 @@ enum SeedsApiCategoryEnum: string
 
     case architecture = 'architecture'; // `building`, `city`, `decoration`, `house`, `monument`
 
-    case human = 'human'; // `artist`, `corporate`, `cultural`, `people`, `relationship`, `sport`
+    case character = 'character'; // `people`, `peoplemedia`
+
+    case human = 'human'; // `artist`, `corporate`, `cultural`, `people`, `peoplemedia`, `relationship`, `sport`
 
     case wildlife = 'wildlife'; // `animal`, `flower`, `nature`, `space`
 

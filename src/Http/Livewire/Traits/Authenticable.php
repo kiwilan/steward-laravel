@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Http\Livewire\Traits;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -29,10 +30,7 @@ trait Authenticable
         }
     }
 
-    /**
-     * @return T
-     */
-    public function getAuth()
+    public function getAuth(): ?Authenticatable
     {
         return $this->auth;
     }

@@ -124,6 +124,10 @@ class StewardServiceProvider extends PackageServiceProvider
             fn (string $expression) => '{!! Kiwilan\Steward\Facades\Gdpr::embed('.$expression.') !!}'
         );
 
+        Blade::directive('viteDefer',
+            fn (string $expression) => '{!! Kiwilan\Steward\Facades\ViteDefer::embed('.$expression.') !!}'
+        );
+
         Blade::directive('steward',
             fn (string $expression) => '{!! Kiwilan\Steward\Facades\Steward::embed('.$expression.') !!}'
         );
