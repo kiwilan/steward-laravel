@@ -180,7 +180,7 @@ class FactoryService
 
     public static function mediaFromResponse(?HttpResponse $response, ?string $basePath = null): ?string
     {
-        if (! $response) {
+        if (! $response || ! $response->isSuccess()) {
             return null;
         }
 

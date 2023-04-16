@@ -36,8 +36,8 @@
   @endPushOnce
   <div class="flex items-center justify-between text-gray-500">
     <label
-      for="{{ $name }}"
       class="block text-sm font-medium text-gray-700"
+      for="{{ $name }}"
     >
       {{ $label }}
       @if ($required)
@@ -50,6 +50,9 @@
   </div>
   @isset($_instance)
     <div
+      class="relative mt-1"
+      wire:ignore
+      x-cloak
       x-data="{
           content: @entangle($attributes->wire('model')),
           init() {
@@ -118,8 +121,6 @@
               })
           }
       }"
-      wire:ignore
-      class="relative mt-1"
     >
       <div
         id="{{ $id }}"
