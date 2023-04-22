@@ -18,6 +18,9 @@ trait Filterable
         return QueryService::make($query, $filters, $configuration);
     }
 
+    /**
+     * Sort with Livewire.
+     */
     public function scopeLivewireSort(Builder $query, string $field, bool $desc = false): Builder
     {
         $class = new ReflectionClass($this);
