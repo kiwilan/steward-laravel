@@ -18,7 +18,7 @@ trait Filterable
         return QueryService::make($query, $filters, $configuration);
     }
 
-    public function scopeLivewireSort(Builder $query, string $field, bool $reverse = false): Builder
+    public function scopeLivewireSort(Builder $query, string $field, bool $desc = false): Builder
     {
         $class = new ReflectionClass($this);
         $instance = $class->getName();
@@ -34,7 +34,7 @@ trait Filterable
         }
         $current = array_shift($sortable);
 
-        $direction = $reverse ? 'desc' : 'asc';
+        $direction = $desc ? 'desc' : 'asc';
 
         return $current->orderBy($query, $direction);
     }
