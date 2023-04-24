@@ -63,7 +63,7 @@ class NotifyService
     public function send(): bool
     {
         $this->success = match ($this->app) {
-            'discord' => $this->discord($this->id, $this->token, $this->message),
+            'discord' => self::discord($this->id, $this->token, $this->message),
             default => false,
         };
 
@@ -138,7 +138,7 @@ class NotifyService
         $this->token = $token;
     }
 
-    private function discord(string $id, string $token, string $message): bool
+    public static function discord(string $id, string $token, string $message): bool
     {
         $success = false;
         $baseURL = 'https://discord.com/api/webhooks/';
