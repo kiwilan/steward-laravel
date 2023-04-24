@@ -51,8 +51,10 @@ jobs:
       - name: Create .env
         run: |
           touch .env
-          '${{ secrets.NOTIFY_SENDTO }}' >> .env
-          '${{ secrets.NOTIFY_SERVERS }}' >> .env
+          echo API_ENDPOINT="https://xxx.execute-api.us-west-2.amazonaws.com" >> .env
+          echo TESTING_NOTIFY_SERVERS=${{ secrets.NOTIFY_SERVERS }} >> .env
+          echo TESTING_NOTIFY_SENDTO=${{ secrets.NOTIFY_SENDTO }} >> .env
+          cat .env
 
       - name: Execute tests
         run: vendor/bin/pest
