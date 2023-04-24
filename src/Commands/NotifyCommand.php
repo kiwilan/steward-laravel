@@ -44,11 +44,11 @@ class NotifyCommand extends Commandable
     {
         $this->title();
 
-        $this->message = $this->argument('message') ?? 'Hello world!';
-        $this->server = $this->option('server') ?? 'default';
-        $this->app = $this->option('app') ?? 'discord';
-        $this->sendto = $this->option('sendto') ?? null;
-        $this->inlineServers = $this->option('inline-servers') ?? null;
+        $this->message = strval($this->argument('message')) ?? 'Hello world!';
+        $this->server = strval($this->option('server')) ?? 'default';
+        $this->app = strval($this->option('app')) ?? 'discord';
+        $this->sendto = strval($this->option('sendto')) ?? null;
+        $this->inlineServers = strval($this->option('inline-servers')) ?? null;
         $success = false;
 
         $notify = NotifyService::make(
