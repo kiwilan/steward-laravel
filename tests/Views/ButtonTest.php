@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Tests;
+namespace Kiwilan\Steward\Tests\Views;
 
 use Kiwilan\Steward\Components\Button;
 use Mockery\MockInterface;

@@ -179,4 +179,12 @@ return [
             'site_id' => env('STEWARD_GDPR_MATOMO_SITE_ID'),
         ],
     ],
+
+    'notify' => [
+        'discord' => [
+            'servers' => [
+                // 'default' => 'ID:TOKEN',
+            ],
+        ],
+    ],
 ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Field;
+namespace Kiwilan\Steward\Tests\Views\Field;
 
 use Kiwilan\Steward\Components\Field\FieldText;
 use Kiwilan\Steward\Tests\TestCase;

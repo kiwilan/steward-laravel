@@ -9,6 +9,7 @@ use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\LighthouseCommand;
 use Kiwilan\Steward\Commands\Log\LogClearCommand;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
+use Kiwilan\Steward\Commands\NotifyCommand;
 use Kiwilan\Steward\Commands\Optimize\OptimizeFeshCommand;
 use Kiwilan\Steward\Commands\Publish\PublishCommand;
 use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
@@ -50,6 +51,7 @@ class StewardServiceProvider extends PackageServiceProvider
                 LighthouseCommand::class,
                 LogClearCommand::class,
                 MediaCleanCommand::class,
+                NotifyCommand::class,
                 PublishCommand::class,
                 PublishScheduledCommand::class,
                 RoutePrintCommand::class,

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Tests;
+namespace Kiwilan\Steward\Tests\Views;
 
 it('can be render', function () {
     /** @var TestCase $this */
