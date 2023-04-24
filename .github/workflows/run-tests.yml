@@ -50,8 +50,7 @@ jobs:
 
       - name: Create .env
         run: |
-          cp .env.example .env
-          > .env
+          touch .env
           ${{ secrets.NOTIFY_SENDTO }} >> .env
           ${{ secrets.NOTIFY_SERVERS }} >> .env
 
