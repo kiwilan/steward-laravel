@@ -48,5 +48,12 @@ jobs:
       - name: List Installed Dependencies
         run: composer show -D
 
+      - name: Create .env
+        run: |
+          cp .env.example .env
+          > .env
+          ${{ secrets.NOTIFY_SENDTO }} >> .env
+          ${{ secrets.NOTIFY_SERVERS }} >> .env
+
       - name: Execute tests
         run: vendor/bin/pest
