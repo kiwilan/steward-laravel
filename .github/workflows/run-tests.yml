@@ -51,8 +51,8 @@ jobs:
       - name: Create .env
         run: |
           touch .env
-          ${{ secrets.NOTIFY_SENDTO }} >> .env
-          ${{ secrets.NOTIFY_SERVERS }} >> .env
+          '${{ secrets.NOTIFY_SENDTO }}' >> .env
+          '${{ secrets.NOTIFY_SERVERS }}' >> .env
 
       - name: Execute tests
         run: vendor/bin/pest
