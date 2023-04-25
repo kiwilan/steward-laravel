@@ -193,8 +193,8 @@ class StewardConfig
         return config('steward.gdpr.matomo.site_id') ?? null;
     }
 
-    public static function notifyDiscordServers(): ?array
+    public static function notifyDiscordServers(): ?string
     {
-        return config('steward.notify.discord.servers') ?? [];
+        return config('steward.notify.discord.server') ?? null;
     }
 }

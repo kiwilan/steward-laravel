@@ -12,7 +12,8 @@ class TagCleanCommand extends Commandable
      *
      * @var string
      */
-    protected $signature = 'tag:clean {pivot=taggables}';
+    protected $signature = 'tag:clean
+                            {pivot : Pivot table name.}';
 
     /**
      * The console command description.
@@ -29,7 +30,7 @@ class TagCleanCommand extends Commandable
     public function handle()
     {
         $this->title();
-        $taggables = $this->argument('taggables');
+        $taggables = $this->argument('pivot') ?: 'taggables';
 
         $taggables = DB::table($taggables)->get();
 

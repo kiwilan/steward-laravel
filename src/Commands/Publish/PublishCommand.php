@@ -34,7 +34,7 @@ class PublishCommand extends Commandable
         $this->title();
 
         $class = $this->argument('class');
-        $unpublish = $this->option('unpublish') ?? false;
+        $unpublish = $this->option('unpublish') ?: false;
 
         $meta = MetaClass::make($class);
         $instance = new $class();

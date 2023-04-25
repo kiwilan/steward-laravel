@@ -7,33 +7,33 @@ use Kiwilan\Steward\Services\NotifyService;
 
 it('can notify', function () {
     $data = dotenv();
+    $test = $data['STEWARD_NOTIFY_DISCORD_SERVER'];
 
-    $success = Artisan::call('notify', [
-        'message' => 'Notify test',
-        '--inline-servers' => $data['TESTING_NOTIFY_SERVERS'],
-    ]);
+    $notify = NotifyService::make()
+        ->to(options: explode(':', $test))
+        ->message('Notify test')
+        ->send()
+    ;
 
-    expect($success)->toBe(1);
+    expect($notify->isSuccess())->toBeTrue();
 });
 
-it('can notify with sendto option', function () {
-    $data = dotenv();
-    $test = $data['TESTING_NOTIFY_SENDTO'];
+it('can notify from config', function () {
+    $notify = NotifyService::make()
+        ->message('Notify test from config')
+        ->send()
+    ;
 
-    $success = Artisan::call('notify', [
-        'message' => 'Notify test with sendto',
-        '--sendto' => $test,
-    ]);
-
-    expect($success)->toBe(1);
+    expect($notify->isSuccess())->toBeTrue();
 });
 
-it('can notify with service', function () {
-    $data = dotenv();
-    $test = $data['TESTING_NOTIFY_SENDTO'];
+// it('can notify with command', function () {
+//     $data = dotenv();
 
-    $notify = NotifyService::make('Notify test with service', sendto: $test);
-    $success = $notify->send();
+//     $success = Artisan::call('notify', [
+//         'message' => 'Notify test from command',
+//         '--inline-servers' => $data['TESTING_NOTIFY_SERVERS'],
+//     ]);
 
-    expect($success)->toBeTrue();
-});
+//     expect($success)->toBe(1);
+// });

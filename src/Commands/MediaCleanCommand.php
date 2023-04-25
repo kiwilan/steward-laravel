@@ -45,8 +45,8 @@ class MediaCleanCommand extends Commandable
     {
         $this->title();
 
-        $this->all = $this->option('all') ?? false;
-        $this->force = $this->option('force') ?? false;
+        $this->all = $this->option('all') ?: false;
+        $this->force = $this->option('force') ?: false;
 
         $this->mediaPath = public_path('storage');
 

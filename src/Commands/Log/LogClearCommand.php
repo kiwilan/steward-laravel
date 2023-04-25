@@ -39,7 +39,7 @@ class LogClearCommand extends Commandable
     {
         $this->title();
 
-        $all = $this->option('all') ?? false;
+        $all = $this->option('all') ?: false;
         $log_name = $this->argument('name');
 
         if ($log_name) {
