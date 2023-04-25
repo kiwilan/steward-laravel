@@ -183,7 +183,7 @@ return [
         're' => 'Reunion',
         'ro' => 'Romania',
         'ru' => 'Russian Federation',
-        'rw' => 'RWANDA',
+        'rw' => 'Rwanda',
         'sh' => 'Saint Helena',
         'kn' => 'Saint Kitts and Nevis',
         'lc' => 'Saint Lucia',
