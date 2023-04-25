@@ -14,7 +14,7 @@ class GdprSupport
         $gdprMatomoSiteId = config('steward.gdpr.matomo.site_id');
 
         return <<<HTML
-        <!-- Matomo -->
+        <!-- GDPR -->
         <script>
             window.gdprService = '$gdprService';
             window.gdprCookieName = '$gdprCookieName';
@@ -23,7 +23,7 @@ class GdprSupport
             window.gdprMatomoUrl = '$gdprMatomoUrl';
             window.gdprMatomoSiteId = '$gdprMatomoSiteId';
         </script>
-        <!-- End Matomo Code -->
+        <!-- End GDPR -->
         HTML;
     }
 }
