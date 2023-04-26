@@ -2,21 +2,26 @@
 
 namespace Kiwilan\Steward\Services\Notify;
 
+use Kiwilan\Steward\Services\NotifyApplication;
 use Kiwilan\Steward\StewardConfig;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class Notifying
 {
     protected function __construct(
-        protected ?string $url = null,
-        protected ?string $message = null,
         protected array $options = [],
-        protected bool $success = false,
+        protected ?string $message = null,
+        protected ?NotifyApplication $application = null,
+        protected ?string $defaultOptions = null,
+        protected ?string $url = null,
         protected ?ResponseInterface $response = null,
+        protected bool $success = false,
     ) {
     }
 
     abstract public static function send(array $options, string $message): self;
+
+    abstract protected function setDefaultOptions(): self;
 
     public function url(): ?string
     {
@@ -41,6 +46,65 @@ abstract class Notifying
     public function response(): ?ResponseInterface
     {
         return $this->response;
+    }
+
+    protected static function prepare(Notifying $instance, NotifyApplication $application)
+    {
+        $self = $instance;
+        $self->application = $application;
+
+        $self->defaultOptions = match ($self->application) {
+            NotifyApplication::discord => StewardConfig::notifyDiscord(),
+            NotifyApplication::slack => StewardConfig::notifySlack(),
+        };
+
+        $self->setDefaultOptions();
+        dump($self);
+
+        $baseUrl = match ($self->application) {
+            NotifyApplication::discord => 'https://discord.com/api/webhooks/',
+            NotifyApplication::slack => 'https://hooks.slack.com/services/',
+        };
+
+        $config = match ($self->application) {
+            NotifyApplication::discord => [
+                'body' => 'content',
+                'code' => 204,
+            ],
+            NotifyApplication::slack => [
+                'body' => 'text',
+                'code' => 200,
+            ],
+        };
+
+        $params = implode('/', $self->options);
+        $self->url = "{$baseUrl}{$params}";
+
+        $self->guzzle($config);
+
+        return $self;
+    }
+
+    protected function guzzle(array $config): self
+    {
+        $client = new \GuzzleHttp\Client();
+        $this->response = $client->request('POST', $this->url, [
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+            'json' => [
+                $config['body'] => $this->message,
+            ],
+            'http_errors' => false,
+        ]);
+
+        $code = $this->response->getStatusCode();
+
+        if ($code === $config['code']) {
+            $this->success = true;
+        }
+
+        return $this;
     }
 
     // protected function parseLocalConfig(): array

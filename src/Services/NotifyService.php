@@ -4,6 +4,8 @@ namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Services\Notify\DiscordNotify;
 use Kiwilan\Steward\Services\Notify\Notifying;
+use Kiwilan\Steward\Services\Notify\SlackNotify;
+use Kiwilan\Steward\StewardConfig;
 
 class NotifyService
 {
@@ -18,19 +20,32 @@ class NotifyService
 
     public static function make(): self
     {
-        return new self();
+        $self = new self();
+        $self->application = NotifyApplication::tryFrom(StewardConfig::notifyDefault());
+
+        return $self;
+    }
+
+    public function to(array $options): self
+    {
+        $this->options = $options;
+
+        return $this;
     }
 
     /**
      * @param  NotifyApplication|string  $application default `NotifyApplication::discord`, can be string of application like `discord`
      */
-    public function to(array $options = [], NotifyApplication|string $application = NotifyApplication::discord): self
+    public function application(NotifyApplication|string|null $application = null): self
     {
-        $this->options = $options;
+        if (! $application) {
+            $application = StewardConfig::notifyDefault();
+        }
 
         if (is_string($application)) {
             $application = match ($application) {
                 'discord' => NotifyApplication::discord,
+                'slack' => NotifyApplication::slack,
                 default => throw new \Exception("Unknown app {$application}"),
             };
         }
@@ -51,6 +66,7 @@ class NotifyService
     {
         $this->notify = match ($this->application) {
             NotifyApplication::discord => DiscordNotify::send($this->options, $this->message),
+            NotifyApplication::slack => SlackNotify::send($this->options, $this->message),
         };
 
         $this->success = $this->notify->isSuccess();
@@ -67,4 +83,6 @@ class NotifyService
 enum NotifyApplication: string
 {
     case discord = 'discord';
+
+    case slack = 'slack';
 }
