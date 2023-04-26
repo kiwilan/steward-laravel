@@ -1,13 +1,27 @@
 <?php
 
-use Dotenv\Dotenv;
 use Kiwilan\Steward\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);
 
 function dotenv(): array
 {
-    $dotenv = Dotenv::createUnsafeImmutable(__DIR__.'/../');
+    $path = __DIR__.'/../';
+    $lines = file($path.'.env');
+    $dotenv = [];
 
-    return $dotenv->load();
+    foreach ($lines as $line) {
+        if (! empty($line)) {
+            $data = explode('=', $line);
+            $key = $data[0];
+            $value = $data[1];
+
+            $key = trim($key);
+            $value = trim($value);
+
+            $dotenv[$key] = $value;
+        }
+    }
+
+    return $dotenv;
 }

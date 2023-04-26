@@ -8,43 +8,52 @@ class DiscordNotify extends Notifying
 {
     const BASE_URL = 'https://discord.com/api/webhooks/';
 
-    public static function make(array $options, string $message): bool
+    public static function send(array $options, string $message): self
     {
+        $self = new self(
+            options: $options,
+            message: $message,
+        );
+
         if (empty($options)) {
-            $options = StewardConfig::notifyDiscordServers();
+            $options = StewardConfig::notifyDiscord();
             $data = explode(':', $options);
 
-            $options = [
+            $self->options = [
                 $data[0] ?? null,
                 $data[1] ?? null,
             ];
         }
 
-        $id = $options[0] ?? null;
-        $token = $options[1] ?? null;
+        $id = $self->options[0] ?? null;
+        $token = $self->options[1] ?? null;
 
         if (! $id || ! $token) {
             throw new \Exception("Missing ID or token for server {$id}:{$token}");
         }
 
-        $success = false;
         $baseURL = self::BASE_URL;
 
-        $url = "{$baseURL}{$id}/{$token}";
+        $self->url = "{$baseURL}{$id}/{$token}";
 
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', $url, [
-            'json' => [
-                'content' => $message,
+        $self->response = $client->request('POST', $self->url, [
+            'headers' => [
+                'Accept' => 'application/json',
             ],
+            'json' => [
+                'content' => $self->message,
+            ],
+            'http_errors' => false,
         ]);
 
-        $code = $response->getStatusCode();
+        $code = $self->response->getStatusCode();
+        $body = $self->response->getBody()->getContents();
 
         if ($code === 204) {
-            $success = true;
+            $self->success = true;
         }
 
-        return $success;
+        return $self;
     }
 }

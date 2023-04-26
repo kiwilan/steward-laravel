@@ -3,9 +3,46 @@
 namespace Kiwilan\Steward\Services\Notify;
 
 use Kiwilan\Steward\StewardConfig;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class Notifying
 {
+    protected function __construct(
+        protected ?string $url = null,
+        protected ?string $message = null,
+        protected array $options = [],
+        protected bool $success = false,
+        protected ?ResponseInterface $response = null,
+    ) {
+    }
+
+    abstract public static function send(array $options, string $message): self;
+
+    public function url(): ?string
+    {
+        return $this->url;
+    }
+
+    public function message(): ?string
+    {
+        return $this->message;
+    }
+
+    public function options(): array
+    {
+        return $this->options;
+    }
+
+    public function isSuccess(): bool
+    {
+        return $this->success;
+    }
+
+    public function response(): ?ResponseInterface
+    {
+        return $this->response;
+    }
+
     // protected function parseLocalConfig(): array
     // {
     //     $servers = [];

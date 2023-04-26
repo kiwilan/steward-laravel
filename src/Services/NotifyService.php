@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Services\Notify\DiscordNotify;
+use Kiwilan\Steward\Services\Notify\Notifying;
 
 class NotifyService
 {
@@ -11,6 +12,7 @@ class NotifyService
         protected NotifyApplication $application = NotifyApplication::discord,
         protected array $options = [],
         protected bool $success = false,
+        protected ?Notifying $notify = null,
     ) {
     }
 
@@ -19,10 +21,21 @@ class NotifyService
         return new self();
     }
 
-    public function to(NotifyApplication $application = NotifyApplication::discord, array $options = []): self
+    /**
+     * @param  NotifyApplication|string  $application default `NotifyApplication::discord`, can be string of application like `discord`
+     */
+    public function to(array $options = [], NotifyApplication|string $application = NotifyApplication::discord): self
     {
-        $this->application = $application;
         $this->options = $options;
+
+        if (is_string($application)) {
+            $application = match ($application) {
+                'discord' => NotifyApplication::discord,
+                default => throw new \Exception("Unknown app {$application}"),
+            };
+        }
+
+        $this->application = $application;
 
         return $this;
     }
@@ -36,12 +49,11 @@ class NotifyService
 
     public function send()
     {
-        $notified = match ($this->application) {
-            NotifyApplication::discord => $this->success = DiscordNotify::make($this->options, $this->message),
-            // default => throw new \Exception("Unknown app {$this->application}"),
+        $this->notify = match ($this->application) {
+            NotifyApplication::discord => DiscordNotify::send($this->options, $this->message),
         };
 
-        $this->success = $notified;
+        $this->success = $this->notify->isSuccess();
 
         return $this;
     }

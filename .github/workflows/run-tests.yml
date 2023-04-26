@@ -52,8 +52,7 @@ jobs:
         run: |
           touch .env
           echo API_ENDPOINT="https://xxx.execute-api.us-west-2.amazonaws.com" >> .env
-          echo TESTING_NOTIFY_SERVERS=${{ secrets.NOTIFY_SERVERS }} >> .env
-          echo STEWARD_NOTIFY_DISCORD_SERVER=${{ secrets.STEWARD_NOTIFY_DISCORD_SERVER }} >> .env
+          echo STEWARD_NOTIFY_DISCORD=${{ secrets.STEWARD_NOTIFY_DISCORD }} >> .env
           cat .env
 
       - name: Execute tests

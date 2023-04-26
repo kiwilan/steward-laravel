@@ -181,9 +181,6 @@ return [
     ],
 
     'notify' => [
-        'discord' => [
-            // STEWARD_NOTIFY_DISCORD_SERVER=ID:TOKEN
-            'server' => env('STEWARD_NOTIFY_DISCORD_SERVER'),
-        ],
+        'discord' => env('STEWARD_NOTIFY_DISCORD'), // STEWARD_NOTIFY_DISCORD=ID:TOKEN
     ],
 ];

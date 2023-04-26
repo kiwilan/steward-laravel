@@ -13,9 +13,9 @@ class NotifyCommand extends Commandable
      * @var string
      */
     protected $signature = 'notify
-                            {message : The message to send.}
-                            {--a|app=discord : The app to send the message.}
-                            {--sendto : Bypass config and send to any server with this pattern `APP:ID:TOKEN` where APP is `discord`.}';
+                            {message : Message to send.}
+                            {--a|application=discord : Application to send the message.}
+                            {--options : Options with message.}';
 
     /**
      * The console command description.
@@ -26,11 +26,8 @@ class NotifyCommand extends Commandable
 
     public function __construct(
         protected ?string $message = null,
-        protected ?string $server = 'default',
-        protected ?string $app = 'discord',
-        protected ?string $sendto = null,
-        protected ?string $inlineServers = null,
-        protected ?array $servers = null,
+        protected ?string $application = 'discord',
+        protected array $options = [],
     ) {
         parent::__construct();
     }
@@ -43,10 +40,10 @@ class NotifyCommand extends Commandable
         $this->title();
 
         $this->message = strval($this->argument('message')) ?: 'Hello world!';
-        // $this->server = strval($this->option('server')) ?: 'default';
-        // $this->app = strval($this->option('app')) ?: 'discord';
-        // $this->sendto = strval($this->option('sendto')) ?: null;
-        // $this->inlineServers = strval($this->option('inline-servers')) ?: null;
+        $this->application = strval($this->option('application')) ?: 'discord';
+        $options = $this->option('options') ?: null;
+        $options = explode(':', $options);
+        $this->options = $options;
 
         $notify = NotifyService::make()
             ->message($this->message)
