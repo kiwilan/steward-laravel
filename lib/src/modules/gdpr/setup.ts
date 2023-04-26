@@ -13,6 +13,7 @@ function setup() {
 
     onChange() {
       matomo()
+      location.reload()
     },
 
     cookie: {
