@@ -31,7 +31,6 @@ class FactoryBuilder
                 'type' => $entry['type'],
             ];
         }
-        dump($faker);
 
         return $faker;
     }

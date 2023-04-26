@@ -19,9 +19,8 @@ class SocialFlickr extends SocialModule implements SocialInterface
     public function regex()
     {
         $regex = '/(?:https?:\/\/)?(?:www\.)?flickr\.com\/photos\/(?:user\/)?(\d+)/';
-        // dump(preg_match($regex, $this->url, $matches));
+
         if (preg_match($regex, $this->url, $matches)) {
-            dump($matches);
             // $this->media_id = $matches[1] ?? null;
             // $this->embed_url = "";
         }

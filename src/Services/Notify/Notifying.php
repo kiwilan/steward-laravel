@@ -59,7 +59,6 @@ abstract class Notifying
         };
 
         $self->setDefaultOptions();
-        dump($self);
 
         $baseUrl = match ($self->application) {
             NotifyApplication::discord => 'https://discord.com/api/webhooks/',

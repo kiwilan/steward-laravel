@@ -45,7 +45,6 @@ class FactoryText
         // $i = 0;
 
         // while ($exists) {
-        //     dump('searching for a new category...');
         //     $i++;
         //     $category = $this->category($class, $field);
         //     $exists = $class::where($field, $category)->first();

@@ -53,12 +53,10 @@ class LogReadCommand extends Command
         // Log::channel('epubparser')->debug($message);
 
         // $logFile = file(storage_path("/logs/epubparser.log"));
-        // // dump($logFile);
         // $logCollection = [];
         // // Loop through an array, show HTML source as HTML source; and line numbers too.
         // foreach ($logFile as $line_num => $line) {
         //     $log = explode(' ', $line);
-        //     // dump($log);
         //     $date = str_replace('[', '', $log[0]);
         //     $time = str_replace(']', '', $log[1]);
         //     $type = str_replace(':', '', $log[2]);
@@ -75,7 +73,6 @@ class LogReadCommand extends Command
         // $this->warn('warn');
         // $this->error('error');
         // $this->info('info');
-        // dump($logCollection);
 
         return Command::SUCCESS;
     }
