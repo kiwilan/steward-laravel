@@ -13,7 +13,9 @@ function setup() {
 
     onChange() {
       matomo()
-      location.reload()
+      setTimeout(() => {
+        location.reload()
+      }, 500);
     },
 
     cookie: {
