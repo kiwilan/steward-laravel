@@ -67,7 +67,7 @@ class MediaCleanCommand extends Commandable
                 }
             }
 
-            $this->table(['Files to delete'], $filesToDelete);
+            $this->table(['Files to delete'], array_map(fn ($file) => [$file], $filesToDelete));
             $this->deleteMedias($filesToDelete);
         }
 
