@@ -112,9 +112,21 @@ class ClassItem
         return $this->model;
     }
 
-    public function useTrait(string $trait): bool
+    public function useTrait(string $current): bool
     {
-        return in_array($trait, $this->traits);
+        $inArray = in_array($current, $this->traits);
+
+        if (! $inArray) {
+            $traits = [];
+
+            foreach ($this->traits as $trait) {
+                $traits[] = explode('\\', $trait)[count(explode('\\', $trait)) - 1];
+            }
+
+            $inArray = in_array($current, $traits);
+        }
+
+        return $inArray;
     }
 
     public function methodExists(string $method): bool

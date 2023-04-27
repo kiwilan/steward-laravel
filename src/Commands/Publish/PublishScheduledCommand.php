@@ -42,6 +42,10 @@ class PublishScheduledCommand extends Commandable
                 continue;
             }
 
+            if (! $item->useTrait('Publishable')) {
+                continue;
+            }
+
             $date_column = Schema::hasColumn($item->model()->getTable(), 'published_at') ? 'published_at' : 'created_at';
 
             $models_udpated = $item->model()::query()
@@ -54,8 +58,11 @@ class PublishScheduledCommand extends Commandable
                 $model_updated->update(['status' => PublishStatusEnum::published]);
             });
 
-            $this->info("Publish {$models_udpated->count()} {$item->name()}");
+            $this->info("Publish {$models_udpated->count()} {$item->name()}.");
         }
+
+        $this->newLine();
+        $this->info('Done.');
 
         return Command::SUCCESS;
     }
