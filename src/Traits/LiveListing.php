@@ -13,7 +13,7 @@ trait LiveListing
 
     public string $q = '';
 
-    public string $sort = 'created_at';
+    public ?string $sort = null;
 
     public array $sortable = [];
 

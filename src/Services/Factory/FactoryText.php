@@ -108,8 +108,14 @@ class FactoryText
     {
         $content = '';
 
-        for ($k = 0; $k < $this->factory->faker()->numberBetween(2, 5); $k++) {
-            $content .= $this->sentence().' ';
+        for ($k = 0; $k < $this->factory->faker()->numberBetween(10, 20); $k++) {
+            $sentence = $this->sentence();
+
+            if (substr($sentence, -1) === '.') {
+                $content .= $sentence;
+            } else {
+                $content .= $sentence.'.';
+            }
         }
 
         return $content;
