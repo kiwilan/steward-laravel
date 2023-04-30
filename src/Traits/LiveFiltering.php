@@ -7,9 +7,12 @@ use Kiwilan\Steward\Services\Query\SortModule;
 use Kiwilan\Steward\Services\QueryService;
 use ReflectionClass;
 
-trait Filterable
+/**
+ * For model that use Livewire for listing with LiveListing.
+ */
+trait LiveFiltering
 {
-    public function scopeLivewireFilter(Builder $query, array $filters, ?array $configuration = []): Builder
+    public function scopeLiveFilter(Builder $query, array $filters, ?array $configuration = []): Builder
     {
         if (empty($configuration)) {
             $configuration = $this->filterable();
@@ -21,7 +24,7 @@ trait Filterable
     /**
      * Sort with Livewire.
      */
-    public function scopeLivewireSort(Builder $query, string $field): Builder
+    public function scopeLiveSort(Builder $query, string $field): Builder
     {
         $isDesc = false;
 
