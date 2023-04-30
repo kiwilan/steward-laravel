@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace Kiwilan\Steward\Traits;
 
 use Illuminate\Support\Facades\Session;
 
