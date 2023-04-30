@@ -207,4 +207,19 @@ class StewardConfig
     {
         return config('steward.notify.slack') ?? null;
     }
+
+    public static function livewirePaginationTheme(): string
+    {
+        return config('steward.livewire.pagination.theme') ?? 'tailwind';
+    }
+
+    public static function livewirePaginationDefault(): int
+    {
+        return config('steward.livewire.pagination.default') ?? 20;
+    }
+
+    public static function livewirePaginationOptions(): array
+    {
+        return config('steward.livewire.pagination.options') ?? [10, 20, 50, 100];
+    }
 }

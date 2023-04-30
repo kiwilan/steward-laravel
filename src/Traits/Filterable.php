@@ -21,8 +21,15 @@ trait Filterable
     /**
      * Sort with Livewire.
      */
-    public function scopeLivewireSort(Builder $query, string $field, bool $desc = false): Builder
+    public function scopeLivewireSort(Builder $query, string $field): Builder
     {
+        $isDesc = false;
+
+        if (substr($field, 0, 1) === '-') {
+            $field = substr($field, 1);
+            $isDesc = true;
+        }
+
         $class = new ReflectionClass($this);
         $instance = $class->getName();
 
@@ -37,9 +44,11 @@ trait Filterable
         }
         $current = array_shift($sortable);
 
-        $direction = $desc ? 'desc' : 'asc';
+        $direction = $isDesc ? 'desc' : 'asc';
 
         return $current->orderBy($query, $direction);
+
+        return $query;
     }
 
     /**

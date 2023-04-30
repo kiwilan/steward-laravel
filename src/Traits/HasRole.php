@@ -84,4 +84,9 @@ trait HasRole
     {
         return $query->where('role', UserRoleEnum::user);
     }
+
+    public function scopeWhereIsNotSuperAdmin(Builder $query)
+    {
+        return $query->where('role', '!=', UserRoleEnum::super_admin);
+    }
 }

@@ -185,4 +185,17 @@ return [
         'discord' => env('STEWARD_NOTIFY_DISCORD'), // STEWARD_NOTIFY_DISCORD=ID:TOKEN
         'slack' => env('STEWARD_NOTIFY_SLACK'), // STEWARD_NOTIFY_SLACK=ID:TOKEN:CHANNEL
     ],
+
+    'livewire' => [
+        'pagination' => [
+            'theme' => 'tailwind',
+            'default' => 20,
+            'options' => [
+                10,
+                20,
+                50,
+                100,
+            ],
+        ],
+    ],
 ];
