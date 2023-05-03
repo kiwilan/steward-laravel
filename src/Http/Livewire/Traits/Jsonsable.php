@@ -6,7 +6,7 @@ use Kiwilan\Steward\Services\Datayable\DatayableItem;
 
 trait Jsonsable
 {
-    use Validable;
+    use LiveValidator;
 
     public array $jsonsableJson = [];
 
