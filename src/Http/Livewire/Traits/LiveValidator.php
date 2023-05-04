@@ -7,7 +7,7 @@ use Illuminate\Validation\Validator;
 
 trait LiveValidator
 {
-    public function validator(?Closure $callback = null): array
+    public function liveValidate(?Closure $callback = null): array
     {
         return $this->withValidator(function (Validator $validator) use ($callback) {
             $validator->after(function (Validator $validator) use ($callback) {
