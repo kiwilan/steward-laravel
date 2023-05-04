@@ -5,13 +5,27 @@ namespace Kiwilan\Steward\Http\Livewire\Traits;
 use Illuminate\Support\Facades\File;
 use Livewire\TemporaryUploadedFile;
 
+/**
+ * Handle uploads with livewire.
+ *
+ * ```
+ * $images = [
+ *   'profile_background' => $this->profile_background,
+ *   'gallery' => $this->gallery,
+ * ];
+
+ * $this->beforeLiveUpload($images);
+ * $this->liveValidate();
+ * $this->liveUpload($images);
+ * ```
+ */
 trait LiveUpload
 {
-    use Notifiable;
-
     public bool $uploading = false;
 
     public bool $saved = false;
+
+    public ?array $toValidate = [];
 
     public ?array $multipleCurrent = [];
 
@@ -19,6 +33,35 @@ trait LiveUpload
     {
         $this->listeners[] = 'deleteAllUpload';
         $this->listeners[] = 'cancelUpload';
+    }
+
+    /**
+     * Handle upload before validation.
+     */
+    protected function beforeLiveUpload(array $fields)
+    {
+        foreach ($fields as $field => $value) {
+            $this->toValidate[$field] = null;
+
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    $type = gettype($v);
+
+                    if ($type === 'string') {
+                        $this->toValidate[$field][$k] = $v;
+                        $this->{$field}[$k] = null;
+                    }
+                }
+                $this->{$field} = array_filter($this->{$field});
+            } else {
+                $type = gettype($value);
+
+                if ($type === 'string') {
+                    $this->toValidate[$field] = $value;
+                    $this->{$field} = null;
+                }
+            }
+        }
     }
 
     /**

@@ -6,7 +6,7 @@ use Kiwilan\Steward\Services\Datayable\DatayableService;
 
 trait Datayable
 {
-    use Authenticable;
+    use LiveAuth;
 
     public string $datayable = 'social';
 
@@ -29,7 +29,7 @@ trait Datayable
     public function getRelation(): array
     {
         $fields = explode('.', $this->field);
-        $auth = $this->getAuth();
+        $auth = $this->auth();
 
         foreach ($fields as $field) {
             if (isset($auth->{$field})) {
@@ -45,7 +45,7 @@ trait Datayable
         $fields = explode('.', $this->field);
         array_pop($fields);
 
-        $model = $this->getAuth();
+        $model = $this->auth();
 
         foreach ($fields as $field) {
             $model = $model->{$field};

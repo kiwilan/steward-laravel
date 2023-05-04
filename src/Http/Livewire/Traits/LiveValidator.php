@@ -9,11 +9,11 @@ trait LiveValidator
 {
     public function liveValidate(?Closure $callback = null): array
     {
-        return $this->withValidator(function (Validator $validator) use ($callback) {
-            $validator->after(function (Validator $validator) use ($callback) {
-                $this->validating($validator, $callback);
-            });
-        })->validate();
+        return $this->withValidator(
+            fn (Validator $validator) => $validator->after(
+                fn (Validator $validator) => $this->validating($validator, $callback)
+            )
+        )->validate();
     }
 
     private function validating(Validator $validator, ?Closure $callback): void
