@@ -16,7 +16,7 @@ use Generator;
  */
 class DirectoryParserService
 {
-    protected array $files = [];
+    protected mixed $files = [];
 
     protected function __construct(
         protected string $directory,
