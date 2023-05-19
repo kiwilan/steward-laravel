@@ -24,8 +24,6 @@
         "illuminate/database": "^9.0 || ^10.0",
         "illuminate/support": "^9.0 || ^10.0",
         "livewire/livewire": "^2.10",
-        "maatwebsite/excel": "^3.1",
-        "psr/simple-cache": "^2.0 || ^3.0",
         "spatie/image": "^2.2",
         "spatie/laravel-package-tools": "^1.14.0",
         "spatie/laravel-query-builder": "^5.1",
@@ -80,12 +78,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Kiwilan\\Steward\\StewardServiceProvider",
-                "Maatwebsite\\Excel\\ExcelServiceProvider"
+                "Kiwilan\\Steward\\StewardServiceProvider"
             ],
             "aliases": {
-                "Steward": "Kiwilan\\Steward\\Facades\\Steward",
-                "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
+                "Steward": "Kiwilan\\Steward\\Facades\\Steward"
             }
         }
     },

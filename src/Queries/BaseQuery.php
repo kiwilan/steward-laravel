@@ -11,9 +11,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Class\MetaClass;
 use Kiwilan\Steward\Resources\DefaultResource;
-use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Exception;
-use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
 use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -91,10 +88,7 @@ abstract class BaseQuery
     }
 
     /**
-     * @return BinaryFileResponse|false
-     *
-     * @throws Exception
-     * @throws WriterException
+     * @return BinaryFileResponse|void
      */
     public function export()
     {
@@ -105,11 +99,13 @@ abstract class BaseQuery
         $fileName = $name;
         $date = date('Ymd-His');
 
-        if (class_exists(Excel::class)) {
-            return Excel::download(new $this->export($this->query), "export-{$fileName}-{$date}.xlsx");
+        if (class_exists(\Composer\InstalledVersions::isInstalled('maatwebsite/excel'))) {
+            return \Maatwebsite\Excel\Facades\Excel::download(new $this->export($this->query), "export-{$fileName}-{$date}.xlsx"); // @phpstan-ignore-line
+        } else {
+            // todo: add export to csv
+            // https://www.the-art-of-web.com/php/dataexport/
+            throw new \Exception('Package maatwebsite/excel not installed, see https://github.com/SpartnerNL/Laravel-Excel');
         }
-
-        return false;
     }
 
     /**

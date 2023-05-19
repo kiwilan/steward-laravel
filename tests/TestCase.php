@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Kiwilan\Steward\StewardServiceProvider;
 use Livewire\LivewireServiceProvider;
-use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 /**
@@ -30,7 +29,6 @@ class TestCase extends Orchestra
         return [
             StewardServiceProvider::class,
             LivewireServiceProvider::class,
-            ExcelServiceProvider::class,
         ];
     }
 
