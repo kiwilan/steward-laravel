@@ -50,6 +50,7 @@ class OptimizeFeshCommand extends Commandable
         $this->info('Optimize app...');
         $this->call('optimize:clear');
         $this->call('optimize');
+        $this->call('event:cache');
 
         $this->info('Done.');
 
