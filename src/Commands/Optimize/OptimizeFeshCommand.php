@@ -41,6 +41,7 @@ class OptimizeFeshCommand extends Commandable
         $this->call('config:cache');
         $this->call('config:clear');
         $this->call('cache:clear');
+        $this->call('view:clear');
 
         // sudo chown -R $USER:www-data .
         // sudo chgrp -R www-data storage bootstrap/cache
