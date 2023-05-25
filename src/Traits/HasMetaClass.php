@@ -26,7 +26,7 @@ trait HasMetaClass
     {
         $namespaced = $this->getInstance()->getName();
 
-        return "\\{{$namespaced}}";
+        return "\\{$namespaced}";
     }
 
     public function getMetaClassNameAttribute(): string
@@ -68,7 +68,7 @@ trait HasMetaClass
     {
         $meta_class = $this->getInstance()->getName();
 
-        return "\\{{$meta_class}}::class";
+        return "\\{$meta_class}::class";
     }
 
     private function getInstance()
