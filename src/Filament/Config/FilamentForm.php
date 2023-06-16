@@ -239,8 +239,13 @@ class FilamentForm
             'image/png',
             'image/svg+xml',
         ],
-        string $hint = 'Accepte JPG, WEBP, PNG, SVG'
+        string $hint = 'Accepte JPG, WEBP, PNG, SVG',
+        Closure $disabled = null,
     ) {
+        if (! $disabled) {
+            $disabled = false;
+        }
+
         return Components\FileUpload::make($field)
             ->label($label)
             ->hint($hint)
@@ -248,6 +253,7 @@ class FilamentForm
             ->image()
             ->maxSize(1024)
             ->directory($type->name)
+            ->disabled($disabled)
         ;
     }
 
