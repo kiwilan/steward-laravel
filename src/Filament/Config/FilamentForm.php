@@ -33,17 +33,14 @@ class FilamentForm
     ) {
         if (null === $helper) {
             $transGenerate = __('steward::filament.form_helper.generate');
-
-            $transMetaLink = ! $metaLink ? __('steward::filament.form_helper.metalink') : '';
-            $transMetaField = ! $metaTitle ? __('steward::filament.form_helper.meta_title') : '';
-            $twin = [$transMetaLink, $transMetaField];
-            $twin = array_filter($twin);
-            $twin = implode(', ', $twin);
+            $fieldName = __('steward::filament.form_helper.metalink').' and '.__('steward::filament.form_helper.meta_title');
 
             $onlyOn = __('steward::filament.form_helper.only_on');
             $context = $skipContext === 'edit' ? 'create' : 'edit';
             $context = __("steward::filament.form_helper.{$context}");
-            $helper = "{$transGenerate} {$twin} {$onlyOn} {$context}.";
+            $helper = "{$transGenerate} {$fieldName} {$onlyOn} {$context}.";
+
+            ray($helper);
         }
 
         return Forms\Components\TextInput::make($field)
@@ -166,7 +163,9 @@ class FilamentForm
                 ->content(fn ($record): ?string => $record?->updated_at?->diffForHumans()),
         ];
 
-        return $card ? FilamentLayoutCard::make($timestamps, 'Timestamps') : Forms\Components\Group::make($timestamps);
+        return $card
+            ? FilamentLayoutCard::make($timestamps, 'Timestamps')
+            : Forms\Components\Group::make($timestamps);
     }
 
     public static function seo(bool $card = false)
@@ -175,19 +174,21 @@ class FilamentForm
             Forms\Components\Placeholder::make('seo')
                 ->label('SEO'),
             Forms\Components\TextInput::make('slug')
-                ->label('Metalien')
+                ->label(__('steward::filament.form_helper.metalink'))
                 ->required()
                 ->unique(column: 'slug', ignoreRecord: true)
                 ->maxLength(256),
             Forms\Components\TextInput::make('meta_title')
-                ->label('Titre')
+                ->label(__('steward::filament.form_helper.meta_title'))
                 ->maxLength(256),
             Forms\Components\Textarea::make('meta_description')
-                ->label('Description')
+                ->label(__('steward::filament.form_helper.meta_description'))
                 ->maxLength(256),
         ];
 
-        return $card ? FilamentLayoutCard::make($seo, 'SEO') : Forms\Components\Group::make($seo);
+        return $card
+            ? FilamentLayoutCard::make($seo, 'SEO')
+            : Forms\Components\Group::make($seo);
     }
 
     public static function dateFilter(string $field = 'created_at')

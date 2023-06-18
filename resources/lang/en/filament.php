@@ -3,7 +3,7 @@
 return [
     'form_helper' => [
         'generate' => 'Generate',
-        'metalink' => 'metalink',
+        'metalink' => 'Metalink',
         'meta_title' => 'SEO title',
         'meta_description' => 'SEO description',
         'only_on' => 'only on',

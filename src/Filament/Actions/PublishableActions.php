@@ -15,13 +15,13 @@ class PublishableActions
      * @param  string  $model The model to publish, like `Post::class`
      * @return array<Actions\Action>
      */
-    public static function make(string $label, string $model)
+    public static function make(string $label, string $model, bool $withIcon = false)
     {
         return [
             Actions\Action::make('publish')
-                ->icon('heroicon-o-paper-airplane')
+                ->icon($withIcon ? 'heroicon-o-paper-airplane' : null)
                 ->label('Publish all')
-                ->color('success')
+                ->color('primary')
                 ->requiresConfirmation()
                 ->modalHeading("Publish all {$label}")
                 ->modalSubheading("Are you sure you want to publish all draft and scheduled {$label}? The published date will set to now.")
@@ -37,9 +37,9 @@ class PublishableActions
                     ;
                 }),
             Actions\Action::make('unpublish')
-                ->icon('heroicon-o-archive')
+                ->icon($withIcon ? 'heroicon-o-archive' : null)
                 ->label('Unpublish all')
-                ->color('danger')
+                ->color('warning')
                 ->requiresConfirmation()
                 ->modalHeading("Unpublish all {$label}")
                 ->modalSubheading("Are you sure you want to unpublish all {$label}?")

@@ -14,10 +14,9 @@ class BladeApp extends Component
         public bool $seo = false,
         public array|false|null $vite = ['resources/js/app.ts'],
         public bool $livewire = false,
-        public array $inertia = [],
-        public bool $inertiaEnabled = false,
+        public bool $inertia = false,
         public array $page = [],
-        public bool $ziggy = false,
+        public bool $routes = false,
         public string $tile = '#da532c',
         public string $theme = '#ffffff',
         public bool $darkMode = false,
@@ -31,11 +30,6 @@ class BladeApp extends Component
      */
     public function render()
     {
-        if (! empty($this->inertia)) {
-            $this->inertiaEnabled = true;
-            $this->page = $this->inertia;
-        }
-
         return view('steward::components.app');
     }
 }

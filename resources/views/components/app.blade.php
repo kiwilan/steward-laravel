@@ -1,5 +1,3 @@
-@props(['title'])
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -70,6 +68,34 @@
     content="{{ $theme }}"
   >
 
+  @if ($darkMode)
+    <link
+      type="image/x-icon"
+      href="{{ asset('/favicon.svg') }}"
+      rel="shortcut icon"
+      media="(prefers-color-scheme: light)"
+    >
+    <link
+      type="image/x-icon"
+      href="{{ asset('/favicon-dark.svg') }}"
+      rel="shortcut icon"
+      media="(prefers-color-scheme: dark)"
+    >
+  @else
+    <link
+      type="image/png"
+      href="/favicon-32x32.png"
+      rel="icon"
+      sizes="32x32"
+    >
+    <link
+      type="image/png"
+      href="/favicon-16x16.png"
+      rel="icon"
+      sizes="16x16"
+    >
+  @endif
+
   @stack('head')
 
   @if ($title)
@@ -77,36 +103,38 @@
   @elseif ($seo)
     {!! SEO::generate() !!}
   @else
-    @if ($inertiaEnabled)
+    @if ($inertia)
       <title inertia>{{ config('app.name', 'Laravel') }}</title>
     @else
       <title>{{ config('app.name', 'Laravel') }}</title>
     @endif
   @endisset
 
-  @steward()
+  @steward
 
   @if ($darkMode)
     @darkMode
   @endif
 
-  <!-- Scripts -->
-  @if ($ziggy)
+  @if ($routes)
     @routes
   @endif
+
   @if ($vite)
     @vite($vite)
   @endif
-  @if ($inertiaEnabled)
+
+  @if ($inertia)
     @inertiaHead
   @endif
+
   @if ($livewire)
     @livewireStyles
   @endif
 </head>
 
 <body class="{{ config('app.env') === 'local' ? 'debug-screens' : '' }} font-sans antialiased">
-@if ($inertiaEnabled)
+@if ($inertia)
   @inertia
 @endif
 {{ $slot }}
