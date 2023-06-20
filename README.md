@@ -1,15 +1,14 @@
-# **Steward**
+# **Steward for Laravel**
+
+![Banner with steward picture in background and Steward for Laravel title](docs/banner.jpg)
 
 [![php][php-version-src]][php-version-href]
 [![laravel][laravel-src]][laravel-href]
-
 [![version][version-src]][version-href]
 [![downloads][downloads-src]][downloads-href]
 [![license][license-src]][license-href]
-
 [![tests][tests-src]][tests-href]
 [![codecov][codecov-src]][codecov-href]
-
 [![netlify][netlify-src]][netlify-href]
 
 PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application.
