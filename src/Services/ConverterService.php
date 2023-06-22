@@ -14,13 +14,15 @@ class ConverterService
         'APP_FRONT_URL' => 'app.front_url',
     ];
 
-    public static function saveAsJson(mixed $data, string $name): void
+    public static function saveAsJson(mixed $data, string $name, bool $print = true): void
     {
-        $console = Console::make();
-
         $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         Storage::disk('public')->put("debug/{$name}.json", $data);
-        $console->print("Saved to public/storage/debug/{$name}.json");
+
+        if ($print) {
+            $console = Console::make();
+            $console->print("Saved to public/storage/debug/{$name}.json");
+        }
     }
 
     public static function jsonToArray(string $path, bool $is_associative = true, bool $replace_dotenv = true): array
