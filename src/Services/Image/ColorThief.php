@@ -75,7 +75,13 @@ class ColorThief
 
     private function setType(): int
     {
-        return getimagesize($this->image)[2];
+        try {
+            $type = getimagesize($this->image)[2];
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        return $type ?? 0;
     }
 
     private function isTransparentType(): bool
