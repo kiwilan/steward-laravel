@@ -86,6 +86,10 @@ class ColorThief
 
     private function isTransparentType(): bool
     {
+        if (! $this->handle) {
+            return false;
+        }
+
         $isTransparent = (imagecolorat($this->handle, 0, 0) >> 24) & 0x7F === 127;
         $isTransparent = $isTransparent === 1;
 
@@ -131,6 +135,10 @@ class ColorThief
 
     private function dominantColor(): string
     {
+        if (! $this->handle) {
+            return $this->default;
+        }
+
         $newImg = imagecreatetruecolor(1, 1); // FIND DOMINANT COLOR
         imagecopyresampled($newImg, $this->handle, 0, 0, 0, 0, 1, 1, imagesx($this->handle), imagesy($this->handle));
         $hexaColor = dechex(imagecolorat($newImg, 0, 0));
