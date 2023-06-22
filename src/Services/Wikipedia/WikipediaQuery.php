@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Services\Wikipedia;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Http;
 use Kiwilan\Steward\Services\WikipediaService;
 
 /**

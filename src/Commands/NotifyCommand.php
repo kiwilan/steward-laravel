@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Commands;
 
-use Illuminate\Console\Command;
 use Kiwilan\Steward\Services\NotifyService;
 
 class NotifyCommand extends Commandable

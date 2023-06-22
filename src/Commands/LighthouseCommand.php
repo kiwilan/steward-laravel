@@ -2,8 +2,6 @@
 
 namespace Kiwilan\Steward\Commands;
 
-use Illuminate\Console\Command;
-
 class LighthouseCommand extends Commandable
 {
     /**
