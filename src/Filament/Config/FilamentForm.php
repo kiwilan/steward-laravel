@@ -39,8 +39,6 @@ class FilamentForm
             $context = $skipContext === 'edit' ? 'create' : 'edit';
             $context = __("steward::filament.form_helper.{$context}");
             $helper = "{$transGenerate} {$fieldName} {$onlyOn} {$context}.";
-
-            ray($helper);
         }
 
         return Forms\Components\TextInput::make($field)
