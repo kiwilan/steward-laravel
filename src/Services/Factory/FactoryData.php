@@ -77,6 +77,7 @@ class FactoryData
     {
         $data = (array) $entity;
         $data_entity = $data;
+        unset($data_entity['attachments']);
         unset($data_entity['foreign']);
 
         $trans_values = [];
@@ -107,14 +108,30 @@ class FactoryData
             $created_model->save();
         }
 
+        if (array_key_exists('attachments', $data)) {
+            $attachments = (array) $data['attachments'];
+
+            foreach ($attachments as $field => $path) {
+                $path = database_path("seeders/media/{$path}");
+
+                if (! file_exists($path)) {
+                    continue;
+                }
+
+                $created_model->{$field} = $this->setMedia($created_model, $path);
+                $created_model->save();
+            }
+        }
+
         if (array_key_exists('foreign', $data)) {
             $foreign = (array) $data['foreign'];
 
             foreach ($foreign as $relation => $value) {
                 $foreign_model = "\\App\\Models\\{$value->model}";
+                $foreign_field = $value->field ?? 'slug';
                 $foreign_key = $value->data;
 
-                $foreign_entity = $foreign_model::whereSlug($foreign_key)->first();
+                $foreign_entity = $foreign_model::where($foreign_field, $foreign_key)->first();
                 $created_model->{$relation}()->associate($foreign_entity);
             }
         }
@@ -122,7 +139,7 @@ class FactoryData
         $created_model->save();
     }
 
-    public function setMedia(mixed $model): ?string
+    public function setMedia(mixed $model, ?string $path = null): ?string
     {
         if (! $model instanceof Model) {
             return null;
@@ -136,7 +153,11 @@ class FactoryData
         // @phpstan-ignore-next-line
         $slug = $model->slug;
 
-        $media_path = database_path("seeders/media/{$table}/{$slug}.webp");
+        $media_path = $path;
+
+        if (! $path) {
+            $media_path = database_path("seeders/media/{$table}/{$slug}.webp");
+        }
 
         if (File::exists($media_path)) {
             $media = File::get($media_path);

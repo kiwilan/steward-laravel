@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Traits;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Kiwilan\Steward\Enums\PublishStatusEnum;
@@ -11,7 +12,7 @@ use UnitEnum;
  * Trait Publishable.
  *
  * @property UnitEnum $status       can be override by `publishable_status`
- * @property Datetime $published_at can be override by `publishable_published_at`
+ * @property DateTime $published_at can be override by `publishable_published_at`
  *
  * @method void    publish()                                                  publish the model
  * @method void    unpublish()                                                unpublish the model
