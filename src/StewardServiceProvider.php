@@ -5,6 +5,7 @@ namespace Kiwilan\Steward;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
+use Kiwilan\Steward\Commands\ClearFreshCommand;
 use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
 use Kiwilan\Steward\Commands\LighthouseCommand;
 use Kiwilan\Steward\Commands\Log\LogClearCommand;
@@ -61,6 +62,7 @@ class StewardServiceProvider extends PackageServiceProvider
                 SubmissionSendCommand::class,
                 TagCleanCommand::class,
                 OptimizeFeshCommand::class,
+                ClearFreshCommand::class,
             ])
         ;
     }
