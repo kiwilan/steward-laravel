@@ -39,6 +39,7 @@ class WordpressBuilder implements FilamentBuilderModule
         return [
             WordpressBuilder::heading(),
             WordpressBuilder::paragraph(),
+            WordpressBuilder::richParagraph(),
             WordpressBuilder::image(),
             WordpressBuilder::embedded(),
             WordpressBuilder::codeBlock(),
@@ -102,6 +103,20 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('paragraph')
             ->icon('heroicon-o-menu')
+            ->get()
+        ;
+    }
+
+    public static function richParagraph(): Block
+    {
+        return FilamentBuilder::block([
+            Forms\Components\RichEditor::make('rich_paragraph')
+                ->label('Rich Paragraph')
+                ->columnSpan(2)
+                ->required(),
+        ])
+            ->name('rich_paragraph')
+            ->icon('heroicon-o-menu-alt-1')
             ->get()
         ;
     }
