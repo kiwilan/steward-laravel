@@ -17,6 +17,8 @@ trait HasTemplate
             $this->casts[$this->getTemplateColumn()] = $enum;
         }
         $this->casts[$this->getContentColumn()] = 'array';
+
+        $this->appends[] = 'template_data';
     }
 
     public function getTemplateColumn(): string
@@ -49,7 +51,13 @@ trait HasTemplate
         foreach ($raw_data as $name => $raw_template) {
             $raw_template = $this->checkArrayNested($raw_template);
             $template = $this->transformData($raw_template);
-            $data[$name] = array_reverse($template);
+
+            if (is_array($template)) {
+                $data[$name] = array_reverse($template);
+            } else {
+                // only one value
+                $data[$name] = $raw_data;
+            }
         }
 
         return $data;

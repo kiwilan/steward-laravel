@@ -38,24 +38,22 @@ class WordpressBuilder implements FilamentBuilderModule
 
         return [
             WordpressBuilder::heading(),
-            WordpressBuilder::paragraph(),
             WordpressBuilder::richParagraph(),
+            WordpressBuilder::paragraph(),
             WordpressBuilder::image(),
             WordpressBuilder::embedded(),
             WordpressBuilder::codeBlock(),
-            // WordpressBuilder::gallery(),
-            // WordpressBuilder::button(),
-            // WordpressBuilder::spacer(),
-            // WordpressBuilder::divider(),
-            // WordpressBuilder::html(),
-            // WordpressBuilder::code(),
+            WordpressBuilder::gallery(),
+            WordpressBuilder::button(),
+            WordpressBuilder::spacer(),
+            WordpressBuilder::divider(),
+            WordpressBuilder::html(),
             // WordpressBuilder::embed(),
             // WordpressBuilder::shortcode(),
-            // WordpressBuilder::list(),
             // WordpressBuilder::table(),
             // WordpressBuilder::accordion(),
             // WordpressBuilder::tabs(),
-            // WordpressBuilder::alert(),
+            WordpressBuilder::alert(),
         ];
     }
 
@@ -67,11 +65,11 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
             Forms\Components\Select::make('level')
                 ->options([
-                    'h2' => 'Heading 2',
-                    'h3' => 'Heading 3',
-                    'h4' => 'Heading 4',
-                    'h5' => 'Heading 5',
-                    'h6' => 'Heading 6',
+                    '2' => 'Heading 2',
+                    '3' => 'Heading 3',
+                    '4' => 'Heading 4',
+                    '5' => 'Heading 5',
+                    '6' => 'Heading 6',
                 ])
                 ->default('h2')
                 ->required(),
@@ -113,7 +111,8 @@ class WordpressBuilder implements FilamentBuilderModule
             Forms\Components\RichEditor::make('rich_paragraph')
                 ->label('Rich Paragraph')
                 ->columnSpan(2)
-                ->required(),
+                ->required()
+                ->fileAttachmentsDirectory('attachments'),
         ])
             ->name('rich_paragraph')
             ->icon('heroicon-o-menu-alt-1')
@@ -174,13 +173,130 @@ class WordpressBuilder implements FilamentBuilderModule
     public static function codeBlock(): Block
     {
         return FilamentBuilder::block([
-            Forms\Components\MarkdownEditor::make('code-block')
+            Forms\Components\MarkdownEditor::make('code_block')
                 ->label('Editor')
+                ->toolbarButtons([
+                    'codeBlock',
+                ])
                 ->columnSpan(2)
                 ->required(),
         ])
-            ->name('code-block')
+            ->name('code_block')
             ->icon('heroicon-o-code')
+            ->get()
+        ;
+    }
+
+    public static function gallery(): Block
+    {
+        return FilamentBuilder::block([
+            Forms\Components\FileUpload::make('gallery')
+                ->label('Gallery')
+                ->multiple()
+                ->directory('attachments')
+                ->columnSpan(2)
+                ->required(),
+        ])
+            ->name('gallery')
+            ->icon('heroicon-o-camera')
+            ->get()
+        ;
+    }
+
+    public static function divider(): Block
+    {
+        return FilamentBuilder::block([
+            Forms\Components\Placeholder::make('divider')
+                ->label('A divider is a line that separates content in your post.')
+                ->columnSpan(2),
+        ])
+            ->name('divider')
+            ->icon('heroicon-o-minus')
+            ->get()
+        ;
+    }
+
+    public static function button(): Block
+    {
+        return FilamentBuilder::block([
+            Forms\Components\TextInput::make('button')
+                ->label('Button')
+                ->columnSpan(2)
+                ->required(),
+            Forms\Components\TextInput::make('url')
+                ->label('URL')
+                ->columnSpan(2)
+                ->required(),
+        ])
+            ->name('button')
+            ->icon('heroicon-o-external-link')
+            ->get()
+        ;
+    }
+
+    public static function spacer(): Block
+    {
+        return FilamentBuilder::block([
+            Forms\Components\Select::make('spacer')
+                ->label('Spacer')
+                ->options([
+                    'small' => 'Small',
+                    'medium' => 'Medium',
+                    'large' => 'Large',
+                ])
+                ->default('medium')
+                ->columnSpan(2)
+                ->required(),
+        ])
+            ->name('spacer')
+            ->icon('heroicon-o-minus')
+            ->get()
+        ;
+    }
+
+    public static function alert(): Block
+    {
+        return FilamentBuilder::block([
+            Forms\Components\Select::make('type')
+                ->label('Type')
+                ->options([
+                    'info' => 'Info',
+                    'success' => 'Success',
+                    'warning' => 'Warning',
+                    'danger' => 'Danger',
+                ])
+                ->default('info')
+                ->columnSpan(2)
+                ->required(),
+            Forms\Components\RichEditor::make('alert')
+                ->label('Alert')
+                ->toolbarButtons([
+                    'bold',
+                    'italic',
+                    'link',
+                    'redo',
+                    'strike',
+                    'undo',
+                ])
+                ->columnSpan(2)
+                ->required(),
+        ])
+            ->name('alert')
+            ->icon('heroicon-o-exclamation')
+            ->get()
+        ;
+    }
+
+    public static function html(): Block
+    {
+        return FilamentBuilder::block([
+            Forms\Components\Textarea::make('html')
+                ->label('HTML')
+                ->columnSpan(2)
+                ->required(),
+        ])
+            ->name('html')
+            ->icon('heroicon-o-document-text')
             ->get()
         ;
     }
