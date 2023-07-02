@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Services;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Kiwilan\Steward\Utils\Console;
 
 class ConverterService
@@ -14,10 +13,17 @@ class ConverterService
         'APP_FRONT_URL' => 'app.front_url',
     ];
 
-    public static function saveAsJson(mixed $data, string $name, bool $print = true): void
+    public static function saveAsJson(mixed $data, string $name, ?string $path = null, bool $print = true): void
     {
         $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        Storage::disk('public')->put("debug/{$name}.json", $data);
+        $defaultPath = storage_path("app/public/debug/{$name}.json");
+
+        if (! $path) {
+            $path = $defaultPath;
+        }
+
+        File::delete($path);
+        File::put($path, $data);
 
         if ($print) {
             $console = Console::make();

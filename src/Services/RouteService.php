@@ -2,147 +2,183 @@
 
 namespace Kiwilan\Steward\Services;
 
-use Illuminate\Routing\Route as RoutingRoute;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Route as FacadesRoute;
 
 class RouteService
 {
-    public static function getList(): array
-    {
-        $routes = Route::getRoutes()->getRoutes();
-
-        return self::filter($routes);
+    /**
+     * @param  Route[]  $routes
+     * @param  string[]  $skip
+     * @param  Collection<string, RouteItem>  $list
+     */
+    protected function __construct(
+        protected array $routes = [],
+        protected array $skip = [],
+        protected ?Collection $list = null,
+    ) {
     }
 
-    public static function getListFiltered(string $filter = null): array
+    public static function make(array $skip = []): self
     {
-        $routes = Route::getRoutes()->getRoutes();
+        $routes = FacadesRoute::getRoutes()->getRoutes();
 
-        $list = [];
+        $self = new self(
+            routes: $routes,
+            skip: $skip,
+        );
+        $self->list = $self->setList();
 
-        foreach ($routes as $route) {
+        return $self;
+    }
+
+    /**
+     * @return Collection<string, RouteItem>
+     */
+    public function get(): Collection
+    {
+        return $this->list;
+    }
+
+    public function byName(string $name): ?RouteItem
+    {
+        return $this->list->get($name);
+    }
+
+    public function byUri(string $uri): ?RouteItem
+    {
+        return $this->list->first(fn (RouteItem $item) => $item->uri() === $uri);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        $items = [];
+
+        foreach ($this->list as $name => $route) {
+            $items[$name] = $route->toArray();
+        }
+
+        return $items;
+    }
+
+    private function setList(): Collection
+    {
+        /** @var Collection<string, RouteItem> $list */
+        $list = collect([]);
+
+        foreach ($this->routes as $route) {
             $uri = $route->uri();
-            // foreach ($params_example as $key => $param) {
-            //     $uri = str_replace('{'.$key.'}', $param, $uri);
-            // }
-            $filtered = null !== $filter ? str_contains($uri, $filter) : true;
+            $name = $route->getName();
 
-            if ($filtered) {
-                $list[$route->getName()] = self::getRoute($route, $uri);
+            if (! $name) {
+                $name = $uri;
+            }
+
+            $list->put($name, $this->route($route, $uri));
+
+            foreach ($this->skip as $value) {
+                if (str_contains($name, $value)) {
+                    $list->forget($name);
+                }
             }
         }
-        ksort($list);
 
-        return $list;
+        return $list->sortKeys();
     }
 
-    private static function getRoute(RoutingRoute $route, string $uri)
+    private function route(Route $route, string $uri): RouteItem
+    {
+        return new RouteItem(
+            name: $route->getName(),
+            methods: $route->methods(),
+            uri: $route->uri(),
+            action: str_replace('App\\Http\\Controllers\\Api\\', '', $route->getActionName()),
+            middleware: $route->middleware(),
+            example: config('app.url')."/{$uri}",
+            parameters: $route->parameterNames(),
+        );
+    }
+}
+
+class RouteItem
+{
+    /**
+     * @param  string[]  $methods
+     * @param  string[]  $middleware
+     * @param  string[]  $parameters
+     */
+    public function __construct(
+        protected ?string $name = null,
+        protected ?array $methods = null,
+        protected ?string $uri = null,
+        protected ?string $action = null,
+        protected ?array $middleware = null,
+        protected ?string $example = null,
+        protected ?array $parameters = null,
+    ) {
+    }
+
+    public function name(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function methods(): ?array
+    {
+        return $this->methods;
+    }
+
+    public function uri(): ?string
+    {
+        return $this->uri;
+    }
+
+    public function action(): ?string
+    {
+        return $this->action;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function middleware(): ?array
+    {
+        return $this->middleware;
+    }
+
+    public function example(): ?string
+    {
+        return $this->example;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function parameters(): ?array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
     {
         return [
-            'name' => $route->getName(),
-            'method' => $route->methods()[0],
-            'uri' => $route->uri(),
-            // 'action' => str_replace('App\\Http\\Controllers\\Api\\', '', $route->getActionName()),
-            // 'middleware' => $route->middleware(),
-            'example' => config('app.url')."/{$uri}",
-            // 'parameters' => sizeof($paramsList) > 0 ? $paramsList : null,
+            'name' => $this->name,
+            'methods' => $this->methods,
+            'uri' => $this->uri,
+            'action' => $this->action,
+            'middleware' => $this->middleware,
+            'example' => $this->example,
+            'parameters' => $this->parameters,
         ];
-    }
-
-    private static function filter(array $routes)
-    {
-        $accepted_routes = [
-            'api.books.index',
-            'api.books.show',
-            'api.authors.index',
-            'api.authors.show',
-            'api.authors.show.books',
-            'api.series.index',
-            'api.series.show',
-            'api.series.show.books',
-            'api.entities.related',
-        ];
-        $selected_routes = [];
-
-        foreach ($routes as $key => $route) {
-            if (in_array($route->getName(), $accepted_routes)) {
-                array_push($selected_routes, $route);
-            }
-        }
-
-        $routes = [];
-        $publicRoutes = [];
-
-        foreach ($selected_routes as $route) {
-            if (preg_match('/api/', $route->uri)) {
-                $fullRoute = config('app.url').'/'.$route->uri();
-                $paramsList = [];
-
-                if (preg_match('/[{]/i', $fullRoute)) {
-                    $params = explode('/', $route->uri());
-
-                    foreach ($params as $key => $param) {
-                        if (preg_match('/[{]/i', $param)) {
-                            $param = str_replace('{', '', $param);
-                            $param = str_replace('}', '', $param);
-                            $routeParam = null;
-
-                            try {
-                                $routeParam = route('api.'.$param.'s.index');
-                            } catch (\Throwable $th) {
-                                // throw $th;
-                            }
-                            array_push($paramsList, [
-                                'parameter' => $param,
-                                'attribute' => 'slug',
-                                'route' => $routeParam,
-                            ]);
-                        }
-                    }
-                }
-                $params_example = [];
-
-                foreach ($paramsList as $key => $param) {
-                    $model_name = match ($param['parameter']) {
-                        'author_slug' => 'Author',
-                        'book_slug' => 'Book',
-                        'serie_slug' => 'Serie',
-                        default => 'Book',
-                    };
-                    $model_name = "App\\Models\\{$model_name}";
-
-                    try {
-                        if (is_string($model_name)) {
-                            $entity = $model_name::inRandomOrder()
-                                ->first()
-                            ;
-                            $params_example[$param['parameter']] = $entity->slug;
-                        }
-                    } catch (\Throwable $th) {
-                        // throw $th;
-                    }
-                }
-                $uri = $route->uri();
-
-                foreach ($params_example as $key => $param) {
-                    $uri = str_replace('{'.$key.'}', $param, $uri);
-                }
-                $routes[$route->getName() ? $route->getName() : $route->uri()] = [
-                    'name' => $route->getName(),
-                    'method' => $route->methods()[0],
-                    'uri' => $route->uri(),
-                    // 'action' => str_replace('App\\Http\\Controllers\\Api\\', '', $route->getActionName()),
-                    // 'middleware' => $route->middleware(),
-                    'example' => config('app.url')."/{$uri}",
-                    'parameters' => count($paramsList) > 0 ? $paramsList : null,
-                ];
-            }
-        }
-
-        foreach ($routes as $key => $route) {
-            array_push($publicRoutes, $route);
-        }
-
-        return $publicRoutes;
     }
 }

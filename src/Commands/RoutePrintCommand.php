@@ -37,8 +37,8 @@ class RoutePrintCommand extends Command
      */
     public function handle()
     {
-        $list = RouteService::getList();
-        ConverterService::saveAsJson($list, 'routes');
+        $list = RouteService::make();
+        ConverterService::saveAsJson($list->toArray(), 'routes');
 
         return Command::SUCCESS;
     }
