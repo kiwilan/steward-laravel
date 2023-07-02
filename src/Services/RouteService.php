@@ -23,12 +23,14 @@ class RouteService
     public static function make(array $skip = []): self
     {
         $routes = FacadesRoute::getRoutes()->getRoutes();
+        ray($routes);
 
         $self = new self(
             routes: $routes,
             skip: $skip,
         );
         $self->list = $self->setList();
+        ray($self->list);
 
         return $self;
     }
@@ -96,7 +98,7 @@ class RouteService
             name: $route->getName(),
             methods: $route->methods(),
             uri: $route->uri(),
-            action: str_replace('App\\Http\\Controllers\\Api\\', '', $route->getActionName()),
+            action: $route->getActionName(),
             middleware: $route->middleware(),
             example: config('app.url')."/{$uri}",
             parameters: $route->parameterNames(),
