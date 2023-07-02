@@ -23,14 +23,12 @@ class RouteService
     public static function make(array $skip = []): self
     {
         $routes = FacadesRoute::getRoutes()->getRoutes();
-        ray($routes);
 
         $self = new self(
             routes: $routes,
             skip: $skip,
         );
         $self->list = $self->setList();
-        ray($self->list);
 
         return $self;
     }
