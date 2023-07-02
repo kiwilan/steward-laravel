@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Services;
 
 use DOMDocument;
+use DOMElement;
 use DOMNodeList;
 use DOMXPath;
 use Illuminate\Database\Eloquent\Model;
@@ -106,6 +107,7 @@ class MarkdownToHtmlService
         // @phpstan-ignore-next-line
         $medias = $model->getMedia($inside_images_name);
 
+        /** @var DOMElement $tag */
         foreach ($this->image_tags as $tag) {
             $src = $tag->getAttribute('src');
             $path = str_replace('IMAGE/', '', $src);
@@ -135,6 +137,7 @@ class MarkdownToHtmlService
 
             $elements = $xpath->query('(//h1|//h2|//h3|//h4|//h5)');
 
+            /** @var DOMElement $element */
             foreach ($elements as $index => $element) {
                 $id = Str::slug($element->textContent);
                 $id = preg_replace('/[^a-zA-Z0-9_ %\[\]\.\(\)%&-]/s', '', $id);

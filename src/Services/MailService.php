@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Services\Mail\MailServer;
 use Swift_Mailer;
