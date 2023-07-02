@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Session;
  */
 trait LiveListing
 {
-    public const PAGINATION = 'tailwind';
-
     public string $q = '';
 
     public ?string $sort = null;
@@ -66,6 +64,11 @@ trait LiveListing
         $this->sort = $this->defaultSort();
         $this->emit('clearFilter');
         $this->emit('clearSorter');
+    }
+
+    public function getPagination()
+    {
+        return 'tailwind';
     }
 
     public function paginationSize(mixed $size)
