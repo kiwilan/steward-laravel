@@ -34,7 +34,7 @@ class ConverterService
 
         if ($print) {
             $console = Console::make();
-            $console->print("Saved to public/storage/debug/{$name}.json");
+            $console->print("Saved to `{$path}`.");
         }
     }
 
