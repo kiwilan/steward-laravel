@@ -16,11 +16,18 @@ class ConverterService
     public static function saveAsJson(mixed $data, string $name, ?string $path = null, bool $print = true): void
     {
         $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        $defaultPath = storage_path("app/public/debug/{$name}.json");
+        $defaultPath = storage_path('app/public/debug');
+        $name = "{$name}.json";
 
         if (! $path) {
             $path = $defaultPath;
         }
+
+        if (! File::exists($path)) {
+            File::makeDirectory($path, recursive: true);
+        }
+
+        $path = "{$path}/{$name}";
 
         File::delete($path);
         File::put($path, $data);
