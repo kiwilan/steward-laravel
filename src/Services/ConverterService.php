@@ -13,6 +13,11 @@ class ConverterService
         'APP_FRONT_URL' => 'app.front_url',
     ];
 
+    public static function prettyJson(mixed $data): string
+    {
+        return json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
+
     public static function saveAsJson(mixed $data, string $name, ?string $path = null, bool $print = true): void
     {
         $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
