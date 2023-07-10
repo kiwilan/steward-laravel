@@ -1,6 +1,6 @@
 # **Steward for Laravel**
 
-![Banner with steward picture in background and Steward for Laravel title](docs/banner.jpg)
+![Banner with steward picture in background and Steward for Laravel title](https://raw.githubusercontent.com/kiwilan/steward-laravel/main/docs/banner.jpg)
 
 [![php][php-version-src]][php-version-href]
 [![laravel][laravel-src]][laravel-href]
