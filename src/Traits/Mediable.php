@@ -2,6 +2,8 @@
 
 namespace Kiwilan\Steward\Traits;
 
+use Illuminate\Support\Facades\File;
+use Kiwilan\Steward\Class\MetaClass;
 use stdClass;
 
 trait Mediable
@@ -53,5 +55,31 @@ trait Mediable
         }
 
         return config('app.url')."/storage/{$path}";
+    }
+
+    public function mediableSave(string $path, string $field = 'picture'): void
+    {
+        $meta = MetaClass::make(get_class($this));
+        $directory = $meta->classSlugPlural();
+        $basename = basename($path);
+        $basePath = public_path("storage/{$directory}");
+        $fullPath = "{$basePath}/{$basename}";
+
+        if (file_exists($fullPath)) {
+            $name = uniqid().'-'.$basename;
+            $fullPath = "{$basePath}/{$name}";
+        }
+
+        $dirname = dirname($fullPath);
+
+        if (! file_exists($dirname)) {
+            mkdir($dirname, 0777, true);
+        }
+
+        File::copy($path, $fullPath);
+        $relativePath = explode('storage/', $fullPath);
+
+        $this->{$field} = $relativePath[1] ?? null;
+        $this->save();
     }
 }
