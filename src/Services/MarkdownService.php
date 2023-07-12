@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Services;
 
+use DateTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use League\CommonMark\Environment\Environment;
@@ -30,51 +31,151 @@ use League\CommonMark\Node\Block\Paragraph;
 
 class MarkdownService
 {
-    public const CONFIG = [
-        'APP_NAME' => 'app.name',
-        'APP_URL' => 'app.url',
-        'APP_FRONT_URL' => 'app.front_url',
-        'APP_REPOSITORY_URL' => 'bookshelves.repository_url',
-        'APP_DOCUMENTATION_URL' => 'bookshelves.documentation_url',
-    ];
-
-    public function __construct(
-        public string $content,
-        public string $date,
+    private function __construct(
+        protected string $content,
+        protected string $filename,
+        protected ?DateTime $date = null,
+        protected array $dotenv = [],
+        protected array $frontMatter = [],
+        protected string $abstract = '',
+        protected string $html = '',
     ) {
     }
 
-    public static function make(string $path, bool $absolute = false): MarkdownService
-    {
-        if (! $absolute) {
-            $path = resource_path("front/content/{$path}");
-        }
+    /**
+     * @param  array<string, string>  $dotenv
+     */
+    public static function make(
+        string $path,
+        array $dotenv = [
+            'APP_NAME' => 'app.name',
+            'APP_URL' => 'app.url',
+        ],
+    ): self {
         $markdown = File::get($path);
+        $filename = File::name($path);
         $date = File::lastModified($path);
-        $date = Carbon::createFromTimestamp($date)->toDateString();
+        $date = Carbon::createFromTimestamp($date);
 
-        $markdown = self::replaceWithDotenv($markdown);
+        $self = new self($markdown, $filename, $date, $dotenv);
+        $self->content = $self->replaceEnv();
+        $self->frontMatter = $self->parseFrontMatter();
+        $self->html = $self->toHtml();
+        $self->abstract = $self->generateAbstract();
 
-        return new MarkdownService($markdown, $date);
+        return $self;
     }
 
-    public static function replaceWithDotenv(string $markdown): string
+    private function replaceEnv(): string
     {
-        foreach (self::CONFIG as $dotenv_key => $config_key) {
-            $markdown = str_replace($dotenv_key, config($config_key), $markdown);
+        $markdown = '';
+
+        foreach ($this->dotenv as $dotenv_key => $config_key) {
+            $markdown = str_replace($dotenv_key, config($config_key), $this->content);
         }
 
         return $markdown;
     }
 
-    public function convertToHtml()
+    private function parseFrontMatter(): array
     {
-        $markdownConverter = new MarkdownConverter(environment: $this->getConfig());
+        $regex = '/---\n(.*\n)*?---\n/';
 
-        return $markdownConverter->convert($this->content);
+        if (! preg_match($regex, $this->content, $matches)) {
+            return [];
+        }
+
+        $front_matter = $matches[0];
+
+        //remove first and last line
+        $front_matter = preg_replace('/---\n/', '', $front_matter);
+        // get first line
+        $first_line = explode("\n", $matches[0])[1] ?? '';
+
+        if (empty($first_line)) {
+            return [];
+        }
+
+        $this->content = preg_replace($regex, '', $this->content);
+        $this->content = preg_replace('/^\n/', '', $this->content);
+
+        $frontMatter = [];
+
+        $items = explode("\n", $front_matter);
+
+        foreach ($items as $item) {
+            $exploded = explode(':', $item);
+            $key = trim($exploded[0] ?? '');
+            $value = trim($exploded[1] ?? '');
+            // if array
+            if (str_contains($value, '[') && str_contains($value, ']')) {
+                $value = str_replace(['[', ']'], '', $value);
+                $value = explode(',', $value);
+                $value = array_map('trim', $value);
+            }
+
+            if ($key && $value) {
+                $frontMatter[$key] = $value;
+            }
+        }
+
+        return $frontMatter;
     }
 
-    public function getConfig(): Environment
+    private function generateAbstract(): string
+    {
+        $abstract = str_replace("\n", ' ', $this->html);
+        $abstract = strip_tags($abstract);
+
+        return trim(substr($abstract, 0, 250)).'...';
+    }
+
+    public function content(): string
+    {
+        return $this->content;
+    }
+
+    public function filename(): string
+    {
+        return $this->filename;
+    }
+
+    public function date(): DateTime
+    {
+        return $this->date;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function frontMatter(): array
+    {
+        return $this->frontMatter;
+    }
+
+    public function frontMatterExtract(string $key): mixed
+    {
+        return $this->frontMatter[$key] ?? null;
+    }
+
+    public function abstract(): string
+    {
+        return $this->abstract;
+    }
+
+    public function html(): string
+    {
+        return $this->html;
+    }
+
+    private function toHtml(): string
+    {
+        $converter = new MarkdownConverter(environment: $this->getConfig());
+
+        return $converter->convert($this->content);
+    }
+
+    private function getConfig(): Environment
     {
         $config = [
             'html_input' => 'strip',
