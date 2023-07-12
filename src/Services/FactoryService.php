@@ -11,8 +11,8 @@ use Kiwilan\Steward\Commands\Scout\ScoutFreshCommand;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Services\Class\ClassItem;
 use Kiwilan\Steward\Services\Factory\FactoryBuilder;
-use Kiwilan\Steward\Services\Factory\FactoryData;
 use Kiwilan\Steward\Services\Factory\FactoryDateTime;
+use Kiwilan\Steward\Services\Factory\FactoryJson;
 use Kiwilan\Steward\Services\Factory\FactoryMediaDownloader;
 use Kiwilan\Steward\Services\Factory\FactoryMediaLocal;
 use Kiwilan\Steward\Services\Factory\FactoryRichText;
@@ -31,7 +31,7 @@ class FactoryService
         protected ?FactoryDateTime $dateTime = null,
         protected ?FactoryMediaLocal $mediaLocal = null,
         protected ?FactoryMediaDownloader $mediaDownloader = null,
-        protected ?FactoryData $data = null,
+        protected ?FactoryJson $json = null,
     ) {
     }
 
@@ -66,7 +66,7 @@ class FactoryService
         $service->dateTime = $service->setFactoryDate();
         $service->mediaLocal = $service->setFactoryMediaLocal($mediaPath);
         $service->mediaDownloader = $service->setFactoryMediaDownloader();
-        $service->data = $service->setFactoryData();
+        $service->json = $service->setFactoryJson();
 
         return $service;
     }
@@ -129,9 +129,9 @@ class FactoryService
         return $this->mediaDownloader;
     }
 
-    public function data(): FactoryData
+    public function json(): FactoryJson
     {
-        return $this->data;
+        return $this->json;
     }
 
     // private function builder(string $builder): array
@@ -173,9 +173,9 @@ class FactoryService
         return new FactoryMediaDownloader($this);
     }
 
-    private function setFactoryData(): FactoryData
+    private function setFactoryJson(): FactoryJson
     {
-        return new FactoryData($this);
+        return new FactoryJson($this);
     }
 
     public static function mediaFromResponse(?HttpResponse $response, string $basePath = null): ?string

@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use Kiwilan\Steward\Services\Class\ClassItem;
 use Kiwilan\Steward\Services\FactoryService;
 
-class FactoryData
+class FactoryJson
 {
     public function __construct(
         public FactoryService $factory,
