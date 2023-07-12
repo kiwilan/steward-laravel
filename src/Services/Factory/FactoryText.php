@@ -29,7 +29,7 @@ class FactoryText
         return TextProvider::capitalizeFirst($this->words());
     }
 
-    public function category(?string $class = null, string $field = 'name'): string
+    public function category(string $class = null, string $field = 'name'): string
     {
         if (! $class) {
             return MeaningProvider::find();
@@ -58,7 +58,7 @@ class FactoryText
         // }
     }
 
-    public function tag(?string $class = null, string $field = 'name'): string
+    public function tag(string $class = null, string $field = 'name'): string
     {
         if (! $class) {
             return MeaningProvider::find('tag');

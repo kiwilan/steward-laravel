@@ -22,7 +22,7 @@ class IframelyService
     /**
      * @param  string  $api Iframely instance to use, can be set from `steward.iframely.api`
      */
-    public static function make(?string $api = null): self
+    public static function make(string $api = null): self
     {
         if (! $api) {
             $api = \Kiwilan\Steward\StewardConfig::iframelyApi();

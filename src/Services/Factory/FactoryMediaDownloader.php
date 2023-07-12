@@ -98,7 +98,7 @@ class FactoryMediaDownloader
     /**
      * @return Collection<int,string>
      */
-    private function fetchMedias(int $count = 1, ?string $basePath = null)
+    private function fetchMedias(int $count = 1, string $basePath = null)
     {
         $this->config['count'] = $count;
 

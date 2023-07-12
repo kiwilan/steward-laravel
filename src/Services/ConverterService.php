@@ -18,7 +18,7 @@ class ConverterService
         return json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 
-    public static function saveAsJson(mixed $data, string $name, ?string $path = null, bool $print = true): void
+    public static function saveAsJson(mixed $data, string $name, string $path = null, bool $print = true): void
     {
         $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $defaultPath = storage_path('app/public/debug');

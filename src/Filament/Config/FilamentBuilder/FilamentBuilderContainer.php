@@ -48,14 +48,14 @@ class FilamentBuilderContainer
         return $this;
     }
 
-    public function minItems(?int $minItems = null): self
+    public function minItems(int $minItems = null): self
     {
         $this->minItems = $minItems;
 
         return $this;
     }
 
-    public function maxItems(?int $maxItems = null): self
+    public function maxItems(int $maxItems = null): self
     {
         $this->maxItems = $maxItems;
 

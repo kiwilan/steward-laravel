@@ -56,7 +56,7 @@ trait HasSeo
         ];
     }
 
-    private function limitStringSize(?string $string = null, int $limit = 250): ?string
+    private function limitStringSize(string $string = null, int $limit = 250): ?string
     {
         if ($string && Str::length($string) > $limit) {
             return Str::limit($string, $limit, '...');

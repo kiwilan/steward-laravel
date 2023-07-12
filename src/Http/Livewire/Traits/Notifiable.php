@@ -6,7 +6,7 @@ use Filament\Notifications\Notification;
 
 trait Notifiable
 {
-    public function notify(?string $message = null, bool $success = true, ?string $title = null)
+    public function notify(string $message = null, bool $success = true, string $title = null)
     {
         if (! $title) {
             $title = $success ? 'Saved successfully' : 'An error occurred';
