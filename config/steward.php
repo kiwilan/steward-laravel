@@ -31,6 +31,7 @@ return [
     'mediable' => [
         'default' => 'https://raw.githubusercontent.com/kiwilan/steward-laravel/main/public/no-image-available.jpg',
         'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'],
+        'format' => env('STEWARD_MEDIABLE_FORMAT', 'webp'),
     ],
 
     /*

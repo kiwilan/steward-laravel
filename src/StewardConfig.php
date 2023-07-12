@@ -38,6 +38,11 @@ class StewardConfig
         return config('steward.mediable.extensions') ?? ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'avif'];
     }
 
+    public static function mediableFormat(): string
+    {
+        return config('steward.mediable.format') ?? env('STEWARD_MEDIABLE_FORMAT', 'webp');
+    }
+
     public static function templateEnum(): string
     {
         return config('steward.template.enum') ?? \Kiwilan\Steward\Enums\TemplateEnum::class;

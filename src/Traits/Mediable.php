@@ -4,6 +4,7 @@ namespace Kiwilan\Steward\Traits;
 
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Class\MetaClass;
+use Kiwilan\Steward\StewardConfig;
 use stdClass;
 
 trait Mediable
@@ -57,7 +58,7 @@ trait Mediable
         return config('app.url')."/storage/{$path}";
     }
 
-    public function mediableSave(string $path, string $field = 'picture'): void
+    public function mediableSave(string $path, string $field = 'picture', bool $convert = true): void
     {
         $meta = MetaClass::make(get_class($this));
         $directory = $meta->classSlugPlural();
@@ -73,7 +74,13 @@ trait Mediable
         $dirname = dirname($fullPath);
 
         if (! file_exists($dirname)) {
-            mkdir($dirname, 0777, true);
+            mkdir($dirname, 0775, true);
+        }
+
+        $ext = pathinfo($path, PATHINFO_EXTENSION);
+
+        if ($convert && ! $ext !== StewardConfig::mediableFormat()) {
+            $path = $this->convertTo(file_get_contents($path));
         }
 
         File::copy($path, $fullPath);
@@ -81,5 +88,28 @@ trait Mediable
 
         $this->{$field} = $relativePath[1] ?? null;
         $this->save();
+    }
+
+    private function convertTo(string $image): string|false
+    {
+        $image = imagecreatefromstring($image);
+
+        if (! $image) {
+            return false;
+        }
+
+        $path = storage_path('app/cache');
+
+        if (! file_exists($path)) {
+            mkdir($path, 0775, true);
+        }
+
+        $name = uniqid().'.'.StewardConfig::mediableFormat();
+        $fullPath = "{$path}/{$name}";
+        $result = imagewebp($image, $fullPath);
+
+        imagedestroy($image);
+
+        return $fullPath;
     }
 }
