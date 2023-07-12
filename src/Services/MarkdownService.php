@@ -34,9 +34,9 @@ class MarkdownService
     private function __construct(
         protected string $content,
         protected string $filename,
-        protected ?DateTime $date = null,
-        protected array $dotenv = [],
-        protected array $frontMatter = [],
+        protected ?DateTime $date,
+        protected array $dotenv,
+        protected MarkdownFrontMatter $frontMatter,
         protected string $abstract = '',
         protected string $html = '',
     ) {
@@ -57,7 +57,7 @@ class MarkdownService
         $date = File::lastModified($path);
         $date = Carbon::createFromTimestamp($date);
 
-        $self = new self($markdown, $filename, $date, $dotenv);
+        $self = new self($markdown, $filename, $date, $dotenv, MarkdownFrontMatter::make());
         $self->content = $self->replaceEnv();
         $self->frontMatter = $self->parseFrontMatter();
         $self->html = $self->toHtml();
@@ -77,12 +77,12 @@ class MarkdownService
         return $markdown;
     }
 
-    private function parseFrontMatter(): array
+    private function parseFrontMatter(): MarkdownFrontMatter
     {
         $regex = '/---\n(.*\n)*?---\n/';
 
         if (! preg_match($regex, $this->content, $matches)) {
-            return [];
+            return MarkdownFrontMatter::make();
         }
 
         $front_matter = $matches[0];
@@ -93,7 +93,7 @@ class MarkdownService
         $first_line = explode("\n", $matches[0])[1] ?? '';
 
         if (empty($first_line)) {
-            return [];
+            return MarkdownFrontMatter::make();
         }
 
         $this->content = preg_replace($regex, '', $this->content);
@@ -112,6 +112,16 @@ class MarkdownService
                 $value = str_replace(['[', ']'], '', $value);
                 $value = explode(',', $value);
                 $value = array_map('trim', $value);
+
+                $temp = [];
+
+                foreach ($value as $k => $v) {
+                    $temp[$k] = $this->trimString($v);
+                }
+
+                $value = $temp;
+            } else {
+                $value = $this->trimString($value);
             }
 
             if ($key && $value) {
@@ -119,7 +129,22 @@ class MarkdownService
             }
         }
 
-        return $frontMatter;
+        return MarkdownFrontMatter::make($frontMatter);
+    }
+
+    private function trimString(string $value): string
+    {
+        // if first char is "
+        if (str_starts_with($value, '"') && str_ends_with($value, '"')) {
+            $value = str_replace('"', '', $value);
+        }
+
+        // if first char is '
+        if (str_starts_with($value, "'") && str_ends_with($value, "'")) {
+            $value = str_replace("'", '', $value);
+        }
+
+        return $value;
     }
 
     private function generateAbstract(): string
@@ -145,17 +170,9 @@ class MarkdownService
         return $this->date;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function frontMatter(): array
+    public function frontMatter(): MarkdownFrontMatter
     {
         return $this->frontMatter;
-    }
-
-    public function frontMatterExtract(string $key): mixed
-    {
-        return $this->frontMatter[$key] ?? null;
     }
 
     public function abstract(): string
@@ -294,5 +311,41 @@ class MarkdownService
             ->addExtension(new TableExtension())
             ->addExtension(new TaskListExtension())
         ;
+    }
+}
+
+class MarkdownFrontMatter
+{
+    /**
+     * @param  array<string, mixed>  $frontMatter
+     */
+    protected function __construct(
+        protected array $frontMatter,
+    ) {
+    }
+
+    /**
+     * @param  array<string, mixed> | null  $frontMatter
+     */
+    public static function make(array $frontMatter = null): self
+    {
+        if (! $frontMatter) {
+            $frontMatter = [];
+        }
+
+        return new self($frontMatter);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        return $this->frontMatter;
+    }
+
+    public function get(string $key): mixed
+    {
+        return $this->frontMatter[$key] ?? null;
     }
 }

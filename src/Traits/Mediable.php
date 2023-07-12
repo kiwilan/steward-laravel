@@ -58,11 +58,39 @@ trait Mediable
         return config('app.url')."/storage/{$path}";
     }
 
-    public function mediableSave(string $path, string $field = 'picture', bool $convert = true): void
+    /**
+     * Save mediable to `field` attribute, auto convert from `steard.mediable.format`.
+     */
+    public function mediableSave(string $media, string $field = 'picture', bool $convert = true, bool $deleteOriginal = true): void
     {
+        $ext = pathinfo($media, PATHINFO_EXTENSION);
+        $hasExt = ! empty($ext);
+        $path = null;
+        $content = null;
+        $isPath = false;
+
+        if ($hasExt) {
+            $path = $media;
+
+            if (! file_exists($path)) {
+                throw new \Exception("File {$path} not found");
+            }
+
+            $content = file_get_contents($path);
+            $isPath = true;
+        } else {
+            $content = $media;
+        }
+
         $meta = MetaClass::make(get_class($this));
         $directory = $meta->classSlugPlural();
-        $basename = basename($path);
+
+        if ($isPath) {
+            $basename = basename($path);
+        } else {
+            $basename = uniqid().'.'.$ext;
+        }
+
         $basePath = public_path("storage/{$directory}");
         $fullPath = "{$basePath}/{$basename}";
 
@@ -77,14 +105,19 @@ trait Mediable
             mkdir($dirname, 0775, true);
         }
 
-        $ext = pathinfo($path, PATHINFO_EXTENSION);
+        $extConvert = StewardConfig::mediableFormat();
 
-        if ($convert && ! $ext !== StewardConfig::mediableFormat()) {
+        if ($convert && $ext !== StewardConfig::mediableFormat()) {
             $path = $this->convertTo(file_get_contents($path));
+            $fullPath = str_replace($ext, $extConvert, $fullPath);
         }
 
         File::copy($path, $fullPath);
         $relativePath = explode('storage/', $fullPath);
+
+        if ($deleteOriginal) {
+            File::delete($path);
+        }
 
         $this->{$field} = $relativePath[1] ?? null;
         $this->save();
