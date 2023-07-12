@@ -57,7 +57,7 @@ class FactoryService
         Artisan::call(MediaCleanCommand::class, ['--force' => true]);
     }
 
-    public static function make(string|\UnitEnum|null $mediaPath = null): self
+    public static function make(string|\UnitEnum $mediaPath = null): self
     {
         $faker = \Faker\Factory::create();
         $service = new FactoryService($faker);
@@ -82,7 +82,7 @@ class FactoryService
         return $model::withoutSyncingToSearch(fn () => $closure());
     }
 
-    public function useText(?FactoryTextEnum $type = null): self
+    public function useText(FactoryTextEnum $type = null): self
     {
         $this->text = $this->setFactoryText($type);
         $this->richText = $this->setFactoryRichText($type);
@@ -113,7 +113,7 @@ class FactoryService
     /**
      * @param  string|null  $basePath If null, use `database_path('seeders/media')`
      */
-    public function mediaLocal(string $path, ?string $basePath = null): FactoryMediaLocal
+    public function mediaLocal(string $path, string $basePath = null): FactoryMediaLocal
     {
         if (! $basePath) {
             $this->mediaLocal->basePath = database_path('seeders/media');
@@ -139,14 +139,14 @@ class FactoryService
     //     return FactoryBuilder::make($this, $builder);
     // }
 
-    private function setFactoryText(?FactoryTextEnum $type = null): FactoryText
+    private function setFactoryText(FactoryTextEnum $type = null): FactoryText
     {
         $type = $type ?? \Kiwilan\Steward\StewardConfig::factoryText();
 
         return new FactoryText($this, $type);
     }
 
-    private function setFactoryRichText(?FactoryTextEnum $type = null): FactoryRichText
+    private function setFactoryRichText(FactoryTextEnum $type = null): FactoryRichText
     {
         $type = $type ?? \Kiwilan\Steward\StewardConfig::factoryText();
         $text = $this->setFactoryText($type);
@@ -159,7 +159,7 @@ class FactoryService
         return new FactoryDateTime($this);
     }
 
-    private function setFactoryMediaLocal(string|\UnitEnum|null $media_path = null): FactoryMediaLocal
+    private function setFactoryMediaLocal(string|\UnitEnum $media_path = null): FactoryMediaLocal
     {
         if ($media_path && $media_path instanceof \UnitEnum) {
             $media_path = $media_path->name;
@@ -178,7 +178,7 @@ class FactoryService
         return new FactoryData($this);
     }
 
-    public static function mediaFromResponse(?HttpResponse $response, ?string $basePath = null): ?string
+    public static function mediaFromResponse(?HttpResponse $response, string $basePath = null): ?string
     {
         if (! $response || ! $response->isSuccess()) {
             return null;
@@ -195,7 +195,7 @@ class FactoryService
         return FactoryService::saveFile($data, $ext, $basePath);
     }
 
-    public static function mediaFromFile(string $path, ?string $basePath = null): ?string
+    public static function mediaFromFile(string $path, string $basePath = null): ?string
     {
         $data = File::get($path);
         $ext = pathinfo($path)['extension'];
@@ -203,7 +203,7 @@ class FactoryService
         return FactoryService::saveFile($data, $ext, $basePath);
     }
 
-    private static function saveFile(string $data, string $ext = 'jpg', ?string $basePath = null): string
+    private static function saveFile(string $data, string $ext = 'jpg', string $basePath = null): string
     {
         $random = uniqid();
 

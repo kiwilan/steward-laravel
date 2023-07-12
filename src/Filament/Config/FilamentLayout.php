@@ -39,12 +39,12 @@ class FilamentLayout
         ;
     }
 
-    public static function card(array $fields = [], ?string $title = null, int $width = 2): Card
+    public static function card(array $fields = [], string $title = null, int $width = 2): Card
     {
         return FilamentLayoutCard::make($fields, $title, $width);
     }
 
-    public static function setting(array $fields = [], int $width = 2, ?string $title = null): \Filament\Forms\Components\Group
+    public static function setting(array $fields = [], int $width = 2, string $title = null): \Filament\Forms\Components\Group
     {
         return FilamentLayoutSettings::make($fields, $width, $title);
     }

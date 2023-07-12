@@ -155,7 +155,7 @@ abstract class Notifying
     //     return $servers;
     // }
 
-    protected function handleSendTo(?string $sendto = null): array
+    protected function handleSendTo(string $sendto = null): array
     {
         if (! $sendto) {
             return [];

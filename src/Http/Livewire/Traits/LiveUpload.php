@@ -181,7 +181,7 @@ trait LiveUpload
     /**
      * Delete existing upload in model.
      */
-    protected function deleteToModel(string $field, string|int|null $index = null, bool $all = false): void
+    protected function deleteToModel(string $field, string|int $index = null, bool $all = false): void
     {
         $isArray = is_array($this->{$field});
         $current = $this->{$field} ?? null;

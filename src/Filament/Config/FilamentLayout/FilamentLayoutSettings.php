@@ -14,7 +14,7 @@ class FilamentLayoutSettings
     ) {
     }
 
-    public static function make(array $fields, int $width = 2, ?string $title = null)
+    public static function make(array $fields, int $width = 2, string $title = null)
     {
         $self = new self($fields, $width, $title);
 

@@ -18,7 +18,7 @@ class ScoutService
     ) {
     }
 
-    public static function make(?string $path = null): self
+    public static function make(string $path = null): self
     {
         if (is_null($path)) {
             $path = app_path('Models');

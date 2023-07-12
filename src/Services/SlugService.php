@@ -55,7 +55,7 @@ class SlugService
         return $modelName;
     }
 
-    private function unique(?string $name = null, int $counter = 0): string
+    private function unique(string $name = null, int $counter = 0): string
     {
         if (null === $name) {
             $name = uniqid();

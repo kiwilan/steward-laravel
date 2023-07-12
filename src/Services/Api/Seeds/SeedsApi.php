@@ -63,7 +63,7 @@ class SeedsApi implements MediaApi
     public function fetchPictures(
         SeedsApiCategoryEnum $category = SeedsApiCategoryEnum::all,
         SeedsApiSizeEnum $size = SeedsApiSizeEnum::medium,
-        ?int $count = null
+        int $count = null
     ): Collection {
         $count = $count ?? null;
 

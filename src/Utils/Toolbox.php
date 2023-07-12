@@ -48,7 +48,7 @@ class Toolbox
     /**
      * Limit length of a string and sanitize.
      */
-    public static function stringLimit(string|null $text, int $limit): string
+    public static function stringLimit(?string $text, int $limit): string
     {
         $content = '';
 

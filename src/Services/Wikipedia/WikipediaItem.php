@@ -91,7 +91,7 @@ class WikipediaItem
     /**
      * Get picture from WikipediaService pictureUrl.
      */
-    public static function fetchPicture(string|null $pictureUrl): string|null
+    public static function fetchPicture(?string $pictureUrl): ?string
     {
         $picture = null;
 
@@ -188,7 +188,7 @@ class WikipediaItem
         return $this;
     }
 
-    private function convertExtract(string|null $text, int $limit): string
+    private function convertExtract(?string $text, int $limit): string
     {
         if (! $text) {
             return '';

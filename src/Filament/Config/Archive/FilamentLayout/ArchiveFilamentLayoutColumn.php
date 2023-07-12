@@ -103,7 +103,7 @@ class ArchiveFilamentLayoutColumn
         return $schema;
     }
 
-    private function setCard(array $group, ?int $key = null): array
+    private function setCard(array $group, int $key = null): array
     {
         $title = null;
 
