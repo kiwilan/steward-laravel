@@ -7,17 +7,6 @@ use ReflectionClass;
 
 /**
  * Meta Class, to give easy access to Model meta names.
- *
- * - `class()` `string` like `App\Models\WikipediaItem::class`
- * - `classNamespaced()` `string` like `App\Models\WikipediaItem`
- * - `className()` `string` like `WikipediaItem`
- * - `classPlural()` `string` like `WikipediaItems`
- * - `classSnake()` `string` like `wikipedia_item`
- * - `classSnakePlural()` `string` like `wikipedia_items`
- * - `classSlug()` `string` like `wikipedia-item`
- * - `classSlugPlural()` `string` like `wikipedia-items`
- * - `firstChar()` `string` like `w`
- * - `traits()` `array<string,string>`
  */
 class MetaClass
 {
@@ -68,46 +57,73 @@ class MetaClass
         return in_array($trait, $this->traits);
     }
 
+    /**
+     * Like `App\Models\WikipediaItem::class`
+     */
     public function class(): string
     {
         return $this->class;
     }
 
+    /**
+     * Like `App\Models\WikipediaItem`
+     */
     public function classNamespaced(): string
     {
         return $this->classNamespaced;
     }
 
+    /**
+     * Like `WikipediaItem`
+     */
     public function className(): string
     {
         return $this->className;
     }
 
+    /**
+     * Like `WikipediaItems`
+     */
     public function classPlural(): string
     {
         return $this->classPlural;
     }
 
+    /**
+     * Like `wikipedia_item`
+     */
     public function classSnake(): string
     {
         return $this->classSnake;
     }
 
+    /**
+     * Like `wikipedia_items`
+     */
     public function classSnakePlural(): string
     {
         return $this->classSnakePlural;
     }
 
+    /**
+     * Like `wikipedia-item`
+     */
     public function classSlug(): string
     {
         return $this->classSlug;
     }
 
+    /**
+     * Like `wikipedia-items`
+     */
     public function classSlugPlural(): string
     {
         return $this->classSlugPlural;
     }
 
+    /**
+     * Like `w`
+     */
     public function firstChar(): string
     {
         return $this->firstChar;
