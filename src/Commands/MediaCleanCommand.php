@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\Class\ClassItem;
 use Kiwilan\Steward\Services\ClassService;
+use Kiwilan\Steward\Services\DirectoryService;
 use Kiwilan\Steward\StewardConfig;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
@@ -52,6 +53,9 @@ class MediaCleanCommand extends Commandable
 
         $dbFiles = $this->setDbFiles();
         $localFiles = $this->setLocalFiles();
+        $cachePath = storage_path('app/cache');
+
+        DirectoryService::make()->clear($cachePath);
 
         $chunkMax = StewardConfig::factoryMaxHandle();
         $chunks = array_chunk($localFiles, $chunkMax);

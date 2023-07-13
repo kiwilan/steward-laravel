@@ -46,7 +46,7 @@ class FactoryService
             $paths[] = storage_path('app/media');
         }
 
-        DirectoryClearService::make($paths);
+        DirectoryService::make()->clear($paths);
 
         return true;
     }
