@@ -117,7 +117,9 @@ class MarkdownService
         foreach ($items as $item) {
             $exploded = explode(':', $item);
             $key = trim($exploded[0] ?? '');
-            $value = trim($exploded[1] ?? '');
+            unset($exploded[0]);
+            $value = implode(':', $exploded);
+            $value = trim($value);
             // if array
             if (str_contains($value, '[') && str_contains($value, ']')) {
                 $value = str_replace(['[', ']'], '', $value);

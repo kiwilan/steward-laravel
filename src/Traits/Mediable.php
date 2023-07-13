@@ -73,7 +73,10 @@ trait Mediable
             $path = $media;
 
             if (! file_exists($path)) {
-                throw new \Exception("File {$path} not found");
+                // throw new \Exception("File {$path} not found");
+                error_log("File {$path} not found");
+
+                return;
             }
 
             $content = file_get_contents($path);
