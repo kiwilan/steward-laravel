@@ -46,15 +46,26 @@ class MarkdownService
      * @param  array<string, string>  $dotenv
      */
     public static function make(
-        string $path,
+        string $pathOrContent,
         array $dotenv = [
             'APP_NAME' => 'app.name',
             'APP_URL' => 'app.url',
         ],
     ): self {
-        $markdown = File::get($path);
-        $filename = File::name($path);
-        $date = File::lastModified($path);
+        $path = null;
+        $filename = 'content';
+        $date = null;
+        $isPath = File::exists($pathOrContent);
+
+        if (! $isPath) {
+            $markdown = $pathOrContent;
+        } else {
+            $path = $pathOrContent;
+            $markdown = File::get($path);
+            $filename = File::name($path);
+            $date = File::lastModified($path);
+        }
+
         $date = Carbon::createFromTimestamp($date);
 
         $self = new self($markdown, $filename, $date, $dotenv, MarkdownFrontMatter::make());
