@@ -43,6 +43,9 @@ class MarkdownService
     ) {
     }
 
+    /**
+     * @param  array<string, string>  $dotenv
+     */
     public static function make(
         string $pathOrContent,
         MarkdownOptions $options = new MarkdownOptions(),
@@ -108,8 +111,6 @@ class MarkdownService
 
         $items = explode("\n", $front_matter);
 
-        $frontMatter = [];
-
         foreach ($items as $item) {
             $exploded = explode(':', $item);
             $key = trim($exploded[0] ?? '');
@@ -161,7 +162,7 @@ class MarkdownService
         $abstract = str_replace("\n", ' ', $this->html);
         $abstract = strip_tags($abstract);
 
-        return trim(substr($abstract, 0, 250)).'...';
+        return trim(mb_substr($abstract, 0, 250)).'...';
     }
 
     /**
@@ -184,27 +185,25 @@ class MarkdownService
 
                 $fullPath = "{$this->options->imagesPath()}/{$path}";
 
-                if (! File::exists($fullPath)) {
-                    continue;
-                }
+                if (File::exists($fullPath)) {
+                    $name = basename($fullPath);
+                    $save = public_path('storage/uploads');
 
-                $name = basename($fullPath);
-                $save = public_path('storage/uploads');
+                    if (! File::exists($save)) {
+                        File::makeDirectory($save, 0775, true);
+                    }
 
-                if (! File::exists($save)) {
-                    File::makeDirectory($save, 0775, true);
-                }
-
-                $savePath = "{$save}/{$name}";
-
-                while (File::exists($savePath)) {
-                    $name = uniqid().'-'.$name;
                     $savePath = "{$save}/{$name}";
+
+                    while (File::exists($savePath)) {
+                        $name = uniqid().'-'.$name;
+                        $savePath = "{$save}/{$name}";
+                    }
+
+                    File::copy($fullPath, $savePath);
+
+                    $items[] = $image;
                 }
-
-                File::copy($fullPath, $savePath);
-
-                $items[] = $image;
 
                 // replace in content
                 $url = config('app.url').'/storage/uploads/'.$name;
