@@ -86,7 +86,7 @@ class MarkdownService
 
     private function parseFrontMatter(): MarkdownFrontMatter
     {
-        $regex = '/---\n(.*\n)*?---\n/';
+        $regex = '/---\n([a-zA-Z0-9_-]+:.*\n)*?---\n/';
 
         if (! preg_match($regex, $this->content, $matches)) {
             return MarkdownFrontMatter::make();
@@ -106,9 +106,9 @@ class MarkdownService
         $this->content = preg_replace($regex, '', $this->content);
         $this->content = preg_replace('/^\n/', '', $this->content);
 
-        $frontMatter = [];
-
         $items = explode("\n", $front_matter);
+
+        $frontMatter = [];
 
         foreach ($items as $item) {
             $exploded = explode(':', $item);
