@@ -35,22 +35,17 @@ class MarkdownService
         protected string $content,
         protected string $filename,
         protected ?DateTime $date,
-        protected array $dotenv,
+        protected MarkdownOptions $options,
         protected MarkdownFrontMatter $frontMatter,
         protected string $abstract = '',
         protected string $html = '',
+        protected array $images = [],
     ) {
     }
 
-    /**
-     * @param  array<string, string>  $dotenv
-     */
     public static function make(
         string $pathOrContent,
-        array $dotenv = [
-            'APP_NAME' => 'app.name',
-            'APP_URL' => 'app.url',
-        ],
+        MarkdownOptions $options = new MarkdownOptions(),
     ): self {
         $path = null;
         $filename = 'content';
@@ -68,9 +63,10 @@ class MarkdownService
 
         $date = Carbon::createFromTimestamp($date);
 
-        $self = new self($markdown, $filename, $date, $dotenv, MarkdownFrontMatter::make());
+        $self = new self($markdown, $filename, $date, $options, MarkdownFrontMatter::make());
         $self->content = $self->replaceEnv();
         $self->frontMatter = $self->parseFrontMatter();
+        $self->images = $self->parseImages();
         $self->html = $self->toHtml();
         $self->abstract = $self->generateAbstract();
 
@@ -81,7 +77,7 @@ class MarkdownService
     {
         $markdown = '';
 
-        foreach ($this->dotenv as $dotenv_key => $config_key) {
+        foreach ($this->options->dotenv() as $dotenv_key => $config_key) {
             $markdown = str_replace($dotenv_key, config($config_key), $this->content);
         }
 
@@ -168,6 +164,57 @@ class MarkdownService
         return trim(substr($abstract, 0, 250)).'...';
     }
 
+    /**
+     * @return string[]
+     */
+    private function parseImages(): array
+    {
+        $items = [];
+
+        preg_match_all('/!\[.*?\]\((.*?)\)/', $this->content, $matches);
+        $images = $matches[1];
+
+        if ($images && $this->options->imagesPath()) {
+            foreach ($images as $image) {
+                $path = str_replace(['(', ')'], '', $image);
+
+                if (str_contains($path, 'http')) {
+                    continue;
+                }
+
+                $fullPath = "{$this->options->imagesPath()}/{$path}";
+
+                if (! File::exists($fullPath)) {
+                    continue;
+                }
+
+                $name = basename($fullPath);
+                $save = public_path('storage/uploads');
+
+                if (! File::exists($save)) {
+                    File::makeDirectory($save, 0775, true);
+                }
+
+                $savePath = "{$save}/{$name}";
+
+                while (File::exists($savePath)) {
+                    $name = uniqid().'-'.$name;
+                    $savePath = "{$save}/{$name}";
+                }
+
+                File::copy($fullPath, $savePath);
+
+                $items[] = $image;
+
+                // replace in content
+                $url = config('app.url').'/storage/uploads/'.$name;
+                $this->content = str_replace($image, $url, $this->content);
+            }
+        }
+
+        return $items;
+    }
+
     public function content(): string
     {
         return $this->content;
@@ -196,6 +243,14 @@ class MarkdownService
     public function html(): string
     {
         return $this->html;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function images(): array
+    {
+        return $this->images;
     }
 
     private function toHtml(): string
@@ -324,6 +379,31 @@ class MarkdownService
             ->addExtension(new TableExtension())
             ->addExtension(new TaskListExtension())
         ;
+    }
+}
+
+class MarkdownOptions
+{
+    public function __construct(
+        protected array $dotenv = [
+            'APP_NAME' => 'app.name',
+            'APP_URL' => 'app.url',
+        ],
+        protected ?string $imagePath = null,
+    ) {
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function dotenv(): array
+    {
+        return $this->dotenv;
+    }
+
+    public function imagesPath(): ?string
+    {
+        return $this->imagePath;
     }
 }
 

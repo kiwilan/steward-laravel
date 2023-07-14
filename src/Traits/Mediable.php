@@ -61,8 +61,13 @@ trait Mediable
     /**
      * Save mediable to `field` attribute, auto convert from `steard.mediable.format`.
      */
-    public function mediableSave(string $media, string $field = 'picture', bool $convert = true, bool $deleteOriginal = true): void
-    {
+    public function mediableSave(
+        string $media,
+        string $field = 'picture',
+        string $upload = null,
+        bool $convert = true,
+        bool $deleteOriginal = true
+    ): void {
         $ext = pathinfo($media, PATHINFO_EXTENSION);
         $hasExt = ! empty($ext);
         $path = null;
@@ -87,6 +92,10 @@ trait Mediable
 
         $meta = MetaClass::make(get_class($this));
         $directory = $meta->classSlugPlural();
+
+        if ($upload) {
+            $directory = $upload;
+        }
 
         if ($isPath) {
             $basename = basename($path);
