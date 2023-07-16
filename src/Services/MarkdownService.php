@@ -117,6 +117,7 @@ class MarkdownService
             unset($exploded[0]);
             $value = implode(':', $exploded);
             $value = trim($value);
+
             // if array
             if (str_contains($value, '[') && str_contains($value, ']')) {
                 $value = str_replace(['[', ']'], '', $value);
@@ -134,7 +135,7 @@ class MarkdownService
                 $value = $this->trimString($value);
             }
 
-            if ($key && $value) {
+            if ($key) {
                 $frontMatter[$key] = $value;
             }
         }
