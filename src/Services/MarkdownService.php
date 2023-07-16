@@ -28,6 +28,7 @@ use League\CommonMark\Extension\TableOfContents\TableOfContentsExtension;
 use League\CommonMark\Extension\TaskList\TaskListExtension;
 use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Node\Block\Paragraph;
+use League\HTMLToMarkdown\HtmlConverter;
 
 class MarkdownService
 {
@@ -43,9 +44,6 @@ class MarkdownService
     ) {
     }
 
-    /**
-     * @param  array<string, string>  $dotenv
-     */
     public static function make(
         string $pathOrContent,
         MarkdownOptions $options = new MarkdownOptions(),
@@ -111,6 +109,8 @@ class MarkdownService
 
         $items = explode("\n", $front_matter);
 
+        $frontMatter = [];
+
         foreach ($items as $item) {
             $exploded = explode(':', $item);
             $key = trim($exploded[0] ?? '');
@@ -175,40 +175,44 @@ class MarkdownService
         preg_match_all('/!\[.*?\]\((.*?)\)/', $this->content, $matches);
         $images = $matches[1];
 
-        if ($images && $this->options->imagesPath()) {
-            foreach ($images as $image) {
-                $path = str_replace(['(', ')'], '', $image);
+        if (! $images && ! $this->options->imagesPath()) {
+            return [];
+        }
 
-                if (str_contains($path, 'http')) {
-                    continue;
-                }
+        foreach ($images as $image) {
+            $path = str_replace(['(', ')'], '', $image);
 
-                $fullPath = "{$this->options->imagesPath()}/{$path}";
-
-                if (File::exists($fullPath)) {
-                    $name = basename($fullPath);
-                    $save = public_path('storage/uploads');
-
-                    if (! File::exists($save)) {
-                        File::makeDirectory($save, 0775, true);
-                    }
-
-                    $savePath = "{$save}/{$name}";
-
-                    while (File::exists($savePath)) {
-                        $name = uniqid().'-'.$name;
-                        $savePath = "{$save}/{$name}";
-                    }
-
-                    File::copy($fullPath, $savePath);
-
-                    $items[] = $image;
-                }
-
-                // replace in content
-                $url = config('app.url').'/storage/uploads/'.$name;
-                $this->content = str_replace($image, $url, $this->content);
+            if (str_contains($path, 'http')) {
+                continue;
             }
+
+            $fullPath = "{$this->options->imagesPath()}/{$path}";
+
+            if (! File::exists($fullPath)) {
+                continue;
+            }
+
+            $name = basename($fullPath);
+            $save = public_path('storage/uploads');
+
+            if (! File::exists($save)) {
+                File::makeDirectory($save, 0775, true);
+            }
+
+            $savePath = "{$save}/{$name}";
+
+            while (File::exists($savePath)) {
+                $name = uniqid().'-'.$name;
+                $savePath = "{$save}/{$name}";
+            }
+
+            File::copy($fullPath, $savePath);
+
+            $items[] = $image;
+
+            // replace in content
+            $url = config('app.url').'/storage/uploads/'.$name;
+            $this->content = str_replace($image, $url, $this->content);
         }
 
         return $items;
@@ -242,6 +246,13 @@ class MarkdownService
     public function html(): string
     {
         return $this->html;
+    }
+
+    public function revert(): string
+    {
+        $converter = new HtmlConverter();
+
+        return $converter->convert($this->content);
     }
 
     /**
