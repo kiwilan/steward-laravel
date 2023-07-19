@@ -32,6 +32,7 @@ use Kiwilan\Steward\Components\Listing\Filters as ListingFilters;
 use Kiwilan\Steward\Components\Listing\FiltersMobile as ListingFiltersMobile;
 use Kiwilan\Steward\Components\Listing\Index as Listing;
 use Kiwilan\Steward\Components\Listing\Pagination as ListingPagination;
+use Kiwilan\Steward\Components\Listing\PaginationSize as ListingPaginationSize;
 use Kiwilan\Steward\Components\Listing\Search as ListingSearch;
 use Kiwilan\Steward\Components\Listing\Sorters as ListingSorters;
 use Kiwilan\Steward\Http\Livewire\Field\FieldEditor;
@@ -111,6 +112,7 @@ class StewardServiceProvider extends PackageServiceProvider
             'stw-listing.filters' => ListingFilters::class,
             'stw-listing.filters-mobile' => ListingFiltersMobile::class,
             'stw-listing.pagination' => ListingPagination::class,
+            'stw-listing.pagination-size' => ListingPaginationSize::class,
             'stw-listing.search' => ListingSearch::class,
             'stw-listing.sorters' => ListingSorters::class,
         ];
