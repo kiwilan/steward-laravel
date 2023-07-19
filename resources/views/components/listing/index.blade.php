@@ -2,9 +2,9 @@
 
 <div>
   @if ($filterable)
-    <x-listing.filters-mobile>
+    <x-stw-listing.filters-mobile>
       {{ $filters }}
-    </x-listing.filters-mobile>
+    </x-stw-listing.filters-mobile>
   @endif
 
   <main>
@@ -20,7 +20,7 @@
         @endisset
       </div>
 
-      <x-listing.sorters class="mt-3 sm:mt-0">
+      <x-stw-listing.sorters class="mt-3 sm:mt-0">
         @if ($sortable)
           <livewire:listing.option.sorter
             name="sort"
@@ -30,7 +30,7 @@
           />
         @endif
         {{ $sorters }}
-      </x-listing.sorters>
+      </x-stw-listing.sorters>
     </div>
 
     <section
@@ -46,13 +46,13 @@
 
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
         @if ($filterable)
-          <x-listing.filters>
+          <x-stw-listing.filters>
             {{ $filters }}
-          </x-listing.filters>
+          </x-stw-listing.filters>
         @endif
         <div class="{{ $filterable ? 'lg:col-span-3' : 'lg:col-span-4' }}">
           @if ($searchable)
-            <x-listing.search class="pb-5" />
+            <x-stw-listing.search class="pb-5" />
           @endif
           <div class="listing">
             {{ $slot }}
@@ -62,7 +62,7 @@
 
       @if ($paginate)
         <div class="mt-16">
-          <x-listing.pagination-size :options="$paginationSizeOptions" />
+          <x-stw-listing.pagination-size :options="$paginationSizeOptions" />
           {{ $paginate->onEachSide(2)->links() }}
         </div>
       @endif
