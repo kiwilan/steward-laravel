@@ -73,7 +73,7 @@
           }"
           x-cloak
         >
-          <livewire:listing.option.clear />
+          <livewire:stw-listing.option.clear />
           {{ $slot }}
         </form>
       </div>

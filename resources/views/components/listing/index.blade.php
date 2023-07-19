@@ -22,7 +22,7 @@
 
       <x-stw-listing.sorters class="mt-3 sm:mt-0">
         @if ($sortable)
-          <livewire:listing.option.sorter
+          <livewire:stw-listing.option.sorter
             name="sort"
             label="Sort"
             :options="$sortable"

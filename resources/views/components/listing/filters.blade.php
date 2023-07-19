@@ -1,7 +1,7 @@
 <div {{ $attributes->merge([
     'class' => 'hidden lg:block',
 ]) }}>
-  <livewire:listing.option.clear />
+  <livewire:stw-listing.option.clear />
   <form id="filters">
     {{ $slot }}
   </form>

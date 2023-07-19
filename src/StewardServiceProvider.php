@@ -37,6 +37,8 @@ use Kiwilan\Steward\Components\Listing\Search as ListingSearch;
 use Kiwilan\Steward\Components\Listing\Sorters as ListingSorters;
 use Kiwilan\Steward\Http\Livewire\Field\FieldEditor;
 use Kiwilan\Steward\Http\Livewire\Field\FieldTiptap;
+use Kiwilan\Steward\Http\Livewire\Listing\Option\Clear as ListingOptionClear;
+use Kiwilan\Steward\Http\Livewire\Listing\Option\Sorter as ListingOptionSorter;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -130,6 +132,8 @@ class StewardServiceProvider extends PackageServiceProvider
             if (class_exists(Livewire::class)) {
                 // Livewire::component('stw-field-editor', FieldEditor::class); // <livewire:stw-field-editor wire:model="about" />
                 Livewire::component('stw-field.tiptap', FieldTiptap::class); // <livewire:stw-field.tiptap wire:model="content" />
+                Livewire::component('stw-listing.option.clear', ListingOptionClear::class); // <livewire:stw-listing.option.clear />
+                Livewire::component('stw-listing.option.sorter', ListingOptionSorter::class); // <livewire:stw-listing.option.sorter />
             }
         });
     }
