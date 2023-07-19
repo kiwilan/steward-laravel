@@ -1,7 +1,7 @@
 {
     "name": "@kiwilan/steward-laravel",
     "type": "module",
-    "version": "0.1.17",
+    "version": "0.1.18",
     "description": "Plugin for kiwilan/steward-laravel.",
     "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
     "license": "MIT",
@@ -38,14 +38,18 @@
         "clean": "rimraf dist",
         "local": "rm -f ~/kiwilan-steward-laravel-*.tgz || true && mv ./kiwilan-steward-laravel-*.tgz ~/kiwilan-steward-laravel-*.tgz",
         "package": "npm run clean && npm run build && npm pack && npm run local",
-        "deploy": "npm run clean && npm run build && npm pack --dry-run && npm publish --access public"
+        "release": "npm run clean && npm run build && npm pack --dry-run && npm publish --access public"
     },
     "peerDependencies": {
-        "alpinejs": "3.x",
+        "alpinejs": "3.x"
+    },
+    "optionalDependencies": {
         "vanilla-cookieconsent": "3.x"
     },
     "devDependencies": {
+        "@antfu/eslint-config": "^0.39.8",
         "@types/alpinejs": "^3.7.1",
+        "eslint": "^8.45.0",
         "rimraf": "^5.0.0",
         "tsup": "^6.7.0",
         "typescript": "^5.0.4"

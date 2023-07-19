@@ -33,7 +33,7 @@ function deleteCookies(name: string) {
 }
 
 function matomo() {
-  let config = {
+  const config = {
     // @ts-expect-error - global variable
     cookieName: window.hasOwnProperty('gdprCookieName') ? window.gdprCookieName : 'cc_cookie',
     // @ts-expect-error - global variable
@@ -42,9 +42,9 @@ function matomo() {
     matomoId: window.hasOwnProperty('gdprMatomoSiteId') ? window.gdprMatomoSiteId : 1,
   }
 
-  let consent = getCookie(config.cookieName)
-  let domain = `${config.matomoDomain}/`
-  let id = config.matomoId
+  const consent = getCookie(config.cookieName)
+  const domain = `${config.matomoDomain}/`
+  const id = config.matomoId
 
   if (consent && consent.categories && consent.categories.includes('analytics')) {
     const _paq = window._paq = window._paq || []
