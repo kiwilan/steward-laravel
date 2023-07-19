@@ -1,9 +1,9 @@
 <div class="tiptap group relative">
   <div class="flex">
     <button
+      class="relative z-20 ml-auto rounded-md px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-800"
       type="button"
       wire:click="togglePreview"
-      class="relative z-20 ml-auto rounded-md py-1 px-2 hover:bg-gray-100 dark:hover:bg-gray-800"
     >
       @if ($preview)
         Editor
@@ -18,7 +18,7 @@
         'opacity-0' => $preview,
         'opacity-100' => !$preview,
     ])>
-      <x-field.tiptap wire:model="content" />
+      {{-- <x-field.tiptap wire:model="content" /> --}}
     </div>
     <div @class([
         'transition-opacity absolute inset-0 border tiptap-border rounded-md p-2 mt-1 tiptap-bg prose dark:prose-invert max-w-full',

@@ -28,7 +28,14 @@ use Kiwilan\Steward\Components\Field\FieldSelect;
 use Kiwilan\Steward\Components\Field\FieldText;
 use Kiwilan\Steward\Components\Field\FieldToggle;
 use Kiwilan\Steward\Components\Field\FieldUploadFile;
+use Kiwilan\Steward\Components\Listing\Filters as ListingFilters;
+use Kiwilan\Steward\Components\Listing\FiltersMobile as ListingFiltersMobile;
+use Kiwilan\Steward\Components\Listing\Index as Listing;
+use Kiwilan\Steward\Components\Listing\Pagination as ListingPagination;
+use Kiwilan\Steward\Components\Listing\Search as ListingSearch;
+use Kiwilan\Steward\Components\Listing\Sorters as ListingSorters;
 use Kiwilan\Steward\Http\Livewire\Field\FieldEditor;
+use Kiwilan\Steward\Http\Livewire\Field\FieldTiptap;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -71,7 +78,7 @@ class StewardServiceProvider extends PackageServiceProvider
     {
         $this->registerDirective();
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views/', 'steward');
+        $this->loadViewsFrom(__DIR__.'/../resources/views/components', 'steward');
 
         $this->configureComponents();
 
@@ -100,6 +107,12 @@ class StewardServiceProvider extends PackageServiceProvider
             'stw-field.text' => FieldText::class,
             'stw-field.toggle' => FieldToggle::class,
             'stw-field.upload-file' => FieldUploadFile::class,
+            'stw-listing' => Listing::class,
+            'stw-listing.filters' => ListingFilters::class,
+            'stw-listing.filters-mobile' => ListingFiltersMobile::class,
+            'stw-listing.pagination' => ListingPagination::class,
+            'stw-listing.search' => ListingSearch::class,
+            'stw-listing.sorters' => ListingSorters::class,
         ];
 
         $this->callAfterResolving(BladeCompiler::class, function () use ($components) {
@@ -114,6 +127,7 @@ class StewardServiceProvider extends PackageServiceProvider
         $this->app->afterResolving(BladeCompiler::class, function () {
             if (class_exists(Livewire::class)) {
                 // Livewire::component('stw-field-editor', FieldEditor::class); // <livewire:stw-field-editor wire:model="about" />
+                Livewire::component('stw-field.tiptap', FieldTiptap::class); // <livewire:stw-field.tiptap wire:model="content" />
             }
         });
     }
