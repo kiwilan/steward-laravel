@@ -10,6 +10,6 @@ class PaginationSize extends Component
 {
     public function render(): Closure|View|string
     {
-        return view('components.listing.pagination-size');
+        return view('steward::components.listing.pagination-size');
     }
 }

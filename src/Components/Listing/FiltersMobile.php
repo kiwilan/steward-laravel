@@ -10,6 +10,6 @@ class FiltersMobile extends Component
 {
     public function render(): Closure|View|string
     {
-        return view('components.listing.filters-mobile');
+        return view('steward::components.listing.filters-mobile');
     }
 }

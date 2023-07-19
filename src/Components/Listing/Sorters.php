@@ -10,6 +10,6 @@ class Sorters extends Component
 {
     public function render(): Closure|View|string
     {
-        return view('components.listing.sorters');
+        return view('steward::components.listing.sorters');
     }
 }

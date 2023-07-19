@@ -17,7 +17,7 @@ class Index extends Component
     ];
 
     public function __construct(
-        public string $title,
+        public string $title = 'Title',
         public ?string $subtitle = null,
         public bool $filterable = true,
         public array|false $sortable = false,
@@ -37,7 +37,7 @@ class Index extends Component
         $name = Str::slug($this->title);
         $this->paginationSizeOptions = config('steward.livewire.pagination.options') ?? self::SIZES;
 
-        return view('components.listing.index', [
+        return view('steward::components.listing.index', [
             'name' => $name,
         ]);
     }

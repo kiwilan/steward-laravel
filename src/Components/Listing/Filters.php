@@ -10,6 +10,6 @@ class Filters extends Component
 {
     public function render(): Closure|View|string
     {
-        return view('components.listing.filters');
+        return view('steward::components.listing.filters');
     }
 }

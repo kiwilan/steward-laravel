@@ -10,6 +10,6 @@ class Pagination extends Component
 {
     public function render(): Closure|View|string
     {
-        return view('components.listing.pagination');
+        return view('steward::components.listing.pagination');
     }
 }

@@ -10,6 +10,6 @@ class Search extends Component
 {
     public function render(): Closure|View|string
     {
-        return view('components.listing.search');
+        return view('steward::components.listing.search');
     }
 }
