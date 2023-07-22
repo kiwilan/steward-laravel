@@ -86,7 +86,7 @@ trait LazyEnum
     /**
      * Get Enum list [case] => [locale].
      */
-    public static function toArray(): array
+    public static function toArray(bool $sort = true): array
     {
         $array = [];
         $base = static::getLocaleBaseName();
@@ -97,7 +97,10 @@ trait LazyEnum
                 ? __($locale)
                 : ucfirst($definition->value);
         }
-        asort($array);
+
+        if ($sort) {
+            asort($array);
+        }
 
         return $array;
     }
