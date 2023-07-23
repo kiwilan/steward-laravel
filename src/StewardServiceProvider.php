@@ -22,6 +22,7 @@ use Kiwilan\Steward\Commands\Submission\SubmissionSendCommand;
 use Kiwilan\Steward\Commands\TagCleanCommand;
 use Kiwilan\Steward\Components\BladeApp;
 use Kiwilan\Steward\Components\Button;
+use Kiwilan\Steward\Components\ColorMode;
 use Kiwilan\Steward\Components\Field\FieldCheckbox;
 use Kiwilan\Steward\Components\Field\FieldRichEditor;
 use Kiwilan\Steward\Components\Field\FieldSelect;
@@ -105,6 +106,7 @@ class StewardServiceProvider extends PackageServiceProvider
         $components = [
             'stw-app' => BladeApp::class,
             'stw-button' => Button::class,
+            'stw-color-mode' => ColorMode::class,
             'stw-field.checkbox' => FieldCheckbox::class,
             'stw-field.rich-editor' => FieldRichEditor::class,
             'stw-field.select' => FieldSelect::class,
