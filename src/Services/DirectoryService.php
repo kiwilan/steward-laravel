@@ -9,18 +9,8 @@ use RecursiveIteratorIterator;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-/**
- * Clear directories.
- *
- * @property string[] $path   Paths to clear
- * @property string[] $ignore Files to ignore
- */
 class DirectoryService
 {
-    protected function __construct(
-    ) {
-    }
-
     /**
      * Create a new DirectoryService instance.
      */
@@ -32,9 +22,9 @@ class DirectoryService
     /**
      * Parse files in directory (recursive).
      */
-    public function parse(string $directory): array
+    public function parse(string $directory): Generator
     {
-        return (array) $this->parseDirectory($directory);
+        return $this->parseDirectory($directory);
     }
 
     /**
