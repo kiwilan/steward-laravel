@@ -17,6 +17,7 @@
   <svg
     class="h-5 w-5 text-gray-300"
     x-show="isDark"
+    x-cloak
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -32,6 +33,7 @@
   <svg
     class="h-5 w-5 text-gray-700"
     x-show="!isDark"
+    x-cloak
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
