@@ -43,6 +43,17 @@ class LiveNotifyItem
     }
 
     /**
+     * Set notification icon.
+     */
+    public function icon(string $icon, string $iconColor = 'primary'): self
+    {
+        $this->icon = $icon;
+        $this->iconColor = $iconColor;
+
+        return $this;
+    }
+
+    /**
      * Preset notification as success.
      */
     public function success(): void
