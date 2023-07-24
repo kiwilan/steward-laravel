@@ -14,9 +14,9 @@ use Livewire\TemporaryUploadedFile;
  *   'gallery' => $this->gallery,
  * ];
  *
- * $this->beforeLiveUpload($images);
- * $this->liveValidate();
- * $this->liveUpload($images);
+ * $this->uploadConfig($images);
+ * $this->validator();
+ * $this->uploading($images);
  * ```
  */
 trait LiveUpload
@@ -38,7 +38,7 @@ trait LiveUpload
     /**
      * Handle upload before validation.
      */
-    protected function beforeLiveUpload(array $fields)
+    protected function uploadConfig(array $fields)
     {
         foreach ($fields as $field => $value) {
             $this->toValidate[$field] = null;
@@ -69,7 +69,7 @@ trait LiveUpload
      *
      * @param  array<string, mixed>  $fields
      */
-    protected function liveUpload(array $fields)
+    protected function uploading(array $fields)
     {
         foreach ($fields as $field => $value) {
             $this->saveToModel($field);

@@ -9,7 +9,7 @@ use Kiwilan\Steward\Services\Datayable\DatayableItem;
  */
 trait LiveJsonsable
 {
-    use LiveValidate;
+    use LiveValidator;
 
     public array $jsonsableJson = [];
 
