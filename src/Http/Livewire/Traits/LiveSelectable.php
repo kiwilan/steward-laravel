@@ -4,7 +4,10 @@ namespace Kiwilan\Steward\Http\Livewire\Traits;
 
 use Illuminate\Support\Collection;
 
-trait Selectable
+/**
+ * `Livewire\Component` trait to live selectable property.
+ */
+trait LiveSelectable
 {
     public function selected(mixed $data)
     {

@@ -3,19 +3,20 @@
 namespace Kiwilan\Steward\Http\Livewire\Traits;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Find current authenticatable if exists.
+ * `Livewire\Component` trait to find auth user.
  *
- * @property Authenticatable|User|null $auth
+ * @property Authenticatable|Model|null $auth
  *
- * @method Authenticatable|User|null auth()
+ * @method Authenticatable|Model|null auth()
  */
 trait LiveAuth
 {
-    public Authenticatable|User|null $auth;
+    public Authenticatable|Model|null $auth;
 
     public function initializeLiveAuth()
     {
@@ -38,7 +39,7 @@ trait LiveAuth
         $this->auth = $auth;
     }
 
-    public function auth(): Authenticatable|User|null
+    public function auth(): Authenticatable|Model|null
     {
         return $this->auth;
     }

@@ -5,9 +5,14 @@ namespace Kiwilan\Steward\Http\Livewire\Traits;
 use Closure;
 use Illuminate\Validation\Validator;
 
-trait LiveValidator
+/**
+ * `Livewire\Component` trait to validate form.
+ */
+trait LiveValidate
 {
-    public function liveValidate(Closure $callback = null): array
+    use LiveNotify;
+
+    public function validate(Closure $callback = null): array
     {
         return $this->withValidator(
             fn (Validator $validator) => $validator->after(
@@ -29,10 +34,10 @@ trait LiveValidator
             if ($callback) {
                 $callback($messages);
             } else {
-                $this->notify(
-                    success: false,
-                    message: $messages,
-                );
+                $this->notify($messages)
+                    ->error()
+                    ->send()
+                ;
             }
         }
     }

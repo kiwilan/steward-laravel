@@ -1,11 +1,11 @@
 <?php
 
-namespace Kiwilan\Steward\Traits;
+namespace Kiwilan\Steward\Http\Livewire\Traits;
 
 use Illuminate\Support\Facades\Session;
 
 /**
- * For Livewire component with model uses LiveFiltering.
+ * `Livewire\Component` trait to handle live listing. To use with model have trait `Kiwilan\Steward\Traits\LiveModelQueryable`.
  */
 trait LiveListing
 {

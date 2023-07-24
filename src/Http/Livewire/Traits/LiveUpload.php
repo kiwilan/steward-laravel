@@ -6,14 +6,14 @@ use Illuminate\Support\Facades\File;
 use Livewire\TemporaryUploadedFile;
 
 /**
- * Handle uploads with livewire.
+ * `Livewire\Component` trait to handle uploads.
  *
  * ```
  * $images = [
  *   'profile_background' => $this->profile_background,
  *   'gallery' => $this->gallery,
  * ];
-
+ *
  * $this->beforeLiveUpload($images);
  * $this->liveValidate();
  * $this->liveUpload($images);

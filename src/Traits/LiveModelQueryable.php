@@ -10,7 +10,7 @@ use ReflectionClass;
 /**
  * For model that use Livewire for listing with LiveListing.
  */
-trait LiveQueryable
+trait LiveModelQueryable
 {
     public function scopeLiveFilter(Builder $query, array $filters, ?array $configuration = []): Builder
     {

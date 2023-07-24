@@ -2,7 +2,10 @@
 
 namespace Kiwilan\Steward\Http\Livewire\Traits;
 
-trait AutoUpdatable
+/**
+ * `Livewire\Component` trait to live validate property.
+ */
+trait LiveAutoUpdatable
 {
     public function updated($propertyName)
     {

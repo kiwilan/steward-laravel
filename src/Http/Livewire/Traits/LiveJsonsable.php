@@ -4,9 +4,12 @@ namespace Kiwilan\Steward\Http\Livewire\Traits;
 
 use Kiwilan\Steward\Services\Datayable\DatayableItem;
 
-trait Jsonsable
+/**
+ * `Livewire\Component` trait to use JSON property.
+ */
+trait LiveJsonsable
 {
-    use LiveValidator;
+    use LiveValidate;
 
     public array $jsonsableJson = [];
 

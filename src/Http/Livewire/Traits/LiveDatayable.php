@@ -4,7 +4,10 @@ namespace Kiwilan\Steward\Http\Livewire\Traits;
 
 use Kiwilan\Steward\Services\Datayable\DatayableService;
 
-trait Datayable
+/**
+ * `Livewire\Component` trait to use datayable service.
+ */
+trait LiveDatayable
 {
     use LiveAuth;
 
