@@ -8,11 +8,11 @@ use Illuminate\Validation\Validator;
 /**
  * `Livewire\Component` trait to validate form.
  */
-trait LiveValidate
+trait LiveValidator
 {
     use LiveNotify;
 
-    public function validate(Closure $callback = null): array
+    public function validator(Closure $callback = null): array
     {
         return $this->withValidator(
             fn (Validator $validator) => $validator->after(
@@ -36,7 +36,6 @@ trait LiveValidate
             } else {
                 $this->notify($messages)
                     ->error()
-                    ->send()
                 ;
             }
         }

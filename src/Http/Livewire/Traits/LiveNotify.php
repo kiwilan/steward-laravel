@@ -26,7 +26,7 @@ class LiveNotifyItem
 {
     public function __construct(
         protected string $title = 'Information',
-        protected string $message = 'Notification message',
+        protected ?string $message = 'Notification message',
         protected string $icon = 'heroicon-o-information-circle',
         protected string $iconColor = 'primary',
     ) {
@@ -45,27 +45,27 @@ class LiveNotifyItem
     /**
      * Preset notification as success.
      */
-    public function success(): self
+    public function success(): void
     {
         $this->title = 'Saved successfully';
         $this->message = 'Your changes have been saved.';
         $this->icon = 'heroicon-o-check-circle';
         $this->iconColor = 'success';
 
-        return $this;
+        $this->send();
     }
 
     /**
      * Preset notification as error.
      */
-    public function error(): self
+    public function error(): void
     {
         $this->title = 'An error occurred';
         $this->message = 'Please try again.';
         $this->icon = 'heroicon-o-exclamation-circle';
         $this->iconColor = 'danger';
 
-        return $this;
+        $this->send();
     }
 
     /**
