@@ -50,10 +50,8 @@ jobs:
       - name: Create .env
         run: |
           touch .env
-          echo API_ENDPOINT="https://xxx.execute-api.us-west-2.amazonaws.com" >> .env
           echo STEWARD_NOTIFY_DISCORD=${{ secrets.STEWARD_NOTIFY_DISCORD }} >> .env
           echo STEWARD_NOTIFY_SLACK=${{ secrets.STEWARD_NOTIFY_SLACK }} >> .env
-          cat .env
 
       - name: Execute tests
         run: vendor/bin/pest
