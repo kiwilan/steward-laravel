@@ -12,6 +12,9 @@
     {{ $head }}
   @endisset
 
+  @if ($dark)
+    @darkMode
+  @endif
   @stack('head')
 </head>
 

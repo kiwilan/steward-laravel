@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Utils;
 class NavigationItem
 {
     public function __construct(
-        public ?string $title = null,
+        public ?string $label = null,
         public ?string $route = null,
         public ?string $active = null,
         public ?string $icon = null,
