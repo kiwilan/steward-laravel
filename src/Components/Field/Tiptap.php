@@ -4,15 +4,16 @@ namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldToggle extends Component
+class Tiptap extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $name = 'toggle',
-        public ?string $hint = null,
+        public string $name = 'editor',
         public string $label = '',
+        public array $options = [],
+        public bool $footer = false,
     ) {
     }
 
@@ -23,6 +24,6 @@ class FieldToggle extends Component
      */
     public function render()
     {
-        return view('steward::components.field.toggle');
+        return view('steward::components.field.tiptap');
     }
 }

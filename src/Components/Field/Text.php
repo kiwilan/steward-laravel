@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldText extends Component
+class Text extends Component
 {
     /**
      * Create a new component instance.

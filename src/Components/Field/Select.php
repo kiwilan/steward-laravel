@@ -4,16 +4,16 @@ namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldTiptap extends Component
+class Select extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $name = 'editor',
+        public string $name = 'select',
         public string $label = '',
+        public ?string $default = null,
         public array $options = [],
-        public bool $footer = false,
     ) {
     }
 
@@ -24,6 +24,10 @@ class FieldTiptap extends Component
      */
     public function render()
     {
-        return view('steward::components.field.tiptap');
+        if ($this->default) {
+            array_unshift($this->options, $this->default);
+        }
+
+        return view('steward::components.field.select');
     }
 }

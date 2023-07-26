@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Tests\Views\Field;
 
-use Kiwilan\Steward\Components\Field\FieldRichEditor;
 use Kiwilan\Steward\Tests\TestCase;
 
 it('have package name', function () {
@@ -17,7 +16,7 @@ it('have package name', function () {
 
 it('can be render', function () {
     /** @var TestCase $this */
-    $view = $this->component(FieldRichEditor::class, [
+    $view = $this->component(\Kiwilan\Steward\Components\Field\RichEditor::class, [
         'label' => 'Editor',
     ]);
     $view->assertSee('Editor');

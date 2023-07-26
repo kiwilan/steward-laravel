@@ -7,8 +7,7 @@ use Mockery\MockInterface;
 use function Pest\Laravel\partialMock;
 
 it('have package name', function () {
-    /** @var TestCase $this */
-    $renderedView = (string) $this->blade('<x-stw-button />');
+    $renderedView = (string) blade('<x-stw-button />');
     expect($renderedView)->toBeString();
 });
 

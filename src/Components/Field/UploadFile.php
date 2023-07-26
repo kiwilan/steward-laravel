@@ -4,16 +4,18 @@ namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldSelect extends Component
+class UploadFile extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $name = 'select',
-        public string $label = '',
-        public ?string $default = null,
-        public array $options = [],
+        public ?string $name = 'file',
+        public ?string $label = null,
+        public bool $multiple = false,
+        public ?string $accept = 'image/jpeg,image/png,image/webp',
+        public ?string $accepted = null,
+        public ?string $size = '1MB',
     ) {
     }
 
@@ -24,10 +26,6 @@ class FieldSelect extends Component
      */
     public function render()
     {
-        if ($this->default) {
-            array_unshift($this->options, $this->default);
-        }
-
-        return view('steward::components.field.select');
+        return view('steward::components.field.upload-file');
     }
 }

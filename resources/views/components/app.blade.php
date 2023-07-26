@@ -2,149 +2,24 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-  <meta charset="UTF-8">
-  <meta
-    http-equiv="X-UA-Compatible"
-    content="IE=edge"
-  >
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
-  <meta
-    name="csrf-token"
-    content="{{ csrf_token() }}"
-  >
+  <x-stw-head-meta
+    :dark="$dark"
+    :tile="$tile"
+    :theme="$theme"
+  />
 
-  @if ($darkMode)
-    <link
-      type="image/x-icon"
-      href="{{ asset('/favicon.svg') }}"
-      rel="shortcut icon"
-      media="(prefers-color-scheme: light)"
-    >
-    <link
-      type="image/x-icon"
-      href="{{ asset('/favicon-dark.svg') }}"
-      rel="shortcut icon"
-      media="(prefers-color-scheme: dark)"
-    >
-  @else
-    <link
-      type="image/png"
-      href="/favicon-32x32.png"
-      rel="icon"
-      sizes="32x32"
-    >
-    <link
-      type="image/png"
-      href="/favicon-16x16.png"
-      rel="icon"
-      sizes="16x16"
-    >
-  @endif
-  <link
-    href="{{ asset('/apple-touch-icon.png') }}"
-    rel="apple-touch-icon"
-    sizes="180x180"
-  >
-  <link
-    href="/site.webmanifest"
-    rel="manifest"
-  >
-
-  <link
-    type="image/png"
-    href="{{ asset('/favicon-16x16.png') }}"
-    rel="icon"
-    sizes="16x16"
-  >
-  <meta
-    name="msapplication-TileColor"
-    content="{{ $tile }}"
-  >
-  <meta
-    name="theme-color"
-    content="{{ $theme }}"
-  >
-
-  @if ($darkMode)
-    <link
-      type="image/x-icon"
-      href="{{ asset('/favicon.svg') }}"
-      rel="shortcut icon"
-      media="(prefers-color-scheme: light)"
-    >
-    <link
-      type="image/x-icon"
-      href="{{ asset('/favicon-dark.svg') }}"
-      rel="shortcut icon"
-      media="(prefers-color-scheme: dark)"
-    >
-  @else
-    <link
-      type="image/png"
-      href="/favicon-32x32.png"
-      rel="icon"
-      sizes="32x32"
-    >
-    <link
-      type="image/png"
-      href="/favicon-16x16.png"
-      rel="icon"
-      sizes="16x16"
-    >
-  @endif
-
-  @stack('head')
-
-  @if ($title)
-    {{ $title }}
-  @elseif ($seo)
-    {!! SEO::generate() !!}
-  @else
-    @if ($inertia)
-      <title inertia>{{ config('app.name', 'Laravel') }}</title>
-    @else
-      <title>{{ config('app.name', 'Laravel') }}</title>
-    @endif
+  @isset($head)
+    {{ $head }}
   @endisset
 
-  @steward
-
-  @if ($darkMode)
-    @darkMode
-  @endif
-
-  @if ($routes)
-    @routes
-  @endif
-
-  @if ($vite)
-    @vite($vite)
-  @endif
-
-  @if ($inertia)
-    @inertiaHead
-  @endif
-
-  @if ($livewire)
-    @livewireStyles
-  @endif
+  @stack('head')
 </head>
 
 <body class="{{ config('app.env') === 'local' ? 'debug-screens' : '' }} font-sans antialiased">
-@if ($inertia)
-  @inertia
-@endif
-{{ $slot }}
-@stack('modals')
+  {{ $slot }}
 
-@stack('scripts')
-@if ($livewire)
-  @livewire('notifications')
-  @livewireScripts
-@endif
+  @stack('modals')
+  @stack('scripts')
 </body>
 
 </html>

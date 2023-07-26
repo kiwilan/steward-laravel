@@ -4,18 +4,15 @@ namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldUploadFile extends Component
+class Checkbox extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public ?string $name = 'file',
-        public ?string $label = null,
-        public bool $multiple = false,
-        public ?string $accept = 'image/jpeg,image/png,image/webp',
-        public ?string $accepted = null,
-        public ?string $size = '1MB',
+        public string $name = 'checkbox',
+        public string $label = '',
+        public bool $checked = false,
     ) {
     }
 
@@ -26,6 +23,6 @@ class FieldUploadFile extends Component
      */
     public function render()
     {
-        return view('steward::components.field.upload-file');
+        return view('steward::components.field.checkbox');
     }
 }

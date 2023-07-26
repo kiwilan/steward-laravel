@@ -5,42 +5,6 @@ namespace Kiwilan\Steward;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
-use Kiwilan\Steward\Commands\ClearFreshCommand;
-use Kiwilan\Steward\Commands\Filament\FilamentConfigCommand;
-use Kiwilan\Steward\Commands\LighthouseCommand;
-use Kiwilan\Steward\Commands\Log\LogClearCommand;
-use Kiwilan\Steward\Commands\MediaCleanCommand;
-use Kiwilan\Steward\Commands\NotifyCommand;
-use Kiwilan\Steward\Commands\Optimize\OptimizeFeshCommand;
-use Kiwilan\Steward\Commands\Publish\PublishCommand;
-use Kiwilan\Steward\Commands\Publish\PublishScheduledCommand;
-use Kiwilan\Steward\Commands\RoutePrintCommand;
-use Kiwilan\Steward\Commands\Scout\ScoutFreshCommand;
-use Kiwilan\Steward\Commands\Scout\ScoutListCommand;
-use Kiwilan\Steward\Commands\Submission\SubmissionGdprCommand;
-use Kiwilan\Steward\Commands\Submission\SubmissionSendCommand;
-use Kiwilan\Steward\Commands\TagCleanCommand;
-use Kiwilan\Steward\Components\BladeApp;
-use Kiwilan\Steward\Components\Button;
-use Kiwilan\Steward\Components\ColorMode;
-use Kiwilan\Steward\Components\Field\FieldCheckbox;
-use Kiwilan\Steward\Components\Field\FieldRichEditor;
-use Kiwilan\Steward\Components\Field\FieldSelect;
-use Kiwilan\Steward\Components\Field\FieldText;
-use Kiwilan\Steward\Components\Field\FieldToggle;
-use Kiwilan\Steward\Components\Field\FieldUploadFile;
-use Kiwilan\Steward\Components\Listing\Filters as ListingFilters;
-use Kiwilan\Steward\Components\Listing\FiltersMobile as ListingFiltersMobile;
-use Kiwilan\Steward\Components\Listing\Index as Listing;
-use Kiwilan\Steward\Components\Listing\Pagination as ListingPagination;
-use Kiwilan\Steward\Components\Listing\PaginationSize as ListingPaginationSize;
-use Kiwilan\Steward\Components\Listing\Search as ListingSearch;
-use Kiwilan\Steward\Components\Listing\Sorters as ListingSorters;
-use Kiwilan\Steward\Http\Livewire\Field\FieldEditor;
-use Kiwilan\Steward\Http\Livewire\Field\FieldTiptap;
-use Kiwilan\Steward\Http\Livewire\Listing\Option\Clear as ListingOptionClear;
-use Kiwilan\Steward\Http\Livewire\Listing\Option\Filter as ListingOptionFilter;
-use Kiwilan\Steward\Http\Livewire\Listing\Option\Sorter as ListingOptionSorter;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -60,21 +24,21 @@ class StewardServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasTranslations()
             ->hasCommands([
-                FilamentConfigCommand::class,
-                LighthouseCommand::class,
-                LogClearCommand::class,
-                MediaCleanCommand::class,
-                NotifyCommand::class,
-                PublishCommand::class,
-                PublishScheduledCommand::class,
-                RoutePrintCommand::class,
-                ScoutFreshCommand::class,
-                ScoutListCommand::class,
-                SubmissionGdprCommand::class,
-                SubmissionSendCommand::class,
-                TagCleanCommand::class,
-                OptimizeFeshCommand::class,
-                ClearFreshCommand::class,
+                \Kiwilan\Steward\Commands\Filament\FilamentConfigCommand::class,
+                \Kiwilan\Steward\Commands\LighthouseCommand::class,
+                \Kiwilan\Steward\Commands\Log\LogClearCommand::class,
+                \Kiwilan\Steward\Commands\MediaCleanCommand::class,
+                \Kiwilan\Steward\Commands\NotifyCommand::class,
+                \Kiwilan\Steward\Commands\Publish\PublishCommand::class,
+                \Kiwilan\Steward\Commands\Publish\PublishScheduledCommand::class,
+                \Kiwilan\Steward\Commands\RoutePrintCommand::class,
+                \Kiwilan\Steward\Commands\Scout\ScoutFreshCommand::class,
+                \Kiwilan\Steward\Commands\Scout\ScoutListCommand::class,
+                \Kiwilan\Steward\Commands\Submission\SubmissionGdprCommand::class,
+                \Kiwilan\Steward\Commands\Submission\SubmissionSendCommand::class,
+                \Kiwilan\Steward\Commands\TagCleanCommand::class,
+                \Kiwilan\Steward\Commands\Optimize\OptimizeFeshCommand::class,
+                \Kiwilan\Steward\Commands\ClearFreshCommand::class,
             ])
         ;
     }
@@ -104,22 +68,24 @@ class StewardServiceProvider extends PackageServiceProvider
     private function configureComponents()
     {
         $components = [
-            'stw-app' => BladeApp::class,
-            'stw-button' => Button::class,
-            'stw-color-mode' => ColorMode::class,
-            'stw-field.checkbox' => FieldCheckbox::class,
-            'stw-field.rich-editor' => FieldRichEditor::class,
-            'stw-field.select' => FieldSelect::class,
-            'stw-field.text' => FieldText::class,
-            'stw-field.toggle' => FieldToggle::class,
-            'stw-field.upload-file' => FieldUploadFile::class,
-            'stw-listing' => Listing::class,
-            'stw-listing.filters' => ListingFilters::class,
-            'stw-listing.filters-mobile' => ListingFiltersMobile::class,
-            'stw-listing.pagination' => ListingPagination::class,
-            'stw-listing.pagination-size' => ListingPaginationSize::class,
-            'stw-listing.search' => ListingSearch::class,
-            'stw-listing.sorters' => ListingSorters::class,
+            'stw-app' => \Kiwilan\Steward\Components\BladeApp::class,
+            'stw-button' => \Kiwilan\Steward\Components\Button::class,
+            'stw-dropdown' => \Kiwilan\Steward\Components\Dropdown::class,
+            'stw-color-mode' => \Kiwilan\Steward\Components\ColorMode::class,
+            'stw-field.checkbox' => \Kiwilan\Steward\Components\Field\Checkbox::class,
+            'stw-field.rich-editor' => \Kiwilan\Steward\Components\Field\RichEditor::class,
+            'stw-field.select' => \Kiwilan\Steward\Components\Field\Select::class,
+            'stw-field.text' => \Kiwilan\Steward\Components\Field\Text::class,
+            'stw-field.toggle' => \Kiwilan\Steward\Components\Field\Toggle::class,
+            'stw-field.upload-file' => \Kiwilan\Steward\Components\Field\UploadFile::class,
+            'stw-listing' => \Kiwilan\Steward\Components\Listing\Index::class,
+            'stw-listing.filters' => \Kiwilan\Steward\Components\Listing\Filters::class,
+            'stw-listing.filters-mobile' => \Kiwilan\Steward\Components\Listing\FiltersMobile::class,
+            'stw-listing.pagination' => \Kiwilan\Steward\Components\Listing\Pagination::class,
+            'stw-listing.pagination-size' => \Kiwilan\Steward\Components\Listing\PaginationSize::class,
+            'stw-listing.search' => \Kiwilan\Steward\Components\Listing\Search::class,
+            'stw-listing.sorters' => \Kiwilan\Steward\Components\Listing\Sorters::class,
+            'stw-head-meta' => \Kiwilan\Steward\Components\HeadMeta::class,
         ];
 
         $this->callAfterResolving(BladeCompiler::class, function () use ($components) {
@@ -133,11 +99,20 @@ class StewardServiceProvider extends PackageServiceProvider
     {
         $this->app->afterResolving(BladeCompiler::class, function () {
             if (class_exists(Livewire::class)) {
-                // Livewire::component('stw-field-editor', FieldEditor::class); // <livewire:stw-field-editor wire:model="about" />
-                Livewire::component('stw-field.tiptap', FieldTiptap::class); // <livewire:stw-field.tiptap wire:model="content" />
-                Livewire::component('stw-listing.option.clear', ListingOptionClear::class); // <livewire:stw-listing.option.clear />
-                Livewire::component('stw-listing.option.sorter', ListingOptionSorter::class); // <livewire:stw-listing.option.sorter />
-                Livewire::component('stw-listing.option.filter', ListingOptionFilter::class); // <livewire:stw-listing.option.filter />
+                $items = [
+                    // <livewire:stw-field.tiptap wire:model="content" />
+                    'stw-field.tiptap' => \Kiwilan\Steward\Http\Livewire\Field\Tiptap::class,
+                    // <livewire:stw-listing.option.clear />
+                    'stw-listing.option.clear' => \Kiwilan\Steward\Http\Livewire\Listing\Option\Clear::class,
+                    // <livewire:stw-listing.option.sorter />
+                    'stw-listing.option.sorter' => \Kiwilan\Steward\Http\Livewire\Listing\Option\Sorter::class,
+                    // <livewire:stw-listing.option.filter />
+                    'stw-listing.option.filter' => \Kiwilan\Steward\Http\Livewire\Listing\Option\Filter::class,
+                ];
+
+                foreach ($items as $name => $class) {
+                    Livewire::component($name, $class);
+                }
             }
         });
     }

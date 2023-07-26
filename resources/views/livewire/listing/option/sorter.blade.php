@@ -11,7 +11,7 @@
       },
   }"
 >
-  <x-dropdown :label="$label">
+  <x-stw-dropdown :label="$label">
     @slot('trigger')
       <button
         class="relative flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-gray-100"
@@ -50,7 +50,7 @@
         @endloop
       </div>
     @endslot
-  </x-dropdown>
+  </x-stw-dropdown>
 
   <div>
     <button

@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldRichEditor extends Component
+class RichEditor extends Component
 {
     /**
      * Create a new component instance.

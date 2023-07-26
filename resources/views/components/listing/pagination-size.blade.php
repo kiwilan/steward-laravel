@@ -1,7 +1,7 @@
 @props(['options' => []])
 
 <div class="relative">
-  <x-dropdown
+  <x-stw-dropdown
     align="left"
     size="sm"
   >
@@ -45,5 +45,5 @@
         @endloop
       </ul>
     @endslot
-  </x-dropdown>
+  </x-stw-dropdown>
 </div>

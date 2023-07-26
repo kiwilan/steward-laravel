@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Http\Livewire\Field;
 
 use Livewire\Component;
 
-class FieldTiptap extends Component
+class Tiptap extends Component
 {
     public string $content = ' ';
 

@@ -4,15 +4,15 @@ namespace Kiwilan\Steward\Components\Field;
 
 use Illuminate\View\Component;
 
-class FieldCheckbox extends Component
+class Toggle extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $name = 'checkbox',
+        public string $name = 'toggle',
+        public ?string $hint = null,
         public string $label = '',
-        public bool $checked = false,
     ) {
     }
 
@@ -23,6 +23,6 @@ class FieldCheckbox extends Component
      */
     public function render()
     {
-        return view('steward::components.field.checkbox');
+        return view('steward::components.field.toggle');
     }
 }
