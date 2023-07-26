@@ -38,6 +38,10 @@ You can publish the config file with:
 php artisan vendor:publish --tag="steward-config"
 ```
 
+## Documentation
+
+See [steward-for-laravel.netlify.app](https://steward-for-laravel.netlify.app) for documentation.
+
 <!-- ### Vite plugin
 
 ```bash
@@ -54,18 +58,6 @@ Check [@kiwilan/vite-plugin-steward-laravel](https://github.com/kiwilan/steward-
 
 ```bash
 composer test
-```
-
-Coverage
-
-```bash
-composer test-coverage
-```
-
-Watch tests
-
-```bash
-composer test:watch
 ```
 
 ## Changelog

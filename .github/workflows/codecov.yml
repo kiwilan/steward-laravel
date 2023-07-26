@@ -31,6 +31,12 @@ jobs:
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction
 
+      - name: Create .env
+        run: |
+          touch .env
+          echo STEWARD_NOTIFY_DISCORD=${{ secrets.STEWARD_NOTIFY_DISCORD }} >> .env
+          echo STEWARD_NOTIFY_SLACK=${{ secrets.STEWARD_NOTIFY_SLACK }} >> .env
+
       - name: Execute tests
         run: vendor/bin/pest --coverage
 
