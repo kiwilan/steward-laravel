@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Class;
+namespace Kiwilan\Steward\Utils;
 
 /**
  * Represent a DownloadFile.

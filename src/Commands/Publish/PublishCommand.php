@@ -4,8 +4,8 @@ namespace Kiwilan\Steward\Commands\Publish;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
-use Kiwilan\Steward\Class\MetaClass;
 use Kiwilan\Steward\Commands\Commandable;
+use Kiwilan\Steward\Utils\MetaClass;
 
 class PublishCommand extends Commandable
 {

@@ -5,9 +5,9 @@ namespace Kiwilan\Steward\Queries;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Kiwilan\Steward\Class\MetaClass;
 use Kiwilan\Steward\StewardConfig;
 use Kiwilan\Steward\Traits\Queryable;
+use Kiwilan\Steward\Utils\MetaClass;
 use ReflectionClass;
 use Spatie\QueryBuilder\QueryBuilder;
 

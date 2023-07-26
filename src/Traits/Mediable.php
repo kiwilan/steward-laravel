@@ -3,8 +3,8 @@
 namespace Kiwilan\Steward\Traits;
 
 use Illuminate\Support\Facades\File;
-use Kiwilan\Steward\Class\MetaClass;
 use Kiwilan\Steward\StewardConfig;
+use Kiwilan\Steward\Utils\MetaClass;
 use stdClass;
 
 trait Mediable

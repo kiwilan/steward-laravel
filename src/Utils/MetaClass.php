@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Class;
+namespace Kiwilan\Steward\Utils;
 
 use Illuminate\Support\Str;
 use ReflectionClass;
