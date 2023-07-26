@@ -11,13 +11,12 @@
 [![codecov][codecov-src]][codecov-href]
 [![netlify][netlify-src]][netlify-href]
 
+> [!WARNING]
+> This package is not fully tested and is not ready for production.
+
 PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application.
 
 <!-- PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application, works with [vite-plugin-steward-laravel](https://www.npmjs.com/package/@kiwilan/vite-plugin-steward-laravel) for front assets. -->
-
-## EXPERIMENTAL
-
-This package is still in development and is not ready for production.
 
 ## Documentation
 

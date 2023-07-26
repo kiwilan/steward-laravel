@@ -7,21 +7,27 @@ export default defineAppConfig({
       twitter: 'ewilanriviere',
       github: 'kiwilan/steward-laravel',
     },
+    github: {
+      dir: '.starters/default/content',
+      branch: 'main',
+      repo: 'docus',
+      owner: 'nuxt-themes',
+      edit: true
+    },
     aside: {
       level: 0,
-      exclude: [],
+      collapsed: false,
+      exclude: []
+    },
+    main: {
+      padded: true,
+      fluid: true
     },
     header: {
       logo: true,
       showLinkIcon: true,
       exclude: [],
-    },
-    footer: {
-      credits: {
-        icon: 'heart',
-        text: 'Powered by Docus, made with ❤️ by Kiwilan',
-        href: 'https://github.com/kiwilan',
-      },
-    },
-  },
+      fluid: true
+    }
+  }
 })

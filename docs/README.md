@@ -15,13 +15,13 @@ npx nuxi init -t themes/docus
 Install dependencies:
 
 ```bash
-pnpm --ignore-workspace install
+yarn install
 ```
 
 ## Development
 
 ```bash
-pnpm dev
+yarn dev
 ```
 
 ## Edge Side Rendering

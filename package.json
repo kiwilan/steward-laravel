@@ -1,6 +1,10 @@
 {
     "name": "@kiwilan/vite-plugin-steward-laravel",
     "scripts": {
+        "docs:dev": "pnpm run --parallel docs:dev",
+        "docs:build": "pnpm recursive run build",
+        "docs:lint": "pnpm recursive run lint",
+        "docs:lint:fix": "pnpm recursive run lint:fix",
         "dev": "pnpm run --parallel dev",
         "build": "pnpm recursive run build",
         "preinstall": "npx only-allow pnpm",
