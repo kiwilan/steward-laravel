@@ -1,4 +1,4 @@
 [build]
 base    = "docs"
-command = "pnpm i && pnpm generate"
-publish = "docs/dist"
+command = "pnpm install --no-frozen-lockfile && pnpm generate"
+publish = "dist"
