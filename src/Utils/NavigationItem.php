@@ -12,4 +12,9 @@ class NavigationItem
         public bool $external = false,
     ) {
     }
+
+    public function current(): bool
+    {
+        return request()->routeIs($this->active);
+    }
 }
