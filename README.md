@@ -13,7 +13,7 @@
 
 [![netlify][netlify-src]][netlify-href]
 
-> [!WARNING]
+> [!WARNING]\
 > This package is not fully tested and is not ready for production.
 
 PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application.
