@@ -4,11 +4,13 @@
 
 [![php][php-version-src]][php-version-href]
 [![laravel][laravel-src]][laravel-href]
+
 [![version][version-src]][version-href]
 [![downloads][downloads-src]][downloads-href]
 [![license][license-src]][license-href]
 [![tests][tests-src]][tests-href]
 [![codecov][codecov-src]][codecov-href]
+
 [![netlify][netlify-src]][netlify-href]
 
 > [!WARNING]
@@ -91,7 +93,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 [version-src]: https://img.shields.io/packagist/v/kiwilan/steward-laravel.svg?style=flat-square&colorA=18181B&colorB=777BB4
 [version-href]: https://packagist.org/packages/kiwilan/steward-laravel
-[php-version-src]: https://img.shields.io/static/v1?style=flat-square&label=PHP&message=≥v8.1&color=777BB4&logo=php&logoColor=ffffff&labelColor=18181b
+[php-version-src]: https://img.shields.io/static/v1?style=flat-square&label=PHP&message=v8.1&color=777BB4&logo=php&logoColor=ffffff&labelColor=18181b
 [php-version-href]: https://www.php.net/
 [downloads-src]: https://img.shields.io/packagist/dt/kiwilan/steward-laravel.svg?style=flat-square&colorA=18181B&colorB=777BB4
 [downloads-href]: https://packagist.org/packages/kiwilan/steward-laravel
