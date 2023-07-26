@@ -1,6 +1,1 @@
 # https://docs.netlify.com/configure-builds/file-based-configuration
-
-[build]
-base    = ""
-command = "cd docs && pnpm i --ignore-workspace --no-frozen-lockfile && pnpm generate"
-publish = "docs/dist"
