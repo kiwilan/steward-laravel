@@ -101,13 +101,13 @@ class StewardServiceProvider extends PackageServiceProvider
             if (class_exists(Livewire::class)) {
                 $items = [
                     // <livewire:stw-field.tiptap wire:model="content" />
-                    'stw-field.tiptap' => \Kiwilan\Steward\Http\Livewire\Field\Tiptap::class,
+                    'stw-field.tiptap' => \Kiwilan\Steward\Livewire\Field\Tiptap::class,
                     // <livewire:stw-listing.option.clear />
-                    'stw-listing.option.clear' => \Kiwilan\Steward\Http\Livewire\Listing\Option\Clear::class,
+                    'stw-listing.option.clear' => \Kiwilan\Steward\Livewire\Listing\Option\Clear::class,
                     // <livewire:stw-listing.option.sorter />
-                    'stw-listing.option.sorter' => \Kiwilan\Steward\Http\Livewire\Listing\Option\Sorter::class,
+                    'stw-listing.option.sorter' => \Kiwilan\Steward\Livewire\Listing\Option\Sorter::class,
                     // <livewire:stw-listing.option.filter />
-                    'stw-listing.option.filter' => \Kiwilan\Steward\Http\Livewire\Listing\Option\Filter::class,
+                    'stw-listing.option.filter' => \Kiwilan\Steward\Livewire\Listing\Option\Filter::class,
                 ];
 
                 foreach ($items as $name => $class) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Http\Livewire\Traits;
+namespace Kiwilan\Steward\Livewire\Traits;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;

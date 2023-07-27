@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Http\Livewire\Traits;
+namespace Kiwilan\Steward\Livewire\Traits;
 
 use Closure;
 use Illuminate\Validation\Validator;

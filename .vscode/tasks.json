@@ -72,7 +72,7 @@
         {
             "label": "COMPOSER tests",
             "type": "shell",
-            "command": "composer tests",
+            "command": "composer test",
             "problemMatcher": [],
             "presentation": {
                 "reveal": "silent",

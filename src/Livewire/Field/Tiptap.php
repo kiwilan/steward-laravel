@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Http\Livewire\Field;
+namespace Kiwilan\Steward\Livewire\Field;
 
 use Livewire\Component;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Http\Livewire\Listing\Option;
+namespace Kiwilan\Steward\Livewire\Listing\Option;
 
 use Livewire\Component;
 
