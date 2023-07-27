@@ -21,6 +21,9 @@
 <body class="{{ config('app.env') === 'local' ? 'debug-screens' : '' }} font-sans antialiased">
   {{ $slot }}
 
+  @isset($scripts)
+    {{ $scripts }}
+  @endisset
   @stack('modals')
   @stack('scripts')
 </body>
