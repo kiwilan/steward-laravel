@@ -1,10 +1,15 @@
 import type { Alpine, AlpineComponent } from 'alpinejs'
-import * as CookieConsent from 'vanilla-cookieconsent'
 
 interface Cookie {
   id: number
   name: string
   value: string
+}
+
+export interface CookieConsentType {
+  show: (show: boolean) => void
+  hide: () => void
+  run: (options: any) => void
 }
 
 /**
@@ -15,7 +20,9 @@ interface Cookie {
 export default (Alpine: Alpine) => {
   Alpine.data('gdpr', (): AlpineComponent<{
     cookies: Cookie[]
+    cookieConsent: CookieConsentType
     getCookies(): Cookie[]
+    fetchCookieConsent(): Promise<CookieConsentType>
     showGdpr(): void
     hideGdpr(): void
     getCookie(name: string): string | undefined
@@ -24,15 +31,30 @@ export default (Alpine: Alpine) => {
     delCookieAll(): void
   }> => ({
     cookies: [] as Cookie[],
+    cookieConsent: {} as CookieConsentType,
 
-    init() {
+    async init() {
       this.cookies = this.getCookies()
+      await this.fetchCookieConsent()
+    },
+    async fetchCookieConsent() {
+      try {
+        const cookie = await import('vanilla-cookieconsent')
+        return cookie as CookieConsentType
+      }
+      catch (error) {
+        return {
+          show: () => {},
+          hide: () => {},
+          run: () => {},
+        }
+      }
     },
     showGdpr() {
-      CookieConsent.show(true)
+      this.cookieConsent.show(true)
     },
     hideGdpr() {
-      CookieConsent.hide()
+      this.cookieConsent.hide()
     },
     getCookies(): Cookie[] {
       const items = document.cookie.split(';')

@@ -1,7 +1,7 @@
 {
     "name": "@kiwilan/steward-laravel",
     "type": "module",
-    "version": "0.1.18",
+    "version": "0.1.19",
     "description": "Plugin for kiwilan/steward-laravel.",
     "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
     "license": "MIT",
@@ -36,7 +36,7 @@
         "test": "vitest",
         "coverage": "vitest run --coverage",
         "clean": "rimraf dist",
-        "local": "rm -f ~/kiwilan-steward-laravel-*.tgz || true && mv ./kiwilan-steward-laravel-*.tgz ~/kiwilan-steward-laravel-*.tgz",
+        "local": "rm -f ~/kiwilan-steward-laravel-*.tgz || true && mv ./kiwilan-steward-laravel-*.tgz ~/kiwilan-steward-laravel.tgz",
         "package": "npm run clean && npm run build && npm pack && npm run local",
         "release": "npm run clean && npm run build && npm pack --dry-run && npm publish --access public"
     },
@@ -44,18 +44,18 @@
         "alpinejs": "3.x"
     },
     "optionalDependencies": {
-        "vanilla-cookieconsent": "3.x"
+        "vanilla-cookieconsent": "3.0.0-rc.13"
     },
     "devDependencies": {
         "@antfu/eslint-config": "^0.39.8",
-        "@types/alpinejs": "^3.7.1",
+        "@types/alpinejs": "^3.7.2",
         "eslint": "^8.45.0",
-        "rimraf": "^5.0.0",
-        "tsup": "^6.7.0",
-        "typescript": "^5.0.4"
+        "rimraf": "^5.0.1",
+        "tsup": "^7.1.0",
+        "typescript": "^5.1.6",
+        "vanilla-cookieconsent": "3.0.0-rc.13"
     },
     "dependencies": {
-        "alpinejs": "^3.12.0",
-        "vanilla-cookieconsent": "3.0.0-rc.13"
+        "alpinejs": "^3.12.3"
     }
 }

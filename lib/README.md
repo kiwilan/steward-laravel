@@ -23,7 +23,7 @@ pnpm add @kiwilan/steward-laravel -D
 ```json
 {
   "devDependencies": {
-    "@kiwilan/steward-laravel": "file:~/kiwilan-steward-laravel-*.tgz"
+    "@kiwilan/steward-laravel": "file:~/kiwilan-steward-laravel.tgz"
   }
 }
 ```

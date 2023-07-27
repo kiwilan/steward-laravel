@@ -1,12 +1,20 @@
 import 'vanilla-cookieconsent/dist/cookieconsent.css'
-import * as CookieConsent from 'vanilla-cookieconsent'
 import { languages, matomo } from './config/index.js'
+import type { CookieConsentType } from './alpine.js'
 
 /**
  * Setup the GDPR module
  */
-function setup() {
-  CookieConsent.run({
+async function setup() {
+  let cookie = {} as CookieConsentType
+  try {
+    cookie = await import('vanilla-cookieconsent')
+  }
+  catch (error) {
+    return
+  }
+
+  cookie.run({
     onConsent() {
       matomo()
     },
