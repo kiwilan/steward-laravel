@@ -121,10 +121,7 @@ class FilamentChart
             $periods->push($period->format('M Y'));
         }
 
-        return $periods->map(function ($period) use ($posts_db) {
-            return $posts_db->get($period)->total ?? 0;
-        });
-
+        return $periods->map(fn ($period) => $posts_db->get($period)->total ?? 0);
         // $stats = Cache::remember(
         //     'statsByMonth',
         //     // Clears cache at the start of next month

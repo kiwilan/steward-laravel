@@ -8,6 +8,8 @@
     :theme="$theme"
   />
 
+  @steward
+
   @isset($head)
     {{ $head }}
   @endisset
