@@ -26,7 +26,9 @@ trait HasUuid
     protected static function bootHasUuid()
     {
         static::creating(function ($model) {
-            $model->{$model->getUuidColumn()} = self::generateUuid();
+            if ($model->{$model->getUuidColumn()} === null) {
+                $model->{$model->getUuidColumn()} = self::generateUuid();
+            }
         });
     }
 
