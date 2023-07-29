@@ -4,11 +4,27 @@ namespace Kiwilan\Steward\Traits;
 
 use Kiwilan\Steward\Services\SlugService;
 
+/**
+ * Trait HasSlug
+ *
+ * - Default slug column is `slug`, can be override by setting `$slugColumn` property
+ * - Default slug with is `name`, can be override by setting `$slugWith` property
+ *
+ * ```php
+ * class Post extends Model
+ * {
+ *    use HasSlug;
+ *
+ *   protected $slugColumn = 'slug_column';
+ *   protected $slugWith = 'slug_with';
+ * }
+ * ```
+ */
 trait HasSlug
 {
-    protected $default_slug_with = 'name';
+    protected $defaultSlugWith = 'name';
 
-    protected $default_slug_column = 'slug';
+    protected $defaultSlugColumn = 'slug';
 
     public function initializeHasSlug()
     {
@@ -17,18 +33,12 @@ trait HasSlug
 
     public function getSlugWith(): string
     {
-        $default = $this->default_slug_with;
-
-        if (null === $default) {
-            $default = 'title';
-        }
-
-        return $this->slug_with ?? $default;
+        return $this->slug_with ?? $this->slugWith ?? $this->defaultSlugWith;
     }
 
     public function getSlugColumn(): string
     {
-        return $this->slug_column ?? $this->default_slug_column;
+        return $this->slug_column ?? $this->slugColumn ?? $this->defaultSlugColumn;
     }
 
     protected static function bootHasSlug()

@@ -4,11 +4,28 @@ namespace Kiwilan\Steward\Traits;
 
 use Illuminate\Support\Str;
 
+/**
+ * Trait HasSeo
+ *
+ * - Default meta title is `title`, can be override by setting `$metaTitleFrom` property
+ * - Default meta description is `description`, can be override by setting `$metaDescriptionFrom` property
+ * - Database columns: `meta_title`, `meta_description`
+ *
+ * ```php
+ * class Post extends Model
+ * {
+ *    use HasSeo;
+ *
+ *   protected $metaTitleFrom = 'from_title_column';
+ *   protected $metaDescriptionFrom = 'from_description_column';
+ * }
+ * ```
+ */
 trait HasSeo
 {
-    protected $default_meta_title_from = 'name';
+    protected $defaultMetaTitleFrom = 'name';
 
-    protected $default_meta_description_from = 'description';
+    protected $defaultMetaDescriptionFrom = 'description';
 
     public function initializeHasSeo()
     {
@@ -31,18 +48,12 @@ trait HasSeo
 
     public function getMetaTitle(): string
     {
-        $default = $this->default_meta_title_from;
-
-        if (null === $default) {
-            $default = 'title';
-        }
-
-        return $this->meta_title_from ?? $default;
+        return $this->meta_title_from ?? $this->metaTitleFrom ?? $this->defaultMetaTitleFrom;
     }
 
     public function getMetaDescription(): string
     {
-        return $this->meta_description_from ?? $this->default_meta_description_from;
+        return $this->meta_description_from ?? $this->metaDescriptionFrom ?? $this->defaultMetaDescriptionFrom;
     }
 
     /**
