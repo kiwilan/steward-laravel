@@ -5,9 +5,32 @@ namespace Kiwilan\Steward\Traits;
 use Kiwilan\Steward\Enums\BuilderEnum;
 use stdClass;
 
+/**
+ * Trait HasBuilder
+ *
+ * Add this trait to your model to use the builder.
+ *
+ * - Default column is `content`, you can change it by adding `$builderColumn` property to your model.
+ * - You can use `builder_data` attribute to get the builder data.
+ *
+ * ```php
+ * class Post extends Model
+ * {
+ *    use HasBuilder;
+ *
+ *   protected $builderColumn = 'content_column';
+ * }
+ * ```
+ *
+ * Into `Filament` resource, you can use this snippet to get the builder data:
+ *
+ * ```php
+ * FilamentBuilder::make(WordpressBuilder::class)->get(),
+ * ```
+ */
 trait HasBuilder
 {
-    protected $default_builder_column = 'content';
+    protected $defaultBuilderColumn = 'content';
 
     public function initializeHasBuilder()
     {
@@ -19,7 +42,7 @@ trait HasBuilder
 
     public function getBuilderColumn(): string
     {
-        return $this->builder_column ?? $this->default_builder_column;
+        return $this->builder_column ?? $this->builderColumn ?? $this->defaultBuilderColumn;
     }
 
     public function getBuilderDataAttribute(): ?stdClass
