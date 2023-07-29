@@ -71,7 +71,7 @@ class WordpressBuilder implements FilamentBuilderModule
                     '5' => 'Heading 5',
                     '6' => 'Heading 6',
                 ])
-                ->default('h2')
+                ->default('2')
                 ->required(),
         ])
             ->name('heading')

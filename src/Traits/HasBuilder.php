@@ -3,7 +3,6 @@
 namespace Kiwilan\Steward\Traits;
 
 use Kiwilan\Steward\Enums\BuilderEnum;
-use stdClass;
 
 /**
  * Trait HasBuilder
@@ -45,33 +44,59 @@ trait HasBuilder
         return $this->builder_column ?? $this->builderColumn ?? $this->defaultBuilderColumn;
     }
 
-    public function getBuilderDataAttribute(): ?stdClass
+    /**
+     * Transform `template` into response.
+     */
+    public function getBuilderDataAttribute(): array
     {
-        $builder_obj = new stdClass();
         $raw_data = $this->{$this->getBuilderColumn()};
 
         if (! is_array($raw_data)) {
-            return $builder_obj;
-        }
-
-        $data_builder = [];
-
-        foreach ($raw_data as $raw_builder) {
-            $this->transformData($raw_builder, $data_builder);
-        }
-
-        return json_decode(json_encode($data_builder, true));
-    }
-
-    private function transformData(mixed $builder)
-    {
-        if (! is_array($builder) && ! array_key_exists('data', $builder)) {
             return [];
         }
 
         $data = [];
+        $raw_data = $this->checkArrayNested($raw_data);
 
-        foreach ($builder as $name => $value) {
+        foreach ($raw_data as $name => $raw_template) {
+            $raw_template = $this->checkArrayNested($raw_template);
+            $template = $this->transformData($raw_template);
+
+            if (is_array($template)) {
+                $data[$name] = array_reverse($template);
+            } else {
+                // only one value
+                $data[$name] = $raw_data;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * If `array` has just one key, transform in `array`.
+     */
+    private function checkArrayNested(mixed $array): mixed
+    {
+        if (is_array($array) && 1 === count($array) && array_key_exists(0, $array)) {
+            return $array[0];
+        }
+
+        return $array;
+    }
+
+    /**
+     * Transform template parts into array.
+     */
+    private function transformData(mixed $template)
+    {
+        if (! is_array($template)) {
+            return $template;
+        }
+
+        $data = [];
+
+        foreach ($template as $name => $value) {
             $is_subarray = false;
 
             if (is_array($value)) {
