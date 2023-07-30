@@ -2,7 +2,7 @@
 
 namespace Kiwilan\Steward\Services\Markdown;
 
-class MarkdownFrontMatter
+class MarkdownFrontmatter
 {
     /**
      * @param  array<string, mixed>  $frontMatter

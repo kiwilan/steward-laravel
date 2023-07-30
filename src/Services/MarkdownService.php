@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Services;
 use DateTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
-use Kiwilan\Steward\Services\Markdown\MarkdownFrontMatter;
+use Kiwilan\Steward\Services\Markdown\MarkdownFrontmatter;
 use Kiwilan\Steward\Services\Markdown\MarkdownOptions;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
@@ -22,7 +22,7 @@ class MarkdownService
         protected string $filename,
         protected ?DateTime $date,
         protected MarkdownOptions $options,
-        protected MarkdownFrontMatter $frontMatter,
+        protected MarkdownFrontmatter $frontMatter,
         protected string $abstract = '',
         protected string $html = '',
         protected array $images = [],
@@ -49,7 +49,7 @@ class MarkdownService
 
         $date = Carbon::createFromTimestamp($date);
 
-        $self = new self($markdown, $filename, $date, $options, MarkdownFrontMatter::make());
+        $self = new self($markdown, $filename, $date, $options, MarkdownFrontmatter::make());
         $self->content = $self->replaceEnv();
         $self->frontMatter = $self->parseFrontMatter();
         $self->images = $self->parseImages();
@@ -70,12 +70,12 @@ class MarkdownService
         return $markdown;
     }
 
-    private function parseFrontMatter(): MarkdownFrontMatter
+    private function parseFrontMatter(): MarkdownFrontmatter
     {
         $regex = '/---\n([a-zA-Z0-9_-]+:.*\n)*?---\n/';
 
         if (! preg_match($regex, $this->content, $matches)) {
-            return MarkdownFrontMatter::make();
+            return MarkdownFrontmatter::make();
         }
 
         $front_matter = $matches[0];
@@ -86,7 +86,7 @@ class MarkdownService
         $first_line = explode("\n", $matches[0])[1] ?? '';
 
         if (empty($first_line)) {
-            return MarkdownFrontMatter::make();
+            return MarkdownFrontmatter::make();
         }
 
         $this->content = preg_replace($regex, '', $this->content);
@@ -125,7 +125,7 @@ class MarkdownService
             }
         }
 
-        return MarkdownFrontMatter::make($frontMatter);
+        return MarkdownFrontmatter::make($frontMatter);
     }
 
     private function trimString(string $value): string
