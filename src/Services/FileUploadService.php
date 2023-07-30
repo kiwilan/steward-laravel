@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\File;
 class FileUploadService
 {
     protected function __construct(
-        public string $saveDirectory = 'storage/uploads',
-        public string $baseUrl = 'http://localhost:8000/storage/uploads',
+        public ?string $saveDirectory = null,
+        public ?string $baseUrl = null,
     ) {
     }
 
@@ -28,7 +28,7 @@ class FileUploadService
             File::makeDirectory($self->saveDirectory, 0775, true);
         }
 
-        return new self();
+        return $self;
     }
 
     /**
@@ -42,7 +42,7 @@ class FileUploadService
         $items = [];
 
         foreach ($paths as $p) {
-            $items[] = self::upload($p, $prefix);
+            $items[] = $this->upload($p, $prefix);
         }
 
         if (is_string($paths)) {
@@ -88,6 +88,8 @@ class FileUploadService
 
         // replace in content
         $self->localUrl = $this->baseUrl.'/'.$self->name;
+        $relative = explode('storage/', $self->savePath);
+        $self->relativePath = $relative[1] ?? null;
 
         return $self;
     }
@@ -98,6 +100,7 @@ class FileServiceItem
     public function __construct(
         public string $path,
         public ?string $fullPath = null,
+        public ?string $relativePath = null,
         public bool $exists = false,
         public bool $isLink = false,
         public ?string $name = null,

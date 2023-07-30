@@ -167,7 +167,10 @@ class MarkdownService
 
         foreach ($images as $image) {
             $item = FileUploadService::make()->upload($image, $this->options->imagesPath());
-            $this->content = str_replace($image, $item->localUrl, $this->content);
+
+            if (! $item->isLink) {
+                $this->content = str_replace($image, $item->localUrl, $this->content);
+            }
         }
 
         return $items;
