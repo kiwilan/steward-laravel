@@ -2,30 +2,15 @@
 
 namespace Kiwilan\Steward\Services;
 
+use App\Services\Markdown\MarkdownFrontMatter;
+use App\Services\Markdown\MarkdownOptions;
 use DateTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use League\CommonMark\Environment\Environment;
-use League\CommonMark\Extension\Attributes\AttributesExtension;
-use League\CommonMark\Extension\Autolink\AutolinkExtension;
-use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
-use League\CommonMark\Extension\DefaultAttributes\DefaultAttributesExtension;
-use League\CommonMark\Extension\DescriptionList\DescriptionListExtension;
-use League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension;
-use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
-use League\CommonMark\Extension\Footnote\FootnoteExtension;
-use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
-use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
-use League\CommonMark\Extension\InlinesOnly\InlinesOnlyExtension;
-use League\CommonMark\Extension\Mention\MentionExtension;
-use League\CommonMark\Extension\SmartPunct\SmartPunctExtension;
-use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
 use League\CommonMark\Extension\Table\Table;
-use League\CommonMark\Extension\Table\TableExtension;
-use League\CommonMark\Extension\TableOfContents\TableOfContentsExtension;
-use League\CommonMark\Extension\TaskList\TaskListExtension;
 use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Node\Block\Paragraph;
 use League\HTMLToMarkdown\HtmlConverter;
@@ -372,84 +357,23 @@ class MarkdownService
         ];
 
         return (new Environment($config))
-            ->addExtension(new CommonMarkCoreExtension())
-            ->addExtension(new GithubFlavoredMarkdownExtension())
-            ->addExtension(new AttributesExtension())
-            ->addExtension(new AutolinkExtension())
-            ->addExtension(new DefaultAttributesExtension())
-            ->addExtension(new DescriptionListExtension())
-            ->addExtension(new DisallowedRawHtmlExtension())
-            ->addExtension(new ExternalLinkExtension())
-            ->addExtension(new FootnoteExtension())
-            ->addExtension(new HeadingPermalinkExtension())
-            // ->addExtension(new InlinesOnlyExtension())
-            ->addExtension(new MentionExtension())
-            ->addExtension(new SmartPunctExtension())
-            // ->addExtension(new StrikethroughExtension())
-            // ->addExtension(new TableOfContentsExtension())
-            ->addExtension(new TableExtension())
-            ->addExtension(new TaskListExtension())
+            ->addExtension(new \League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension())
+            ->addExtension(new \League\CommonMark\Extension\GithubFlavoredMarkdownExtension())
+            ->addExtension(new \League\CommonMark\Extension\Attributes\AttributesExtension())
+            ->addExtension(new \League\CommonMark\Extension\Autolink\AutolinkExtension())
+            ->addExtension(new \League\CommonMark\Extension\DefaultAttributes\DefaultAttributesExtension())
+            ->addExtension(new \League\CommonMark\Extension\DescriptionList\DescriptionListExtension())
+            ->addExtension(new \League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension())
+            ->addExtension(new \League\CommonMark\Extension\ExternalLink\ExternalLinkExtension())
+            ->addExtension(new \League\CommonMark\Extension\Footnote\FootnoteExtension())
+            ->addExtension(new \League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension())
+            // ->addExtension(new \League\CommonMark\Extension\InlinesOnly\InlinesOnlyExtension())
+            ->addExtension(new \League\CommonMark\Extension\Mention\MentionExtension())
+            ->addExtension(new \League\CommonMark\Extension\SmartPunct\SmartPunctExtension())
+            // ->addExtension(new \League\CommonMark\Extension\Strikethrough\StrikethroughExtension())
+            // ->addExtension(new \League\CommonMark\Extension\TableOfContents\TableOfContentsExtension())
+            ->addExtension(new \League\CommonMark\Extension\Table\TableExtension())
+            ->addExtension(new \League\CommonMark\Extension\TaskList\TaskListExtension())
         ;
-    }
-}
-
-class MarkdownOptions
-{
-    public function __construct(
-        protected array $dotenv = [
-            'APP_NAME' => 'app.name',
-            'APP_URL' => 'app.url',
-        ],
-        protected ?string $imagePath = null,
-    ) {
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public function dotenv(): array
-    {
-        return $this->dotenv;
-    }
-
-    public function imagesPath(): ?string
-    {
-        return $this->imagePath;
-    }
-}
-
-class MarkdownFrontMatter
-{
-    /**
-     * @param  array<string, mixed>  $frontMatter
-     */
-    protected function __construct(
-        protected array $frontMatter,
-    ) {
-    }
-
-    /**
-     * @param  array<string, mixed> | null  $frontMatter
-     */
-    public static function make(array $frontMatter = null): self
-    {
-        if (! $frontMatter) {
-            $frontMatter = [];
-        }
-
-        return new self($frontMatter);
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function toArray(): array
-    {
-        return $this->frontMatter;
-    }
-
-    public function get(string $key): mixed
-    {
-        return $this->frontMatter[$key] ?? null;
     }
 }
