@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Filament\Config;
 
 use Filament\Forms;
+use Kiwilan\Steward\Filament\Components\Display;
 
 class FilamentTemplate
 {
@@ -10,7 +11,7 @@ class FilamentTemplate
     {
         return Forms\Components\Repeater::make($make)
             ->schema([
-                FilamentForm::display(),
+                Display::make(),
                 ...$content,
             ])
             ->disableItemMovement()

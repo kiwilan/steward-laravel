@@ -20,6 +20,8 @@ class FilamentForm
      *
      * @param  string  $field It will be `name` by default.
      * @param  string|false  $metaLink It will be `slug` by default.
+     *
+     * @deprecated
      */
     public static function name(
         string $field = 'name',
@@ -68,6 +70,9 @@ class FilamentForm
         ;
     }
 
+    /**
+     * @deprecated
+     */
     public static function description(
         string $field = 'description',
         string|false $metaField = 'meta_description',
@@ -108,6 +113,8 @@ class FilamentForm
     }
 
     /**
+     * @deprecated
+     *
      * @param  string  $current_action 'create' or 'edit'
      * @return Closure
      */
@@ -126,6 +133,8 @@ class FilamentForm
 
     /**
      * Update field on context type.
+     *
+     * @deprecated
      *
      * @param  "create"|"edit"  $context_type
      * @return Closure
@@ -147,6 +156,9 @@ class FilamentForm
         };
     }
 
+    /**
+     * @deprecated
+     */
     public static function meta(bool $card = false)
     {
         $timestamps = [
@@ -166,6 +178,9 @@ class FilamentForm
             : Forms\Components\Group::make($timestamps);
     }
 
+    /**
+     * @deprecated
+     */
     public static function seo(bool $card = false)
     {
         $seo = [
@@ -189,6 +204,9 @@ class FilamentForm
             : Forms\Components\Group::make($seo);
     }
 
+    /**
+     * @deprecated
+     */
     public static function dateFilter(string $field = 'created_at')
     {
         return Filter::make('created_at')
@@ -214,6 +232,9 @@ class FilamentForm
         ;
     }
 
+    /**
+     * @deprecated
+     */
     public static function checkRole(UserRoleEnum $role = UserRoleEnum::super_admin)
     {
         return function () use ($role) {
@@ -228,6 +249,9 @@ class FilamentForm
         };
     }
 
+    /**
+     * @deprecated
+     */
     public static function pictureField(
         string $field = 'picture',
         string $label = 'Picture',
@@ -256,6 +280,9 @@ class FilamentForm
         ;
     }
 
+    /**
+     * @deprecated
+     */
     public static function display()
     {
         return Forms\Components\Toggle::make('display')
@@ -266,6 +293,9 @@ class FilamentForm
         ;
     }
 
+    /**
+     * @deprecated
+     */
     public static function showAction()
     {
         return Action::make('show')

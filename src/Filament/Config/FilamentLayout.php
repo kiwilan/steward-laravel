@@ -19,7 +19,7 @@ class FilamentLayout
 
     public static function make(Form $form, array $schema = [], int $width = 3): Form
     {
-        $layout = new FilamentLayout($form);
+        $layout = new self($form);
 
         return $layout
             ->schema($schema)
