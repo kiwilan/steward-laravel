@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Markdown;
+namespace Kiwilan\Steward\Services\Markdown;
 
 class MarkdownOptions
 {

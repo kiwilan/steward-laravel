@@ -2,11 +2,11 @@
 
 namespace Kiwilan\Steward\Services;
 
-use App\Services\Markdown\MarkdownFrontMatter;
-use App\Services\Markdown\MarkdownOptions;
 use DateTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
+use Kiwilan\Steward\Services\Markdown\MarkdownFrontMatter;
+use Kiwilan\Steward\Services\Markdown\MarkdownOptions;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
