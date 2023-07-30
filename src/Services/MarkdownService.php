@@ -219,7 +219,7 @@ class MarkdownService
         return $this->date;
     }
 
-    public function frontMatter(): MarkdownFrontMatter
+    public function frontMatter(): MarkdownFrontmatter
     {
         return $this->frontMatter;
     }
