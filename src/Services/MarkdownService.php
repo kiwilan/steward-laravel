@@ -166,39 +166,8 @@ class MarkdownService
         }
 
         foreach ($images as $image) {
-            $path = str_replace(['(', ')'], '', $image);
-
-            if (str_contains($path, 'http')) {
-                continue;
-            }
-
-            $fullPath = "{$this->options->imagesPath()}/{$path}";
-
-            if (! File::exists($fullPath)) {
-                continue;
-            }
-
-            $name = basename($fullPath);
-            $save = public_path('storage/uploads');
-
-            if (! File::exists($save)) {
-                File::makeDirectory($save, 0775, true);
-            }
-
-            $savePath = "{$save}/{$name}";
-
-            while (File::exists($savePath)) {
-                $name = uniqid().'-'.$name;
-                $savePath = "{$save}/{$name}";
-            }
-
-            File::copy($fullPath, $savePath);
-
-            $items[] = $image;
-
-            // replace in content
-            $url = config('app.url').'/storage/uploads/'.$name;
-            $this->content = str_replace($image, $url, $this->content);
+            $item = FileUploadService::make()->upload($image, $this->options->imagesPath());
+            $this->content = str_replace($image, $item->localUrl, $this->content);
         }
 
         return $items;
