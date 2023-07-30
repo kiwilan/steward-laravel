@@ -17,7 +17,7 @@ class FilamentBuilderContainer
 
     public static function make(array $content): self
     {
-        return new FilamentBuilderContainer($content);
+        return new self($content);
     }
 
     public function get()
