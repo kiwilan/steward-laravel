@@ -112,7 +112,7 @@ class FactoryJson
             $attachments = (array) $data['attachments'];
 
             foreach ($attachments as $field => $path) {
-                $path = database_path("seeders/{$path}");
+                $path = database_path("{$path}");
 
                 if (! file_exists($path)) {
                     continue;
