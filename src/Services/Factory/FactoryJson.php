@@ -153,10 +153,12 @@ class FactoryJson
         // @phpstan-ignore-next-line
         $slug = $model->slug;
 
+        $ext = pathinfo($path, PATHINFO_EXTENSION);
         $media_path = $path;
 
         if (! $path) {
             $media_path = database_path("seeders/media/{$table}/{$slug}.webp");
+            $ext = 'webp';
         }
 
         if (File::exists($media_path)) {
@@ -168,7 +170,7 @@ class FactoryJson
                 File::makeDirectory($directory, 0755, true, true);
             }
 
-            $filename = uniqid().'_'."{$slug}.webp";
+            $filename = uniqid().'_'."{$slug}.{$ext}";
             File::put("{$directory}/{$filename}", $media);
 
             return "{$table}/{$filename}";
