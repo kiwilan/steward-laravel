@@ -130,4 +130,28 @@ trait HasBuilder
 
         return $value;
     }
+
+    protected static function bootHasBuilder()
+    {
+        static::saving(function ($model) {
+            if ($model->isDirty($model->getBuilderColumn())) {
+                $model->{$model->getBuilderColumn()} = $model->replaceAddLazyToImgTag($model->{$model->getBuilderColumn()});
+            }
+        });
+    }
+
+    private function replaceAddLazyToImgTag(string|array $content): mixed
+    {
+        if (is_array($content)) {
+            $data = [];
+
+            foreach ($content as $name => $value) {
+                $data[$name] = $this->replaceAddLazyToImgTag($value);
+            }
+
+            return $data;
+        }
+
+        return str_replace('<img', '<img loading="lazy"', $content);
+    }
 }
