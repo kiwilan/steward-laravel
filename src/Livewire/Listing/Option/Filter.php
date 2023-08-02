@@ -36,7 +36,7 @@ class Filter extends Component
 
     public function updatedCurrent()
     {
-        $this->emitUp('query', $this->query, $this->current);
+        $this->dispatch('query', $this->query, $this->current);
     }
 
     public function render()

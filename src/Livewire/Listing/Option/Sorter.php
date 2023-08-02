@@ -57,7 +57,7 @@ class Sorter extends Component
         $this->convertLabel();
         $this->setDesc();
 
-        $this->emitUp('query', $this->query, $this->current);
+        $this->dispatch('query', $this->query, $this->current);
     }
 
     public function setDesc()

@@ -8,7 +8,7 @@ class Clear extends Component
 {
     public function clear()
     {
-        $this->emitUp('clear', true);
+        $this->dispatch('clear', true);
     }
 
     public function render()

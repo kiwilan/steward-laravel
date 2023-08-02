@@ -14,11 +14,11 @@ class FilamentTemplate
                 Display::make(),
                 ...$content,
             ])
-            ->disableItemMovement()
+            ->reorderable(false)
             ->maxItems(1)
             ->columnSpan(2)
             ->label($label)
-            ->createItemButtonLabel("Add {$label}")
+            ->addActionLabel("Add {$label}")
         ;
     }
 }

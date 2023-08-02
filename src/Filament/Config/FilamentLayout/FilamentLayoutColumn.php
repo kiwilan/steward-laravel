@@ -94,7 +94,7 @@ class FilamentLayoutColumn
                 ;
             }
             $group = array_merge($group, $field);
-            $component = $this->card ? Forms\Components\Card::make() : Forms\Components\Group::make();
+            $component = $this->card ? Forms\Components\Section::make() : Forms\Components\Group::make();
 
             if (! empty($group)) {
                 $fields[] = $component

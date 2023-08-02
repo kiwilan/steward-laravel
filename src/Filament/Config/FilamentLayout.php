@@ -2,8 +2,8 @@
 
 namespace Kiwilan\Steward\Filament\Config;
 
-use Filament\Forms\Components\Card;
-use Filament\Resources\Form;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
 use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutCard;
 use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutColumn;
 use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutSettings;
@@ -39,7 +39,7 @@ class FilamentLayout
         ;
     }
 
-    public static function card(array $fields = [], string $title = null, int $width = 2): Card
+    public static function card(array $fields = [], string $title = null, int $width = 2): Section
     {
         return FilamentLayoutCard::make($fields, $title, $width);
     }
