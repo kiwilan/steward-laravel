@@ -100,7 +100,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
         ])
             ->name('paragraph')
-            ->icon('heroicon-o-menu')
+            ->icon('heroicon-o-bars-3-bottom-left')
             ->get()
         ;
     }
@@ -115,7 +115,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->fileAttachmentsDirectory('attachments'),
         ])
             ->name('rich_paragraph')
-            ->icon('heroicon-o-menu-alt-1')
+            ->icon('heroicon-s-bars-arrow-up')
             ->get()
         ;
     }
@@ -132,7 +132,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->columnSpan(2),
         ])
             ->name('image')
-            ->icon('heroicon-o-photograph')
+            ->icon('heroicon-o-photo')
             ->get()
         ;
     }
@@ -165,7 +165,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
         ])
             ->name('embedded_media')
-            ->icon('heroicon-o-video-camera')
+            ->icon('heroicon-o-camera')
             ->get()
         ;
     }
@@ -182,7 +182,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
         ])
             ->name('code_block')
-            ->icon('heroicon-o-code')
+            ->icon('heroicon-s-code')
             ->get()
         ;
     }
@@ -229,7 +229,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
         ])
             ->name('button')
-            ->icon('heroicon-o-external-link')
+            ->icon('heroicon-o-cursor-arrow-rays')
             ->get()
         ;
     }
@@ -249,7 +249,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
         ])
             ->name('spacer')
-            ->icon('heroicon-o-minus')
+            ->icon('heroicon-o-arrows-up-down')
             ->get()
         ;
     }
@@ -282,7 +282,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
         ])
             ->name('alert')
-            ->icon('heroicon-o-exclamation')
+            ->icon('heroicon-o-exclamation-triangle')
             ->get()
         ;
     }
@@ -296,7 +296,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
         ])
             ->name('html')
-            ->icon('heroicon-o-document-text')
+            ->icon('heroicon-o-document')
             ->get()
         ;
     }
