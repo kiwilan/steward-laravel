@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Kiwilan\Steward\Services\Http\HttpResponse;
+use Kiwilan\HttpPool\HttpPool;
+use Kiwilan\HttpPool\Response\HttpPoolResponse;
 use Kiwilan\Steward\Services\Wikipedia\WikipediaItem;
 use Kiwilan\Steward\Services\Wikipedia\WikipediaQuery;
 use Kiwilan\Steward\Utils\Console;
@@ -120,25 +121,25 @@ class WikipediaService
         $console->print('List of query URL available, requests from query URL to get page id.');
         $console->newLine();
 
-        $http = HttpService::pool($queries)
-            ->setIdentifier('identifier')
-            ->setUrl('queryUrl')
+        $http = HttpPool::make($queries)
+            ->setIdentifierKey('identifier')
+            ->setUrlKey('queryUrl')
             ->execute()
         ;
 
-        $queryItems = $this->setQueryItems($http->responses());
+        $queryItems = $this->setQueryItems($http->getResponses());
 
         $console->print('List of page id URL available, requests from page id URL to get extra content.');
         $console->newLine();
 
-        $http = HttpService::pool($queryItems)
-            ->setIdentifier('identifier')
-            ->setUrl('pageUrl')
+        $http = HttpPool::make($queryItems)
+            ->setIdentifierKey('identifier')
+            ->setUrlKey('pageUrl')
             ->execute()
         ;
 
         $queryItems = $queryItems->filter(fn ($item) => $item);
-        $pageIdItems = $this->setPageIdItems($http->responses(), $queryItems);
+        $pageIdItems = $this->setPageIdItems($http->getResponses(), $queryItems);
 
         $console->print('Convert into WikipediaItem...');
 
@@ -148,9 +149,9 @@ class WikipediaService
     }
 
     /**
-     * Create `WikipediaItem` from `HttpResponse`.
+     * Create `WikipediaItem` from `HttpPoolResponse`.
      *
-     * @param  Collection<int,HttpResponse>  $responses  Response from Wikipedia API
+     * @param  Collection<int,HttpPoolResponse>  $responses  Response from Wikipedia API
      * @return Collection<int,WikipediaItem>
      */
     private function setQueryItems(Collection $responses)
@@ -170,9 +171,9 @@ class WikipediaService
     }
 
     /**
-     * Attach `WikipediaItem` to page ID from `HttpResponse`.
+     * Attach `WikipediaItem` to page ID from `HttpPoolResponse`.
      *
-     * @param  Collection<int,HttpResponse>  $responses  Response from Wikipedia API
+     * @param  Collection<int,HttpPoolResponse>  $responses  Response from Wikipedia API
      * @param  Collection<int,WikipediaItem>  $queryItems  List of `WikipediaItem`
      * @return Collection<int,WikipediaItem>
      */
@@ -274,7 +275,7 @@ class WikipediaService
     /**
      * Print response into JSON format to debug, store it to `public/storage/debug/wikipedia/{$directory}/`.
      */
-    private function print(HttpResponse $response, string $directory, int $id)
+    private function print(HttpPoolResponse $response, string $directory, int $id)
     {
         $response_json = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         Storage::disk('public')->put("debug/wikipedia/{$directory}/{$id}.json", $response_json);

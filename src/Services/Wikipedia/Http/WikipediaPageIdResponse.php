@@ -3,7 +3,7 @@
 namespace Kiwilan\Steward\Services\Wikipedia\Http;
 
 use Illuminate\Support\Collection;
-use Kiwilan\Steward\Services\Http\HttpResponse;
+use Kiwilan\HttpPool\Response\HttpPoolResponse;
 
 class WikipediaPageIdResponse
 {
@@ -33,12 +33,12 @@ class WikipediaPageIdResponse
      *
      * @return Collection<int,WikipediaPageIdResponse>
      */
-    public static function toCollection(HttpResponse $response): Collection
+    public static function toCollection(HttpPoolResponse $response): Collection
     {
         /** @var Collection<int,WikipediaPageIdResponse> */
         $collection = collect([]);
 
-        $body = $response->toArray();
+        $body = $response->getBody()->toArray();
 
         if (! array_key_exists('query', $body) || ! array_key_exists('pages', $body['query'])) {
             return $collection;
@@ -48,7 +48,7 @@ class WikipediaPageIdResponse
 
         foreach ($searchs as $search) {
             $collection->push(
-                self::make($search, $response->metadata()->origin()),
+                self::make($search, $response->getMetadata()->getRequest()),
             );
         }
 

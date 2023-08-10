@@ -3,7 +3,7 @@
 namespace Kiwilan\Steward\Services\GoogleBook\Http;
 
 use Illuminate\Support\Collection;
-use Kiwilan\Steward\Services\Http\HttpResponse;
+use Kiwilan\HttpPool\Response\HttpPoolResponse;
 
 class GoogleBookResponse
 {
@@ -25,12 +25,12 @@ class GoogleBookResponse
      *
      * @return Collection<int,GoogleBookResponse>
      */
-    public static function toCollection(HttpResponse $response): Collection
+    public static function toCollection(HttpPoolResponse $response): Collection
     {
         /** @var Collection<int,GoogleBookResponse> */
         $collection = collect([]);
 
-        $body = $response->toArray();
+        $body = $response->getBody()->toArray();
 
         if (! array_key_exists('items', $body)) {
             return $collection;
@@ -40,7 +40,7 @@ class GoogleBookResponse
 
         foreach ($searchs as $search) {
             $collection->push(
-                self::make($search, $response->metadata()->origin()),
+                self::make($search, $response->getMetadata()->getRequest()),
             );
         }
 

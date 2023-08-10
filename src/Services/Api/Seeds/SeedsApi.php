@@ -4,16 +4,16 @@ namespace Kiwilan\Steward\Services\Api\Seeds;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Kiwilan\HttpPool\HttpPool;
+use Kiwilan\HttpPool\Response\HttpPoolResponse;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\Services\Api\MediaApi;
-use Kiwilan\Steward\Services\Http\HttpResponse;
-use Kiwilan\Steward\Services\HttpService;
 use Kiwilan\Steward\StewardConfig;
 
 class SeedsApi implements MediaApi
 {
-    /** @var Collection<string,HttpResponse> */
+    /** @var Collection<string,HttpPoolResponse> */
     protected ?Collection $medias = null;
 
     protected function __construct(
@@ -46,7 +46,7 @@ class SeedsApi implements MediaApi
     }
 
     /**
-     * @return Collection<string,HttpResponse>
+     * @return Collection<string,HttpPoolResponse>
      */
     public function medias(): Collection
     {
@@ -58,7 +58,7 @@ class SeedsApi implements MediaApi
     }
 
     /**
-     * @return Collection<string,HttpResponse>
+     * @return Collection<string,HttpPoolResponse>
      */
     public function fetchPictures(
         SeedsApiCategoryEnum $category = SeedsApiCategoryEnum::all,
@@ -67,14 +67,14 @@ class SeedsApi implements MediaApi
     ): Collection {
         $count = $count ?? null;
 
-        $fetch = HttpService::fetch(
-            HttpService::buildURL("{$this->api}/pictures", query: [
+        $fetch = HttpPool::make([
+            self::buildURL("{$this->api}/pictures", query: [
                 'count' => $count,
                 'category' => $category->value,
                 'size' => $size->value,
-            ])
-        );
-        $data = $fetch->toArray();
+            ]),
+        ])->execute();
+        $data = $fetch->getResponses()->first()->getBody()->toArray();
 
         $mediasURL = [];
         $seeds = SeedsPictureResponse::convertList($data);
@@ -83,19 +83,19 @@ class SeedsApi implements MediaApi
             $mediasURL[] = $seed->links->render;
         }
 
-        $http = HttpService::pool($mediasURL)->execute();
+        $http = HttpPool::make($mediasURL)->execute();
 
-        return $http->responses();
+        return $http->getResponses();
     }
 
-    public function fetchPictureRandom(): HttpResponse
+    public function fetchPictureRandom(): HttpPoolResponse
     {
-        return HttpService::fetch(
-            HttpService::buildURL("{$this->api}/pictures/random", query: [
+        return HttpPool::make([
+            self::buildURL("{$this->api}/pictures/random", query: [
                 'category' => $this->category->value,
                 'size' => $this->size->value,
-            ])
-        );
+            ]),
+        ])->execute()->getResponses()->first();
     }
 
     public function fetchPictureRandomUrl(string $size = 'medium'): string
@@ -105,5 +105,30 @@ class SeedsApi implements MediaApi
         $url = $data[array_rand($data)];
 
         return "{$baseURL}{$url}?size={$size}";
+    }
+
+    /**
+     * Build an URL
+     *
+     * @param  string[]  $params
+     * @param  string[]  $query
+     */
+    public static function buildURL(string $url, array $params = [], array $query = []): string
+    {
+        if (! empty($params)) {
+            $paramsStr = implode('/', $params);
+
+            $url .= "/{$paramsStr}";
+        }
+
+        if (! empty($query)) {
+            $queryStr = http_build_query($query);
+
+            $url .= "?{$queryStr}";
+        }
+
+        $url = str_replace(' ', '%20', $url);
+
+        return str_replace('//', '/', $url);
     }
 }

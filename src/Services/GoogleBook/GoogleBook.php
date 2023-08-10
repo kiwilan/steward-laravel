@@ -3,9 +3,9 @@
 namespace Kiwilan\Steward\Services\GoogleBook;
 
 use DateTime;
+use Kiwilan\HttpPool\Response\HttpPoolResponse;
 use Kiwilan\Steward\Services\GoogleBook\Http\GoogleBookIndustryIdentifier;
 use Kiwilan\Steward\Services\GoogleBook\Http\GoogleBookResponse;
-use Kiwilan\Steward\Services\Http\HttpResponse;
 
 /**
  * GoogleBook item.
@@ -38,7 +38,7 @@ class GoogleBook
     ) {
     }
 
-    public static function make(HttpResponse $response): ?self
+    public static function make(HttpPoolResponse $response): ?self
     {
         if (! $response->isSuccess()) {
             return null;
@@ -54,7 +54,7 @@ class GoogleBook
         $self = new GoogleBook(
             requestUrl: $current->requestUrl(),
             originalIsbn: $current->originalIsbn(),
-            identifier: $response->id(),
+            identifier: $response->getId(),
         );
 
         return $self->create($current);

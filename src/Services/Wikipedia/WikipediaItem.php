@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Services\Wikipedia;
 
 use DateTime;
 use Illuminate\Support\Facades\Http;
-use Kiwilan\Steward\Services\Http\HttpResponse;
+use Kiwilan\HttpPool\Response\HttpPoolResponse;
 use Kiwilan\Steward\Services\Wikipedia\Http\WikipediaPageIdResponse;
 use Kiwilan\Steward\Services\Wikipedia\Http\WikipediaSearchResponse;
 
@@ -28,7 +28,7 @@ class WikipediaItem
     ) {
     }
 
-    public static function make(HttpResponse $response): ?self
+    public static function make(HttpPoolResponse $response): ?self
     {
         if (! $response->isSuccess()) {
             return null;
@@ -65,13 +65,13 @@ class WikipediaItem
 
         $self = new WikipediaItem(
             requestUrl: $current->requestUrl(),
-            identifier: $response->id(),
+            identifier: $response->getId(),
         );
 
         return $self->create($current);
     }
 
-    public static function makePageId(HttpResponse $response, ?WikipediaItem $item): ?self
+    public static function makePageId(HttpPoolResponse $response, ?WikipediaItem $item): ?self
     {
         if (! $response->isSuccess() || ! $item) {
             return null;

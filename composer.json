@@ -22,6 +22,7 @@
         "illuminate/contracts": "^9.0 || ^10.0",
         "illuminate/database": "^9.0 || ^10.0",
         "illuminate/support": "^9.0 || ^10.0",
+        "kiwilan/php-http-pool": "^0.2.22",
         "league/html-to-markdown": "^5.1",
         "livewire/livewire": "^3@beta",
         "spatie/image": "^2.2",

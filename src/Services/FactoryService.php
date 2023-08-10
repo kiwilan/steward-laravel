@@ -6,6 +6,7 @@ use Closure;
 use Faker\Generator;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Kiwilan\HttpPool\Response\HttpPoolResponse;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
 use Kiwilan\Steward\Commands\Scout\ScoutFreshCommand;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
@@ -17,7 +18,6 @@ use Kiwilan\Steward\Services\Factory\FactoryMediaDownloader;
 use Kiwilan\Steward\Services\Factory\FactoryMediaLocal;
 use Kiwilan\Steward\Services\Factory\FactoryRichText;
 use Kiwilan\Steward\Services\Factory\FactoryText;
-use Kiwilan\Steward\Services\Http\HttpResponse;
 
 /**
  * Improve Faker Laravel factory service.
@@ -178,15 +178,15 @@ class FactoryService
         return new FactoryJson($this);
     }
 
-    public static function mediaFromResponse(?HttpResponse $response, string $basePath = null): ?string
+    public static function mediaFromResponse(?HttpPoolResponse $response, string $basePath = null): ?string
     {
         if (! $response || ! $response->isSuccess()) {
             return null;
         }
 
-        $type = $response->metadata()->contentType();
+        $type = $response->getMetadata()->getContentType();
         $ext = explode('/', $type)[1] ?? 'jpg';
-        $data = $response->body();
+        $data = $response->getBody()->getContents();
 
         if ($ext === 'jpeg') {
             $ext = 'jpg';

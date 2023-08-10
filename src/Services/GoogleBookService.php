@@ -4,9 +4,10 @@ namespace Kiwilan\Steward\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Kiwilan\HttpPool\HttpPool;
+use Kiwilan\HttpPool\Response\HttpPoolResponse;
 use Kiwilan\Steward\Services\GoogleBook\GoogleBook;
 use Kiwilan\Steward\Services\GoogleBook\GoogleBookQuery;
-use Kiwilan\Steward\Services\Http\HttpResponse;
 
 /**
  * Use GoogleBook API to improve data.
@@ -116,20 +117,20 @@ class GoogleBookService
     {
         $queries = $this->setQueries();
 
-        $http = HttpService::pool($queries)
-            ->setIdentifier('identifier')
+        $http = HttpPool::make($queries)
+            ->setIdentifierKey('identifier')
             ->execute()
         ;
 
-        $this->items = $this->setItems($http->responses());
+        $this->items = $this->setItems($http->getResponses());
 
         return $this;
     }
 
     /**
-     * Create `GoogleBook` from `HttpResponse`.
+     * Create `GoogleBook` from `HttpPoolResponse`.
      *
-     * @param  Collection<int,HttpResponse>  $responses  Response from GoogleBook API
+     * @param  Collection<int,HttpPoolResponse>  $responses  Response from GoogleBook API
      * @return Collection<int,GoogleBook>
      */
     private function setItems(Collection $responses)
@@ -203,7 +204,7 @@ class GoogleBookService
     /**
      * Print response into JSON format to debug, store it to `public/storage/debug/wikipedia/{$directory}/`.
      */
-    private function print(HttpResponse $response, string $directory, int $id)
+    private function print(HttpPoolResponse $response, string $directory, int $id)
     {
         $response_json = json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         Storage::disk('public')->put("debug/wikipedia/{$directory}/{$id}.json", $response_json);
