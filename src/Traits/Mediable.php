@@ -103,7 +103,7 @@ trait Mediable
             $basename = uniqid().'.'.$ext;
         }
 
-        $basePath = storage_path("app/public/{$directory}");
+        $basePath = public_path("storage/{$directory}");
         $fullPath = "{$basePath}/{$basename}";
 
         if (file_exists($fullPath)) {
