@@ -2,11 +2,8 @@
 
 namespace Kiwilan\Steward\Services\Wikipedia;
 
-use Illuminate\Database\Eloquent\Model;
-use Kiwilan\Steward\Services\WikipediaService;
-
 /**
- * Create WikipediaQuery from Model and ISBN
+ * Create WikipediaQuery from object
  */
 class WikipediaQuery
 {
@@ -24,7 +21,7 @@ class WikipediaQuery
      */
     public static function make(string $queryString, int $identifier, string $language = 'en'): self
     {
-        $self = new WikipediaQuery(
+        $self = new self(
             queryString: $queryString,
             identifier: $identifier,
             language: $language,
@@ -50,27 +47,27 @@ class WikipediaQuery
         return $url.http_build_query($queries);
     }
 
-    public function identifier(): int
+    public function getIdentifier(): int
     {
         return $this->identifier;
     }
 
-    public function queryString(): ?string
+    public function getQueryString(): ?string
     {
         return $this->queryString;
     }
 
-    public function language(): ?string
+    public function getLanguage(): ?string
     {
         return $this->language;
     }
 
-    public function queryUrl(): ?string
+    public function getQueryUrl(): ?string
     {
         return $this->queryUrl;
     }
 
-    public function item(): ?WikipediaItem
+    public function getItem(): ?WikipediaItem
     {
         return $this->item;
     }

@@ -17,6 +17,9 @@ class GoogleBookService
     /** @var ?Collection<int,object> */
     protected ?Collection $objects = null;
 
+    /** @var ?Collection<int,GoogleBookQuery> */
+    protected ?Collection $queries = null;
+
     /** @var array<string> */
     protected array $isbnFields = ['isbn'];
 
@@ -29,6 +32,7 @@ class GoogleBookService
         protected bool $debug = false,
     ) {
         $this->objects = collect([]);
+        $this->queries = collect([]);
         $this->items = collect([]);
     }
 
@@ -43,8 +47,8 @@ class GoogleBookService
      */
     public static function make(Collection $objects): self
     {
-        $self = new GoogleBookService();
-        $self->objects = $self->setObjects($objects);
+        $self = new self();
+        $self->objects = $objects;
         $self->count = $self->objects->count();
 
         return $self;
@@ -87,7 +91,7 @@ class GoogleBookService
     /**
      * Get scannables count.
      */
-    public function count(): int
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -95,7 +99,7 @@ class GoogleBookService
     /**
      * @return Collection<int,GoogleBook>
      */
-    public function items(): Collection
+    public function getItems(): Collection
     {
         return $this->items;
     }
@@ -105,6 +109,7 @@ class GoogleBookService
      */
     public function execute(): self
     {
+        $this->queries = $this->setQueries();
         $this->search();
 
         return $this;
@@ -115,10 +120,9 @@ class GoogleBookService
      */
     private function search(): self
     {
-        $queries = $this->setQueries();
-
-        $http = HttpPool::make($queries)
+        $http = HttpPool::make($this->queries)
             ->setIdentifierKey('identifier')
+            ->allowPrintConsole()
             ->execute()
         ;
 
@@ -163,42 +167,22 @@ class GoogleBookService
         $queries = collect([]);
 
         foreach ($this->objects as $object) {
-            $isbn = [];
+            $isbnItems = [];
 
-            foreach ($this->isbnFields as $field) {
-                $isbn[] = $object->{$field};
-            }
-            $query = GoogleBookQuery::make(
-                isbn: $isbn,
-                identifier: $object->{$this->identifier},
-            );
-            $queries->add($query);
-        }
-
-        return $queries;
-    }
-
-    /**
-     * Scan all models to keep only available.
-     *
-     * @param  Collection<int,object>  $objects  List of scanned models
-     * @return Collection<int,object>
-     */
-    private function setObjects(Collection $objects): Collection
-    {
-        $scannables = collect([]);
-
-        foreach ($objects as $object) {
             foreach ($this->isbnFields as $field) {
                 if ($object->{$field}) {
-                    $scannables->add($object);
+                    $isbnItems[] = $object->{$field};
 
-                    break;
+                    $query = GoogleBookQuery::make(
+                        isbnItems: $isbnItems,
+                        identifier: $object->{$this->identifier},
+                    );
+                    $queries->add($query);
                 }
             }
         }
 
-        return $scannables;
+        return $queries;
     }
 
     /**

@@ -18,17 +18,17 @@ class WikipediaItem
         protected string|int|null $identifier,
         protected ?string $title = null,
         protected ?string $language = null,
-        protected ?string $pageId = null,
+        protected ?int $pageId = null,
         protected ?string $pageUrl = null,
         protected ?string $fullUrl = null,
-        protected ?string $wordCount = null,
+        protected ?int $wordCount = null,
         protected ?DateTime $timestamp = null,
         protected ?string $extract = null,
         protected ?string $pictureUrl = null,
     ) {
     }
 
-    public static function make(HttpPoolResponse $response): ?self
+    public static function make(HttpPoolResponse $response, array $precisionQuery = null): ?self
     {
         if (! $response->isSuccess()) {
             return null;
@@ -42,25 +42,26 @@ class WikipediaItem
 
         $relevants = $options->slice(0, 5);
         $current = $relevants->first();
+        $option = null;
 
-        foreach ($relevants as $key => $option) {
-            if (0 === $key) {
-                $current = $option;
+        if (! empty($precisionQuery)) {
+            foreach ($relevants as $key => $wikipedia) {
+                foreach ($precisionQuery as $word) {
+                    if (str_contains($wikipedia->title(), $word)) {
+                        $option = $wikipedia;
 
-                break;
+                        break;
+                    }
+                }
+
+                if ($option) {
+                    break;
+                }
             }
+        }
 
-            // if (str_contains($option->title, '(writer)')) {
-            //     $pageId = $option->pageid();
-
-            //     break;
-            // }
-
-            // if (str_contains($option->title, '(author)')) {
-            //     $pageId = $option->pageid();
-
-            //     break;
-            // }
+        if ($option) {
+            $current = $option;
         }
 
         $self = new WikipediaItem(
@@ -104,66 +105,66 @@ class WikipediaItem
 
     private function fromPageId(WikipediaPageIdResponse $response): self
     {
-        $this->language = $response->pagelanguage();
-        $this->pageId = $response->pageid();
-        $this->fullUrl = $response->fullurl();
-        $this->extract = $this->convertExtract($response->extract(), 2000);
-        $this->pictureUrl = $response->thumbnail()?->source();
+        $this->language = $response->getPageLanguage();
+        $this->pageId = intval($response->getPageId());
+        $this->fullUrl = $response->getFullUrl();
+        $this->extract = $this->convertExtract($response->getExtract(), 2000);
+        $this->pictureUrl = $response->getThumbnail()?->getSource();
 
         return $this;
     }
 
-    public function requestUrl(): string
+    public function getRequestUrl(): string
     {
         return $this->requestUrl;
     }
 
-    public function identifier(): string|int
+    public function getIdentifier(): string|int
     {
         return $this->identifier;
     }
 
-    public function title(): ?string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function language(): ?string
+    public function getLanguage(): ?string
     {
         return $this->language;
     }
 
-    public function pageId(): ?string
+    public function getPageId(): ?int
     {
         return $this->pageId;
     }
 
-    public function pageUrl(): ?string
+    public function getPageUrl(): ?string
     {
         return $this->pageUrl;
     }
 
-    public function fullUrl(): ?string
+    public function getFullUrl(): ?string
     {
         return $this->fullUrl;
     }
 
-    public function wordCount(): ?string
+    public function getWordCount(): ?int
     {
         return $this->wordCount;
     }
 
-    public function timestamp(): ?DateTime
+    public function getTimestamp(): ?DateTime
     {
         return $this->timestamp;
     }
 
-    public function extract(): ?string
+    public function getExtract(): ?string
     {
         return $this->extract;
     }
 
-    public function pictureUrl(): ?string
+    public function getPictureUrl(): ?string
     {
         return $this->pictureUrl;
     }
@@ -180,8 +181,8 @@ class WikipediaItem
         }
 
         $this->title = $response->title();
-        $this->pageId = $response->pageid();
-        $this->wordCount = $response->wordcount();
+        $this->pageId = intval($response->pageid());
+        $this->wordCount = intval($response->wordcount());
         $this->timestamp = new DateTime($response->timestamp());
         $this->pageUrl = WikipediaQuery::buildPageIdUrl($this->pageId, $this->language);
 

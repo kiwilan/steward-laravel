@@ -3,7 +3,7 @@
 namespace Kiwilan\Steward\Services;
 
 use Illuminate\Support\Facades\File;
-use Kiwilan\Steward\Utils\Console;
+use Kiwilan\HttpPool\Utils\PrintConsole;
 
 class ConverterService
 {
@@ -38,7 +38,7 @@ class ConverterService
         File::put($path, $data);
 
         if ($print) {
-            $console = Console::make();
+            $console = PrintConsole::make();
             $console->print("Saved to `{$path}`.");
         }
     }

@@ -55,87 +55,87 @@ class WikipediaPageIdResponse
         return $collection;
     }
 
-    public function requestUrl(): string
+    public function getRequestUrl(): string
     {
         return $this->requestUrl;
     }
 
-    public function pageid(): ?string
+    public function getPageId(): ?string
     {
         return $this->pageid;
     }
 
-    public function ns(): ?string
+    public function getNs(): ?string
     {
         return $this->ns;
     }
 
-    public function title(): ?string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function contentmodel(): ?string
+    public function getContentModel(): ?string
     {
         return $this->contentmodel;
     }
 
-    public function pagelanguage(): ?string
+    public function getPageLanguage(): ?string
     {
         return $this->pagelanguage;
     }
 
-    public function pagelanguagehtmlcode(): ?string
+    public function getPageLanguageHtmlCode(): ?string
     {
         return $this->pagelanguagehtmlcode;
     }
 
-    public function pagelanguagedir(): ?string
+    public function getPageLanguageDir(): ?string
     {
         return $this->pagelanguagedir;
     }
 
-    public function touched(): ?string
+    public function getTouched(): ?string
     {
         return $this->touched;
     }
 
-    public function lastrevid(): ?string
+    public function getLastRevid(): ?string
     {
         return $this->lastrevid;
     }
 
-    public function length(): ?string
+    public function getLength(): ?string
     {
         return $this->length;
     }
 
-    public function fullurl(): ?string
+    public function getFullUrl(): ?string
     {
         return $this->fullurl;
     }
 
-    public function editurl(): ?string
+    public function getEditUrl(): ?string
     {
         return $this->editurl;
     }
 
-    public function canonicalurl(): ?string
+    public function getCanonicalUrl(): ?string
     {
         return $this->canonicalurl;
     }
 
-    public function thumbnail(): ?WikipediaPageIdThumbnail
+    public function getThumbnail(): ?WikipediaPageIdThumbnail
     {
         return $this->thumbnail;
     }
 
-    public function pageimage(): ?string
+    public function getPageImage(): ?string
     {
         return $this->pageimage;
     }
 
-    public function extract(): ?string
+    public function getExtract(): ?string
     {
         return $this->extract;
     }
@@ -188,17 +188,17 @@ class WikipediaPageIdThumbnail
         );
     }
 
-    public function source(): ?string
+    public function getSource(): ?string
     {
         return $this->source;
     }
 
-    public function width(): ?string
+    public function getWidth(): ?string
     {
         return $this->width;
     }
 
-    public function height(): ?string
+    public function getHeight(): ?string
     {
         return $this->height;
     }

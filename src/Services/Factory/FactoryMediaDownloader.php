@@ -5,12 +5,12 @@ namespace Kiwilan\Steward\Services\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Kiwilan\HttpPool\Utils\PrintConsole;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\Services\Factory\Media\MediaProvider;
 use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\StewardConfig;
-use Kiwilan\Steward\Utils\Console;
 
 /**
  * Class FactoryMedia
@@ -49,7 +49,7 @@ class FactoryMediaDownloader
             $models = $models::all();
         }
 
-        $console = Console::make();
+        $console = PrintConsole::make();
 
         $chunkMax = StewardConfig::factoryMaxHandle();
 

@@ -11,7 +11,7 @@ use Kiwilan\Steward\Services\GoogleBookService;
 class GoogleBookQuery
 {
     /** @var string[] */
-    protected array $isbn = [];
+    protected array $isbnItems = [];
 
     protected function __construct(
         protected string|int|null $identifier = null,
@@ -24,13 +24,13 @@ class GoogleBookQuery
     /**
      * Create new GoogleBookQuery from Model and GoogleBookService.
      *
-     * @param  string[]  $isbn
+     * @param  string[]  $isbnItems
      */
-    public static function make(array $isbn, int|string $identifier): self
+    public static function make(array $isbnItems, int|string $identifier): self
     {
         $self = new GoogleBookQuery();
 
-        $self->isbn = array_filter($isbn);
+        $self->isbnItems = array_filter($isbnItems);
         $self->identifier = $identifier;
         $self->setGoogleBookUrl();
 
@@ -42,7 +42,7 @@ class GoogleBookQuery
      */
     public function setGoogleBookUrl(): self
     {
-        $isbn = reset($this->isbn);
+        $isbn = reset($this->isbnItems);
 
         if ($isbn) {
             $url = 'https://www.googleapis.com/books/v1/volumes';
@@ -55,22 +55,22 @@ class GoogleBookQuery
         return $this;
     }
 
-    public function identifier(): int|string
+    public function getIdentifier(): int|string
     {
         return $this->identifier;
     }
 
-    public function url(): ?string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
 
-    public function originalIsbn(): ?string
+    public function getOriginalIsbn(): ?string
     {
         return $this->originalIsbn;
     }
 
-    public function book(): ?GoogleBook
+    public function getBook(): ?GoogleBook
     {
         return $this->book;
     }
@@ -78,8 +78,8 @@ class GoogleBookQuery
     /**
      * @return string[]
      */
-    public function isbn(): array
+    public function getIsbnItems(): array
     {
-        return $this->isbn;
+        return $this->isbnItems;
     }
 }

@@ -1,0 +1,910 @@
+[
+  {
+    "title": "Adrastée",
+    "language_slug": "fr"
+  },
+  {
+    "title": "The Boys",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Dread Mac Farlane",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Ellana",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Arabe du futur",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Assassin Royal",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Incal",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Caste des Méta-Barons",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Caste des Méta-Barons Hors-Série",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Compagnie des Glaces",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Quête d'Ewilan",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Trilogie du Coup de Sang",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Lanfeust de Troy",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Lanfeust des Étoiles",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Lanfeust Odyssey",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Donjon de Naheulbeuk",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Survivaure",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les arcanes de Naheulbeuk",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Aventures de Tintin",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Aventuriers de la mer",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les cahiers d'Esther",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Mondes d'Ewilan",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Sbires du donjon de Naheulbeuk",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Méta-baron",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Naheulbeuk : Fiers de hache",
+    "language_slug": "fr"
+  },
+  {
+    "title": "NYX",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Papyrus",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Reflet d'Acide",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Sweet Tooth",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Transmetropolitain",
+    "language_slug": "fr"
+  },
+  {
+    "title": "The Walking Dead",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Yakari",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Ange Pitou",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Aventures De Monsieur Pickwick",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Barnabé Rudge",
+    "language_slug": "fr"
+  },
+  {
+    "title": "David Copperfield",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Dombey Et Fils",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Joseph Balsamo",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Ami commun",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Comtesse de Charny",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Dame de Monsoreau",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La fille du marquis",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Reine Margot",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Collier de la Reine",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le docteur mystérieux",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Magasin d'antiquités",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Vicomte de Bragelonne",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Blancs et les Bleus",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Misérables",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Quarante-Cinq",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Trois Mousquetaires",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Vie et aventures de Martin Chuzzlewit",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Vie et aventures de Nicolas Nickleby",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Blood Books",
+    "language_slug": "en"
+  },
+  {
+    "title": "Cycle de la Culture",
+    "language_slug": "en"
+  },
+  {
+    "title": "Earth's Children",
+    "language_slug": "en"
+  },
+  {
+    "title": "The Farseer Trilogy",
+    "language_slug": "en"
+  },
+  {
+    "title": "The Guardians",
+    "language_slug": "en"
+  },
+  {
+    "title": "Kate Daniels",
+    "language_slug": "en"
+  },
+  {
+    "title": "Old Kingdom",
+    "language_slug": "en"
+  },
+  {
+    "title": "Something Like",
+    "language_slug": "en"
+  },
+  {
+    "title": "The The White Rabbit Chronicles",
+    "language_slug": "en"
+  },
+  {
+    "title": "Throne of Glass",
+    "language_slug": "en"
+  },
+  {
+    "title": "Thursday Next",
+    "language_slug": "en"
+  },
+  {
+    "title": "The White Rabbit Chronicles",
+    "language_slug": "en"
+  },
+  {
+    "title": "Firefall",
+    "language_slug": "fr"
+  },
+  {
+    "title": "1Q84",
+    "language_slug": "fr"
+  },
+  {
+    "title": "À l'ombre du clocher",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Aloysius Pendergast",
+    "language_slug": "fr"
+  },
+  {
+    "title": "American Gods",
+    "language_slug": "fr"
+  },
+  {
+    "title": "ANGE",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Artemis Fowl",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Beauregard",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Bobby Pendragon",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Cantos d'Hyperion",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Capital Code",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Chasseuse de la nuit",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Cherub",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Chroniques de l'Armageddon",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Chroniques du Monde Emergé",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Chroniques Glaciaires",
+    "language_slug": "fr"
+  },
+  {
+    "title": "A comme Association",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Cthulhu : Le Mythe",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Cycle de la Culture",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Dan et Célia, Les Jumeaux d'Autremonde",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Darwin",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Drenaï",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Dune",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Empire",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Ernaut de Jérusalem",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Eschaton",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Et je danse aussi",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Exofictions",
+    "language_slug": "fr"
+  },
+  {
+    "title": "The Expanse",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Fondation",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Francis Sandow",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Frère Wulf",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Greg Mandel",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Griots Célestes",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Grisha",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Guerres Du Monde émergé",
+    "language_slug": "fr"
+  },
+  {
+    "title": "H2G2",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Halo : Forerunner",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Harry Potter",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Idéalis",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Indiana Teller",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Johnny Maxwell",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Jon Shannow",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Keleana",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Ki et Vandien",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'amie prodigieuse",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Anneau-Monde",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Arche spatiale",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Assassin royal",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Aube de la nuit",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Autre",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'échiquier du mal",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'épouvanteur",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Étoile de Pandore",
+    "language_slug": "fr"
+  },
+  {
+    "title": "L'Héritage",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Compagnie des Glaces",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Compagnie des Glaces - Nouvelle époque",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Fille Dragon",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La fille du pasteur Cullen",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La fraternité du Panca",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Grande Route du Nord",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La guerre des Clans",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La laverie",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Longue Terre",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Quête d'Ewilan",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La reine des anges",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Reine Faucon",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La rivière à l'envers",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La saga Vorkosigan",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Science du Disque-Monde",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Tour Sombre",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La Trilogie De Bartiméus",
+    "language_slug": "fr"
+  },
+  {
+    "title": "La trilogie du vide",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Choc du futur",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Clan des Otori",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Couteau du Partage",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le cycle d'Abzalon",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Cycle d'Omale",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Cycle de Hain",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le cycle des Princes d'Ambre",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Destin d'Orïsha",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Dévoreur de soleil",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Donjon de Naheulbeuk",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Fou et l'Assassin",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Juge d'Egypte",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Lion de Macédoine",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Monde de la Chasseuse de la nuit",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Pacte des Marchombres",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Passe-Miroir",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Prince des Ténèbres",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le retour de l'Oiseau-tonnerre",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Seigneur des Anneaux",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Seigneur des Anneaux (nouvelle traduction)",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Soldat Chamane",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le Trône de Fer",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Le vent de feu",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Légendes Du Monde Émergé",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les ailes d'Alexanne",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Annales de la Compagnie Noire",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Annales du Disque-monde",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Aventuriers de la mer",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Chevaliers d'Antarès",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Chevaliers d'Émeraude",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Chroniques de Narnia",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les chroniques des Ravens",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Cités des Anciens",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Cordes de cristal",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les derniers hommes",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Désastreuses aventures des orphelins Baudelaire",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Enfants de la Terre",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les enquêtes de Nestor Burma",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les guerriers du silence",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Héritiers d'Enkidiev",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Instrumentalités de la Nuit",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Libraires Gauchers de Londres",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Loriens",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Merveilleuses Aventures de Kalon",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Mondes d'Ewilan",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les montagnes hallucinées",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Naufragés du Commonwealth",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les pierres de pouvoir",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Princes-Marchands",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Racines de l'Ordre Noir",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les royaumes de Nashira",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Saboteurs",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Secrets de l'Immortel Nicholas Flamel",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Secrets de l'Immortel Nicolas Flamel",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Les Sept Clefs du Pouvoir",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Marco Polo",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Métro",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Miss Peregrine et les enfants particuliers",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Mma Ramostwe",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Nous Sommes Bob",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Nouveau Printemps",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Nouvelles du Disque-Monde",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Odyssée",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Oksa Pollock",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Peggy Sue et les fantômes",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Pierre de Gondol",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Programme Conscience",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Rifteurs",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Rigante",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Robopocalypse",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Robots",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Rohel",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Rois du monde",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Romans du Disque-Monde",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Salvation",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Silo",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Spire",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Stephanie Plum",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Tara Duncan",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Terra Wilder",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Thursday Next",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Trilogie Martienne",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Troie",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Un Palais d'Epines et de Roses",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Univers de l'Hexamone",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Vernon Subutex",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Veufs Noirs",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Vision aveugle",
+    "language_slug": "fr"
+  },
+  {
+    "title": "Women Murder Club",
+    "language_slug": "fr"
+  }
+]

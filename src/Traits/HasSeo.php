@@ -2,23 +2,33 @@
 
 namespace Kiwilan\Steward\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
  * Trait HasSeo
  *
- * - Default meta title is `title`, can be override by setting `$metaTitleFrom` property
+ * - Default meta title is `name`, can be override by setting `$metaTitleFrom` property
  * - Default meta description is `description`, can be override by setting `$metaDescriptionFrom` property
- * - Database columns: `meta_title`, `meta_description`
+ * - Database columns: `meta_title`, `meta_description` are not overridable
  *
  * ```php
  * class Post extends Model
  * {
  *    use HasSeo;
  *
- *   protected $metaTitleFrom = 'from_title_column';
- *   protected $metaDescriptionFrom = 'from_description_column';
+ *   protected $metaTitleFrom = 'from_title_column'; // default is 'name'
+ *   protected $metaDescriptionFrom = 'from_description_column'; // default is 'description'
  * }
+ * ```
+ *
+ * Add `meta_title_from` and `meta_description_from` to migration
+ *
+ * ```php
+ * Schema::create('your_model_table', function (Blueprint $table) {
+ *     $table->string('meta_title')->nullable();
+ *     $table->string('meta_description')->nullable();
+ * });
  * ```
  */
 trait HasSeo
@@ -31,27 +41,39 @@ trait HasSeo
     {
         $this->fillable[] = 'meta_title';
         $this->fillable[] = 'meta_description';
+
+        $this->appends[] = 'seo';
     }
 
     public static function bootHasSeo()
     {
-        static::creating(function ($model) {
+        static::creating(function (Model $model) {
             if (empty($model->meta_title)) {
-                $model->meta_title = $model->limitStringSize($model->{$model->getMetaTitle()});
+                $model->meta_title = $model->seoMaxLength($model->{$model->getMetaTitleFrom()});
             }
 
             if (empty($model->meta_description)) {
-                $model->meta_description = $model->limitStringSize($model->{$model->getMetaDescription()});
+                $model->meta_description = $model->seoMaxLength($model->{$model->getMetaDescriptionFrom()});
+            }
+        });
+
+        static::saving(function (Model $model) {
+            if ($model->isDirty('meta_title')) {
+                $model->meta_title = $model->seoMaxLength($model->meta_title);
+            }
+
+            if ($model->isDirty('meta_description')) {
+                $model->meta_description = $model->seoMaxLength($model->meta_description);
             }
         });
     }
 
-    public function getMetaTitle(): string
+    public function getMetaTitleFrom(): string
     {
         return $this->meta_title_from ?? $this->metaTitleFrom ?? $this->defaultMetaTitleFrom;
     }
 
-    public function getMetaDescription(): string
+    public function getMetaDescriptionFrom(): string
     {
         return $this->meta_description_from ?? $this->metaDescriptionFrom ?? $this->defaultMetaDescriptionFrom;
     }
@@ -62,12 +84,12 @@ trait HasSeo
     public function getSeoAttribute(): array
     {
         return [
-            'title' => $this->getMetaTitle(),
-            'description' => $this->getMetaDescription(),
+            'title' => $this->meta_title,
+            'description' => $this->meta_description,
         ];
     }
 
-    private function limitStringSize(string $string = null, int $limit = 250): ?string
+    private function seoMaxLength(string $string = null, int $limit = 250): ?string
     {
         if ($string && Str::length($string) > $limit) {
             return Str::limit($string, $limit, '...');

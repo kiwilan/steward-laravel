@@ -8,28 +8,43 @@ use Illuminate\Support\Str;
 class SlugService
 {
     protected function __construct(
-        protected Model $model,
+        protected ?Model $model = null,
         protected string $slugWith = 'name',
         protected string $slugColumn = 'slug',
-        protected bool $empty = false,
-        public ?string $name = null,
-        public ?string $slug = null,
+        protected bool $isEmpty = false,
+        protected ?string $name = null,
+        protected ?string $slug = null,
     ) {
     }
 
-    public static function make(Model $model, string $slugWith = 'name', string $slugColumn = 'slug'): string
+    public static function make(string $origin = null): string
+    {
+        $service = new self();
+
+        if (! $origin) {
+            return $service->unique();
+        }
+
+        $service->name = $origin;
+
+        return Str::slug($origin);
+    }
+
+    public static function makeFromModel(Model $model, string $slugWith = 'name', string $slugColumn = 'slug'): self
     {
         $service = new self($model, $slugWith, $slugColumn);
 
         if (! isset($model->{$slugWith})) {
-            throw new \Exception("Property {$slugWith} does not exist in model {$model->getTable()}, you can add `protected \$slug_with = 'name';` to your model.");
+            $service->slug = $service->unique();
+
+            return $service;
         }
 
-        $service->empty = empty($model->{$slugColumn});
+        $service->isEmpty = empty($model->{$slugColumn});
         $service->name = $service->setName();
         $service->slug = Str::slug($service->name);
 
-        if ($service->empty) {
+        if ($service->isEmpty) {
             $service->slug = $service->unique($service->name, 0);
         } else {
             $slugExist = $service->model->where($service->slugColumn, $model->{$slugColumn})->exists();
@@ -41,7 +56,17 @@ class SlugService
             }
         }
 
-        return $service->slug;
+        return $service;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
     }
 
     private function setName(): string

@@ -52,45 +52,45 @@ class GoogleBook
 
         $current = $options->first();
         $self = new GoogleBook(
-            requestUrl: $current->requestUrl(),
-            originalIsbn: $current->originalIsbn(),
+            requestUrl: $current->getRequestUrl(),
+            originalIsbn: $current->getOriginalIsbn(),
             identifier: $response->getId(),
         );
 
         return $self->create($current);
     }
 
-    public function requestUrl(): string
+    public function getRequestUrl(): string
     {
         return $this->requestUrl;
     }
 
-    public function originalIsbn(): string
+    public function getOriginalIsbn(): string
     {
         return $this->originalIsbn;
     }
 
-    public function identifier(): string|int|null
+    public function getIdentifier(): string|int|null
     {
         return $this->identifier;
     }
 
-    public function bookId(): ?string
+    public function getBookId(): ?string
     {
         return $this->bookId;
     }
 
-    public function publishedDate(): ?DateTime
+    public function getPublishedDate(): ?DateTime
     {
         return $this->publishedDate;
     }
 
-    public function description(): ?string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function pageCount(): ?int
+    public function getPageCount(): ?int
     {
         return $this->pageCount;
     }
@@ -100,90 +100,92 @@ class GoogleBook
         return $this->isMaturityRating;
     }
 
-    public function language(): ?string
+    public function getLanguage(): ?string
     {
         return $this->language;
     }
 
-    public function previewLink(): ?string
+    public function getPreviewLink(): ?string
     {
         return $this->previewLink;
     }
 
-    public function publisher(): ?string
+    public function getPublisher(): ?string
     {
         return $this->publisher;
     }
 
-    public function retailPriceAmount(): ?int
+    public function getRetailPriceAmount(): ?int
     {
         return $this->retailPriceAmount;
     }
 
-    public function retailPriceCurrencyCode(): ?int
+    public function getRetailPriceCurrencyCode(): ?int
     {
         return $this->retailPriceCurrencyCode;
     }
 
-    public function buyLink(): ?string
+    public function getBuyLink(): ?string
     {
         return $this->buyLink;
     }
 
-    public function isbn10(): ?string
+    public function getIsbn10(): ?string
     {
         return $this->isbn10;
     }
 
-    public function isbn13(): ?string
+    public function getIsbn13(): ?string
     {
         return $this->isbn13;
     }
 
-    public function industryIdentifiers(): array
+    public function getIndustryIdentifiers(): array
     {
         return $this->industryIdentifiers;
     }
 
-    public function categories(): array
+    public function getCategories(): array
     {
         return $this->categories;
     }
 
     private function create(GoogleBookResponse $response): self
     {
-        $this->bookId = $response->id();
+        $this->bookId = $response->getId();
 
-        $volumeInfo = $response->volumeInfo();
+        $volumeInfo = $response->getVolumeInfo();
 
-        $this->publishedDate = $volumeInfo?->publishedDate()
-            ? new DateTime($volumeInfo->publishedDate())
+        if ($volumeInfo) {
+            $this->publishedDate = $volumeInfo->getPublishedDate()
+            ? new DateTime($volumeInfo->getPublishedDate())
             : null;
-        $this->publisher = $volumeInfo?->publisher();
-        $this->description = $volumeInfo?->description();
-        $this->pageCount = $volumeInfo?->pageCount();
-        $this->categories = $volumeInfo?->categories() ?? [];
-        $this->isMaturityRating = $volumeInfo?->maturityRating() === 'MATURE';
-        $this->language = $volumeInfo?->language();
-        $this->previewLink = $volumeInfo?->previewLink();
+            $this->publisher = $volumeInfo->getPublisher();
+            $this->description = $volumeInfo->getDescription();
+            $this->pageCount = $volumeInfo->getPageCount();
+            $this->categories = $volumeInfo->getCategories();
+            $this->isMaturityRating = $volumeInfo->isMaturityRating();
+            $this->language = $volumeInfo->getLanguage();
+            $this->previewLink = $volumeInfo->getPreviewLink();
+        }
 
-        $saleInfo = $response->saleInfo();
+        $saleInfo = $response->getSaleInfo();
 
-        $this->retailPriceAmount = intval($saleInfo?->retailPrice()?->amount());
-        $this->retailPriceCurrencyCode = intval($saleInfo?->retailPrice()?->currencyCode());
-        $this->buyLink = $saleInfo?->buyLink();
+        $this->retailPriceAmount = intval($saleInfo?->getRetailPrice()?->getAmount());
+        $this->retailPriceCurrencyCode = intval($saleInfo?->getRetailPrice()?->getCurrencyCode());
+        $this->buyLink = $saleInfo?->getBuyLink();
 
-        foreach ($volumeInfo?->industryIdentifiers() as $key => $gBookIdentifier) {
-            $this->isbn13 = $gBookIdentifier->type() === 'ISBN_13'
-                ? $gBookIdentifier->identifier()
+        foreach ($volumeInfo?->getIndustryIdentifiers() as $key => $gBookIdentifier) {
+            $this->isbn13 = $gBookIdentifier->getType() === 'ISBN_13'
+                ? $gBookIdentifier->getIdentifier()
                 : null;
 
-            $this->isbn10 = $gBookIdentifier->type() === 'ISBN_10'
-                ? $gBookIdentifier->identifier()
+            $this->isbn10 = $gBookIdentifier->getType() === 'ISBN_10'
+                ? $gBookIdentifier->getIdentifier()
                 : null;
         }
 
-        $this->industryIdentifiers = $volumeInfo?->industryIdentifiers() ?? [];
+        $this->industryIdentifiers = $volumeInfo?->getIndustryIdentifiers() ?? [];
 
         return $this;
     }

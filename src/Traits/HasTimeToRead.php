@@ -2,11 +2,27 @@
 
 namespace Kiwilan\Steward\Traits;
 
+/**
+ * Trait HasTimeToRead
+ *
+ * - Default time to read with is `body`, can be override by setting `$timeToReadWith` property
+ * - Default time to read column is `time_to_read`, can be override by setting `$timeToReadColumn` property
+ *
+ * ```php
+ * class Post extends Model
+ * {
+ *    use HasTimeToRead;
+ *
+ *   protected $timeToReadWith = 'custom_property'; // default is `body`
+ *   protected $timeToReadColumn = 'time_to_read_column'; // default is `time_to_read`
+ * }
+ * ```
+ */
 trait HasTimeToRead
 {
-    protected $default_time_to_read_with = 'body';
+    protected $defaultTimeToReadWith = 'body';
 
-    protected $default_time_to_read_column = 'time_to_read';
+    protected $defaultTimeToReadColumn = 'time_to_read';
 
     public function initializeHasTimeToRead()
     {
@@ -17,12 +33,12 @@ trait HasTimeToRead
 
     public function getTimeToReadWith(): string
     {
-        return $this->time_to_read_with ?? $this->default_time_to_read_with;
+        return $this->timeToReadWith ?? $this->defaultTimeToReadWith;
     }
 
     public function getTimeToReadColumn(): string
     {
-        return $this->time_to_read_column ?? $this->default_time_to_read_column;
+        return $this->timeToReadColumn ?? $this->default_timeToReadColumn;
     }
 
     protected static function bootHasTimeToRead()

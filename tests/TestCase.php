@@ -2,6 +2,7 @@
 
 namespace Kiwilan\Steward\Tests;
 
+use Illuminate\Support\Facades\Schema;
 use Kiwilan\Steward\StewardServiceProvider;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -22,5 +23,18 @@ class TestCase extends Orchestra
             StewardServiceProvider::class,
             LivewireServiceProvider::class,
         ];
+    }
+
+    public function getEnvironmentSetUp($app)
+    {
+        config()->set('database.default', 'sqlite');
+        config()->set('database.connections.sqlite', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+        ]);
+
+        Schema::dropAllTables();
+        $migration = include __DIR__.'/Data/database/migrations/create_models_tables.php';
+        $migration->up();
     }
 }

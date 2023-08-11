@@ -8,9 +8,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Kiwilan\HttpPool\HttpPool;
 use Kiwilan\HttpPool\Response\HttpPoolResponse;
+use Kiwilan\HttpPool\Utils\PrintConsole;
 use Kiwilan\Steward\Services\Wikipedia\WikipediaItem;
 use Kiwilan\Steward\Services\Wikipedia\WikipediaQuery;
-use Kiwilan\Steward\Utils\Console;
 
 /**
  * Use Wikipedia to get some data about authors and series.
@@ -21,16 +21,23 @@ use Kiwilan\Steward\Utils\Console;
 class WikipediaService
 {
     /** @var array<string> */
-    protected array $queryAttributes = ['name'];
+    protected array $queryAttributes = [];
 
     /** @var ?Collection<int,object> */
     protected ?Collection $objects = null;
 
+    /** @var ?Collection<int,WikipediaQuery> */
+    protected ?Collection $queries = null;
+
     /** @var ?Collection<int,WikipediaItem> */
     protected ?Collection $items = null;
 
+    /** @var ?array<string> */
+    protected ?array $precisionQuery = null;
+
     protected function __construct(
-        protected string $languageField,
+        protected string $language = 'en',
+        protected ?string $languageAttribute = null,
         protected string $identifier = 'id',
         protected int $count = 0,
         protected bool $debug = false,
@@ -43,11 +50,10 @@ class WikipediaService
      * Create WikipediaService from Model and create WikipediaQuery for each entity only if hasn't WikipediaItem.
      *
      * @param  Collection<int,object>  $objects  List of objects
-     * @param  string  $languageField  Language field to use for Wikipedia instance
      */
-    public static function make(Collection $objects, string $languageField): self
+    public static function make(Collection $objects): self
     {
-        $self = new WikipediaService($languageField);
+        $self = new self();
         $self->objects = $objects;
         $self->count = $self->objects->count();
 
@@ -57,9 +63,11 @@ class WikipediaService
     /**
      * Set attributes to search on Wikipedia, can be unique or multiple for concat search.
      *
+     * For example, if you have `lastname` and `firstname` attributes, you can set `setQueryAttributes(['lastname', 'firstname'])` to search with `lastname firstname`.
+     *
      * @param  string|string[]  $attributes
      */
-    public function setQueryAttributes(mixed $attributes = ['name']): self
+    public function setQueryAttributes(mixed $attributes = []): self
     {
         $list = [];
 
@@ -70,6 +78,55 @@ class WikipediaService
         }
 
         $this->queryAttributes = $list;
+
+        return $this;
+    }
+
+    /**
+     * In Wikipedia research, you can set precision to search on specific category.
+     *
+     * For example, if you want to search only on authors, you can set `setPrecisionQuery('author')`.
+     * If some page title contains `author`, this result will be selected over other results.
+     *
+     * You can use array to set multiple options, like `setPrecisionQuery(['author', 'actor'])`.
+     * If `author` result if found, this result will be selected, even if `actor` result is found because `author` is first in array.
+     *
+     * Otherwise, the first result will be selected.
+     */
+    public function setPrecisionQuery(string|array $precisionQuery): self
+    {
+        if (is_string($precisionQuery)) {
+            $precisionQuery = [$precisionQuery];
+        }
+
+        $this->precisionQuery = $precisionQuery;
+
+        return $this;
+    }
+
+    /**
+     * Set language attribute, present in each object or not, to use on Wikipedia.
+     *
+     * Fallback is English, you can use `setLanguage` to set a different language (available on Wikipedia).
+     */
+    public function setLanguageAttribute(string $attribute): self
+    {
+        $this->languageAttribute = $attribute;
+
+        return $this;
+    }
+
+    /**
+     * Set global language to use on Wikipedia, prefix in URL like `en` in `en.wikipedia.org`
+     *
+     * Fallback is `en`, you can use `setLanguageAttribute` to set language attribute for each object.
+     * Check if exists on https://en.wikipedia.org/wiki/List_of_Wikipedias.
+     *
+     * `setLanguage` and `setLanguageAttribute` are independent, you can use both, `setLanguage` will be fallback if `setLanguageAttribute` is not set.
+     */
+    public function setLanguage(string $language = 'en'): self
+    {
+        $this->language = $language;
 
         return $this;
     }
@@ -89,14 +146,14 @@ class WikipediaService
      *
      * @param  string  $identifier Default is `id`
      */
-    public function setidentifier(string $identifier = 'id'): self
+    public function setIdentifier(string $identifier = 'id'): self
     {
         $this->identifier = $identifier;
 
         return $this;
     }
 
-    public function count(): int
+    public function getCount(): int
     {
         return $this->count;
     }
@@ -104,7 +161,7 @@ class WikipediaService
     /**
      * @return Collection<int,WikipediaItem>
      */
-    public function items(): Collection
+    public function getItems(): Collection
     {
         return $this->items;
     }
@@ -114,27 +171,27 @@ class WikipediaService
      */
     public function execute(): self
     {
-        $queries = $this->setQueries();
+        $this->queries = $this->setQueries();
 
-        $console = Console::make();
+        $console = PrintConsole::make();
 
         $console->print('List of query URL available, requests from query URL to get page id.');
-        $console->newLine();
 
-        $http = HttpPool::make($queries)
+        $http = HttpPool::make($this->queries)
             ->setIdentifierKey('identifier')
             ->setUrlKey('queryUrl')
+            ->allowPrintConsole()
             ->execute()
         ;
 
         $queryItems = $this->setQueryItems($http->getResponses());
 
         $console->print('List of page id URL available, requests from page id URL to get extra content.');
-        $console->newLine();
 
         $http = HttpPool::make($queryItems)
             ->setIdentifierKey('identifier')
             ->setUrlKey('pageUrl')
+            ->allowPrintConsole()
             ->execute()
         ;
 
@@ -163,7 +220,7 @@ class WikipediaService
             if ($this->debug) {
                 $this->print($response, 'wikipedia-pageid', $id);
             }
-            $item = WikipediaItem::make($response);
+            $item = WikipediaItem::make($response, $this->precisionQuery);
             $items->put($id, $item);
         }
 
@@ -184,7 +241,7 @@ class WikipediaService
 
         foreach ($responses as $id => $response) {
             /** @var WikipediaItem */
-            $item = $queryItems->first(fn (WikipediaItem $item) => $item->identifier() == $id);
+            $item = $queryItems->first(fn (WikipediaItem $item) => $item->getIdentifier() == $id);
 
             if ($this->debug) {
                 $this->print($response, 'wikipedia', $id);
@@ -224,7 +281,7 @@ class WikipediaService
         /** @var Collection<int,WikipediaQuery> */
         $queries = collect([]);
 
-        foreach ($this->objects as $object) {
+        foreach ($this->objects as $key => $object) {
             // Test each attribute
             foreach ($this->queryAttributes as $attribute) {
                 if (! $this->attributeExistInModel($attribute, $object)) {
@@ -232,30 +289,47 @@ class WikipediaService
                 }
             }
 
-            $lang = 'en';
+            $lang = $this->language;
             // If language attribute is unknown, set it to english.
-            if ($this->attributeExistInModel($this->languageField, $object)) {
-                $lang = $object->{$this->languageField};
+            if ($this->languageAttribute && $this->attributeExistInModel($this->languageAttribute, $object)) {
+                $lang = $object->{$this->languageAttribute};
 
                 if ('unknown' === $lang || null === $lang) {
-                    $lang = 'en';
+                    $lang = $this->language;
                 }
+            }
+
+            if (! is_string($lang)) {
+                $lang = json_encode($lang);
             }
 
             // set query string from `$queryAttributes`
             $queryString = null;
 
             foreach ($this->queryAttributes as $attr) {
-                $queryString .= $object->{$attr}.' ';
+                $attr = $object->{$attr};
+
+                if (! is_string($attr)) {
+                    $attr = json_encode($attr);
+                }
+                $queryString .= $attr.' ';
             }
 
             $queryString = trim($queryString);
 
+            $id = null;
+
+            if ($this->attributeExistInModel($this->identifier, $object)) {
+                $id = $object->{$this->identifier};
+            } else {
+                $id = $key;
+            }
+
             $queries->put(
-                $object->{$this->identifier},
+                $id,
                 WikipediaQuery::make(
                     queryString: $queryString,
-                    identifier: $object->{$this->identifier},
+                    identifier: $id,
                     language: $lang,
                 ),
             );
@@ -267,9 +341,13 @@ class WikipediaService
     /**
      * Check if attribute exist into Model.
      */
-    private function attributeExistInModel(string $attribute, Model $model): bool
+    private function attributeExistInModel(string $attribute, object $model): bool
     {
-        return array_key_exists($attribute, $model->getAttributes());
+        if ($model instanceof Model) {
+            return array_key_exists($attribute, $model->getAttributes());
+        }
+
+        return property_exists($model, $attribute);
     }
 
     /**

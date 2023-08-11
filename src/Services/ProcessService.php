@@ -3,7 +3,7 @@
 namespace Kiwilan\Steward\Services;
 
 use Closure;
-use Kiwilan\Steward\Utils\Console;
+use Kiwilan\HttpPool\Utils\PrintConsole;
 
 class ProcessService
 {
@@ -18,7 +18,7 @@ class ProcessService
         $executionTime = ($endTime - $startTime);
         $executionTime = number_format((float) $executionTime, 2, '.', '');
 
-        $console = Console::make();
+        $console = PrintConsole::make();
         $console->print("Execution time of script = {$executionTime} sec", 'green');
     }
 

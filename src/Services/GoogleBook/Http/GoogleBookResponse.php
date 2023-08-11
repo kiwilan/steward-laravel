@@ -9,7 +9,7 @@ class GoogleBookResponse
 {
     protected function __construct(
         protected string $requestUrl,
-        protected string $originalIsbn,
+        protected ?string $originalIsbn = null,
         protected ?string $kind = null,
         protected ?string $id = null,
         protected ?string $etag = null,
@@ -47,47 +47,47 @@ class GoogleBookResponse
         return $collection;
     }
 
-    public function requestUrl(): string
+    public function getRequestUrl(): string
     {
         return $this->requestUrl;
     }
 
-    public function originalIsbn(): string
+    public function getOriginalIsbn(): ?string
     {
         return $this->originalIsbn;
     }
 
-    public function kind(): ?string
+    public function getKind(): ?string
     {
         return $this->kind;
     }
 
-    public function id(): ?string
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function etag(): ?string
+    public function getEtag(): ?string
     {
         return $this->etag;
     }
 
-    public function volumeInfo(): ?GoogleBookVolumeInfo
+    public function getVolumeInfo(): ?GoogleBookVolumeInfo
     {
         return $this->volumeInfo;
     }
 
-    public function saleInfo(): ?GoogleBookVolumeSaleInfo
+    public function getSaleInfo(): ?GoogleBookVolumeSaleInfo
     {
         return $this->saleInfo;
     }
 
-    public function accessInfo(): ?GoogleBookAccessInfo
+    public function getAccessInfo(): ?GoogleBookAccessInfo
     {
         return $this->accessInfo;
     }
 
-    public function searchInfo(): ?GoogleBookSearchInfo
+    public function getSearchInfo(): ?GoogleBookSearchInfo
     {
         return $this->searchInfo;
     }
@@ -165,72 +165,72 @@ class GoogleBookVolumeInfo extends GoogleBookResponse
         return $self;
     }
 
-    public function title(): ?string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function publishedDate(): ?string
+    public function getPublishedDate(): ?string
     {
         return $this->publishedDate;
     }
 
-    public function publisher(): ?string
+    public function getPublisher(): ?string
     {
         return $this->publisher;
     }
 
-    public function description(): ?string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function readingModes(): ?GoogleBookReadingModes
+    public function getReadingModes(): ?GoogleBookReadingModes
     {
         return $this->readingModes;
     }
 
-    public function pageCount(): ?int
+    public function getPageCount(): ?int
     {
         return $this->pageCount;
     }
 
-    public function printType(): ?string
+    public function getPrintType(): ?string
     {
         return $this->printType;
     }
 
-    public function maturityRating(): ?string
+    public function isMaturityRating(): bool
     {
-        return $this->maturityRating;
+        return $this->maturityRating === 'MATURE';
     }
 
-    public function allowAnonLogging(): ?bool
+    public function isAllowAnonLogging(): ?bool
     {
         return $this->allowAnonLogging;
     }
 
-    public function contentVersion(): ?string
+    public function getContentVersion(): ?string
     {
         return $this->contentVersion;
     }
 
-    public function language(): ?string
+    public function getLanguage(): ?string
     {
         return $this->language;
     }
 
-    public function previewLink(): ?string
+    public function getPreviewLink(): ?string
     {
         return $this->previewLink;
     }
 
-    public function infoLink(): ?string
+    public function getInfoLink(): ?string
     {
         return $this->infoLink;
     }
 
-    public function canonicalVolumeLink(): ?string
+    public function getCanonicalVolumeLink(): ?string
     {
         return $this->canonicalVolumeLink;
     }
@@ -238,7 +238,7 @@ class GoogleBookVolumeInfo extends GoogleBookResponse
     /**
      * @return array<string>
      */
-    public function authors(): array
+    public function getAuthors(): array
     {
         return $this->authors;
     }
@@ -246,7 +246,7 @@ class GoogleBookVolumeInfo extends GoogleBookResponse
     /**
      * @return GoogleBookIndustryIdentifier[]
      */
-    public function industryIdentifiers(): array
+    public function getIndustryIdentifiers(): array
     {
         return $this->industryIdentifiers;
     }
@@ -254,7 +254,7 @@ class GoogleBookVolumeInfo extends GoogleBookResponse
     /**
      * @return array<string>
      */
-    public function categories(): array
+    public function getCategories(): array
     {
         return $this->categories;
     }
@@ -288,12 +288,12 @@ class GoogleBookIndustryIdentifier
         return $collection;
     }
 
-    public function type(): ?string
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function identifier(): ?string
+    public function getIdentifier(): ?string
     {
         return $this->identifier;
     }
@@ -302,25 +302,25 @@ class GoogleBookIndustryIdentifier
 class GoogleBookReadingModes
 {
     protected function __construct(
-        protected ?bool $text = null,
-        protected ?bool $image = null,
+        protected bool $text = false,
+        protected bool $image = false,
     ) {
     }
 
     public static function make(array $search): self
     {
         return new self(
-            text: $search['text'] ?? null,
-            image: $search['image'] ?? null,
+            text: $search['text'] ?? false,
+            image: $search['image'] ?? false,
         );
     }
 
-    public function text(): ?bool
+    public function isText(): bool
     {
         return $this->text;
     }
 
-    public function image(): ?bool
+    public function isImage(): bool
     {
         return $this->image;
     }
@@ -346,39 +346,39 @@ class GoogleBookVolumeSaleInfo
         return new self(
             country: $search['country'] ?? null,
             saleability: $search['saleability'] ?? null,
-            isEbook: $search['isEbook'] ?? null,
+            isEbook: $search['isEbook'] ?? false,
             listPrice: GoogleBookVolumeSaleInfoPrice::make($search['listPrice'] ?? null),
             retailPrice: GoogleBookVolumeSaleInfoPrice::make($search['retailPrice'] ?? null),
             buyLink: $search['buyLink'] ?? null,
         );
     }
 
-    public function country(): ?string
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    public function saleability(): ?string
+    public function getSaleability(): ?string
     {
         return $this->saleability;
     }
 
-    public function isEbook(): ?bool
+    public function isEbook(): bool
     {
         return $this->isEbook;
     }
 
-    public function listPrice(): ?GoogleBookVolumeSaleInfoPrice
+    public function getListPrice(): ?GoogleBookVolumeSaleInfoPrice
     {
         return $this->listPrice;
     }
 
-    public function retailPrice(): ?GoogleBookVolumeSaleInfoPrice
+    public function getRetailPrice(): ?GoogleBookVolumeSaleInfoPrice
     {
         return $this->retailPrice;
     }
 
-    public function buyLink(): ?string
+    public function getBuyLink(): ?string
     {
         return $this->buyLink;
     }
@@ -386,7 +386,7 @@ class GoogleBookVolumeSaleInfo
     /**
      * @return GoogleBookVolumeSaleInfoOffer[]
      */
-    public function offers(): array
+    public function getOffers(): array
     {
         return $this->offers;
     }
@@ -412,12 +412,12 @@ class GoogleBookVolumeSaleInfoPrice
         );
     }
 
-    public function amount(): ?float
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function currencyCode(): ?string
+    public function getCurrencyCode(): ?string
     {
         return $this->currencyCode;
     }
@@ -443,26 +443,26 @@ class GoogleBookVolumeSaleInfoOffer
             finskyOfferType: $search['finskyOfferType'] ?? null,
             listPrice: GoogleBookVolumeSaleInfoOfferPrice::make($search['listPrice'] ?? null),
             retailPrice: GoogleBookVolumeSaleInfoOfferPrice::make($search['retailPrice'] ?? null),
-            giftable: $search['giftable'] ?? null,
+            giftable: $search['giftable'] ?? false,
         );
     }
 
-    public function finskyOfferType(): ?int
+    public function getFinskyOfferType(): ?int
     {
         return $this->finskyOfferType;
     }
 
-    public function listPrice(): ?GoogleBookVolumeSaleInfoOfferPrice
+    public function getListPrice(): ?GoogleBookVolumeSaleInfoOfferPrice
     {
         return $this->listPrice;
     }
 
-    public function retailPrice(): ?GoogleBookVolumeSaleInfoOfferPrice
+    public function getRetailPrice(): ?GoogleBookVolumeSaleInfoOfferPrice
     {
         return $this->retailPrice;
     }
 
-    public function giftable(): ?bool
+    public function isGiftable(): ?bool
     {
         return $this->giftable;
     }
@@ -488,12 +488,12 @@ class GoogleBookVolumeSaleInfoOfferPrice
         );
     }
 
-    public function amount(): ?float
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function currencyCode(): ?string
+    public function getCurrencyCode(): ?string
     {
         return $this->currencyCode;
     }
@@ -504,14 +504,14 @@ class GoogleBookAccessInfo
     protected function __construct(
         protected ?string $country = null,
         protected ?string $viewability = null,
-        protected ?bool $embeddable = null,
-        protected ?bool $publicDomain = null,
+        protected bool $embeddable = false,
+        protected bool $publicDomain = false,
         protected ?string $textToSpeechPermission = null,
         protected ?GoogleBookAccessInfoAvailable $epub = null,
         protected ?GoogleBookAccessInfoAvailable $pdf = null,
         protected ?string $webReaderLink = null,
-        protected ?bool $accessViewStatus = null,
-        protected ?bool $quoteSharingAllowed = null,
+        protected bool $accessViewStatus = false,
+        protected bool $quoteSharingAllowed = false,
     ) {
     }
 
@@ -520,63 +520,63 @@ class GoogleBookAccessInfo
         return new self(
             country: $search['country'] ?? null,
             viewability: $search['viewability'] ?? null,
-            embeddable: $search['embeddable'] ?? null,
-            publicDomain: $search['publicDomain'] ?? null,
+            embeddable: $search['embeddable'] ?? false,
+            publicDomain: $search['publicDomain'] ?? false,
             textToSpeechPermission: $search['textToSpeechPermission'] ?? null,
             epub: GoogleBookAccessInfoAvailable::make($search['epub'] ?? null),
             pdf: GoogleBookAccessInfoAvailable::make($search['pdf'] ?? null),
             webReaderLink: $search['webReaderLink'] ?? null,
-            accessViewStatus: $search['accessViewStatus'] ?? null,
-            quoteSharingAllowed: $search['quoteSharingAllowed'] ?? null,
+            accessViewStatus: $search['accessViewStatus'] ?? false,
+            quoteSharingAllowed: $search['quoteSharingAllowed'] ?? false,
         );
     }
 
-    public function country(): ?string
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    public function viewability(): ?string
+    public function getViewability(): ?string
     {
         return $this->viewability;
     }
 
-    public function embeddable(): ?bool
+    public function isEmbeddable(): bool
     {
         return $this->embeddable;
     }
 
-    public function publicDomain(): ?bool
+    public function isPublicDomain(): bool
     {
         return $this->publicDomain;
     }
 
-    public function textToSpeechPermission(): ?string
+    public function getTextToSpeechPermission(): ?string
     {
         return $this->textToSpeechPermission;
     }
 
-    public function epub(): ?GoogleBookAccessInfoAvailable
+    public function getEpub(): ?GoogleBookAccessInfoAvailable
     {
         return $this->epub;
     }
 
-    public function pdf(): ?GoogleBookAccessInfoAvailable
+    public function getPdf(): ?GoogleBookAccessInfoAvailable
     {
         return $this->pdf;
     }
 
-    public function webReaderLink(): ?string
+    public function getWebReaderLink(): ?string
     {
         return $this->webReaderLink;
     }
 
-    public function accessViewStatus(): ?bool
+    public function isAccessViewStatus(): bool
     {
         return $this->accessViewStatus;
     }
 
-    public function quoteSharingAllowed(): ?bool
+    public function isAuoteSharingAllowed(): bool
     {
         return $this->quoteSharingAllowed;
     }
@@ -585,18 +585,18 @@ class GoogleBookAccessInfo
 class GoogleBookAccessInfoAvailable
 {
     protected function __construct(
-        protected ?bool $isAvailable = null,
+        protected bool $isAvailable = false,
     ) {
     }
 
     public static function make(array $search): self
     {
         return new self(
-            isAvailable: $search['isAvailable'] ?? null,
+            isAvailable: $search['isAvailable'] ?? false,
         );
     }
 
-    public function isAvailable(): ?bool
+    public function isAvailable(): bool
     {
         return $this->isAvailable;
     }
@@ -616,7 +616,7 @@ class GoogleBookSearchInfo
         );
     }
 
-    public function textSnippet(): ?string
+    public function getTextSnippet(): ?string
     {
         return $this->textSnippet;
     }
