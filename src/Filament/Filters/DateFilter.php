@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Filament\Components;
+namespace Kiwilan\Steward\Filament\Filters;
 
 use Filament\Forms;
 use Filament\Tables\Filters\Filter;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DateFilter
 {
-    public static function make(string $field = 'created_at')
+    public static function make(string $field = 'created_at'): Filter
     {
         return Filter::make('created_at')
             ->form([
