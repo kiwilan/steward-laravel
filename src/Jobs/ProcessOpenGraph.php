@@ -52,6 +52,6 @@ class ProcessOpenGraph implements ShouldQueue
                 ->crop(Manipulations::CROP_CENTER, 1200, 630)
                 ->optimize()
             ;
-        })->save(storage_path('app/public/default.jpg'));
+        })->save(public_path('default.jpg'));
     }
 }
