@@ -74,7 +74,7 @@ class ProcessFavicon implements ShouldQueue
 
     private function setIcon(string $path)
     {
-        $path = public_path("storage/{$path}");
+        $path = storage_path("app/public/{$path}");
 
         if (! $path || ! File::exists($path)) {
             return;
@@ -182,6 +182,6 @@ class ProcessFavicon implements ShouldQueue
                 ->height($height)
                 ->optimize()
             ;
-        })->save(public_path("{$name}.{$extension}"));
+        })->save(storage_path("app/public/{$name}.{$extension}"));
     }
 }

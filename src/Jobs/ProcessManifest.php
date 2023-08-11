@@ -45,7 +45,7 @@ class ProcessManifest implements ShouldQueue
         $config = file_get_contents(__DIR__.'/stubs/browserconfig.xml');
         $config = str_replace('{$color}', $color, $config);
 
-        file_put_contents(public_path('browserconfig.xml'), $config);
+        file_put_contents(storage_path('app/public/browserconfig.xml'), $config);
     }
 
     private function setSiteWebManifest(string $name, string $color)
@@ -58,6 +58,6 @@ class ProcessManifest implements ShouldQueue
         $manifest = str_replace('{$name}', $name, $manifest);
         $manifest = str_replace('{$color}', $color, $manifest);
 
-        file_put_contents(public_path('site.webmanifest'), $manifest);
+        file_put_contents(storage_path('app/public/site.webmanifest'), $manifest);
     }
 }

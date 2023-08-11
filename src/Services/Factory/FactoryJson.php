@@ -164,7 +164,7 @@ class FactoryJson
         if (File::exists($media_path)) {
             $media = File::get($media_path);
 
-            $directory = public_path("storage/{$table}");
+            $directory = storage_path("app/public/{$table}");
 
             if (! File::exists($directory)) {
                 File::makeDirectory($directory, 0755, true, true);

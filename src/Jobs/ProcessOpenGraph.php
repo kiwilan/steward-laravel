@@ -38,7 +38,7 @@ class ProcessOpenGraph implements ShouldQueue
 
     private function setOpenGraph(string $path)
     {
-        $path = public_path("storage/{$path}");
+        $path = storage_path("app/public/{$path}");
 
         if (! $path || ! File::exists($path)) {
             return;
@@ -52,6 +52,6 @@ class ProcessOpenGraph implements ShouldQueue
                 ->crop(Manipulations::CROP_CENTER, 1200, 630)
                 ->optimize()
             ;
-        })->save(public_path('default.jpg'));
+        })->save(storage_path('app/public/default.jpg'));
     }
 }

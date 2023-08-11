@@ -38,7 +38,7 @@ class FactoryService
     public static function beforeSeed(): bool
     {
         $paths = [
-            public_path('storage'),
+            storage_path('app/public'),
             storage_path('app/download'),
         ];
 
@@ -208,7 +208,7 @@ class FactoryService
         $random = uniqid();
 
         $subDirectory = $basePath ? $basePath : 'seeders';
-        $basePath = public_path("storage/{$subDirectory}");
+        $basePath = storage_path("app/public/{$subDirectory}");
 
         if (! File::exists($basePath)) {
             File::makeDirectory($basePath, 0755, true, true);

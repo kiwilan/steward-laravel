@@ -49,7 +49,7 @@ class MediaCleanCommand extends Commandable
         $this->all = $this->option('all') ?: false;
         $this->force = $this->option('force') ?: false;
 
-        $this->mediaPath = public_path('storage');
+        $this->mediaPath = storage_path('app/public');
 
         $dbFiles = $this->setDbFiles();
         $localFiles = $this->setLocalFiles();

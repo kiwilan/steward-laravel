@@ -3,7 +3,7 @@
 namespace Kiwilan\Steward\Livewire\Traits;
 
 use Illuminate\Support\Facades\File;
-use Livewire\TemporaryUploadedFile;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 /**
  * `Livewire\Component` trait to handle uploads.
@@ -191,7 +191,7 @@ trait LiveUpload
                 $fileToDelete = $current[$index];
                 unset($current[$index]);
 
-                $pathFileToDelete = public_path("storage/{$fileToDelete}");
+                $pathFileToDelete = storage_path("app/public/{$fileToDelete}");
 
                 if (File::exists($pathFileToDelete)) {
                     File::delete($pathFileToDelete);

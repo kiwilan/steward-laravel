@@ -17,7 +17,7 @@ class FileUploadService
         $self = new self();
 
         if (! $saveDirectory) {
-            $self->saveDirectory = public_path('storage/uploads');
+            $self->saveDirectory = storage_path('app/public/uploads');
         }
 
         if (! $baseUrl) {
