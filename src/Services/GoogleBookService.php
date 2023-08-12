@@ -15,7 +15,7 @@ use Kiwilan\Steward\Services\GoogleBook\GoogleBookQuery;
 class GoogleBookService
 {
     /** @var ?Collection<int,object> */
-    protected ?Collection $objects = null;
+    protected ?Collection $original = null;
 
     /** @var ?Collection<int,GoogleBookQuery> */
     protected ?Collection $queries = null;
@@ -31,7 +31,7 @@ class GoogleBookService
         protected int $count = 0,
         protected bool $debug = false,
     ) {
-        $this->objects = collect([]);
+        $this->original = collect([]);
         $this->queries = collect([]);
         $this->items = collect([]);
     }
@@ -42,14 +42,12 @@ class GoogleBookService
      *
      * Get all useful data to improve Book, Identifier, Publisher and Tag
      * If data exist, create GoogleBook associate with Book with useful data to purchase eBook
-     *
-     * @param  Collection<int,object>  $objects  List of scanned models
      */
-    public static function make(Collection $objects): self
+    public static function make(Collection $data): self
     {
         $self = new self();
-        $self->objects = $objects;
-        $self->count = $self->objects->count();
+        $self->original = $data;
+        $self->count = $self->original->count();
 
         return $self;
     }
@@ -166,16 +164,16 @@ class GoogleBookService
         /** @var Collection<int,GoogleBookQuery> */
         $queries = collect([]);
 
-        foreach ($this->objects as $object) {
+        foreach ($this->original as $item) {
             $isbnItems = [];
 
             foreach ($this->isbnFields as $field) {
-                if ($object->{$field}) {
-                    $isbnItems[] = $object->{$field};
+                if ($item->{$field}) {
+                    $isbnItems[] = $item->{$field};
 
                     $query = GoogleBookQuery::make(
                         isbnItems: $isbnItems,
-                        identifier: $object->{$this->identifier},
+                        identifier: $item->{$this->identifier},
                     );
                     $queries->add($query);
                 }

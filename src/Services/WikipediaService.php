@@ -24,7 +24,7 @@ class WikipediaService
     protected array $queryAttributes = [];
 
     /** @var ?Collection<int,object> */
-    protected ?Collection $objects = null;
+    protected ?Collection $original = null;
 
     /** @var ?Collection<int,WikipediaQuery> */
     protected ?Collection $queries = null;
@@ -42,20 +42,18 @@ class WikipediaService
         protected int $count = 0,
         protected bool $debug = false,
     ) {
-        $this->objects = collect([]);
+        $this->original = collect([]);
         $this->items = collect([]);
     }
 
     /**
      * Create WikipediaService from Model and create WikipediaQuery for each entity only if hasn't WikipediaItem.
-     *
-     * @param  Collection<int,object>  $objects  List of objects
      */
-    public static function make(Collection $objects): self
+    public static function make(Collection $data): self
     {
         $self = new self();
-        $self->objects = $objects;
-        $self->count = $self->objects->count();
+        $self->original = $data;
+        $self->count = $self->original->count();
 
         return $self;
     }
@@ -281,7 +279,7 @@ class WikipediaService
         /** @var Collection<int,WikipediaQuery> */
         $queries = collect([]);
 
-        foreach ($this->objects as $key => $object) {
+        foreach ($this->original as $key => $object) {
             // Test each attribute
             foreach ($this->queryAttributes as $attribute) {
                 if (! $this->attributeExistInModel($attribute, $object)) {
