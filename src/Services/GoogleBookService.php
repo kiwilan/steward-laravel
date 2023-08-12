@@ -144,6 +144,7 @@ class GoogleBookService
             if ($this->debug) {
                 $this->print($response, 'googlebook', $id);
             }
+
             $item = GoogleBook::make($response);
 
             if ($item) {

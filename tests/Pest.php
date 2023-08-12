@@ -92,7 +92,7 @@ function books(): Collection
         $items->push($class);
     }
 
-    return $items->splice(0, 50);
+    return $items->splice(0, 25);
 }
 
 /**
@@ -112,7 +112,7 @@ function series(): Collection
         $items->push($class);
     }
 
-    return $items->splice(0, 50);
+    return $items->splice(0, 25);
 }
 
 /**
@@ -136,7 +136,7 @@ function booksModel(): Collection
         $items->push($book);
     }
 
-    return $items->splice(0, 50);
+    return $items->splice(0, 25);
 }
 
 /**
@@ -161,5 +161,5 @@ function booksIsbn(): Collection
         $items->push($class);
     }
 
-    return $items->splice(0, 50);
+    return $items->splice(0, 25);
 }
