@@ -20,8 +20,8 @@ class GoogleBook
 
     protected function __construct(
         protected string $requestUrl,
-        protected string $originalIsbn,
         protected string|int|null $identifier,
+        protected ?string $originalIsbn = null,
         protected ?string $bookId = null,
         protected ?DateTime $publishedDate = null,
         protected ?string $description = null,
@@ -53,8 +53,8 @@ class GoogleBook
         $current = $options->first();
         $self = new GoogleBook(
             requestUrl: $current->getRequestUrl(),
-            originalIsbn: $current->getOriginalIsbn(),
             identifier: $response->getId(),
+            originalIsbn: $current->getOriginalIsbn(),
         );
 
         return $self->create($current);
@@ -65,7 +65,7 @@ class GoogleBook
         return $this->requestUrl;
     }
 
-    public function getOriginalIsbn(): string
+    public function getOriginalIsbn(): ?string
     {
         return $this->originalIsbn;
     }
