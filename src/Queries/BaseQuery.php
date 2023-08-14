@@ -245,7 +245,7 @@ abstract class BaseQuery
         return $this->query;
     }
 
-    private function loadRequest(): self
+    protected function loadRequest(): self
     {
         $this->query = QueryBuilder::for($this->builder, $this->request)
             ->allowedFilters($this->allowFilters)

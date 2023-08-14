@@ -43,6 +43,7 @@ class HttpQuery extends BaseQuery
     public function defaultSort(string $defaultSort = 'id'): self
     {
         $this->defaultSort = $defaultSort;
+        $this->loadRequest();
 
         return $this;
     }
@@ -70,7 +71,8 @@ class HttpQuery extends BaseQuery
      */
     public function filters(array $filters = []): self
     {
-        $this->allowFilters = array_merge($this->allowFilters, $filters);
+        $this->allowFilters = array_unique(array_merge($this->allowFilters, $filters));
+        $this->loadRequest();
 
         return $this;
     }
@@ -97,7 +99,8 @@ class HttpQuery extends BaseQuery
      */
     public function sorts(array $sorts = []): self
     {
-        $this->allowSorts = array_merge($this->allowSorts, $sorts);
+        $this->allowSorts = array_unique(array_merge($this->allowSorts, $sorts));
+        $this->loadRequest();
 
         return $this;
     }
@@ -108,7 +111,8 @@ class HttpQuery extends BaseQuery
      */
     public function with(array $with = []): self
     {
-        $this->with = array_merge($this->with, $with);
+        $this->with = array_unique(array_merge($this->with, $with));
+        $this->loadRequest();
 
         return $this;
     }
@@ -119,7 +123,8 @@ class HttpQuery extends BaseQuery
      */
     public function withCount(array $withCount = []): self
     {
-        $this->withCount = array_merge($this->withCount, $withCount);
+        $this->withCount = array_unique(array_merge($this->withCount, $withCount));
+        $this->loadRequest();
 
         return $this;
     }
@@ -185,39 +190,39 @@ class HttpQuery extends BaseQuery
         $instance = $this->getInstance();
 
         if (method_exists($instance, 'getQueryWith')) {
-            $this->with = $instance->getQueryWith();
+            $this->with = $instance->getQueryWith() ? $instance->getQueryWith() : $this->with;
         }
 
         if (method_exists($instance, 'getQueryWithCount')) {
-            $this->withCount = $instance->getQueryWithCount();
+            $this->withCount = $instance->getQueryWithCount() ? $instance->getQueryWithCount() : $this->withCount;
         }
 
         if (method_exists($instance, 'getQueryAllowedFilters')) {
-            $this->allowFilters = $instance->getQueryAllowedFilters();
+            $this->allowFilters = $instance->getQueryAllowedFilters() ? $instance->getQueryAllowedFilters() : $this->allowFilters;
         }
 
         if (method_exists($instance, 'getQueryAllowedSorts')) {
-            $this->allowSorts = $instance->getQueryAllowedSorts();
+            $this->allowSorts = $instance->getQueryAllowedSorts() ? $instance->getQueryAllowedSorts() : $this->allowSorts;
         }
 
         if (method_exists($instance, 'getQueryDefaultSort')) {
-            $this->defaultSort = $instance->getQueryDefaultSort();
+            $this->defaultSort = $instance->getQueryDefaultSort() ? $instance->getQueryDefaultSort() : $this->defaultSort;
         }
 
         if (method_exists($instance, 'getQueryNoPaginate')) {
-            $this->noPaginate = $instance->getQueryNoPaginate();
+            $this->noPaginate = $instance->getQueryNoPaginate() ? $instance->getQueryNoPaginate() : $this->noPaginate;
         }
 
         if (method_exists($instance, 'getQueryPagination')) {
-            $this->pagination = $instance->getQueryPagination();
+            $this->pagination = $instance->getQueryPagination() ? $instance->getQueryPagination() : $this->pagination;
         }
 
         if (method_exists($instance, 'getQueryExport')) {
-            $this->export = $instance->getQueryExport();
+            $this->export = $instance->getQueryExport() ? $instance->getQueryExport() : $this->export;
         }
 
         if (method_exists($instance, 'getQueryResource')) {
-            $this->resource = $instance->getQueryResource();
+            $this->resource = $instance->getQueryResource() ? $instance->getQueryResource() : $this->resource;
         }
     }
 }

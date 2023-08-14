@@ -74,7 +74,6 @@ it('can use sorters', function () {
 
 it('can use sorters reverse', function () {
     $request = setRequest('/books?sort=-title');
-
     $query = HttpQuery::for(Book::class, $request);
 
     $res = $query->response();
