@@ -107,16 +107,16 @@ abstract class BaseQuery
     /**
      * Get data to show into view.
      */
-    public function get(): FrontResponse
+    public function get(): QueryResponse
     {
-        return FrontResponse::make(
+        return QueryResponse::make(
             original: $this->response()->toArray(),
             defaultSort: $this->defaultSort
         );
     }
 
     /**
-     * @param  \Closure(FrontResponse): (string)  $closure
+     * @param  \Closure(QueryResponse): (mixed)  $closure
      */
     public function closure(\Closure $closure): mixed
     {

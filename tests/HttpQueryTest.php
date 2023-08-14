@@ -4,8 +4,8 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Kiwilan\Steward\Queries\FrontResponse;
 use Kiwilan\Steward\Queries\HttpQuery;
+use Kiwilan\Steward\Queries\QueryResponse;
 use Kiwilan\Steward\Services\ClassParser\ClassParserItem;
 use Kiwilan\Steward\Tests\Data\Models\Author;
 use Kiwilan\Steward\Tests\Data\Models\Book;
@@ -170,11 +170,11 @@ it('can use closure', function () {
     $request = setRequest('/test');
 
     $query = HttpQuery::for(Book::class, $request);
-    $res = $query->closure(function (FrontResponse $response) {
-        expect($response)->toBeInstanceOf(FrontResponse::class);
+    $res = $query->closure(function (QueryResponse $response) {
+        expect($response)->toBeInstanceOf(QueryResponse::class);
 
         return $response;
     });
 
-    expect($res)->toBeInstanceOf(FrontResponse::class);
+    expect($res)->toBeInstanceOf(QueryResponse::class);
 });

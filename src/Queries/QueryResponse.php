@@ -2,10 +2,10 @@
 
 namespace Kiwilan\Steward\Queries;
 
-class FrontResponse
+class QueryResponse
 {
     /**
-     * @param  FrontResponseLink[]  $links
+     * @param  QueryResponseLink[]  $links
      */
     protected function __construct(
         public ?string $sort,
@@ -44,7 +44,7 @@ class FrontResponse
             from: $original['from'] ?? null,
             last_page: $original['last_page'] ?? null,
             last_page_url: $original['last_page_url'] ?? null,
-            links: FrontResponseLink::toArray($original['links'] ?? []),
+            links: QueryResponseLink::toArray($original['links'] ?? []),
             next_page_url: $original['next_page_url'] ?? null,
             path: $original['path'] ?? null,
             per_page: $original['per_page'] ?? null,
@@ -55,7 +55,7 @@ class FrontResponse
     }
 }
 
-class FrontResponseLink
+class QueryResponseLink
 {
     protected function __construct(
         public ?string $url,
