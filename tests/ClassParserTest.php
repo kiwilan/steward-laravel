@@ -44,7 +44,7 @@ it('can use class parser with service', function () {
     $items = ClassParserService::toCollection($path);
 
     expect($items)->toBeInstanceOf(Collection::class);
-    expect($items->count())->toBe(1);
+    expect($items->count())->toBe(2);
 });
 
 it('can use meta class', function () {
