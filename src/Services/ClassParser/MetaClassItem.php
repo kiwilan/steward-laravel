@@ -1,17 +1,17 @@
 <?php
 
-namespace Kiwilan\Steward\Utils;
+namespace Kiwilan\Steward\Services\ClassParser;
 
 use Illuminate\Support\Str;
 use ReflectionClass;
 
 /**
- * Meta Class, to give easy access to Model meta names.
+ * MetaClassItem, to give easy access to Model meta names.
  */
-class MetaClass
+class MetaClassItem
 {
     protected function __construct(
-        protected string $class,
+        protected string $classString,
         protected ?string $classNamespaced = null,
         protected ?string $className = null,
         protected ?string $classPlural = null,
@@ -24,15 +24,23 @@ class MetaClass
     ) {
     }
 
-    public static function make(string $class): self
+    /**
+     * Create a new MetaClass instance.
+     *
+     * @param  string  $classString like `WikipediaItem::class`
+     */
+    public static function make(string $classString, ReflectionClass $reflect = null): self
     {
-        $self = new self($class);
+        $self = new self($classString);
 
-        $instance = new $class();
-        $reflection_class = new ReflectionClass($instance);
+        $instance = new $classString();
 
-        $self->classNamespaced = $reflection_class->getName();
-        $self->className = $reflection_class->getShortName();
+        if (! $reflect) {
+            $reflect = new ReflectionClass($instance);
+        }
+
+        $self->classNamespaced = $reflect->getName();
+        $self->className = $reflect->getShortName();
         $self->classPlural = Str::plural($self->className);
 
         $self->classSnake = Str::snake($self->className);
@@ -60,15 +68,15 @@ class MetaClass
     /**
      * Like `App\Models\WikipediaItem::class`
      */
-    public function class(): string
+    public function getClassString(): string
     {
-        return $this->class;
+        return $this->classString;
     }
 
     /**
      * Like `App\Models\WikipediaItem`
      */
-    public function classNamespaced(): string
+    public function getClassNamespaced(): string
     {
         return $this->classNamespaced;
     }
@@ -76,7 +84,7 @@ class MetaClass
     /**
      * Like `WikipediaItem`
      */
-    public function className(): string
+    public function getClassName(): string
     {
         return $this->className;
     }
@@ -84,7 +92,7 @@ class MetaClass
     /**
      * Like `WikipediaItems`
      */
-    public function classPlural(): string
+    public function getClassPlural(): string
     {
         return $this->classPlural;
     }
@@ -92,7 +100,7 @@ class MetaClass
     /**
      * Like `wikipedia_item`
      */
-    public function classSnake(): string
+    public function getClassSnake(): string
     {
         return $this->classSnake;
     }
@@ -100,7 +108,7 @@ class MetaClass
     /**
      * Like `wikipedia_items`
      */
-    public function classSnakePlural(): string
+    public function getClassSnakePlural(): string
     {
         return $this->classSnakePlural;
     }
@@ -108,7 +116,7 @@ class MetaClass
     /**
      * Like `wikipedia-item`
      */
-    public function classSlug(): string
+    public function getClassSlug(): string
     {
         return $this->classSlug;
     }
@@ -116,7 +124,7 @@ class MetaClass
     /**
      * Like `wikipedia-items`
      */
-    public function classSlugPlural(): string
+    public function getClassSlugPlural(): string
     {
         return $this->classSlugPlural;
     }
@@ -124,7 +132,7 @@ class MetaClass
     /**
      * Like `w`
      */
-    public function firstChar(): string
+    public function getFirstChar(): string
     {
         return $this->firstChar;
     }
@@ -132,7 +140,7 @@ class MetaClass
     /**
      * @return array<string,string>
      */
-    public function traits(): array
+    public function getTraits(): array
     {
         return $this->traits;
     }

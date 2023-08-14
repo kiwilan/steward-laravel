@@ -6,26 +6,19 @@ use Kiwilan\Steward\StewardConfig;
 
 /**
  * Add Model capacity to use Model configuration with `HttpQuery`.
- * - `$query_with`: `array` relationships
- * - `$query_with_count`: `array` relationships with count
- * - `$query_default_sort`: default sorting field to use
- * - `$query_default_sort_direction`: `asc` | `desc` default sorting direction to use
- * - `$query_allowed_filters`: `array` filters
- * - `setQueryAllowedFilters()`: `array` advanced filters, override `$query_allowed_filters`
- * - `$query_allowed_sorts`: `array` sorts
- * - `setQueryAllowedSorts()`: `array` advanced sorts, override `$query_allowed_sorts`
- * - `$query_full`: `bool` if pagination is disabled
- * - `$query_limit`: `int` limit of results
- * - `$query_export`: `string` Export class to use
- * - `$query_resource`: `string` Resource class to use
  *
  * ```php
- * protected $query_default_sort = 'slug';
- * protected $query_allowed_filters = ['name'];
- * protected $query_allowed_sorts = ['id', 'name', 'slug'];
- * protected $query_limit = 32;
+ * protected $queryWith = ['relation'];
+ * protected $queryWithCount = ['relation'];
+ * protected $queryDefaultSort = '-slug';
+ * protected $queryAllowedFilters = ['name'];
+ * protected $queryAllowedSorts = ['id', 'name', 'slug'];
+ * protected $queryNoPaginate = false;
+ * protected $queryPagination = 32;
+ * protected $queryExport = Export::class;
+ * protected $queryResource = Resource::class;
  *
- * // Advanced, override $query_allowed_filters
+ * // Advanced, override $queryAllowedFilters
  * protected function setQueryAllowedSorts(): array
  * {
  *    return [
@@ -33,20 +26,18 @@ use Kiwilan\Steward\StewardConfig;
  *    ];
  * }
  *
- * // Advanced, override $query_allowed_filters
+ * // Advanced, override $queryAllowedFilters
  * protected function setQueryAllowedFilters(): array
  * {
  *   return [
+ *     // Global search
  *     AllowedFilter::custom('q', new GlobalSearchFilter(['name', 'serie'])),
+ *     // Exact filter
  *     AllowedFilter::exact('id'),
+ *     // Partial filter
  *     AllowedFilter::partial('name'),
- *     AllowedFilter::callback(
- *       'relation',
- *       fn (Builder $query, $value) => $query->whereHas(
- *         'relation',
- *         fn (Builder $query) => $query->where('name', 'like', "%{$value}%")
- *       )
- *     ),
+ *     // Advanced filter
+ *     AllowedFilter::callback('relation', fn (Builder $query, $value) => $query->whereHas('relation', fn (Builder $query) => $query->where('name', 'like', "%{$value}%"))),
  *   ];
  * }
  * ```
@@ -58,7 +49,7 @@ trait Queryable
      */
     public function getQueryWith(): array
     {
-        return $this->query_with ?? $this->with ?? [];
+        return $this->queryWith ?? $this->query_with ?? $this->with ?? [];
     }
 
     /**
@@ -66,7 +57,7 @@ trait Queryable
      */
     public function getQueryWithCount(): array
     {
-        return $this->query_with_count ?? $this->withCount ?? [];
+        return $this->queryWithCount ?? $this->query_with_count ?? $this->withCount ?? [];
     }
 
     /**
@@ -74,15 +65,7 @@ trait Queryable
      */
     public function getQueryDefaultSort(): string
     {
-        return $this->query_default_sort ?? StewardConfig::queryDefaultSort();
-    }
-
-    /**
-     * Get Model default sort direction, default is `desc` or configured `steward.query.default_sort_direction`.
-     */
-    public function getQueryDefaultSortDirection(): string
-    {
-        return $this->query_default_sort_direction ?? StewardConfig::queryDefaultSortDirection();
+        return $this->queryDefaultSort ?? $this->query_default_sort ?? StewardConfig::queryDefaultSort();
     }
 
     /**
@@ -91,10 +74,10 @@ trait Queryable
     public function getQueryAllowedFilters(): array
     {
         if (method_exists($this, 'setQueryAllowedFilters')) {
-            return $this->setQueryAllowedFilters();
+            return $this->setQueryAllowedFilters() ? $this->setQueryAllowedFilters() : [];
         }
 
-        return $this->query_allowed_filters ?? [];
+        return $this->queryAllowedFilters ?? $this->query_allowed_filters ?? [];
     }
 
     /**
@@ -103,26 +86,26 @@ trait Queryable
     public function getQueryAllowedSorts(): array
     {
         if (method_exists($this, 'setQueryAllowedSorts')) {
-            return $this->setQueryAllowedSorts();
+            return $this->setQueryAllowedSorts() ? $this->setQueryAllowedSorts() : [];
         }
 
-        return $this->query_allowed_sorts ?? [];
+        return $this->queryAllowedSorts ?? $this->query_allowed_sorts ?? [];
     }
 
     /**
      * Get Model no pagination directive or configured `steward.query.full`.
      */
-    public function getQueryFull(): bool
+    public function getQueryNoPaginate(): bool
     {
-        return $this->query_full ?? StewardConfig::queryFull();
+        return $this->queryNoPaginate ?? $this->query_full ?? StewardConfig::queryNoPaginate();
     }
 
     /**
      * Get Model limit for pagination or configured `steward.query.limit`.
      */
-    public function getQueryLimit(): int
+    public function getQueryPagination(): int
     {
-        return $this->query_limit ?? StewardConfig::queryLimit();
+        return $this->queryPagination ?? $this->query_limit ?? StewardConfig::queryPagination();
     }
 
     /**
@@ -130,7 +113,7 @@ trait Queryable
      */
     public function getQueryExport(): ?string
     {
-        return $this->query_export ?? null;
+        return $this->queryExport ?? $this->query_export ?? null;
     }
 
     /**
@@ -138,6 +121,6 @@ trait Queryable
      */
     public function getQueryResource(): ?string
     {
-        return $this->query_resource ?? null;
+        return $this->queryResource ?? $this->query_resource ?? null;
     }
 }

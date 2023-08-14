@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
 use Kiwilan\Steward\Commands\Commandable;
 use Kiwilan\Steward\Enums\PublishStatusEnum;
-use Kiwilan\Steward\Services\ClassService;
+use Kiwilan\Steward\Services\ClassParserService;
 
 class PublishScheduledCommand extends Commandable
 {
@@ -34,8 +34,7 @@ class PublishScheduledCommand extends Commandable
     {
         $this->title();
 
-        $files = ClassService::files(app_path('Models'));
-        $items = ClassService::make($files);
+        $items = ClassParserService::toCollection(app_path('Models'));
 
         foreach ($items as $item) {
             if (! $item->isModel()) {
@@ -46,9 +45,9 @@ class PublishScheduledCommand extends Commandable
                 continue;
             }
 
-            $date_column = Schema::hasColumn($item->model()->getTable(), 'published_at') ? 'published_at' : 'created_at';
+            $date_column = Schema::hasColumn($item->getModel()->getTable(), 'published_at') ? 'published_at' : 'created_at';
 
-            $models_udpated = $item->model()::query()
+            $models_udpated = $item->getModel()::query()
                 ->where('status', '=', PublishStatusEnum::scheduled)
                 ->where($date_column, '<', Carbon::now())
                 ->get()
@@ -58,7 +57,7 @@ class PublishScheduledCommand extends Commandable
                 $model_updated->update(['status' => PublishStatusEnum::published]);
             });
 
-            $this->info("Publish {$models_udpated->count()} {$item->name()}.");
+            $this->info("Publish {$models_udpated->count()} {$item->getName()}.");
         }
 
         $this->newLine();

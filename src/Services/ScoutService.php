@@ -3,11 +3,11 @@
 namespace Kiwilan\Steward\Services;
 
 use Illuminate\Support\Collection;
-use Kiwilan\Steward\Services\Class\ClassItem;
+use Kiwilan\Steward\Services\ClassParser\ClassParserItem;
 
 class ScoutService
 {
-    /** @var Collection<int,ClassItem> */
+    /** @var Collection<int,ClassParserItem> */
     protected ?Collection $models = null;
 
     /** @var array<string,string> */
@@ -33,7 +33,7 @@ class ScoutService
     }
 
     /**
-     * @return Collection<int,ClassItem>
+     * @return Collection<int,ClassParserItem>
      */
     public function models(): Collection
     {
@@ -51,14 +51,13 @@ class ScoutService
     /**
      * Find all models with trait Searchable.
      *
-     * @return Collection<int,ClassItem>
+     * @return Collection<int,ClassParserItem>
      */
     private function setScoutModels(): Collection
     {
         $models = collect([]);
 
-        $files = ClassService::files($this->path);
-        $items = ClassService::make($files);
+        $items = ClassParserService::toCollection($this->path);
 
         foreach ($items as $item) {
             if ($item->useTrait('Laravel\Scout\Searchable')) {
@@ -77,7 +76,7 @@ class ScoutService
         $list = [];
 
         foreach ($this->models as $item) {
-            $name = $item->namespace();
+            $name = $item->getNamespace();
             $name = str_replace('\\', '\\\\', $name);
 
             $list[$name] = ScoutService::getIndexName($item);
@@ -86,16 +85,16 @@ class ScoutService
         return $list;
     }
 
-    public static function getIndexName(ClassItem $item): string
+    public static function getIndexName(ClassParserItem $item): string
     {
         if (! $item->useTrait('Laravel\Scout\Searchable')) {
-            throw new \Exception('Model '.$item->name().' have not `Searchable` trait.');
+            throw new \Exception('Model '.$item->getName().' have not `Searchable` trait.');
         }
 
         if (! $item->methodExists('searchableAs')) {
-            return $item->model()->getTable();
+            return $item->getModel()->getTable();
         }
 
-        return $item->model()->searchableAs(); // @phpstan-ignore-line
+        return $item->getModel()->searchableAs(); // @phpstan-ignore-line
     }
 }

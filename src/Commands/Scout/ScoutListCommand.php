@@ -43,7 +43,7 @@ class ScoutListCommand extends Commandable
 
         foreach ($scout->models() as $model) {
             $list[] = [
-                'Model' => $model->name(),
+                'Model' => $model->getName(),
                 'Index' => ScoutService::getIndexName($model),
             ];
         }

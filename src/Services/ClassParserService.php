@@ -4,23 +4,34 @@ namespace Kiwilan\Steward\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Kiwilan\Steward\Services\Class\ClassItem;
+use Kiwilan\Steward\Services\ClassParser\ClassParserItem;
 use SplFileInfo;
 
-class ClassService
+class ClassParserService
 {
-    /** @var Collection<int,ClassItem> */
-    protected ?Collection $items = null;
+    /**
+     * @param  string  $classString Class string, like `Book::class`
+     */
+    public static function make(string $classString): ClassParserItem
+    {
+        return ClassParserItem::make($classString);
+    }
 
     /**
-     * @param  Collection<int,SplFileInfo|string>  $files
-     * @return Collection<int,ClassItem>
+     * @param  string|Collection<int,SplFileInfo|string>  $pathOrFiles Path to directory or collection of SplFileInfo
+     * @return Collection<int,ClassParserItem>
      */
-    public static function make(Collection $files): Collection
+    public static function toCollection(string|Collection $pathOrFiles): Collection
     {
         $self = new self();
 
-        $self->items = $files->map(function ($file) {
+        $files = collect();
+
+        if (is_string($pathOrFiles)) {
+            $files = $self->getFiles($pathOrFiles);
+        }
+
+        return $files->map(function ($file) {
             $path = null;
 
             if ($file instanceof SplFileInfo) {
@@ -29,16 +40,14 @@ class ClassService
                 $path = $file;
             }
 
-            return ClassItem::make($path);
+            return ClassParserItem::make($path);
         });
-
-        return $self->items;
     }
 
     /**
      * @return Collection<int,SplFileInfo>
      */
-    public static function files(string $path): Collection
+    private function getFiles(string $path): Collection
     {
         /** @var Collection<int,SplFileInfo> */
         $files = collect(File::allFiles($path));

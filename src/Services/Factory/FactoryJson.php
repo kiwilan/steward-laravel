@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Services\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Kiwilan\Steward\Services\Class\ClassItem;
+use Kiwilan\Steward\Services\ClassParser\ClassParserItem;
 use Kiwilan\Steward\Services\FactoryService;
 
 class FactoryJson
@@ -13,7 +13,7 @@ class FactoryJson
     public function __construct(
         public FactoryService $factory,
         protected ?string $class = null,
-        protected ?ClassItem $item = null,
+        protected ?ClassParserItem $item = null,
         protected ?Model $model = null,
         protected array $transFields = [],
     ) {
@@ -22,13 +22,13 @@ class FactoryJson
     public function get(string $class): bool
     {
         $this->class = $class;
-        $this->item = ClassItem::make($class);
+        $this->item = ClassParserItem::make($class);
 
         if (! $this->item->isModel()) {
             throw new \Exception("{$class} must be an instance of Illuminate\Database\Eloquent\Model");
         }
 
-        $this->model = $this->item->model();
+        $this->model = $this->item->getModel();
 
         $name = $this->model->getTable();
         $name = Str::replace('_', '-', $name);
@@ -45,7 +45,7 @@ class FactoryJson
     private function parseJson(): bool
     {
         // Check if model has a table property
-        $name = $this->item->model()->getTable();
+        $name = $this->item->getModel()->getTable();
         $name = Str::replace('_', '-', $name);
 
         $this->transFields = [];
@@ -53,7 +53,7 @@ class FactoryJson
         // Check if model has a translatable property
         if ($this->item->propertyExists('translatable')) {
             // @phpstan-ignore-next-line
-            $this->transFields = $this->item->model()->translatable;
+            $this->transFields = $this->item->getModel()->translatable;
         }
 
         $pathJson = database_path("seeders/data/{$name}.json");

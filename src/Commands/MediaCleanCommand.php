@@ -5,8 +5,8 @@ namespace Kiwilan\Steward\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Kiwilan\Steward\Services\Class\ClassItem;
-use Kiwilan\Steward\Services\ClassService;
+use Kiwilan\Steward\Services\ClassParser\ClassParserItem;
+use Kiwilan\Steward\Services\ClassParserService;
 use Kiwilan\Steward\Services\DirectoryService;
 use Kiwilan\Steward\StewardConfig;
 use RecursiveArrayIterator;
@@ -117,17 +117,16 @@ class MediaCleanCommand extends Commandable
 
     private function setDbFiles(): array
     {
-        $files = ClassService::files(app_path('Models'));
-        $items = ClassService::make($files);
+        $items = ClassParserService::toCollection(app_path('Models'));
 
         if (! $this->all) {
-            $items = $items->filter(fn (ClassItem $item) => $item->useTrait('Kiwilan\Steward\Traits\Mediable'));
+            $items = $items->filter(fn (ClassParserItem $item) => $item->useTrait('Kiwilan\Steward\Traits\Mediable'));
         }
 
         $mediaDatabaseEntries = [];
 
         foreach ($items as $item) {
-            $table = $item->model()->getTable();
+            $table = $item->getModel()->getTable();
 
             /** Parse all entries in database */
             $rows = DB::table($table)

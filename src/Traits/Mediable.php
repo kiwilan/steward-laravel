@@ -3,8 +3,8 @@
 namespace Kiwilan\Steward\Traits;
 
 use Illuminate\Support\Facades\File;
+use Kiwilan\Steward\Services\ClassParser\MetaClassItem;
 use Kiwilan\Steward\StewardConfig;
-use Kiwilan\Steward\Utils\MetaClass;
 use stdClass;
 
 trait Mediable
@@ -90,8 +90,8 @@ trait Mediable
             $content = $media;
         }
 
-        $meta = MetaClass::make(get_class($this));
-        $directory = $meta->classSlugPlural();
+        $meta = MetaClassItem::make(get_class($this));
+        $directory = $meta->getClassSlugPlural();
 
         if ($upload) {
             $directory = $upload;

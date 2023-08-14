@@ -98,19 +98,14 @@ class StewardConfig
         return config('steward.query.default_sort') ?? 'id';
     }
 
-    public static function queryDefaultSortDirection(): string
+    public static function queryPagination(): int
     {
-        return config('steward.query.default_order') ?? 'desc';
+        return config('steward.query.pagination') ?? 25;
     }
 
-    public static function queryLimit(): int
+    public static function queryNoPaginate(): bool
     {
-        return config('steward.query.limit') ?? 25;
-    }
-
-    public static function queryFull(): bool
-    {
-        return config('steward.query.full') ?? false;
+        return config('steward.query.no_paginate') ?? false;
     }
 
     public static function httpPoolLimit(): int

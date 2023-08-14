@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\Testing\TestView;
+use Kiwilan\Steward\Tests\Data\Models\Author;
 use Kiwilan\Steward\Tests\Data\Models\Book;
 use Kiwilan\Steward\Tests\TestCase;
 
@@ -42,7 +43,15 @@ function blade(string $template, $data = [])
 {
     $tempDirectory = sys_get_temp_dir();
 
-    if (! in_array($tempDirectory, ViewFacade::getFinder()->getPaths())) {
+    $finder = ViewFacade::getFinder();
+    $list = [];
+
+    if (method_exists($finder, 'getPaths')) {
+        /** @var mixed $finder */
+        $list = $finder->getPaths();
+    }
+
+    if (! in_array($tempDirectory, $list)) {
         ViewFacade::addLocation(sys_get_temp_dir());
     }
 
@@ -162,4 +171,60 @@ function booksIsbn(): Collection
     }
 
     return $items->splice(0, 25);
+}
+
+/**
+ * @return Collection<Book>
+ */
+function insertBooksList(): Collection
+{
+    Book::truncate();
+    Author::truncate();
+    $books = collect();
+
+    $json = file_get_contents(__DIR__.'/Data/books-full.json');
+    $data = json_decode($json, true);
+
+    Author::create([
+        'name' => 'J. R. R. Tolkien',
+    ]);
+
+    Author::create([
+        'name' => 'Frank Herbert',
+    ]);
+
+    foreach ($data as $item) {
+        $book = Book::create($item);
+        $books->push($book);
+    }
+
+    $last = $books->last();
+    $last->author_id = 2;
+    $last->save();
+
+    return $books;
+}
+
+function setRequest(
+    string $uri,
+    string $method = 'GET',
+    array $parameters = [],
+    array $cookies = [],
+    array $files = [],
+    array $server = ['CONTENT_TYPE' => 'application/json'],
+    mixed $content = null,
+) {
+    $request = new \Illuminate\Http\Request();
+
+    return $request->createFromBase(
+        \Symfony\Component\HttpFoundation\Request::create(
+            $uri,
+            $method,
+            $parameters,
+            $cookies,
+            $files,
+            $server,
+            $content
+        )
+    );
 }

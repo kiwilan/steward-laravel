@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Commands\Publish;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Commands\Commandable;
-use Kiwilan\Steward\Utils\MetaClass;
+use Kiwilan\Steward\Services\ClassParser\MetaClassItem;
 
 class PublishCommand extends Commandable
 {
@@ -36,7 +36,7 @@ class PublishCommand extends Commandable
         $class = $this->argument('class');
         $unpublish = $this->option('unpublish') ?: false;
 
-        $meta = MetaClass::make($class);
+        $meta = MetaClassItem::make($class);
         $instance = new $class();
 
         if (! $meta->useTrait(\Kiwilan\Steward\Traits\Publishable::class)) {
@@ -54,7 +54,7 @@ class PublishCommand extends Commandable
         $models = $instance::all();
 
         if ($unpublish) {
-            $this->info("Unpublishing all models of class {$meta->classNamespaced()}");
+            $this->info("Unpublishing all models of class {$meta->getClassNamespaced()}");
 
             foreach ($models as $current) {
                 if (! method_exists($current, 'unpublish')) {
@@ -65,7 +65,7 @@ class PublishCommand extends Commandable
                 $current->unpublish();
             }
         } else {
-            $this->info("Publishing all models of class {$meta->classNamespaced()}");
+            $this->info("Publishing all models of class {$meta->getClassNamespaced()}");
 
             foreach ($models as $current) {
                 if (! method_exists($current, 'publish')) {

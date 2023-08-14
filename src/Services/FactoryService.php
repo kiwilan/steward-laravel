@@ -10,7 +10,7 @@ use Kiwilan\HttpPool\Response\HttpPoolResponse;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
 use Kiwilan\Steward\Commands\Scout\ScoutFreshCommand;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
-use Kiwilan\Steward\Services\Class\ClassItem;
+use Kiwilan\Steward\Services\ClassParser\ClassParserItem;
 use Kiwilan\Steward\Services\Factory\FactoryBuilder;
 use Kiwilan\Steward\Services\Factory\FactoryDateTime;
 use Kiwilan\Steward\Services\Factory\FactoryJson;
@@ -73,7 +73,7 @@ class FactoryService
 
     public static function noSearch(string $model, Closure $closure): mixed
     {
-        $item = ClassItem::make($model);
+        $item = ClassParserItem::make($model);
 
         if (! $item->isModel() && ! $item->useTrait('Laravel\Scout\Searchable')) {
             throw new \Exception("{$model} must be an instance of Illuminate\Database\Eloquent\Model and use Laravel\Scout\Searchable trait");

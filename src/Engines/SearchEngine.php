@@ -6,8 +6,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Kiwilan\Steward\Services\Class\ClassItem;
-use Kiwilan\Steward\Services\ClassService;
+use Kiwilan\Steward\Services\ClassParser\ClassParserItem;
+use Kiwilan\Steward\Services\ClassParserService;
 
 /**
  * Search Engine with laravel/scout
@@ -117,8 +117,7 @@ class SearchEngine
      */
     private function search(): SearchEngine
     {
-        $files = ClassService::files(app_path('Models'));
-        $items = ClassService::make($files);
+        $items = ClassParserService::toCollection(app_path('Models'));
 
         foreach ($items as $item) {
             $this->entitySearch($item);
@@ -127,9 +126,9 @@ class SearchEngine
         return $this;
     }
 
-    private function entitySearch(ClassItem $item): void
+    private function entitySearch(ClassParserItem $item): void
     {
-        $reflect = $item->reflect();
+        $reflect = $item->getReflect();
         $static = $reflect->getName();
         $name = $reflect->getShortName();
         $key = Str::plural($name);

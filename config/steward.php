@@ -119,10 +119,9 @@ return [
     */
 
     'query' => [
-        'default_sort' => 'id',
-        'default_sort_direction' => 'asc',
-        'limit' => 15,
-        'full' => false,
+        'default_sort' => 'id', // You could use any field name, reverse with `-id`
+        'pagination' => 15,
+        'no_paginate' => false,
     ],
 
     /*

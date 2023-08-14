@@ -1,12 +1,12 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Class;
+namespace Kiwilan\Steward\Services\ClassParser;
 
 use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
 use SplFileInfo;
 
-class ClassItem
+class ClassParserItem
 {
     /** @var string[] */
     protected array $traits = [];
@@ -24,23 +24,24 @@ class ClassItem
         protected bool $isModel = false,
         protected ?Model $model = null,
         protected ?ReflectionClass $reflect = null,
+        protected ?MetaClassItem $meta = null,
     ) {
     }
 
     /**
-     * @param  string  $path Can be path to file or namespace
+     * @param  string  $class Can be path to file or class string
      */
-    public static function make(string $path): self
+    public static function make(string $class): self
     {
-        $self = new self($path);
+        $self = new self($class);
 
-        if ($self->isPath($path)) {
-            $self->file = new SplFileInfo($path);
+        if ($self->isPath($class)) {
+            $self->file = new SplFileInfo($class);
             $self->namespace = $self->setNamespace();
             $self->instance = new $self->namespace();
         } else {
-            $self->namespace = $path;
-            $self->instance = new $path();
+            $self->namespace = $class;
+            $self->instance = new $class();
         }
 
         $self->extends = get_parent_class($self->instance);
@@ -48,56 +49,57 @@ class ClassItem
         $self->implements = class_implements($self->instance);
         $self->reflect = new ReflectionClass($self->namespace);
         $self->name = $self->reflect->getShortName();
+        $self->meta = MetaClassItem::make($self->namespace, $self->reflect);
 
-        if ($self->instance() instanceof Model) {
+        if ($self->instance instanceof Model) {
             $self->isModel = true;
-            $self->model = $self->instance();
+            $self->model = $self->instance;
         }
 
         return $self;
     }
 
-    public function path(): string
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    public function file(): ?SplFileInfo
+    public function getFile(): ?SplFileInfo
     {
         return $this->file;
     }
 
-    public function name(): string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function namespace(): string
+    public function getNamespace(): string
     {
         return $this->namespace;
     }
 
-    public function extends(): string
+    public function getExtends(): string
     {
         return $this->extends;
     }
 
-    public function instance(): object
+    public function getInstance(): object
     {
         return $this->instance;
     }
 
-    public function traits(): array
+    public function getTraits(): array
     {
         return $this->traits;
     }
 
-    public function implements(): array
+    public function getImplements(): array
     {
         return $this->implements;
     }
 
-    public function reflect(): ReflectionClass
+    public function getReflect(): ReflectionClass
     {
         return $this->reflect;
     }
@@ -107,9 +109,14 @@ class ClassItem
         return $this->isModel;
     }
 
-    public function model(): ?Model
+    public function getModel(): ?Model
     {
         return $this->model;
+    }
+
+    public function getMeta(): MetaClassItem
+    {
+        return $this->meta;
     }
 
     public function useTrait(string $current): bool
