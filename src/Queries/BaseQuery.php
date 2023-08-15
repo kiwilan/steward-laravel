@@ -100,7 +100,6 @@ abstract class BaseQuery
         $this->resourceGuess();
 
         $this->query = QueryBuilder::for($this->builder);
-        $this->loadRequest();
 
         return $this;
     }

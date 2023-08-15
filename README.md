@@ -16,7 +16,7 @@
 > [!WARNING]\
 > This package is not fully tested and is not ready for production.
 
-PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application.
+PHP meta package for Laravel with many services and utility.
 
 <!-- PHP package for Laravel to allow you to use some useful traits and methods in your Laravel application, works with [vite-plugin-steward-laravel](https://www.npmjs.com/package/@kiwilan/vite-plugin-steward-laravel) for front assets. -->
 
