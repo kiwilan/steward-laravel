@@ -61,3 +61,24 @@ it('can use time to read', function () {
     expect($book->time_to_read_custom)->toBe(60);
     expect($book->time_to_read_minutes)->toBe(1);
 });
+
+it('can use publishable', function () {
+    insertBooksList();
+
+    $count = Book::count();
+    $books = Book::query()->published()->get();
+
+    $diff = $count - $books->count();
+    expect($diff)->toBe(2);
+
+    $draft = Book::query()->drafted()->get();
+    expect($draft->count())->toBe(1);
+
+    $scheduled = Book::query()->scheduled()->get();
+    expect($scheduled->count())->toBe(1);
+
+    Book::publishScheduled();
+
+    $scheduled = Book::query()->scheduled()->get();
+    expect($scheduled->count())->toBe(0);
+});

@@ -8,6 +8,7 @@ use Kiwilan\Steward\Tests\Data\Resources\BookResource;
 use Kiwilan\Steward\Traits\HasSeo;
 use Kiwilan\Steward\Traits\HasSlug;
 use Kiwilan\Steward\Traits\HasTimeToRead;
+use Kiwilan\Steward\Traits\Publishable;
 use Kiwilan\Steward\Traits\Queryable;
 
 class Book extends Model
@@ -16,6 +17,7 @@ class Book extends Model
     use HasSlug;
     use HasTimeToRead;
     use Queryable;
+    use Publishable;
 
     protected $slugColumn = 'slug_custom';
 
@@ -46,6 +48,10 @@ class Book extends Model
     protected $queryExport = null;
 
     protected $queryResource = BookResource::class;
+
+    protected $publishableStatus = 'publish_status';
+
+    protected $publishablePublishedAt = 'publish_at';
 
     protected $fillable = [
         'id',

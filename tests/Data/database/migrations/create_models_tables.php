@@ -39,6 +39,9 @@ return new class extends Migration
             $table->string('body_custom')->nullable();
             $table->string('time_to_read_custom')->nullable();
 
+            $table->string('publish_status')->nullable();
+            $table->dateTime('publish_at')->nullable();
+
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();
 

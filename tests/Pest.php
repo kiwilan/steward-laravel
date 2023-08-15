@@ -195,11 +195,21 @@ function insertBooksList(): Collection
 
     foreach ($data as $item) {
         $book = Book::create($item);
+        $book->publish_status = 'published';
+        $book->publish_at = now();
+        $book->save();
+
         $books->push($book);
     }
 
+    $first = $books->first();
+    $first->author_id = 1;
+    $first->publish_status = 'scheduled';
+    $first->save();
+
     $last = $books->last();
     $last->author_id = 2;
+    $last->publish_status = 'draft';
     $last->save();
 
     return $books;

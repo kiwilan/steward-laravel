@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
 use SplFileInfo;
 
+/**
+ * Class ClassParserItem
+ *
+ * Allow to parse class to get some informations about.
+ */
 class ClassParserItem
 {
     /** @var string[] */
@@ -29,6 +34,8 @@ class ClassParserItem
     }
 
     /**
+     * Parse class to get some informations about.
+     *
      * @param  string  $class Can be path to file or class string
      */
     public static function make(string $class): self
@@ -59,69 +66,108 @@ class ClassParserItem
         return $self;
     }
 
+    /**
+     * Get path of class
+     */
     public function getPath(): string
     {
         return $this->path;
     }
 
+    /**
+     * Get `SplFileInfo` instance of class
+     */
     public function getFile(): ?SplFileInfo
     {
         return $this->file;
     }
 
+    /**
+     * Get name of class
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * Get namespace of class
+     */
     public function getNamespace(): string
     {
         return $this->namespace;
     }
 
+    /**
+     * Get class that current class extends
+     */
     public function getExtends(): string
     {
         return $this->extends;
     }
 
+    /**
+     * Get instance of class
+     */
     public function getInstance(): object
     {
         return $this->instance;
     }
 
+    /**
+     * Get traits that class uses
+     */
     public function getTraits(): array
     {
         return $this->traits;
     }
 
+    /**
+     * Get interfaces that class implements
+     */
     public function getImplements(): array
     {
         return $this->implements;
     }
 
+    /**
+     * Get reflection class instance
+     */
     public function getReflect(): ReflectionClass
     {
         return $this->reflect;
     }
 
+    /**
+     * Check if class is instance of Eloquent Model
+     */
     public function isModel(): bool
     {
         return $this->isModel;
     }
 
+    /**
+     * Get Eloquent Model instance
+     */
     public function getModel(): ?Model
     {
         return $this->model;
     }
 
+    /**
+     * Get meta data of class
+     */
     public function getMeta(): MetaClassItem
     {
         return $this->meta;
     }
 
-    public function useTrait(string $current): bool
+    /**
+     * Check if class uses trait
+     */
+    public function useTrait(string $traitToCheck): bool
     {
-        $inArray = in_array($current, $this->traits);
+        $inArray = in_array($traitToCheck, $this->traits);
 
         if (! $inArray) {
             $traits = [];
@@ -130,17 +176,23 @@ class ClassParserItem
                 $traits[] = explode('\\', $trait)[count(explode('\\', $trait)) - 1];
             }
 
-            $inArray = in_array($current, $traits);
+            $inArray = in_array($traitToCheck, $traits);
         }
 
         return $inArray;
     }
 
+    /**
+     * Check if method exists in class
+     */
     public function methodExists(string $method): bool
     {
         return method_exists($this->instance, $method);
     }
 
+    /**
+     * Check if property exists in class
+     */
     public function propertyExists(string $property): bool
     {
         return property_exists($this->instance, $property);
