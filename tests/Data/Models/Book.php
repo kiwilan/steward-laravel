@@ -35,7 +35,7 @@ class Book extends Model
 
     protected $queryWithCount = ['author'];
 
-    protected $queryDefaultSort = '-slug_sort';
+    protected $queryDefaultSort = 'slug_sort';
 
     protected $queryAllowedFilters = ['title'];
 

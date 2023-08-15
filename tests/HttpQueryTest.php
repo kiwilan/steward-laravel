@@ -56,9 +56,9 @@ it('can use filters', function () {
     $request = setRequest('/books?filter[title]=Carbon');
 
     $query = HttpQuery::for(Book::class, $request);
-    $res = $query->response();
+    $res = $query->get();
 
-    expect(count($res->items()))->toBe(1);
+    expect($res->count())->toBe(1);
 });
 
 it('can use sorters', function () {
@@ -66,8 +66,8 @@ it('can use sorters', function () {
 
     $query = HttpQuery::for(Book::class, $request);
 
-    $res = $query->response();
-    $first = $res->items()[0];
+    $res = $query->get();
+    $first = $res->first();
 
     expect($first->slug_sort)->toBe('the-boys-07_faut-y-aller');
 });
@@ -76,8 +76,7 @@ it('can use sorters reverse', function () {
     $request = setRequest('/books?sort=-title');
     $query = HttpQuery::for(Book::class, $request);
 
-    $res = $query->response();
-    $first = $res->items()[0];
+    $first = $query->get()->first();
 
     expect($first->slug_sort)->toBe('the-walking-dead-19_ezechiel');
 });
@@ -85,14 +84,14 @@ it('can use sorters reverse', function () {
 it('can use advanced sorter', function () {
     $request = setRequest('/authors?sort=name');
     $query = HttpQuery::for(Author::class, $request);
-    $res = $query->response();
+    $res = $query->get();
     $first = $res->first();
 
     expect($first->name)->toBe('Frank Herbert');
 
     $request = setRequest('/authors?sort=-name-length');
     $query = HttpQuery::for(Author::class, $request);
-    $res = $query->response();
+    $res = $query->get();
     $first = $res->first();
 
     expect($first->name)->toBe('J. R. R. Tolkien');
@@ -102,7 +101,7 @@ it('can use advanced filter', function () {
     // filter custom `q` with `GlobalSearchFilter`
     $request = setRequest('/authors?filter[q]=tolkien');
     $query = HttpQuery::for(Author::class, $request);
-    $res = $query->response();
+    $res = $query->get();
     $first = $res->first();
 
     expect($first->name)->toBe('J. R. R. Tolkien');
@@ -111,7 +110,7 @@ it('can use advanced filter', function () {
     // filter exact `id`
     $request = setRequest('/authors?filter[id]=1');
     $query = HttpQuery::for(Author::class, $request);
-    $res = $query->response();
+    $res = $query->get();
     $first = $res->first();
 
     expect($first->name)->toBe('J. R. R. Tolkien');
@@ -120,7 +119,7 @@ it('can use advanced filter', function () {
     // filter partial `name`
     $request = setRequest('/authors?filter[name]=tolki');
     $query = HttpQuery::for(Author::class, $request);
-    $res = $query->response();
+    $res = $query->get();
     $first = $res->first();
 
     expect($first->name)->toBe('J. R. R. Tolkien');
@@ -129,7 +128,7 @@ it('can use advanced filter', function () {
     // filter callback relationship
     $request = setRequest('/authors?filter[books]=candide');
     $query = HttpQuery::for(Author::class, $request);
-    $res = $query->response();
+    $res = $query->get();
     $first = $res->first();
 
     expect($first->name)->toBe('Frank Herbert');
@@ -143,8 +142,8 @@ it('can use options', function () {
         ->sorts(['uuid'])
     ;
 
-    $res = $query->response();
-    $first = $res->items()[0];
+    $res = $query->get();
+    $first = $res->first();
 
     expect($first->slug_sort)->toBe('carbone-silicium');
 });
@@ -153,14 +152,14 @@ it('can use http query api', function () {
     $request = setRequest('/test');
 
     $query = HttpQuery::for(Book::class, $request);
-    $res = $query->response();
+    $res = $query->paginate();
     $api = $query->collection();
 
     expect($res)->toBeInstanceOf(LengthAwarePaginator::class);
     expect($api)->toBeInstanceOf(AnonymousResourceCollection::class);
 
     $query = HttpQuery::for(Author::class, $request);
-    $res = $query->response();
+    $res = $query->get();
 
     expect($res)->toBeInstanceOf(Collection::class);
 });
@@ -176,4 +175,25 @@ it('can use closure', function () {
     });
 
     expect($res)->toBeInstanceOf(QueryResponse::class);
+});
+
+it('can use default sorting', function () {
+    $request = setRequest('/test');
+
+    $query = HttpQuery::for(Book::class, $request);
+    $first = $query->get()->first();
+
+    expect($first->slug_sort)->toBe('20000-lieues-sous-les-mers');
+});
+
+it('can use export', function () {
+    clearExports();
+    $request = setRequest('/test');
+
+    $query = HttpQuery::for(Book::class, $request);
+    $exported = $query->export('./tests/exports');
+
+    $export = listExports();
+
+    expect(count($export))->toBe(1);
 });

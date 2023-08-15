@@ -15,6 +15,9 @@ use Kiwilan\Steward\Services\ClassParserService;
 use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
+/**
+ * @template T
+ */
 abstract class BaseQuery
 {
     private ?string $class = null;
@@ -58,7 +61,7 @@ abstract class BaseQuery
     protected array $allowSorts = [];
 
     /**
-     * CLass to use for export.
+     * Class to use for export.
      */
     protected ?string $export = null;
 
@@ -79,6 +82,10 @@ abstract class BaseQuery
 
     protected function setup(string|Builder $model, Request $request = null): self
     {
+        if (! \Composer\InstalledVersions::isInstalled('spatie/laravel-query-builder')) {
+            throw new \Exception('Package `spatie/laravel-query-builder` not installed, see: https://github.com/spatie/laravel-query-builder');
+        }
+
         if ($model instanceof Builder) { // Instance of Builder from model
             $instance = $model->getModel();
             $this->class = get_class($instance);
@@ -99,6 +106,7 @@ abstract class BaseQuery
         $this->exportGuess();
         $this->resourceGuess();
 
+        $this->defaultConfig();
         $this->query = QueryBuilder::for($this->builder);
 
         return $this;
@@ -107,65 +115,82 @@ abstract class BaseQuery
     /**
      * Get data to show into view.
      */
-    public function get(): QueryResponse
+    private function queryReponse(): QueryResponse
     {
         $this->loadRequest();
 
-        return QueryResponse::make(
-            original: $this->response()->toArray(),
+        return \Kiwilan\Steward\Queries\QueryResponse::make(
+            original: $this->paginate()->toArray(),
             defaultSort: $this->defaultSort
         );
     }
 
     /**
-     * @param  \Closure(QueryResponse): (mixed)  $closure
+     * @param  \Closure(\Kiwilan\Steward\Queries\QueryResponse): (mixed)  $closure
      */
     public function closure(\Closure $closure): mixed
     {
-        return $closure($this->get());
+        return $closure($this->queryReponse());
     }
 
-    public function export(): ?BinaryFileResponse
+    /**
+     * Export data to Excel.
+     *
+     * @param  string|null  $path  Path to save file, if null, return file.
+     */
+    public function export(string $path = null): BinaryFileResponse|string|null
     {
         $this->loadRequest();
         $this->exportGuess();
 
-        // $name = trans_choice("crud.{$this->resource}.name";
-        $name = $this->parser->getMeta()->getClassSnakePlural();
-        $fileName = $name;
-        $date = date('Ymd-His');
-
-        // if (class_exists(\Composer\InstalledVersions::isInstalled('maatwebsite/excel'))) {
-        //     return \Maatwebsite\Excel\Facades\Excel::download(new $this->export($this->query), "export-{$fileName}-{$date}.xlsx");        // } else {
-        //     // todo: add export to csv
-        //     // https://www.the-art-of-web.com/php/dataexport/
-        //     throw new \Exception('Package maatwebsite/excel not installed, see https://github.com/SpartnerNL/Laravel-Excel');
-        // }
-
-        // TODO
-
-        return null;
+        return ExportQuery::make(
+            query: $this,
+            path: $path
+        )->export();
     }
 
     /**
      * Get API response.
      *
-     * - If `noPaginate` option is present in model or when `HttpQuery` is called, return all data without pagination.
-     * - If `full` or `no-paginate` query param is passed, return all data without pagination.
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function response(): LengthAwarePaginator|Collection
+    public function get(): Collection
     {
         $this->loadRequest();
 
+        return $this->query->get();
+    }
+
+    /**
+     * Get API response paginated.
+     *
+     * - Property `noPaginate` on `true` in model or with `noPaginate()` method on `HttpQuery` to disable pagination.
+     * - Query params `full` or `no-paginate` allow to disable pagination.
+     * - Query param `limit` can be used to set pagination limit (will override default limit).
+     * - Default pagination limit is set in model with `pagination` property.
+     * - Max pagination limit is 100.
+     */
+    public function paginate(): LengthAwarePaginator|Collection
+    {
+        $this->loadRequest();
         $full = $this->request->boolean('full') || $this->request->boolean('no-paginate');
 
-        return $full || $this->noPaginate
-            ? $this->query->get()
-            : $this->paginate();
+        if ($this->noPaginate || $full) {
+            return $this->query->get();
+        }
+
+        $pagination = min(100, request()->get('limit', $this->pagination));
+
+        return $this->query->paginate($pagination);
     }
 
     /**
      * Get API resource.
+     *
+     * - Default resource can be set on model with `queryResource` property.
+     * - Can be set on `HttpQuery` with `resource()` method.
+     * - Auto guess resource from model name, if not already set.
+     * - If not exists, use `DefaultResource`.
      */
     public function collection(): AnonymousResourceCollection
     {
@@ -178,14 +203,7 @@ abstract class BaseQuery
         /** @var JsonResource $resource */
         $resource = $this->resource;
 
-        return $resource::collection($this->response());
-    }
-
-    private function paginate(): LengthAwarePaginator
-    {
-        $pagination = min(100, request()->get('limit', $this->pagination));
-
-        return $this->query->paginate($pagination);
+        return $resource::collection($this->paginate());
     }
 
     /**
@@ -256,6 +274,7 @@ abstract class BaseQuery
         $this->query = QueryBuilder::for($this->builder, $this->request)
             ->allowedFilters($this->allowFilters)
             ->allowedSorts($this->allowSorts)
+            ->defaultSort($this->defaultSort)
             ->with($this->with)
             ->withCount($this->withCount)
         ;
@@ -276,6 +295,23 @@ abstract class BaseQuery
         }
 
         return $this;
+    }
+
+    /**
+     * Set default config for Spatie Query Builder if not set.
+     */
+    private function defaultConfig(): void
+    {
+        if (config('query-builder') === null) {
+            config(['query-builder.parameters.include' => 'include']);
+            config(['query-builder.parameters.filter' => 'filter']);
+            config(['query-builder.parameters.sort' => 'sort']);
+            config(['query-builder.parameters.fields' => 'fields']);
+            config(['query-builder.parameters.append' => 'append']);
+            config(['query-builder.count_suffix' => 'Count']);
+            config(['query-builder.disable_invalid_filter_query_exception' => false]);
+            config(['query-builder.request_data_source' => 'query_string']);
+        }
     }
 
     /**

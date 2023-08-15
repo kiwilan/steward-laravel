@@ -238,3 +238,26 @@ function setRequest(
         )
     );
 }
+
+function listExports()
+{
+    $folder_path = './tests/exports';
+    $allowed_extensions = ['csv', 'xls', 'xlsx'];
+
+    $files = [];
+
+    foreach ($allowed_extensions as $extension) {
+        $files = array_merge($files, glob("{$folder_path}/*.{$extension}"));
+    }
+
+    return $files;
+}
+
+function clearExports()
+{
+    $files = listExports();
+
+    foreach ($files as $file) {
+        unlink($file);
+    }
+}
