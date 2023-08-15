@@ -152,7 +152,6 @@ abstract class BaseQuery
      */
     public function response(): LengthAwarePaginator|Collection
     {
-        $this->loadRequest();
         $full = $this->request->boolean('full') || $this->request->boolean('no-paginate');
 
         return $full || $this->noPaginate
