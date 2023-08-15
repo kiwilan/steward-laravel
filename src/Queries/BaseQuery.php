@@ -100,6 +100,7 @@ abstract class BaseQuery
         $this->resourceGuess();
 
         $this->query = QueryBuilder::for($this->builder);
+        $this->loadRequest();
 
         return $this;
     }
@@ -109,6 +110,8 @@ abstract class BaseQuery
      */
     public function get(): QueryResponse
     {
+        $this->loadRequest();
+
         return QueryResponse::make(
             original: $this->response()->toArray(),
             defaultSort: $this->defaultSort
@@ -125,6 +128,7 @@ abstract class BaseQuery
 
     public function export(): ?BinaryFileResponse
     {
+        $this->loadRequest();
         $this->exportGuess();
 
         // $name = trans_choice("crud.{$this->resource}.name";
@@ -152,6 +156,8 @@ abstract class BaseQuery
      */
     public function response(): LengthAwarePaginator|Collection
     {
+        $this->loadRequest();
+
         $full = $this->request->boolean('full') || $this->request->boolean('no-paginate');
 
         return $full || $this->noPaginate
@@ -164,6 +170,8 @@ abstract class BaseQuery
      */
     public function collection(): AnonymousResourceCollection
     {
+        $this->loadRequest();
+
         if (! class_exists($this->resource)) {
             $this->resource = DefaultResource::class;
         }
