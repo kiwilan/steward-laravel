@@ -2,6 +2,9 @@
 
 namespace Kiwilan\Steward\Queries;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+
 class QueryResponse
 {
     /**
@@ -11,46 +14,49 @@ class QueryResponse
         public ?string $sort,
         public ?string $filter,
         public array $data,
-        public int $current_page,
-        public ?string $first_page_url,
-        public int $from,
-        public int $last_page,
-        public ?string $last_page_url,
-        public array $links,
-        public ?string $next_page_url,
-        public ?string $path,
-        public int $per_page,
-        public ?string $prev_page_url,
-        public int $to,
-        public int $total,
+        public ?int $current_page = null,
+        public ?string $first_page_url = null,
+        public ?int $from = null,
+        public ?int $last_page = null,
+        public ?string $last_page_url = null,
+        public ?array $links = null,
+        public ?string $next_page_url = null,
+        public ?string $path = null,
+        public ?int $per_page = null,
+        public ?string $prev_page_url = null,
+        public ?int $to = null,
+        public ?int $total = null,
     ) {
     }
 
-    public static function make(array $original, string $defaultSort): self
+    public static function make(LengthAwarePaginator|Collection $original, string $defaultSort): self
     {
-        $data = $original['data'];
-        unset($original['data']);
+        if ($original instanceof Collection) {
+            return new self(
+                sort: request()->get('sort', $defaultSort),
+                filter: request()->get('filter'),
+                data: $original->toArray(),
+            );
+        }
+
+        $array = $original->toArray();
 
         return new self(
             sort: request()->get('sort', $defaultSort),
             filter: request()->get('filter'),
-
-            data: $data ?? [],
-            // rad stack
-            // $this->metadata()->classSnakePlural() => fn () => $this->collection(),
-
-            current_page: $original['current_page'] ?? null,
-            first_page_url: $original['first_page_url'] ?? null,
-            from: $original['from'] ?? null,
-            last_page: $original['last_page'] ?? null,
-            last_page_url: $original['last_page_url'] ?? null,
-            links: QueryResponseLink::toArray($original['links'] ?? []),
-            next_page_url: $original['next_page_url'] ?? null,
-            path: $original['path'] ?? null,
-            per_page: $original['per_page'] ?? null,
-            prev_page_url: $original['prev_page_url'] ?? null,
-            to: $original['to'] ?? null,
-            total: $original['total'] ?? null,
+            data: $original->items(),
+            current_page: $original->currentPage(),
+            first_page_url: $array['first_page_url'] ?? null,
+            from: $original->firstItem(),
+            last_page: $original->lastPage(),
+            last_page_url: $original->url($original->lastPage()),
+            links: QueryResponseLink::toArray($array['links'] ?? []),
+            next_page_url: $original->nextPageUrl(),
+            path: $original->path(),
+            per_page: $original->perPage(),
+            prev_page_url: $original->previousPageUrl(),
+            to: $original->lastItem(),
+            total: $original->total(),
         );
     }
 }

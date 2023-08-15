@@ -120,7 +120,7 @@ abstract class BaseQuery
         $this->loadRequest();
 
         return \Kiwilan\Steward\Queries\QueryResponse::make(
-            original: $this->paginate()->toArray(),
+            original: $this->paginate(),
             defaultSort: $this->defaultSort
         );
     }
@@ -340,10 +340,6 @@ abstract class BaseQuery
                     return $this;
                 }
             }
-
-            // if ($this->resource === null) {
-            //     throw new \Exception("BaseQuery, resource not found for {$name}.");
-            // }
         }
 
         return $this;
