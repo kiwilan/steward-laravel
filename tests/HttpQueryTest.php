@@ -164,15 +164,11 @@ it('can use http query api', function () {
     expect($res)->toBeInstanceOf(Collection::class);
 });
 
-it('can use closure', function () {
+it('can use front', function () {
     $request = setRequest('/test');
 
     $query = HttpQuery::for(Book::class, $request);
-    $res = $query->closure(function (QueryResponse $response) {
-        expect($response)->toBeInstanceOf(QueryResponse::class);
-
-        return $response;
-    });
+    $res = $query->front();
 
     expect($res)->toBeInstanceOf(QueryResponse::class);
 });

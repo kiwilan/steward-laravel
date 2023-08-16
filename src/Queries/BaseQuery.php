@@ -113,24 +113,16 @@ abstract class BaseQuery
     }
 
     /**
-     * Get data to show into view.
+     * Return `QueryResponse`, typed response with `LengthAwarePaginator`.
      */
-    private function queryReponse(): QueryResponse
+    public function front(): QueryResponse
     {
         $this->loadRequest();
 
-        return \Kiwilan\Steward\Queries\QueryResponse::make(
+        return QueryResponse::make(
             original: $this->paginate(),
             defaultSort: $this->defaultSort
         );
-    }
-
-    /**
-     * @param  \Closure(\Kiwilan\Steward\Queries\QueryResponse): (mixed)  $closure
-     */
-    public function closure(\Closure $closure): mixed
-    {
-        return $closure($this->queryReponse());
     }
 
     /**
