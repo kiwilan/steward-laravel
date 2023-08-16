@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Kiwilan\Steward\Queries\HttpQuery;
 use Kiwilan\Steward\Queries\QueryResponse;
 use Kiwilan\Steward\Services\ClassParser\ClassParserItem;
+use Kiwilan\Steward\Tests\Data\Exports\BookExport;
 use Kiwilan\Steward\Tests\Data\Models\Author;
 use Kiwilan\Steward\Tests\Data\Models\Book;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -187,9 +188,27 @@ it('can use export', function () {
     $request = setRequest('/test');
 
     $query = HttpQuery::for(Book::class, $request);
-    $exported = $query->export('./tests/exports');
+    $path = getcwd().'/tests/exports';
+    $exported = $query->export($path, true);
 
     $export = listExports();
 
     expect(count($export))->toBe(1);
+    expect($exported)->toBe(true);
+});
+
+it('can use export excel', function () {
+    clearExports();
+    $request = setRequest('/test');
+
+    $query = HttpQuery::for(Book::class, $request)
+        ->exportable(BookExport::class)
+    ;
+    $path = getcwd().'/tests/exports';
+    $exported = $query->export($path);
+
+    $export = listExports();
+
+    // expect(count($export))->toBe(1);
+    expect($exported)->toBe(true);
 });

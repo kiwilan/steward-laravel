@@ -152,12 +152,8 @@ class HttpQuery extends BaseQuery
     /**
      * Set a resource like `PostResource::class`, default is `$queryResource` into model.
      */
-    public function resource(?string $resource): self
+    public function resource(string $resource): self
     {
-        if (! $resource) {
-            return $this;
-        }
-
         $this->resource = $resource;
 
         return $this;
@@ -167,12 +163,8 @@ class HttpQuery extends BaseQuery
      * Set Export class like `PostExport::class`, default is `$queryExport` into model.
      * If class is not set, it will be guessed from `App\Export\{ClassName}Export`.
      */
-    public function exportable(?string $export): self
+    public function exportable(string $export): self
     {
-        if (! $export) {
-            return $this;
-        }
-
         $this->export = $export;
 
         return $this;

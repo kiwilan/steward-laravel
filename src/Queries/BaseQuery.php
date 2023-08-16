@@ -127,20 +127,25 @@ abstract class BaseQuery
     }
 
     /**
-     * Export data to Excel.
+     * Export data.
+     *
+     * You can export to CSV without any package, but for Excel you need `maatwebsite/excel` (https://github.com/SpartnerNL/Laravel-Excel).
      *
      * @param  string|null  $toSave  Path to save file, if null return download response.
+     * @param  bool  $skipExcel  If you have `maatwebsite/excel` installed, you can skip Excel export and use only CSV.
      */
-    public function export(string $toSave = null): Response|BinaryFileResponse|null
+    public function export(string $toSave = null, bool $skipExcel = false): Response|BinaryFileResponse|bool
     {
         $this->loadRequest();
         $this->exportGuess();
 
         return ExportQuery::make(
             data: $this->query->get(),
+            query: $this->query,
             name: $this->parser->getMeta()->getClassSnakePlural(),
             export: $this->export,
-            path: $toSave
+            path: $toSave,
+            skipExcel: $skipExcel,
         )->export();
     }
 

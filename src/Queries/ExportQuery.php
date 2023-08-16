@@ -4,22 +4,25 @@ namespace Kiwilan\Steward\Queries;
 
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportQuery
 {
     protected function __construct(
-        protected string $type = 'standard', // standard, excel
-        protected array $data = [],
+        protected string $type, // standard, excel
+        protected array $data,
+        protected QueryBuilder $query,
         protected string $filename = 'export',
         protected string $extension = 'csv',
         protected ?string $export = null,
         protected ?string $path = null,
         protected bool $toSave = false,
+        protected bool $skipExcel = false,
     ) {
     }
 
-    public static function make(Collection $data, string $name, string $export = null, string $path = null): self
+    public static function make(Collection $data, QueryBuilder $query, string $name, string $export = null, string $path = null, bool $skipExcel = false): self
     {
         $filename = $name;
         $date = date('Ymd-His');
@@ -30,18 +33,25 @@ class ExportQuery
         }
 
         $self = new self(
+            type: 'standard',
             data: $data,
+            query: $query,
             filename: $filename,
             export: $export,
             path: $path,
             toSave: $path !== null,
+            skipExcel: $skipExcel,
         );
         $self->type = $self->selectType();
+
+        if ($skipExcel) {
+            $self->type = 'standard';
+        }
 
         return $self;
     }
 
-    public function export(): Response|BinaryFileResponse|null
+    public function export(): Response|BinaryFileResponse|bool
     {
         if ($this->type === 'standard') {
             return $this->exportStandard();
@@ -51,10 +61,10 @@ class ExportQuery
             return $this->exportExcel();
         }
 
-        return null;
+        return false;
     }
 
-    private function exportStandard(): ?Response
+    private function exportStandard(): Response|bool
     {
         $this->extension = 'csv';
         $filename = "{$this->filename}.{$this->extension}";
@@ -71,9 +81,9 @@ class ExportQuery
         fclose($fh);
 
         if ($this->toSave) {
-            file_put_contents($this->path, $contents);
+            $success = file_put_contents("{$this->path}/{$filename}", $contents);
 
-            return null;
+            return gettype($success) === 'integer';
         }
 
         return response()
@@ -90,19 +100,20 @@ class ExportQuery
         ;
     }
 
-    private function exportExcel(): ?BinaryFileResponse
+    private function exportExcel(): BinaryFileResponse|bool
     {
         if (! \Composer\InstalledVersions::isInstalled('maatwebsite/excel')) {
             throw new \Exception('Package maatwebsite/excel not installed, see https://github.com/SpartnerNL/Laravel-Excel');
         }
 
         $this->extension = 'xlsx';
+        $export = new $this->export($this->query);
 
         if ($this->toSave) {
-            return \Maatwebsite\Excel\Facades\Excel::store(new $this->export, $this->path); // @phpstan-ignore-line
+            return $export->store("{$this->path}/{$this->filename}.{$this->extension}");
         }
 
-        return \Maatwebsite\Excel\Facades\Excel::download(new $this->export, "{$this->filename}.{$this->extension}"); // @phpstan-ignore-line
+        return $export->download("{$this->filename}.{$this->extension}");
     }
 
     private function selectType(): string
