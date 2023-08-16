@@ -12,7 +12,7 @@ class QueryResponse
      */
     protected function __construct(
         public ?string $sort,
-        public ?string $filter,
+        public string|array|null $filter,
         public array $data,
         public ?int $current_page = null,
         public ?string $first_page_url = null,
