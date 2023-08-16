@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Kiwilan\Steward\Resources\DefaultResource;
@@ -128,16 +129,18 @@ abstract class BaseQuery
     /**
      * Export data to Excel.
      *
-     * @param  string|null  $path  Path to save file, if null, return file.
+     * @param  string|null  $toSave  Path to save file, if null return download response.
      */
-    public function export(string $path = null): BinaryFileResponse|string|null
+    public function export(string $toSave = null): Response|BinaryFileResponse|null
     {
         $this->loadRequest();
         $this->exportGuess();
 
         return ExportQuery::make(
-            query: $this,
-            path: $path
+            data: $this->query->get(),
+            name: $this->parser->getMeta()->getClassSnakePlural(),
+            export: $this->export,
+            path: $toSave
         )->export();
     }
 
