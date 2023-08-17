@@ -26,7 +26,7 @@ class FilamentBuilder
             throw new Exception('Builder must implement FilamentBuilderModule');
         }
 
-        $builder = new FilamentBuilder($builder);
+        $builder = new self($builder);
         $builder->instance = $instance::make();
 
         return $builder;

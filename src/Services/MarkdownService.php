@@ -26,6 +26,7 @@ class MarkdownService
         protected string $abstract = '',
         protected string $html = '',
         protected array $images = [],
+        protected ?array $components = null,
     ) {
     }
 
@@ -92,6 +93,8 @@ class MarkdownService
         $this->content = preg_replace($regex, '', $this->content);
         $this->content = preg_replace('/^\n/', '', $this->content);
 
+        $this->extractComponents();
+
         $items = explode("\n", $front_matter);
 
         $frontMatter = [];
@@ -151,6 +154,61 @@ class MarkdownService
         return trim(mb_substr($abstract, 0, 250)).'...';
     }
 
+    private function extractComponents(): void
+    {
+        $regexComponent = '/---component\n([a-zA-Z0-9_-]+:.*\n)*?\n---\n/';
+        preg_match_all($regexComponent, $this->content, $matches);
+
+        $components = [];
+        $matches = array_filter($matches);
+
+        if (empty($matches)) {
+            return;
+        }
+
+        foreach ($matches as $key => $match) {
+            if ($match[0] && str_contains($match[0], '---component')) {
+                $match[0] = str_replace('---component', '', $match[0]);
+                $match[0] = str_replace('---', '', $match[0]);
+                $match[0] = trim($match[0]);
+
+                $values = explode("\n", $match[0]);
+
+                $item = [];
+
+                foreach ($values as $value) {
+                    $exploded = explode(':', $value, 2);
+                    $k = trim($exploded[0] ?? '');
+                    $v = trim($exploded[1] ?? '');
+
+                    $item[$k] = $v;
+                }
+
+                $value = [];
+
+                foreach ($item as $k => $v) {
+                    if (array_key_exists('component_name', $item)) {
+                        $value['component_name'] = $item['component_name'];
+                    }
+
+                    if ($k !== 'component_name') {
+                        $value['data'][$k] = $v;
+                    }
+                }
+
+                $name = $key;
+
+                if (array_key_exists('component_name', $item)) {
+                    $name = $item['component_name'].'_'.$key;
+                }
+                $components[$name] = $value;
+            }
+        }
+
+        $this->components = $components;
+        $this->content = preg_replace($regexComponent, '', $this->content);
+    }
+
     /**
      * @return string[]
      */
@@ -176,32 +234,32 @@ class MarkdownService
         return $items;
     }
 
-    public function content(): string
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function filename(): string
+    public function getFilename(): string
     {
         return $this->filename;
     }
 
-    public function date(): DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }
 
-    public function frontMatter(): MarkdownFrontmatter
+    public function getFrontMatter(): MarkdownFrontmatter
     {
         return $this->frontMatter;
     }
 
-    public function abstract(): string
+    public function getAbstract(): string
     {
         return $this->abstract;
     }
 
-    public function html(): string
+    public function getHtml(): string
     {
         return $this->html;
     }
@@ -216,9 +274,14 @@ class MarkdownService
     /**
      * @return string[]
      */
-    public function images(): array
+    public function getImages(): array
     {
         return $this->images;
+    }
+
+    public function getComponents(): ?array
+    {
+        return $this->components;
     }
 
     private function toHtml(): string

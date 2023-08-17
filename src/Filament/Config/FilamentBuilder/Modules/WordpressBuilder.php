@@ -140,29 +140,29 @@ class WordpressBuilder implements FilamentBuilderModule
     public static function embedded(): Block
     {
         return FilamentBuilder::block([
-            // Forms\Components\Placeholder::make('helper')
-            //     ->label('You can use URL `https://www.youtube.com/watch?v=aqz-KE-bpKQ` or ID `aqz-KE-bpKQ`, short link can works too `https://youtu.be/aqz-KE-bpKQ`.')
-            //     ->columnSpan(2),
+            Forms\Components\Placeholder::make('helper')
+                ->label('You can use URL `https://www.youtube.com/watch?v=aqz-KE-bpKQ` or ID `aqz-KE-bpKQ`, short link can works too `https://youtu.be/aqz-KE-bpKQ`.')
+                ->columnSpan(2),
             Forms\Components\TextInput::make('url')
                 ->label('URL of the media')
                 ->name('url')
                 ->placeholder('https://www.example.com/media-id')
                 ->helperText('Set URL of the media you want to embed.')
-                ->columnSpan(2)
-                ->reactive()
-                ->afterStateUpdated(function (Closure $set, $state) {
-                    $enum = SocialEnum::find($state);
+                ->columnSpan(2),
+            // ->reactive()
+            // ->afterStateUpdated(function (Closure $set, $state) {
+            //     $enum = SocialEnum::find($state);
 
-                    if ($enum) {
-                        $set('origin', $enum->value);
-                    }
-                })
-                ->required(),
-            Forms\Components\Select::make('type')
-                ->options(SocialEnum::toArray())
-                ->helperText('Select the website of your media.')
-                ->columnSpan(2)
-                ->required(),
+            //     if ($enum) {
+            //         $set('origin', $enum->value);
+            //     }
+            // })
+            // ->required(),
+            // Forms\Components\Select::make('type')
+            //     ->options(SocialEnum::toArray())
+            //     ->helperText('Select the website of your media.')
+            //     ->columnSpan(2)
+            //     ->required(),
         ])
             ->name('embedded_media')
             ->icon('heroicon-o-camera')
