@@ -140,8 +140,12 @@ trait HasBuilder
         });
     }
 
-    private function replaceAddLazyToImgTag(string|array $content): mixed
+    private function replaceAddLazyToImgTag(string|array|null $content): mixed
     {
+        if (! $content) {
+            return $content;
+        }
+
         if (is_array($content)) {
             $data = [];
 

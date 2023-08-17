@@ -191,6 +191,12 @@ class MarkdownService
                         $value['component_name'] = $item['component_name'];
                     }
 
+                    if (str_starts_with($v, '[') && str_ends_with($v, ']')) {
+                        $v = str_replace(['[', ']'], '', $v);
+                        $v = explode(',', $v);
+                        $v = array_map('trim', $v);
+                    }
+
                     if ($k !== 'component_name') {
                         $value['data'][$k] = $v;
                     }
