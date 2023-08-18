@@ -122,7 +122,7 @@ trait HasBuilder
         }
 
         foreach ($extensions as $extension) {
-            if (str_contains($value, $extension)) {
+            if (str_contains($value, '/') && str_contains($value, $extension) && strlen($value) < 255) {
                 $media_url = config('app.url')."/storage/{$value}";
                 $value = $media_url;
             }
@@ -143,7 +143,7 @@ trait HasBuilder
     private function replaceAddLazyToImgTag(string|array|null $content): mixed
     {
         if (! $content) {
-            return $content;
+            return '';
         }
 
         if (is_array($content)) {
