@@ -2,8 +2,8 @@
 
 namespace Kiwilan\Steward\Filament\Components;
 
-use Closure;
 use Filament\Forms;
+use Filament\Forms\Set;
 
 class DescriptionInput
 {
@@ -30,8 +30,8 @@ class DescriptionInput
             ->helperText($helper)
             ->required($required)
             ->reactive()
-            ->afterStateUpdated(function (string $context, Closure $set, $state) use ($skipContext, $metaField) {
-                if ($skipContext === $context) {
+            ->afterStateUpdated(function (?string $state, Set $set, string $operation) use ($skipContext, $metaField) {
+                if ($skipContext === $operation) {
                     return;
                 }
 

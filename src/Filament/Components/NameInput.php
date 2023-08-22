@@ -2,8 +2,8 @@
 
 namespace Kiwilan\Steward\Filament\Components;
 
-use Closure;
 use Filament\Forms;
+use Filament\Forms\Set;
 use Illuminate\Support\Str;
 
 class NameInput
@@ -34,8 +34,9 @@ class NameInput
             ->required($required)
             ->maxLength(256)
             ->reactive()
-            ->afterStateUpdated(function (string $context, Closure $set, $state) use ($metaLink, $metaTitle, $skipContext) {
-                if ($skipContext === $context) {
+            ->live(debounce: 500)
+            ->afterStateUpdated(function (?string $state, Set $set, string $operation) use ($metaLink, $metaTitle, $skipContext) {
+                if ($skipContext === $operation) {
                     return;
                 }
 
