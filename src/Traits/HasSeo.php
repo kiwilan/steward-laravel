@@ -49,21 +49,21 @@ trait HasSeo
     {
         static::creating(function (Model $model) {
             if (empty($model->meta_title)) {
-                $model->meta_title = $model->seoMaxLength($model->{$model->getMetaTitleFrom()});
+                $model->meta_title = $model->seoFormat($model->{$model->getMetaTitleFrom()});
             }
 
             if (empty($model->meta_description)) {
-                $model->meta_description = $model->seoMaxLength($model->{$model->getMetaDescriptionFrom()});
+                $model->meta_description = $model->seoFormat($model->{$model->getMetaDescriptionFrom()});
             }
         });
 
         static::saving(function (Model $model) {
             if ($model->isDirty('meta_title')) {
-                $model->meta_title = $model->seoMaxLength($model->meta_title);
+                $model->meta_title = $model->seoFormat($model->meta_title);
             }
 
             if ($model->isDirty('meta_description')) {
-                $model->meta_description = $model->seoMaxLength($model->meta_description);
+                $model->meta_description = $model->seoFormat($model->meta_description);
             }
         });
     }
@@ -89,8 +89,12 @@ trait HasSeo
         ];
     }
 
-    private function seoMaxLength(string $string = null, int $limit = 250): ?string
+    private function seoFormat(string $string = null, int $limit = 250): ?string
     {
+        if ($string) {
+            $string = strip_tags($string);
+        }
+
         if ($string && Str::length($string) > $limit) {
             return Str::limit($string, $limit, '...');
         }
