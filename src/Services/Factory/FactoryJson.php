@@ -103,7 +103,11 @@ class FactoryJson
             $mediable = $instance->mediable;
 
             foreach ($mediable as $key => $value) {
-                $created_model->{$key} = $this->setMedia($created_model);
+                $value = $this->setMedia($created_model);
+
+                if ($value) {
+                    $created_model->{$key} = $value;
+                }
             }
             $created_model->save();
         }
