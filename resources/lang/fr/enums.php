@@ -259,4 +259,9 @@ return [
         'editor' => 'Editor',
         'user' => 'User',
     ],
+    'publish_status' => [
+        'draft' => 'Brouillon',
+        'scheduled' => 'Planifié',
+        'published' => 'Publié',
+    ],
 ];

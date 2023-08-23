@@ -285,4 +285,9 @@ return [
         'editor' => 'Editor',
         'user' => 'User',
     ],
+    'publish_status' => [
+        'draft' => 'Draft',
+        'scheduled' => 'Scheduled',
+        'published' => 'Published',
+    ],
 ];
