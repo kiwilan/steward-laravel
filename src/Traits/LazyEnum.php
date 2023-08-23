@@ -78,8 +78,8 @@ trait LazyEnum
         $class_slug = str_replace('-enum', '', $class_slug);
         $class_slug = str_replace('-', '_', $class_slug);
 
-        // `steward::enums.publish_status`
-        $locale = "{$namespace}enums.{$class_slug}";
+        // `steward::enums.publish_status.`
+        $locale = "{$namespace}enums.{$class_slug}.";
 
         return $locale;
     }
