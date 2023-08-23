@@ -13,15 +13,15 @@ class SeoBlock
             Forms\Components\Placeholder::make('seo')
                 ->label('SEO'),
             Forms\Components\TextInput::make('slug')
-                ->label(__('steward::filament.form_helper.metalink'))
+                ->label(__('steward::filament.form_label.metalink'))
                 ->required()
                 ->unique(column: 'slug', ignoreRecord: true)
                 ->maxLength(256),
             Forms\Components\TextInput::make('meta_title')
-                ->label(__('steward::filament.form_helper.meta_title'))
+                ->label(__('steward::filament.form_label.meta_title'))
                 ->maxLength(256),
             Forms\Components\Textarea::make('meta_description')
-                ->label(__('steward::filament.form_helper.meta_description'))
+                ->label(__('steward::filament.form_label.meta_description'))
                 ->maxLength(256),
         ];
 

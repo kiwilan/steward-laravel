@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'form_label' => [
+        'metalink' => 'Métalien',
+        'meta_title' => 'Titre (SEO)',
+        'meta_description' => 'Description (SEO)',
+    ],
     'form_helper' => [
         'generate' => 'Génère',
         'metalink' => 'le métalien',
