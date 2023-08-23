@@ -2,9 +2,12 @@
 
 namespace Kiwilan\Steward\Enums;
 
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasIcon;
+use Filament\Support\Contracts\HasLabel;
 use Kiwilan\Steward\Traits\LazyEnum;
 
-enum PublishStatusEnum: string
+enum PublishStatusEnum: string implements HasLabel, HasColor, HasIcon
 {
     use LazyEnum;
 
@@ -13,4 +16,22 @@ enum PublishStatusEnum: string
     case scheduled = 'scheduled';
 
     case published = 'published';
+
+    public function getColor(): ?string
+    {
+        return match ($this) {
+            self::draft => 'danger',
+            self::scheduled => 'warning',
+            self::published => 'success',
+        };
+    }
+
+    public function getIcon(): ?string
+    {
+        return match ($this) {
+            self::draft => 'heroicon-o-document-text',
+            self::scheduled => 'heroicon-o-clock',
+            self::published => 'heroicon-o-check-circle',
+        };
+    }
 }

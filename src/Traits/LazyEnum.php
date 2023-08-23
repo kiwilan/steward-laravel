@@ -69,6 +69,11 @@ trait LazyEnum
         return $array;
     }
 
+    public function getLabel(): ?string
+    {
+        return $this->name;
+    }
+
     public static function getLocaleBaseName(): string
     {
         $class = new ReflectionClass(static::class);
