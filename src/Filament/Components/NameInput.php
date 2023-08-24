@@ -20,7 +20,7 @@ class NameInput
     ): Forms\Components\TextInput {
         if (null === $helper) {
             $transGenerate = __('steward::filament.form_helper.generate');
-            $fieldName = __('steward::filament.form_helper.metalink').' and '.__('steward::filament.form_helper.meta_title');
+            $fieldName = __('steward::filament.form_helper.metalink').' '.__('steward::filament.form_helper.and').' '.__('steward::filament.form_helper.meta_title');
 
             $onlyOn = __('steward::filament.form_helper.only_on');
             $context = $skipContext === 'edit' ? 'create' : 'edit';

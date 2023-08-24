@@ -10,6 +10,7 @@ return [
     ],
     'form_helper' => [
         'generate' => 'Génère',
+        'and' => 'et',
         'metalink' => 'le métalien',
         'meta_title' => 'le titre en SEO',
         'meta_description' => 'la description en SEO',

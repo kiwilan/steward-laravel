@@ -10,6 +10,7 @@ return [
     ],
     'form_helper' => [
         'generate' => 'Generate',
+        'and' => 'and',
         'metalink' => 'Metalink',
         'meta_title' => 'SEO title',
         'meta_description' => 'SEO description',
