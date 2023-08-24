@@ -14,10 +14,10 @@ class MetaBlock
                 ->label('ID')
                 ->content(fn ($record): ?string => $record?->id),
             Forms\Components\Placeholder::make('created_at')
-                ->label('Created at')
+                ->label(__('steward::filament.form_label.created_at'))
                 ->content(fn ($record): ?string => $record?->created_at?->diffForHumans()),
             Forms\Components\Placeholder::make('updated_at')
-                ->label('Updated at')
+                ->label(__('steward::filament.form_label.updated_at'))
                 ->content(fn ($record): ?string => $record?->updated_at?->diffForHumans()),
         ];
 

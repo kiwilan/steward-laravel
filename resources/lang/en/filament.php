@@ -5,6 +5,8 @@ return [
         'metalink' => 'Metalink',
         'meta_title' => 'Title (SEO)',
         'meta_description' => 'Description (SEO)',
+        'created_at' => 'Created at',
+        'updated_at' => 'Updated at',
     ],
     'form_helper' => [
         'generate' => 'Generate',
