@@ -31,11 +31,11 @@
         "spatie/laravel-settings": "^2.6 || ^3"
     },
     "require-dev": {
-        "filament/filament": "^3.0-stable",
+        "filament/filament": "^3.0.36",
         "knuckleswtf/scribe": "^4.16",
         "laravel/pint": "^1.0",
         "maatwebsite/excel": "^3.1",
-        "nunomaduro/collision": "^7.9",
+        "nunomaduro/collision": "^7.8.1",
         "nunomaduro/larastan": "^2.0.1",
         "nunomaduro/laravel-mojito": "^0.2.10",
         "orchestra/testbench": "^8.0",
@@ -88,6 +88,6 @@
             }
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
