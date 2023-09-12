@@ -7,7 +7,7 @@ use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 use Kiwilan\Steward\Traits\LazyEnum;
 
-enum PublishStatusEnum: string implements HasLabel, HasColor, HasIcon
+enum PublishStatusEnum: string implements HasColor, HasIcon, HasLabel
 {
     use LazyEnum;
 
@@ -33,5 +33,10 @@ enum PublishStatusEnum: string implements HasLabel, HasColor, HasIcon
             self::scheduled => 'heroicon-o-clock',
             self::published => 'heroicon-o-check-circle',
         };
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->toArray()[$this->value];
     }
 }
