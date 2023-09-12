@@ -66,6 +66,7 @@ class DatayableService
         }
 
         $data = [];
+
         /** @var DatayableItem $item */
         foreach ($this->data as $key => $item) {
             $is_array = false;

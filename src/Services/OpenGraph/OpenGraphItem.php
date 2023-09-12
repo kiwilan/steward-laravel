@@ -147,7 +147,7 @@ class OpenGraphItem
 
     private function checkImage(): ?string
     {
-        if (0 === strpos($this->image, '/')) {
+        if (strpos($this->image, '/') === 0) {
             return "{$this->site_url}{$this->image}";
         }
 

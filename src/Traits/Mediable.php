@@ -40,7 +40,7 @@ trait Mediable
      */
     public function mediable(string $field = 'picture', bool $usePath = false): string|array|null
     {
-        if (null === $this->{$field}) {
+        if ($this->{$field} === null) {
             return \Kiwilan\Steward\StewardConfig::mediableDefault();
         }
         $path = $usePath ? $field : $this->{$field};

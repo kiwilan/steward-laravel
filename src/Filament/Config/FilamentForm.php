@@ -33,7 +33,7 @@ class FilamentForm
         int $width = 1,
         bool $required = true,
     ) {
-        if (null === $helper) {
+        if ($helper === null) {
             $transGenerate = __('steward::filament.form_helper.generate');
             $fieldName = __('steward::filament.form_helper.metalink').' and '.__('steward::filament.form_helper.meta_title');
 
@@ -82,7 +82,7 @@ class FilamentForm
         int $width = 1,
         bool $required = false,
     ) {
-        if (null === $helper && $metaField) {
+        if ($helper === null && $metaField) {
             $transGenerate = __('steward::filament.form_helper.generate');
             $transMetaField = __('steward::filament.form_helper.meta_description');
             $onlyOn = __('steward::filament.form_helper.only_on');

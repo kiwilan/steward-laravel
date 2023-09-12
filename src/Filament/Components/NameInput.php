@@ -18,7 +18,7 @@ class NameInput
         int $width = 1,
         bool $required = true,
     ): Forms\Components\TextInput {
-        if (null === $helper) {
+        if ($helper === null) {
             $transGenerate = __('steward::filament.form_helper.generate');
             $fieldName = __('steward::filament.form_helper.metalink').' '.__('steward::filament.form_helper.and').' '.__('steward::filament.form_helper.meta_title');
 

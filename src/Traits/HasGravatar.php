@@ -54,7 +54,7 @@ trait HasGravatar
     public static function bootHasGravatar()
     {
         static::creating(function (Model $model) {
-            if (null === $model->{$model->getGravatarColumn()}) {
+            if ($model->{$model->getGravatarColumn()} === null) {
                 $model->{$model->getGravatarColumn()} = $model->generateGravatar($model->{$model->getGravatarEmailColumn()});
             }
         });

@@ -16,7 +16,7 @@ class DescriptionInput
         int $width = 1,
         bool $required = false,
     ): Forms\Components\Textarea {
-        if (null === $helper && $metaField) {
+        if ($helper === null && $metaField) {
             $transGenerate = __('steward::filament.form_helper.generate');
             $transMetaField = __('steward::filament.form_helper.meta_description');
             $onlyOn = __('steward::filament.form_helper.only_on');

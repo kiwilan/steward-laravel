@@ -16,8 +16,8 @@ class Book extends Model
     use HasSeo;
     use HasSlug;
     use HasTimeToRead;
-    use Queryable;
     use Publishable;
+    use Queryable;
 
     protected $slugColumn = 'slug_custom';
 

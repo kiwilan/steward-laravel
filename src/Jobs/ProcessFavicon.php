@@ -80,7 +80,7 @@ class ProcessFavicon implements ShouldQueue
             return;
         }
 
-        $is_svg = 'svg' === File::extension($path);
+        $is_svg = File::extension($path) === 'svg';
 
         if ($is_svg) {
             if (extension_loaded('imagick')) {

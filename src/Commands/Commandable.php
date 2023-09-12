@@ -45,7 +45,7 @@ class Commandable extends Command
             $force = $this->option($option) ?? false;
         }
 
-        if ('local' !== config('app.env') && ! $force) {
+        if (config('app.env') !== 'local' && ! $force) {
             if ($this->confirm("You're on production, do you really want to continue?", true)) {
                 $this->info('Confirmed.');
             } else {
