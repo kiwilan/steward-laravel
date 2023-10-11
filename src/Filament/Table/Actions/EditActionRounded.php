@@ -1,8 +1,8 @@
 <?php
 
-namespace Kiwilan\Steward\Filament\Actions;
+namespace Kiwilan\Steward\Filament\Table\Actions;
 
-use Filament\Actions\EditAction;
+use Filament\Tables\Actions\EditAction;
 
 class EditActionRounded
 {
