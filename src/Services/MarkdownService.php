@@ -313,7 +313,7 @@ class MarkdownService
             'default_attributes' => [
                 Heading::class => [
                     'class' => static function (Heading $node) {
-                        if (1 === $node->getLevel()) {
+                        if ($node->getLevel() === 1) {
                             return 'title-main';
                         }
                     },

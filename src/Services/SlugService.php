@@ -82,10 +82,10 @@ class SlugService
 
     private function unique(string $name = null, int $counter = 0): string
     {
-        if (null === $name) {
+        if ($name === null) {
             $name = uniqid();
         }
-        $updated_name = 0 == $counter ? $name : $name.'-'.$counter;
+        $updated_name = $counter == 0 ? $name : $name.'-'.$counter;
 
         if ($this->model->where($this->slugColumn, Str::slug($updated_name))->exists()) {
             return $this->unique($name, $counter + 1);

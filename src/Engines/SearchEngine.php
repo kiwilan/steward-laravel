@@ -36,7 +36,7 @@ class SearchEngine
      */
     public static function create(?string $q = '', bool $relevant = false, bool $opds = false, string|array $types = null): SearchEngine
     {
-        if ('string' === gettype($types)) {
+        if (gettype($types) === 'string') {
             $types = explode(',', $types);
         }
 

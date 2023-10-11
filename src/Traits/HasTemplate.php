@@ -68,7 +68,7 @@ trait HasTemplate
      */
     private function checkArrayNested(mixed $array): mixed
     {
-        if (is_array($array) && 1 === count($array) && array_key_exists(0, $array)) {
+        if (is_array($array) && count($array) === 1 && array_key_exists(0, $array)) {
             return $array[0];
         }
 

@@ -77,7 +77,7 @@ trait LazyEnum
     public static function getLocaleBaseName(): string
     {
         $class = new ReflectionClass(static::class);
-        $namespace = 'App\\Enums' === $class->getNamespaceName() ? '' : 'steward::';
+        $namespace = $class->getNamespaceName() === 'App\\Enums' ? '' : 'steward::';
         $class = $class->getShortName();
         $class_slug = Str::kebab($class);
         $class_slug = str_replace('-enum', '', $class_slug);

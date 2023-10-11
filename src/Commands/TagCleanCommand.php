@@ -37,14 +37,14 @@ class TagCleanCommand extends Commandable
         foreach ($taggables as $row) {
             $model = $row->taggable_type::find($row->taggable_id);
 
-            if (null === $model) {
+            if ($model === null) {
                 DB::table($taggables)->where('id', $row->id)->delete();
                 $this->warn("Deleted taggable entry: {$row->taggable_type} #{$row->taggable_id}");
             }
 
             $tag = DB::table('tags')->find($row->tag_id);
 
-            if (null === $tag) {
+            if ($tag === null) {
                 DB::table($taggables)->where('id', $row->id)->delete();
                 $this->warn("Deleted taggable entry: Tag #{$row->id}");
             }

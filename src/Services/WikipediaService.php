@@ -288,11 +288,12 @@ class WikipediaService
             }
 
             $lang = $this->language;
+
             // If language attribute is unknown, set it to english.
             if ($this->languageAttribute && $this->attributeExistInModel($this->languageAttribute, $object)) {
                 $lang = $object->{$this->languageAttribute};
 
-                if ('unknown' === $lang || null === $lang) {
+                if ($lang === 'unknown' || $lang === null) {
                     $lang = $this->language;
                 }
             }

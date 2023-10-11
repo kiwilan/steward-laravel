@@ -95,7 +95,7 @@ class DirectoryService
 
             if (! is_dir($path)) {
                 yield $path;
-            } elseif ('.' != $value && '..' != $value) {
+            } elseif ($value != '.' && $value != '..') {
                 yield from $this->parseDirectory($path);
 
                 yield $path;

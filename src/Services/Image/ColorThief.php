@@ -103,8 +103,9 @@ class ColorThief
     private function handleGif(): mixed
     {
         $handle = imagecreatefromgif($this->image);
+
         // IF IMAGE IS TRANSPARENT (alpha=127) RETURN fff FOR WHITE
-        if (127 == imagecolorsforindex($handle, imagecolorstotal($handle) - 1)['alpha']) {
+        if (imagecolorsforindex($handle, imagecolorstotal($handle) - 1)['alpha'] == 127) {
             $this->useDefault = true;
 
             return null;
