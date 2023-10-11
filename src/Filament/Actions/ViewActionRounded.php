@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Actions;
+namespace Kiwilan\Steward\Filament\Actions;
 
 use Filament\Actions\ViewAction;
 
