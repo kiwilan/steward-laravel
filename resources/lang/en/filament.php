@@ -18,4 +18,14 @@ return [
         'create' => 'create',
         'edit' => 'edit',
     ],
+    'actions' => [
+        'publish_all' => 'Publish all',
+        'publish_text' => 'Are you sure you want to publish all draft and scheduled :label? The published date will set to now.',
+        'publish_notification_title' => 'Publishing...',
+        'publish_notification_body' => 'All :label will be published in background, you can close this window.',
+        'unpublish_all' => 'Unpublish all',
+        'unpublish_text' => 'Are you sure you want to unpublish all :label?',
+        'unpublish_notification_title' => 'Unpublishing...',
+        'unpublish_notification_body' => 'All :label will be unpublished in background, you can close this window.',
+    ],
 ];
