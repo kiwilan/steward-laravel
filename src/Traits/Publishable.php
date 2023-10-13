@@ -70,7 +70,10 @@ trait Publishable
     public function publish(): void
     {
         $this->{$this->getPublishableStatus()} = PublishStatusEnum::published;
-        $this->{$this->getPublishablePublishedAt()} = Carbon::now();
+
+        if (! $this->{$this->getPublishablePublishedAt()}) {
+            $this->{$this->getPublishablePublishedAt()} = Carbon::now();
+        }
         $this->save();
     }
 

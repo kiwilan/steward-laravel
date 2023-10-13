@@ -19,13 +19,10 @@ return [
         'edit' => "l'édition",
     ],
     'actions' => [
-        'publish_button' => 'Publier tout',
-        'publish_text' => 'Êtes-vous sûr de vouloir publier tous les :label brouillons et planifiés ? La date de publication sera définie sur maintenant.',
-        'publish_notification_title' => 'Publication...',
-        'publish_notification_body' => 'Tous les :label seront publiés en arrière-plan, vous pouvez fermer cette fenêtre.',
-        'unpublish_button' => 'Dépublier tout',
-        'unpublish_text' => 'Êtes-vous sûr de vouloir dépublier tous les :label ?',
-        'unpublish_notification_title' => 'Dépublication...',
-        'unpublish_notification_body' => 'Tous les :label seront dépubliés en arrière-plan, vous pouvez fermer cette fenêtre.',
+        'publish_bulk_group' => 'Options de publication',
+        'publish_button' => 'Publier la sélection',
+        'publish_notification_success' => 'La sélection a été publiée.',
+        'unpublish_button' => 'Dépublier la sélection',
+        'unpublish_notification_success' => 'La sélection a été dépubliée.',
     ],
 ];
