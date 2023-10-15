@@ -4,26 +4,26 @@ namespace Kiwilan\Steward\Filament\Config\FilamentLayout;
 
 use Closure;
 use Filament\Forms;
-use Illuminate\Support\Str;
 
 class FilamentLayoutColumn
 {
+    /**
+     * @param  FilamentLayoutSection[]|mixed[]  $sections
+     */
     public function __construct(
-        protected array $fields = [],
+        protected array $sections = [],
         protected int $width = 2,
         protected bool|Closure $hidden = false,
-        protected bool $card = true,
-        protected array $titles = [],
     ) {
     }
 
     /**
-     * @param  array<array<int,mixed>>|array<int,mixed>  $fields
+     * @param  FilamentLayoutSection[]  $sections
      */
-    public static function make(array $fields = []): self
+    public static function make(array $sections = []): self
     {
         $column = new FilamentLayoutColumn();
-        $column->fields = $fields;
+        $column->sections = $sections;
 
         return $column;
     }
@@ -35,23 +35,9 @@ class FilamentLayoutColumn
         return $this;
     }
 
-    public function disableCard(): self
-    {
-        $this->card = false;
-
-        return $this;
-    }
-
     public function hidden(bool|Closure $condition = true): self
     {
         $this->hidden = $condition;
-
-        return $this;
-    }
-
-    public function titles(string|array $titles = []): self
-    {
-        $this->titles = is_array($titles) ? $titles : [$titles];
 
         return $this;
     }
@@ -74,38 +60,16 @@ class FilamentLayoutColumn
     {
         $fields = [];
 
-        foreach ($this->fields as $key => $field) {
-            if (! is_array($field)) {
-                $field = [$field];
-            }
+        foreach ($this->sections as $key => $section) {
+            $component = Forms\Components\Section::make();
+            $schema = $section instanceof FilamentLayoutSection ? $section->get() : $section;
 
-            $title = null;
-
-            if (array_key_exists($key, $this->titles)) {
-                $title = $this->titles[$key];
-            }
-
-            $group = [];
-
-            if ($title) {
-                $group[] = Forms\Components\Placeholder::make(Str::slug($title))
-                    ->label($title)
-                    ->columnSpan($this->width)
-                ;
-            }
-            $group = array_merge($group, $field);
-            $component = $this->card ? Forms\Components\Section::make() : Forms\Components\Group::make();
-
-            if (! empty($group)) {
-                $fields[] = $component
-                    ->schema($group)
-                    ->columns([
-                        'sm' => $this->width,
-                    ])
-                ;
-            } else {
-                $fields[] = Forms\Components\Group::make();
-            }
+            $fields[] = $component
+                ->schema($schema)
+                ->columns([
+                    'sm' => $this->width,
+                ])
+            ;
         }
 
         return $fields;

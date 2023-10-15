@@ -2,11 +2,10 @@
 
 namespace Kiwilan\Steward\Filament\Config;
 
-use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Component;
 use Filament\Forms\Form;
-use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutCard;
 use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutColumn;
-use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutSettings;
+use Kiwilan\Steward\Filament\Config\FilamentLayout\FilamentLayoutSection;
 
 class FilamentLayout
 {
@@ -29,41 +28,39 @@ class FilamentLayout
     }
 
     /**
-     * @param  array<array<int,mixed>>|array<int,mixed>  $fields
+     * @param  FilamentLayoutSection[]  $sections
      */
-    public static function column(array $fields = [], int $width = 2): \Filament\Forms\Components\Group
+    public static function column(array $sections = [], int $width = 2): \Filament\Forms\Components\Group
     {
-        return FilamentLayoutColumn::make($fields)
+        return FilamentLayoutColumn::make($sections)
             ->width($width)
             ->get()
         ;
     }
 
-    public static function card(array $fields = [], string $title = null, int $width = 2): Section
+    /**
+     * @param  Component[]  $fields
+     */
+    public static function section(array $fields = []): FilamentLayoutSection
     {
-        return FilamentLayoutCard::make($fields, $title, $width);
+        return FilamentLayoutSection::make($fields);
     }
 
-    public static function setting(array $fields = [], int $width = 2, string $title = null): \Filament\Forms\Components\Group
-    {
-        return FilamentLayoutSettings::make($fields, $width, $title);
-    }
-
-    public function width(int $width = 3): self
+    protected function width(int $width = 3): self
     {
         $this->width = $width;
 
         return $this;
     }
 
-    public function schema(array $schema = []): self
+    protected function schema(array $schema = []): self
     {
         $this->schema = $schema;
 
         return $this;
     }
 
-    public function get(): Form
+    protected function get(): Form
     {
         return $this->form
             ->schema($this->schema)
