@@ -16,15 +16,9 @@ class FilamentLayout
     ) {
     }
 
-    public static function make(Form $form, array $schema = [], int $width = 3): Form
+    public static function make(Form $form): self
     {
-        $layout = new self($form);
-
-        return $layout
-            ->schema($schema)
-            ->width($width)
-            ->get()
-        ;
+        return new self($form);
     }
 
     /**
@@ -46,24 +40,17 @@ class FilamentLayout
         return FilamentLayoutSection::make($fields);
     }
 
-    protected function width(int $width = 3): self
+    public function width(int $width = 3): self
     {
         $this->width = $width;
 
         return $this;
     }
 
-    protected function schema(array $schema = []): self
-    {
-        $this->schema = $schema;
-
-        return $this;
-    }
-
-    protected function get(): Form
+    public function schema(array $schema = []): Form
     {
         return $this->form
-            ->schema($this->schema)
+            ->schema($schema)
             ->columns([
                 'xl' => $this->width,
             ])
