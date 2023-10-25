@@ -6,6 +6,7 @@ use FilesystemIterator;
 use Generator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use SplFileInfo;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -21,10 +22,67 @@ class DirectoryService
 
     /**
      * Parse files in directory (recursive).
+     *
+     * @param  string[]|false  $ignore Parser will ignore files or directories in this array.
+     * @return string[]
      */
-    public function parse(string $directory): Generator
+    public function parse(string $directory, array|false $ignore = ['.gitignore', '.DS_Store', '$RECYCLE.BIN'], bool $skipHiddenFiles = true, bool $skipDirs = true): array
     {
-        return $this->parseDirectory($directory);
+        /** @var string[] */
+        $files = [];
+        $generator = $this->parseDirectory($directory);
+
+        /** @var string $file */
+        foreach ($generator as $file) {
+            $isDir = is_dir($file);
+            $filename = pathinfo($file, PATHINFO_FILENAME);
+
+            if (empty($filename)) {
+                $splitted = explode('/', $file);
+                $filename = end($splitted);
+            }
+            $valid = [];
+
+            if ($ignore) {
+                foreach ($ignore as $entry) {
+                    if (str_contains($file, $entry)) {
+                        $valid[] = false;
+                    }
+                }
+            }
+
+            if ($valid === []) {
+                if ($skipHiddenFiles && str_starts_with($filename, '.')) {
+                    continue;
+                }
+
+                if ($isDir && $skipDirs) {
+                    continue;
+                }
+
+                $files[] = $file;
+            }
+        }
+
+        return $files;
+    }
+
+    /**
+     * Works like `parse()` but return `SplFileInfo` array.
+     *
+     * @param  string[]|false  $ignore Parser will ignore files or directories in this array.
+     * @return SplFileInfo[]
+     */
+    public function parseFileInfo(string $directory, array|false $ignore = ['.gitignore', '.DS_Store', '$RECYCLE.BIN'], bool $skipHiddenFiles = true): array
+    {
+        $files = [];
+        $items = $this->parse($directory, $ignore);
+
+        foreach ($items as $path) {
+            $files[] = new SplFileInfo($path);
+        }
+
+        return $files;
     }
 
     /**
@@ -44,7 +102,7 @@ class DirectoryService
     /**
      * Remove all files into selected directory from but keep files into $ignore.
      */
-    public function clearDirectory(string $path, array $ignore): void
+    public function clearDirectory(string $path, array $ignore = ['.gitignore']): void
     {
         $output = new ConsoleOutput();
         $outputStyle = new OutputFormatterStyle('red', '', ['bold', 'blink']);
