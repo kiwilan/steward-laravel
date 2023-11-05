@@ -8,6 +8,7 @@ class NavigationItem
         public ?string $label = null,
         public ?string $route = null,
         public ?string $active = null,
+        public bool $activeStrict = false,
         public ?string $icon = null,
         public bool $external = false,
     ) {
