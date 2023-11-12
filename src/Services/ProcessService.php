@@ -3,11 +3,12 @@
 namespace Kiwilan\Steward\Services;
 
 use Closure;
+use Illuminate\Support\Facades\Log;
 use Kiwilan\HttpPool\Utils\PrintConsole;
 
 class ProcessService
 {
-    public static function executionTime(Closure $closure, bool $printing = true): void
+    public static function executionTime(Closure $closure, bool $console = false, bool $log = true): void
     {
         $startTime = microtime(true);
 
@@ -18,8 +19,14 @@ class ProcessService
         $executionTime = ($endTime - $startTime);
         $executionTime = number_format((float) $executionTime, 2, '.', '');
 
-        $console = PrintConsole::make();
-        $console->print("Execution time of script = {$executionTime} sec", 'green');
+        if ($console) {
+            $print = PrintConsole::make();
+            $print->print("Execution time of script = {$executionTime} sec", 'green');
+        }
+
+        if ($log) {
+            Log::info("Execution time of script = {$executionTime} sec");
+        }
     }
 
     public static function memoryPeekFile(Closure $closure, string $path = null, int $limit = 200): void
