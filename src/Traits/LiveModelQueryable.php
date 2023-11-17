@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Services\Query\SortModule;
 use Kiwilan\Steward\Services\QueryService;
 use ReflectionClass;
@@ -40,16 +41,22 @@ trait LiveModelQueryable
             $sortable = $instance::sortable();
         }
 
-        $sortable = array_filter($sortable, fn (SortModule $sort) => $sort->field === $field);
-
         if (empty($sortable)) {
-            return $query;
+            $sortable = array_map(fn (string $field) => SortModule::make($field), $this->getFillable());
+            if (! in_array($this->primaryKey, $this->getFillable())) {
+                $sortable[] = SortModule::make($this->primaryKey);
+            }
         }
+        $sortable = array_filter($sortable, fn (SortModule $sort) => $sort->field === $field);
         $current = array_shift($sortable);
+
+        if (! $current) {
+            throw new \Exception('Sort field not found.');
+        }
 
         $direction = $isDesc ? 'desc' : 'asc';
 
-        return $current->orderBy($query, $direction);
+        $query = $current->orderBy($query, $direction);
 
         return $query;
     }

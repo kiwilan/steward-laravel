@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Livewire\Traits;
 
 use Illuminate\Support\Facades\Session;
+use Livewire\Attributes\Url;
 
 /**
  * `Livewire\Component` trait to handle live listing. To use with model have trait `Kiwilan\Steward\Traits\LiveModelQueryable`.
@@ -11,7 +12,10 @@ trait LiveListing
 {
     public string $q = '';
 
+    #[Url]
     public ?string $sort = null;
+
+    public bool $sort_asc = true;
 
     public array $sortable = [];
 
@@ -30,17 +34,21 @@ trait LiveListing
         $this->queryString[] = 'filter';
         $this->queryString[] = 'size';
 
-        $defaultSize = config('steward.livewire.pagination.size', 20);
+        $defaultSize = config('steward.livewire.pagination.default', 20);
         $this->size = Session::get('size', $defaultSize);
-        $this->sort = ! empty($this->sort) ? $this->sort : $this->defaultSort();
+        // $this->sort = ! empty($this->sort) ? $this->sort : $this->defaultSort;
+        ray($this);
+
+        $this->sort = 'id';
         $this->sortable = $this->sortable();
+        $this->sort_asc = ! str_contains($this->sort, '-');
     }
 
-    abstract public function model(): string;
+    // abstract public function model(): string;
 
     abstract public function relations(): array;
 
-    abstract public function defaultSort(): string;
+    // abstract public function defaultSort(): string;
 
     abstract public function sortable(): array;
 
@@ -56,6 +64,27 @@ trait LiveListing
         } else {
             $this->{$field} = $value;
         }
+    }
+
+    public function sorting(string $column): void
+    {
+        if ($this->sort === $column) {
+            $this->reverse();
+        } else {
+            $this->query('sort', $column);
+        }
+    }
+
+    public function reverse()
+    {
+        if (! $this->sort) {
+            $this->sort = $this->defaultSort();
+        }
+
+        $this->sort = str_contains($this->sort, '-')
+            ? substr($this->sort, 1)
+            : '-'.$this->sort;
+        $this->sort_asc = ! str_contains($this->sort, '-');
     }
 
     public function clear()
