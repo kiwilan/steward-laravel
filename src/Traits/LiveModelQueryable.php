@@ -43,6 +43,7 @@ trait LiveModelQueryable
 
         if (empty($sortable)) {
             $sortable = array_map(fn (string $field) => SortModule::make($field), $this->getFillable());
+
             if (! in_array($this->primaryKey, $this->getFillable())) {
                 $sortable[] = SortModule::make($this->primaryKey);
             }
@@ -56,9 +57,7 @@ trait LiveModelQueryable
 
         $direction = $isDesc ? 'desc' : 'asc';
 
-        $query = $current->orderBy($query, $direction);
-
-        return $query;
+        return $current->orderBy($query, $direction);
     }
 
     /**
