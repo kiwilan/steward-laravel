@@ -43,6 +43,7 @@ trait LiveModelQueryable
 
         if (empty($sortable)) {
             $sortable = array_map(fn (string $field) => SortModule::make($field), $this->getFillable());
+
             if (! in_array($this->primaryKey, $this->getFillable())) {
                 $sortable[] = SortModule::make($this->primaryKey);
             }
@@ -51,14 +52,12 @@ trait LiveModelQueryable
         $current = array_shift($sortable);
 
         if (! $current) {
-            throw new \Exception('Sort field not found.');
+            throw new \Exception("Field `{$field}` is not found.");
         }
 
         $direction = $isDesc ? 'desc' : 'asc';
 
-        $query = $current->orderBy($query, $direction);
-
-        return $query;
+        return $current->orderBy($query, $direction);
     }
 
     /**
