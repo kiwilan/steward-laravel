@@ -25,7 +25,7 @@ class ProcessService
         }
 
         if ($log) {
-            Log::info("Execution time of script = {$executionTime} sec");
+            Log::debug("Execution time of script = {$executionTime} sec");
         }
     }
 
