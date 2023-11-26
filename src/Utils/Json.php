@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Utils;
 
-use Illuminate\Support\Facades\File;
 use Kiwilan\HttpPool\Utils\PrintConsole;
 
 class Json
@@ -17,26 +16,18 @@ class Json
     public function __construct(
         readonly protected mixed $data,
     ) {
-        if (is_file($this->data)) {
-            $this->path = $this->data;
-            $this->contents = file_get_contents($this->data);
-        } elseif (is_string($this->data)) {
-            $this->contents = json_decode($this->data, true);
-        } else {
+        if (is_array($data)) {
             $this->contents = $this->data;
+        } elseif (is_string($data)) {
+            if (file_exists($data)) {
+                $this->path = $data;
+                $this->contents = file_get_contents($data);
+            } else {
+                $this->contents = json_decode($data, true);
+            }
+        } else {
+            $this->contents = $data;
         }
-    }
-
-    public function load(string $path): mixed
-    {
-        $this->path = $path;
-        $this->contents = file_get_contents($path);
-
-        if (! $this->contents) {
-            $this->contents = [];
-        }
-
-        return $this->contents;
     }
 
     /**
@@ -55,11 +46,14 @@ class Json
     {
         $pretty = $this->pretty();
 
-        if (! is_dir($saveTo)) {
-            mkdir($saveTo, recursive: true);
+        if (file_exists($saveTo)) {
+            unlink($saveTo);
         }
 
-        unlink($saveTo);
+        if (! is_dir(dirname($saveTo))) {
+            mkdir(dirname($saveTo), recursive: true);
+        }
+
         file_put_contents($saveTo, $pretty);
 
         if ($console) {
