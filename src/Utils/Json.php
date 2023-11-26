@@ -30,6 +30,11 @@ class Json
         }
     }
 
+    public static function load(string $path): self
+    {
+        return new self($path);
+    }
+
     public function getContents(): mixed
     {
         return $this->contents;
