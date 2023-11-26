@@ -27,6 +27,18 @@ class Json
         }
     }
 
+    public function load(string $path): mixed
+    {
+        $this->path = $path;
+        $this->contents = file_get_contents($path);
+
+        if (! $this->contents) {
+            $this->contents = [];
+        }
+
+        return $this->contents;
+    }
+
     /**
      * @return string Pretty json string
      */
