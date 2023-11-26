@@ -30,6 +30,11 @@ class Json
         }
     }
 
+    public function getContents(): mixed
+    {
+        return $this->contents;
+    }
+
     /**
      * @return string Pretty json string
      */
