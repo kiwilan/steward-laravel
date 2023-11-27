@@ -2,6 +2,8 @@
 
 namespace Kiwilan\Steward\Utils;
 
+use Kiwilan\Steward\Enums\UserRoleEnum;
+
 class NavigationItem
 {
     public function __construct(
@@ -11,6 +13,7 @@ class NavigationItem
         public bool $activeStrict = false,
         public ?string $icon = null,
         public bool $external = false,
+        public ?UserRoleEnum $role = null,
     ) {
     }
 
