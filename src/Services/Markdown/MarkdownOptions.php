@@ -112,6 +112,7 @@ class MarkdownOptions
             //     'placeholder' => null,
             // ],
         ];
+
         if (empty($this->config)) {
             $this->config = $defaultConfig;
         } elseif ($this->mergeConfig) {

@@ -8,11 +8,7 @@ use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\Markdown\MarkdownFrontmatter;
 use Kiwilan\Steward\Services\Markdown\MarkdownOptions;
 use League\CommonMark\Environment\Environment;
-use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
-use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
-use League\CommonMark\Extension\Table\Table;
 use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Node\Block\Paragraph;
 use League\HTMLToMarkdown\HtmlConverter;
 
 class MarkdownService
