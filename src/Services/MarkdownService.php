@@ -8,11 +8,7 @@ use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Services\Markdown\MarkdownFrontmatter;
 use Kiwilan\Steward\Services\Markdown\MarkdownOptions;
 use League\CommonMark\Environment\Environment;
-use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
-use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
-use League\CommonMark\Extension\Table\Table;
 use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Node\Block\Paragraph;
 use League\HTMLToMarkdown\HtmlConverter;
 
 class MarkdownService
@@ -27,6 +23,7 @@ class MarkdownService
         protected string $html = '',
         protected array $images = [],
         protected ?array $components = null,
+        protected array $headers = [],
     ) {
     }
 
@@ -56,8 +53,34 @@ class MarkdownService
         $self->images = $self->parseImages();
         $self->html = $self->toHtml();
         $self->abstract = $self->generateAbstract();
+        $self->headers = $self->parseHeaders($self->html);
 
         return $self;
+    }
+
+    private function parseHeaders(string $html): array
+    {
+        $regex = '/<h([1-6]).*?>(.*?)<\/h[1-6]>/';
+
+        preg_match_all($regex, $html, $matches);
+
+        $headers = [];
+
+        foreach ($matches[1] as $key => $match) {
+            $level = $match;
+            $text = $matches[2][$key];
+            $regexId = '/<a.*?id="(.*?)".*?>.*?<\/a>/';
+
+            preg_match_all($regexId, $text, $matchesId);
+
+            $headers[] = [
+                'level' => $level,
+                'label' => strip_tags($text),
+                'id' => $matchesId[1][0] ?? '',
+            ];
+        }
+
+        return $headers;
     }
 
     private function replaceEnv(): string
@@ -268,6 +291,14 @@ class MarkdownService
     public function getHtml(): string
     {
         return $this->html;
+    }
+
+    /**
+     * @return array{level: string, label: string, id: string}[]
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
     }
 
     public function revert(): string
