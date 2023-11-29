@@ -3,6 +3,9 @@
 namespace Kiwilan\Steward\Services\Markdown;
 
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\Extension\Table\Table;
+use League\CommonMark\Node\Block\Paragraph;
 
 class MarkdownOptions
 {
