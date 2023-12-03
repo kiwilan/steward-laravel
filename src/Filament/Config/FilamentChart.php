@@ -5,6 +5,7 @@ namespace Kiwilan\Steward\Filament\Config;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 use Kiwilan\Steward\Enums\PublishStatusEnum;
+use Kiwilan\Steward\Filament\Config\FilamentChart\ChartByMonth;
 
 class FilamentChart
 {
@@ -99,35 +100,15 @@ class FilamentChart
     }
 
     /**
-     * Docs: https://genijaho.dev/blog/generate-monthly-chart-data-with-eloquent-carbon.
+     * Create a new chart by month on one year.
+     *
+     * @param string $table The table name
+     * @param string $field The date field - defaults to `created_at`
+     * @param int $year The year to get stats for - defaults to current year
      */
-    public static function getStatsByMonth(string $year = '2020')
+    public static function statsByMonth(string $table, string $field = 'created_at', int $year = null): ChartByMonth
     {
-        $posts_db = DB::table('posts')
-            ->selectRaw("
-                count(id) as total,
-                date_format(published_at, '%b %Y') as period
-            ")
-            ->where('status', '=', PublishStatusEnum::published->value)
-            ->whereYear('published_at', '=', $year)
-            ->groupBy('period')
-            ->get()
-            ->keyBy('period')
-        ;
-
-        $periods = collect([]);
-
-        foreach (CarbonPeriod::create("{$year}-01-01", '1 month', "{$year}-12-01") as $period) {
-            $periods->push($period->format('M Y'));
-        }
-
-        return $periods->map(fn ($period) => $posts_db->get($period)->total ?? 0);
-        // $stats = Cache::remember(
-        //     'statsByMonth',
-        //     // Clears cache at the start of next month
-        //     now()->addMonth()->startOfMonth()->startOfDay(),
-        //     fn () => $this->getStatsByMonth()
-        // );
+        return ChartByMonth::make($table, $field, $year);
     }
 
     public static function getStatsByYear()
