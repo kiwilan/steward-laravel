@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class ChartByMonth
 {
     /**
-     * @param array{column: string, operator: string, value: string}[] $where
+     * @param  array{column: string, operator: string, value: string}[]  $where
      */
     protected function __construct(
         protected string $table,
@@ -27,9 +27,9 @@ class ChartByMonth
     /**
      * Create a new chart instance.
      *
-     * @param string $table The table name
-     * @param string $field The date field - defaults to `created_at`
-     * @param int $year The year to get stats for - defaults to current year
+     * @param  string  $table The table name
+     * @param  string  $field The date field - defaults to `created_at`
+     * @param  int  $year The year to get stats for - defaults to current year
      */
     public static function make(string $table, string $field = 'created_at', int $year = null): self
     {
@@ -53,7 +53,7 @@ class ChartByMonth
     /**
      * Set the where clause for the query.
      *
-     * @param array{column: string, operator: string, value: string}[] $where
+     * @param  array{column: string, operator: string, value: string}[]  $where
      */
     public function where(array $where): self
     {
