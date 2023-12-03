@@ -16,8 +16,8 @@ class ChartByMonth
      */
     protected function __construct(
         protected string $table,
-        protected string $field,
-        protected int $year,
+        protected string $field = 'created_at',
+        protected ?int $year = null,
         protected string $label = '',
         protected array $where = [],
         protected ?Collection $data = null,
@@ -28,16 +28,10 @@ class ChartByMonth
      * Create a new chart instance.
      *
      * @param  string  $table The table name
-     * @param  string  $field The date field - defaults to `created_at`
-     * @param  int  $year The year to get stats for - defaults to current year
      */
-    public static function make(string $table, string $field = 'created_at', int $year = null): self
+    public static function make(string $table): self
     {
-        if (! $year) {
-            $year = now()->year;
-        }
-
-        return new self($table, $field, $year);
+        return new self($table);
     }
 
     /**
@@ -46,6 +40,26 @@ class ChartByMonth
     public function label(string $label): self
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Set the year for the chart, defaults to current year.
+     */
+    public function year(int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * Set the field for the chart, defaults to `created_at`.
+     */
+    public function field(string $field): self
+    {
+        $this->field = $field;
 
         return $this;
     }
@@ -67,6 +81,10 @@ class ChartByMonth
      */
     public function get()
     {
+        if (! $this->year) {
+            $this->year = now()->year;
+        }
+
         $this->data = $this->setData();
 
         return [

@@ -103,12 +103,10 @@ class FilamentChart
      * Create a new chart by month on one year.
      *
      * @param  string  $table The table name
-     * @param  string  $field The date field - defaults to `created_at`
-     * @param  int  $year The year to get stats for - defaults to current year
      */
-    public static function statsByMonth(string $table, string $field = 'created_at', int $year = null): ChartByMonth
+    public static function statsByMonth(string $table): ChartByMonth
     {
-        return ChartByMonth::make($table, $field, $year);
+        return ChartByMonth::make($table);
     }
 
     public static function getStatsByYear()
