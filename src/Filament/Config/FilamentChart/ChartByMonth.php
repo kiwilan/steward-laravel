@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class ChartByMonth
 {
     /**
-     * @param  array{column: string, operator: string, value: string}[]  $where
+     * @param  array{column: string, operator: ?string, value: ?string}[]  $where
      */
     protected function __construct(
         protected string $table,
@@ -67,7 +67,7 @@ class ChartByMonth
     /**
      * Set the where clause for the query.
      *
-     * @param  array{column: string, operator: string, value: string}[]  $where
+     * @param  array{column: string, operator: ?string, value: ?string}[]  $where
      */
     public function where(array $where): self
     {
