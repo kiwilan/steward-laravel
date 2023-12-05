@@ -8,17 +8,22 @@ class ActionButton extends Field
 {
     protected string $view = 'steward::filament.field.action-button';
 
-    protected string $url;
+    protected string $download;
 
-    public function url(string $url): static
+    /**
+     * Add URL for file to download.
+     */
+    public function download(string $download): static
     {
-        $this->url = $url;
+        $this->download = $download;
 
         return $this;
     }
 
-    public function getUrl(): string
+    public function getDownload(): string
     {
-        return $this->url;
+        $this->isLabelHidden = true;
+
+        return $this->download;
     }
 }
