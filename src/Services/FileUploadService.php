@@ -12,7 +12,7 @@ class FileUploadService
     ) {
     }
 
-    public static function make(string $saveDirectory = null, string $baseUrl = null): self
+    public static function make(?string $saveDirectory = null, ?string $baseUrl = null): self
     {
         $self = new self();
 
@@ -36,7 +36,7 @@ class FileUploadService
      *
      * @return FileServiceItem[]|FileServiceItem|null
      */
-    public function uploadAll(array|string $paths, string $prefix = null): array|FileServiceItem|null
+    public function uploadAll(array|string $paths, ?string $prefix = null): array|FileServiceItem|null
     {
         /** @var FileServiceItem[] $items */
         $items = [];
@@ -52,7 +52,7 @@ class FileUploadService
         return $items;
     }
 
-    public function upload(string $p, string $prefix = null): FileServiceItem
+    public function upload(string $p, ?string $prefix = null): FileServiceItem
     {
         $self = new FileServiceItem($p);
         $path = str_replace(['(', ')'], '', $p);

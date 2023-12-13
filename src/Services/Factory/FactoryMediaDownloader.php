@@ -28,8 +28,8 @@ class FactoryMediaDownloader
      * @param  SeedsApiSizeEnum|null  $size default is `medium`
      */
     public function config(
-        SeedsApiCategoryEnum $category = null,
-        SeedsApiSizeEnum $size = null,
+        ?SeedsApiCategoryEnum $category = null,
+        ?SeedsApiSizeEnum $size = null,
     ): self {
         $this->config = [
             'category' => $category ?? StewardConfig::factoryMediaDownloaderDefaultCategory(),
@@ -98,7 +98,7 @@ class FactoryMediaDownloader
     /**
      * @return Collection<int,string>
      */
-    private function fetchMedias(int $count = 1, string $basePath = null)
+    private function fetchMedias(int $count = 1, ?string $basePath = null)
     {
         $this->config['count'] = $count;
 

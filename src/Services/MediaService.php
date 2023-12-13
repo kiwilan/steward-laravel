@@ -38,9 +38,9 @@ class MediaService
         Model $model,
         string $name,
         mixed $disk = 'media',
-        string $collection = null,
-        string $extension = null,
-        SpatieMediaMethodEnum $method = null
+        ?string $collection = null,
+        ?string $extension = null,
+        ?SpatieMediaMethodEnum $method = null
     ): self {
         if ($disk instanceof BackedEnum) {
             $disk = $disk->value;

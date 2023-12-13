@@ -143,7 +143,7 @@ class FactoryJson
         $created_model->save();
     }
 
-    public function setMedia(mixed $model, string $path = null): ?string
+    public function setMedia(mixed $model, ?string $path = null): ?string
     {
         if (! $model instanceof Model) {
             return null;

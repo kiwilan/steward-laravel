@@ -89,7 +89,7 @@ trait HasSeo
         ];
     }
 
-    private function seoFormat(string $string = null, int $limit = 250): ?string
+    private function seoFormat(?string $string = null, int $limit = 250): ?string
     {
         if ($string) {
             $string = strip_tags($string);

@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class Commandable extends Command
 {
-    public function title(string $signature = null, string $description = null)
+    public function title(?string $signature = null, ?string $description = null)
     {
         $app = config('app.name');
         $this->newLine();
@@ -37,7 +37,7 @@ class Commandable extends Command
         $this->newLine();
     }
 
-    public function askOnProduction(Closure $closure = null, bool $with_force = true, string $option = 'force')
+    public function askOnProduction(?Closure $closure = null, bool $with_force = true, string $option = 'force')
     {
         $force = false;
 

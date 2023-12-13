@@ -16,7 +16,7 @@ class SortModule
     ) {
     }
 
-    public static function make(string $field, string $label = null): SortModule
+    public static function make(string $field, ?string $label = null): SortModule
     {
         $label ??= $field;
 

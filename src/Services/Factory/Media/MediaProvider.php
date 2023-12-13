@@ -23,8 +23,8 @@ class MediaProvider
     }
 
     public function seeds(
-        SeedsApiCategoryEnum $category = null,
-        SeedsApiSizeEnum $size = null,
+        ?SeedsApiCategoryEnum $category = null,
+        ?SeedsApiSizeEnum $size = null,
         int $count = 1,
     ): MediaApi {
         $this->type = MediaApiEnum::seeds;

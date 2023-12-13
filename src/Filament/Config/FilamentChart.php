@@ -19,7 +19,7 @@ class FilamentChart
     ) {
     }
 
-    public static function chartBy(string $table, string $field, string $limit_year = null, bool $published = false): FilamentChart
+    public static function chartBy(string $table, string $field, ?string $limit_year = null, bool $published = false): FilamentChart
     {
         $models_db = DB::table($table)
             ->selectRaw("
@@ -59,7 +59,7 @@ class FilamentChart
         return $chart_helper;
     }
 
-    public static function chartByField(string $table, string $field, string $limit_year = null, bool $published = false): self
+    public static function chartByField(string $table, string $field, ?string $limit_year = null, bool $published = false): self
     {
         $models_db = DB::table($table)
             ->selectRaw("

@@ -13,7 +13,7 @@ class NameInput
         string|false $metaLink = 'slug',
         string|false $metaTitle = 'meta_title',
         string $label = 'Name',
-        string $helper = null,
+        ?string $helper = null,
         string $skipContext = 'edit',
         int $width = 1,
         bool $required = true,

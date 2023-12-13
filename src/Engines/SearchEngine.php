@@ -34,7 +34,7 @@ class SearchEngine
     /**
      * Create an instance of SearchEngine from query.
      */
-    public static function create(?string $q = '', bool $relevant = false, bool $opds = false, string|array $types = null): SearchEngine
+    public static function create(?string $q = '', bool $relevant = false, bool $opds = false, string|array|null $types = null): SearchEngine
     {
         if (gettype($types) === 'string') {
             $types = explode(',', $types);

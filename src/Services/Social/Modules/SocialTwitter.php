@@ -35,7 +35,7 @@ class SocialTwitter extends SocialModule implements SocialInterface
         $this->is_valid = $this->social->getIsValid();
     }
 
-    private function html(string $html = null)
+    private function html(?string $html = null)
     {
         return <<<HTML
             <div align="center">
