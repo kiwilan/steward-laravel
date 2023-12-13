@@ -17,9 +17,9 @@ class HttpQuery extends BaseQuery
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/introduction
      *
      * @param  string|Builder  $model Class string or Builder, like `Book::class` or `Book::query()` or `Book::where('id', 1)`
-     * @param  Request|null  $request from `Illuminate\Http\Request`
+     * @param  Request  $request from `Illuminate\Http\Request`
      */
-    public static function for(string|Builder $model, Request $request = null): self
+    public static function for(string|Builder $model, Request $request): self
     {
         $self = new self();
 
@@ -109,8 +109,12 @@ class HttpQuery extends BaseQuery
      * Set relationships, default is `$queryWith` into model.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/including-relationships.
      */
-    public function with(array $with = []): self
+    public function with(string|array $with = []): self
     {
+        if (is_string($with)) {
+            $with = [$with];
+        }
+
         $this->with = array_unique(array_merge($this->with, $with));
         $this->loadRequest();
 
@@ -121,8 +125,12 @@ class HttpQuery extends BaseQuery
      * Set relationships count, default is `$queryWithCount` into model.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/features/including-relationships.
      */
-    public function withCount(array $withCount = []): self
+    public function withCount(string|array $withCount = []): self
     {
+        if (is_string($withCount)) {
+            $withCount = [$withCount];
+        }
+
         $this->withCount = array_unique(array_merge($this->withCount, $withCount));
         $this->loadRequest();
 

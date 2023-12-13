@@ -114,9 +114,22 @@ abstract class BaseQuery
     }
 
     /**
-     * Return `QueryResponse`, typed response with `LengthAwarePaginator`.
+     * @deprecated Use `inertia()` instead.
      */
     public function front(): QueryResponse
+    {
+        $this->loadRequest();
+
+        return QueryResponse::make(
+            original: $this->paginate(),
+            defaultSort: $this->defaultSort
+        );
+    }
+
+    /**
+     * Return `QueryResponse`, typed response with `LengthAwarePaginator`.
+     */
+    public function inertia(): QueryResponse
     {
         $this->loadRequest();
 
