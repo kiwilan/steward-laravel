@@ -5,6 +5,7 @@ namespace Kiwilan\Steward\Services;
 use DateTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Kiwilan\Steward\Services\Markdown\MarkdownFrontmatter;
 use Kiwilan\Steward\Services\Markdown\MarkdownOptions;
 use League\CommonMark\Environment\Environment;
@@ -55,7 +56,29 @@ class MarkdownService
         $self->abstract = $self->generateAbstract();
         $self->headers = $self->parseHeaders($self->html);
 
+        $self->slugifyHeaders();
+
         return $self;
+    }
+
+    private function slugifyHeaders(): void
+    {
+        $newHeaders = $this->headers;
+
+        foreach ($newHeaders as $key => $header) {
+            $newHeaders[$key]['id'] = Str::slug($header['id']);
+            $newHeaders[$key]['original_id'] = $header['id'];
+        }
+
+        $this->headers = $newHeaders;
+
+        $html = $this->html;
+
+        foreach ($newHeaders as $header) {
+            $html = str_replace($header['original_id'], $header['id'], $html);
+        }
+
+        $this->html = $html;
     }
 
     private function parseHeaders(string $html): array
