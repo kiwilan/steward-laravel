@@ -15,7 +15,7 @@ trait HasAttachment
      *
      * @param  string[]  $fields
      */
-    public function saveAttachments(array $fields, Model $model, Request $request, string $field_name = null, MediaTypeEnum $type = MediaTypeEnum::media)
+    public function saveAttachments(array $fields, Model $model, Request $request, ?string $field_name = null, MediaTypeEnum $type = MediaTypeEnum::media)
     {
         $filesystem_disk = storage_path('app/public/'.$type->name);
         $directory_path = '/'.$type->name.'/';

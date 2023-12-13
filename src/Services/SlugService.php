@@ -17,7 +17,7 @@ class SlugService
     ) {
     }
 
-    public static function make(string $origin = null): string
+    public static function make(?string $origin = null): string
     {
         $service = new self();
 
@@ -80,7 +80,7 @@ class SlugService
         return $modelName;
     }
 
-    private function unique(string $name = null, int $counter = 0): string
+    private function unique(?string $name = null, int $counter = 0): string
     {
         if ($name === null) {
             $name = uniqid();

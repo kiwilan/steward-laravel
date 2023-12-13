@@ -13,7 +13,7 @@ class FilamentLayoutCard
      * @param  Field[]  $fields
      * @param  ?string  $title
      */
-    public static function make(array $fields = [], string $title = null, int $width = 2): Section
+    public static function make(array $fields = [], ?string $title = null, int $width = 2): Section
     {
         $list = [];
 

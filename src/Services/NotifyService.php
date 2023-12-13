@@ -36,7 +36,7 @@ class NotifyService
     /**
      * @param  NotifyApplication|string  $application default `NotifyApplication::discord`, can be string of application like `discord`
      */
-    public function application(NotifyApplication|string $application = null): self
+    public function application(NotifyApplication|string|null $application = null): self
     {
         if (! $application) {
             $application = StewardConfig::notifyDefault();

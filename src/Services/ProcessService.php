@@ -29,7 +29,7 @@ class ProcessService
         }
     }
 
-    public static function memoryPeekFile(Closure $closure, string $path = null, int $limit = 200): void
+    public static function memoryPeekFile(Closure $closure, ?string $path = null, int $limit = 200): void
     {
         $currentMemory = ini_get('memory_limit');
         $filesize = filesize($path);

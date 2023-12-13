@@ -12,7 +12,7 @@ trait LiveNotify
     /**
      * Send notification to user.
      */
-    public function notify(string $message = null): LiveNotifyItem
+    public function notify(?string $message = null): LiveNotifyItem
     {
         if (method_exists($this, 'mount')) {
             $this->mount();

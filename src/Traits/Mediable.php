@@ -64,7 +64,7 @@ trait Mediable
     public function mediableSave(
         string $media,
         string $field = 'picture',
-        string $upload = null,
+        ?string $upload = null,
         bool $convert = true,
         bool $deleteOriginal = true
     ): void {

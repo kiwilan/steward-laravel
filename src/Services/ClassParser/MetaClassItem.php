@@ -29,7 +29,7 @@ class MetaClassItem
      *
      * @param  string  $classString like `WikipediaItem::class`
      */
-    public static function make(string $classString, ReflectionClass $reflect = null): self
+    public static function make(string $classString, ?ReflectionClass $reflect = null): self
     {
         $self = new self($classString);
 

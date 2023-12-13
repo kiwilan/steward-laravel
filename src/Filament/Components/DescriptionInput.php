@@ -11,7 +11,7 @@ class DescriptionInput
         string $field = 'description',
         string|false $metaField = 'meta_description',
         string $label = 'Description',
-        string $helper = null,
+        ?string $helper = null,
         string $skipContext = 'edit',
         int $width = 1,
         bool $required = false,

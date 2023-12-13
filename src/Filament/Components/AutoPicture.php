@@ -19,7 +19,7 @@ class AutoPicture
             'image/svg+xml',
         ],
         string $hint = 'Accepte JPG, WEBP, PNG, SVG',
-        Closure $disabled = null,
+        ?Closure $disabled = null,
     ): Forms\Components\FileUpload {
         if (! $disabled) {
             $disabled = false;

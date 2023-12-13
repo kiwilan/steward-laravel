@@ -78,7 +78,7 @@ class FactoryMediaLocal
     /**
      * @return Collection<int,string>
      */
-    private function fetchMedias(string $basePath = null): Collection
+    private function fetchMedias(?string $basePath = null): Collection
     {
         $path = "{$this->basePath}/{$this->path}";
 

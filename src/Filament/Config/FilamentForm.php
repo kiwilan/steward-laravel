@@ -28,7 +28,7 @@ class FilamentForm
         string|false $metaLink = 'slug',
         string|false $metaTitle = 'meta_title',
         string $label = 'Name',
-        string $helper = null,
+        ?string $helper = null,
         string $skipContext = 'edit',
         int $width = 1,
         bool $required = true,
@@ -77,7 +77,7 @@ class FilamentForm
         string $field = 'description',
         string|false $metaField = 'meta_description',
         string $label = 'Description',
-        string $helper = null,
+        ?string $helper = null,
         string $skipContext = 'edit',
         int $width = 1,
         bool $required = false,
@@ -263,7 +263,7 @@ class FilamentForm
             'image/svg+xml',
         ],
         string $hint = 'Accepte JPG, WEBP, PNG, SVG',
-        Closure $disabled = null,
+        ?Closure $disabled = null,
     ) {
         if (! $disabled) {
             $disabled = false;

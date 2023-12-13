@@ -81,7 +81,7 @@ abstract class BaseQuery
      */
     protected int $pagination = 15;
 
-    protected function setup(string|Builder $model, Request $request = null): self
+    protected function setup(string|Builder $model, ?Request $request = null): self
     {
         if (! \Composer\InstalledVersions::isInstalled('spatie/laravel-query-builder')) {
             throw new \Exception('Package `spatie/laravel-query-builder` not installed, see: https://github.com/spatie/laravel-query-builder');
@@ -147,7 +147,7 @@ abstract class BaseQuery
      * @param  string|null  $toSave  Path to save file, if null return download response.
      * @param  bool  $skipExcel  If you have `maatwebsite/excel` installed, you can skip Excel export and use only CSV.
      */
-    public function export(string $toSave = null, bool $skipExcel = false): Response|BinaryFileResponse|bool
+    public function export(?string $toSave = null, bool $skipExcel = false): Response|BinaryFileResponse|bool
     {
         $this->loadRequest();
         $this->exportGuess();

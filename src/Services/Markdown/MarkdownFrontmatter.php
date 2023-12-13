@@ -15,7 +15,7 @@ class MarkdownFrontmatter
     /**
      * @param  array<string, mixed> | null  $frontMatter
      */
-    public static function make(array $frontMatter = null): self
+    public static function make(?array $frontMatter = null): self
     {
         if (! $frontMatter) {
             $frontMatter = [];

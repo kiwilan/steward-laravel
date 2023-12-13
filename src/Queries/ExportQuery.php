@@ -22,7 +22,7 @@ class ExportQuery
     ) {
     }
 
-    public static function make(Collection $data, QueryBuilder $query, string $name, string $export = null, string $path = null, bool $skipExcel = false): self
+    public static function make(Collection $data, QueryBuilder $query, string $name, ?string $export = null, ?string $path = null, bool $skipExcel = false): self
     {
         $filename = $name;
         $date = date('Ymd-His');
@@ -121,7 +121,7 @@ class ExportQuery
         return \Composer\InstalledVersions::isInstalled('maatwebsite/excel') ? 'excel' : 'standard';
     }
 
-    private function arrayFlatten(array $array, string $prefix = null): ?array
+    private function arrayFlatten(array $array, ?string $prefix = null): ?array
     {
         if (! is_array($array)) {
             return null;

@@ -12,7 +12,7 @@ trait LiveValidator
 {
     use LiveNotify;
 
-    public function validator(Closure $callback = null): array
+    public function validator(?Closure $callback = null): array
     {
         return $this->withValidator(
             fn (Validator $validator) => $validator->after(
