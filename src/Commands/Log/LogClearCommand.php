@@ -42,6 +42,10 @@ class LogClearCommand extends Commandable
         $all = $this->option('all') ?: false;
         $log_name = $this->argument('name');
 
+        if (! $log_name && ! $all) {
+            $all = true;
+        }
+
         if ($log_name) {
             shell_exec("truncate -s 0 ./storage/logs/{$log_name}.log");
         } elseif ($all) {
