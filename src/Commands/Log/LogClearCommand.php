@@ -14,7 +14,7 @@ class LogClearCommand extends Commandable
      */
     protected $signature = 'log:clear
                             {--a|all : clear all log files}
-                            {--n|name= : clear specific log file}
+                            {--log= : clear specific log file}
                             {--l|level= : clear level log like `DEBUG`, `INFO`, `NOTICE`, `WARNING`, `ERROR`, `CRITICAL`, `ALERT`, `EMERGENCY`}';
 
     /**
@@ -44,7 +44,7 @@ class LogClearCommand extends Commandable
         $this->path = storage_path('logs/laravel.log');
 
         $all = $this->option('all') ?? false;
-        $log_name = $this->option('name') ?? null;
+        $log_name = $this->option('log') ?? null;
         $level = $this->option('level') ?? null;
 
         if (! $log_name && ! $all && ! $level) {
