@@ -28,7 +28,7 @@ class WikipediaItem
     ) {
     }
 
-    public static function make(HttpPoolResponse $response, ?array $precisionQuery = null): ?self
+    public static function make(HttpPoolResponse $response, array $precisionQuery = null): ?self
     {
         if (! $response->isSuccess()) {
             return null;
@@ -98,6 +98,10 @@ class WikipediaItem
 
         if ($pictureUrl) {
             $picture = Http::timeout(120)->get($pictureUrl)->body();
+        }
+
+        if (! $picture) {
+            return null;
         }
 
         return base64_encode($picture);
