@@ -22,7 +22,7 @@
         "illuminate/contracts": "^9.0 || ^10.0",
         "illuminate/database": "^9.0 || ^10.0",
         "illuminate/support": "^9.0 || ^10.0",
-        "kiwilan/php-http-pool": "^0.3.0",
+        "kiwilan/php-http-pool": "^0.3.2",
         "league/html-to-markdown": "^5.1",
         "livewire/livewire": "^3.0.1",
         "spatie/image": "^2.2",
@@ -36,7 +36,7 @@
         "laravel/pint": "^1.0",
         "maatwebsite/excel": "^3.1",
         "nunomaduro/collision": "^7.8.1",
-        "nunomaduro/larastan": "^2.0.1",
+        "larastan/larastan": "^2.7.0",
         "nunomaduro/laravel-mojito": "^0.2.10",
         "orchestra/testbench": "^8.0",
         "pestphp/pest": "^2.0",
@@ -65,7 +65,7 @@
         "test": "vendor/bin/pest",
         "test-filter": "vendor/bin/pest --filter",
         "test-coverage": "vendor/bin/pest --coverage",
-        "format": "./vendor/bin/pint --config pint.json",
+        "format": "./vendor/bin/pint",
         "test:watch": [
             "Composer\\Config::disableProcessTimeout",
             "phpunit-watcher watch < /dev/tty"
