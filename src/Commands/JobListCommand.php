@@ -5,14 +5,14 @@ namespace Kiwilan\Steward\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class JobCommand extends Commandable
+class JobListCommand extends Commandable
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'job
+    protected $signature = 'job:list
                             {--c|clear : clear all jobs}';
 
     /**
