@@ -13,7 +13,10 @@ class JobListCommand extends Commandable
      * @var string
      */
     protected $signature = 'job:list
-                            {--c|clear : clear all jobs}';
+                            {--c|clear : clear all jobs}
+                            {--l|limit= : limit jobs output}
+                            {--f|full : display full job informations}
+                            {--count : count of jobs}';
 
     /**
      * The console command description.
@@ -31,30 +34,71 @@ class JobListCommand extends Commandable
     {
         $this->title();
 
-        $clear = $this->option('clear') ?: false;
+        $clear = (bool) $this->option('clear') ?: false;
+        $limit = $this->option('limit') ?: false;
 
-        $jobs = $this->parseJobs();
-        $this->table(['ID', 'Queue', 'Payload', 'Attempts', 'Reserved At', 'Available At', 'Created At'], $jobs);
+        if ($limit && ! is_numeric($limit)) {
+            // remove first character if it's not numeric
+            $limit = substr($limit, 1);
+            $limit = intval($limit);
+        }
+        $full = (bool) $this->option('full') ?: false;
+        $count = (bool) $this->option('count') ?: false;
+
+        if ($count) {
+            $this->info('Jobs count: '.DB::table('jobs')->count());
+
+            return Command::SUCCESS;
+        }
 
         if ($clear) {
             $this->info('Clearing all jobs...');
             $this->clearAll();
+            $this->info('All jobs cleared.');
+
+            return Command::SUCCESS;
         }
+
+        $this->parseJobs($limit, $full);
 
         return Command::SUCCESS;
     }
 
-    private function parseJobs(): array
+    private function parseJobs(int|false $limit, bool $full): void
     {
         $jobs = DB::table('jobs')->get();
+        $items = [];
+
         // payload to `displayName`
-        $jobs = $jobs->map(function ($job) {
-            $job->payload = json_decode($job->payload)->displayName;
+        foreach ($jobs as $job) {
+            $item = [
+                'id' => $job->id,
+                'queue' => $job->queue,
+                'payload' => json_decode($job->payload)->displayName,
+                'reserved_at' => $job->reserved_at,
+                'available_at' => date('Y-m-d H:i:s', substr($job->available_at, 0, 10)),
+            ];
 
-            return $job;
-        });
+            if ($full) {
+                $item = [
+                    'id' => $job->id,
+                    'queue' => $job->queue,
+                    'payload' => $job->payload,
+                    'attempts' => $job->attempts,
+                    'reserved_at' => $job->reserved_at,
+                    'available_at' => $job->available_at,
+                ];
+            }
 
-        return $jobs->toArray();
+            $items[] = $item;
+        }
+
+        if ($limit) {
+            $items = array_slice($items, 0, $limit);
+        }
+
+        $table = $full ? ['id', 'queue', 'payload', 'attempts', 'reserved_at', 'available_at'] : ['id', 'queue', 'payload', 'reserved_at', 'available_at'];
+        $this->table($table, $items);
     }
 
     /**
