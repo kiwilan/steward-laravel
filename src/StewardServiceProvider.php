@@ -39,6 +39,7 @@ class StewardServiceProvider extends PackageServiceProvider
                 \Kiwilan\Steward\Commands\TagCleanCommand::class,
                 \Kiwilan\Steward\Commands\Optimize\OptimizeFeshCommand::class,
                 \Kiwilan\Steward\Commands\ClearFreshCommand::class,
+                \Kiwilan\Steward\Commands\JobListCommand::class,
             ])
         ;
     }
