@@ -3,7 +3,10 @@
 namespace Kiwilan\Steward\Filament\Config\FilamentChart;
 
 use Carbon\CarbonPeriod;
+use Closure;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -17,10 +20,15 @@ class ChartByMonth
     protected function __construct(
         protected string $table,
         protected string $field = 'created_at',
+        protected bool $autoYear = false,
         protected ?int $year = null,
         protected string $label = '',
         protected array $where = [],
+        protected ?string $id = null,
+        protected bool $withCache = false,
         protected ?Collection $data = null,
+        protected ?int $startMonth = null,
+        protected ?int $endMonth = null,
     ) {
     }
 
@@ -65,6 +73,16 @@ class ChartByMonth
     }
 
     /**
+     * Set the cache for the chart.
+     */
+    public function withCache(): self
+    {
+        $this->withCache = true;
+
+        return $this;
+    }
+
+    /**
      * Set the where clause for the query.
      *
      * @param  array{column: string, operator: ?string, value: ?string}[]  $where
@@ -81,8 +99,21 @@ class ChartByMonth
      */
     public function get()
     {
-        if (! $this->year) {
+        $this->id = uniqid();
+        $this->id = "statsByMonth_{$this->id}";
+
+        if (! $this->year || $this->year === now()->year) {
+            $this->autoYear = true;
             $this->year = now()->year;
+        }
+
+        if ($this->autoYear) {
+            $currentMonth = now()->month;
+            $this->startMonth = $currentMonth - 11;
+            $this->endMonth = $currentMonth;
+        } else {
+            $this->startMonth = 1;
+            $this->endMonth = 12;
         }
 
         $this->data = $this->setData();
@@ -95,7 +126,7 @@ class ChartByMonth
                     'fill' => 'start',
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'labels' => $this->generateMonthLabels(),
         ];
     }
 
@@ -104,6 +135,14 @@ class ChartByMonth
      */
     private function setData(): Collection
     {
+        if ($this->withCache) {
+            $cache = Cache::get($this->id);
+
+            if ($cache) {
+                return $cache;
+            }
+        }
+
         $query = DB::table($this->table)
             ->selectRaw('
                 count(id) as total,
@@ -120,23 +159,68 @@ class ChartByMonth
             }
         }
 
-        $query = $query->whereYear($this->field, '=', $this->year);
+        // Get data only for the last 11 months and the current month
+        $query = $query->where(function ($query) {
+            $query->whereYear($this->field, '=', $this->autoYear ? $this->year - 1 : $this->year)
+                ->orWhere(function ($query) {
+                    $query->whereYear($this->field, '=', $this->year)
+                        ->whereMonth($this->field, '>=', $this->startMonth)
+                        ->whereMonth($this->field, '<=', $this->endMonth)
+                    ;
+                })
+            ;
+        });
+
         $group = $query->groupBy('period');
         $data = $group->get()->keyBy('period');
 
         $periods = collect([]);
+        $this->carbonPeriod(fn ($period) => $periods->push($period->format('M Y')));
+        $map = $periods->map(fn ($period) => $data->get($period)->total ?? 0);
 
-        foreach (CarbonPeriod::create("{$this->year}-01-01", '1 month', "{$this->year}-12-01") as $period) {
-            $periods->push($period->format('M Y'));
+        if ($this->withCache) {
+            Cache::remember(
+                $this->id,
+                // Clears cache at the start of next month
+                now()->addMonth()->startOfMonth()->startOfDay(),
+                fn () => $map,
+            );
         }
 
-        // $stats = Cache::remember(
-        //     'statsByMonth',
-        //     // Clears cache at the start of next month
-        //     now()->addMonth()->startOfMonth()->startOfDay(),
-        //     fn () => $this->getStatsByMonth()
-        // );
+        return $map;
+    }
 
-        return $periods->map(fn ($period) => $data->get($period)->total ?? 0);
+    /**
+     * Get the chart data.
+     *
+     * @param  Closure(\Carbon\CarbonInterface|null $period): void  $closure
+     */
+    private function carbonPeriod(Closure $closure): void
+    {
+        if ($this->autoYear) {
+            $paramStart = now()->subMonths(12)->startOfMonth();
+            $paramEnd = now()->startOfMonth();
+        } else {
+            $paramStart = "{$this->year}-01-01";
+            $paramEnd = "{$this->year}-12-01";
+        }
+
+        foreach (CarbonPeriod::create($paramStart, '1 month', $paramEnd) as $period) {
+            $closure($period);
+        }
+    }
+
+    /**
+     * Generate month labels based on the specified range.
+     *
+     * @return string[]
+     */
+    private function generateMonthLabels(): array
+    {
+        $months = collect([]);
+
+        $this->carbonPeriod(fn ($period) => $months->push($period->format('M Y')));
+
+        return $months->toArray();
     }
 }
