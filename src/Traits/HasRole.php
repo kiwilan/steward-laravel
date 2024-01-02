@@ -2,11 +2,9 @@
 
 namespace Kiwilan\Steward\Traits;
 
-use BackedEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rules\Enum;
 use Kiwilan\Steward\Enums\UserRoleEnum;
-use UnitEnum;
 
 /**
  * Trait HasRole
