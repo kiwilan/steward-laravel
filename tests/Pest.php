@@ -20,6 +20,7 @@ function dotenv(): array
     foreach ($lines as $line) {
         if (! empty($line)) {
             $data = explode('=', $line);
+            ray($data);
             $key = $data[0];
             $value = $data[1];
 

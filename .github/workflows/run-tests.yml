@@ -52,6 +52,7 @@ jobs:
           touch .env
           echo STEWARD_NOTIFY_DISCORD=${{ secrets.STEWARD_NOTIFY_DISCORD }} >> .env
           echo STEWARD_NOTIFY_SLACK=${{ secrets.STEWARD_NOTIFY_SLACK }} >> .env
+          echo STEWARD_DISCORD=${{ secrets.STEWARD_DISCORD }} >> .env
 
       - name: Execute tests
         run: vendor/bin/pest
