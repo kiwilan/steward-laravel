@@ -1,9 +1,10 @@
 <?php
 
-namespace Kiwilan\Steward\Commands;
+namespace Kiwilan\Steward\Commands\Jobs;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Kiwilan\Steward\Commands\Commandable;
 
 class JobListCommand extends Commandable
 {
@@ -13,7 +14,6 @@ class JobListCommand extends Commandable
      * @var string
      */
     protected $signature = 'job:list
-                            {--c|clear : clear all jobs}
                             {--l|limit= : limit jobs output}
                             {--f|full : display full job informations}
                             {--count : count of jobs}';
@@ -34,7 +34,6 @@ class JobListCommand extends Commandable
     {
         $this->title();
 
-        $clear = (bool) $this->option('clear') ?: false;
         $limit = $this->option('limit') ?: false;
 
         if ($limit && ! is_numeric($limit)) {
@@ -47,14 +46,6 @@ class JobListCommand extends Commandable
 
         if ($count) {
             $this->info('Jobs count: '.DB::table('jobs')->count());
-
-            return Command::SUCCESS;
-        }
-
-        if ($clear) {
-            $this->info('Clearing all jobs...');
-            $this->clearAll();
-            $this->info('All jobs cleared.');
 
             return Command::SUCCESS;
         }
@@ -75,7 +66,6 @@ class JobListCommand extends Commandable
                 'id' => $job->id,
                 'queue' => $job->queue,
                 'payload' => json_decode($job->payload)->displayName,
-                'reserved_at' => $job->reserved_at,
                 'available_at' => date('Y-m-d H:i:s', substr($job->available_at, 0, 10)),
             ];
 
@@ -99,15 +89,5 @@ class JobListCommand extends Commandable
 
         $table = $full ? ['id', 'queue', 'payload', 'attempts', 'reserved_at', 'available_at'] : ['id', 'queue', 'payload', 'reserved_at', 'available_at'];
         $this->table($table, $items);
-    }
-
-    /**
-     * Clear all jobs.
-     *
-     * @return void
-     */
-    protected function clearAll()
-    {
-        DB::table('jobs')->truncate();
     }
 }
