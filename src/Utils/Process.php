@@ -1,15 +1,12 @@
 <?php
 
-namespace Kiwilan\Steward\Services;
+namespace Kiwilan\Steward\Utils;
 
 use Closure;
 use Illuminate\Support\Facades\Log;
 use Kiwilan\HttpPool\Utils\PrintConsole;
 
-/**
- * @deprecated
- */
-class ProcessService
+class Process
 {
     public static function executionTime(Closure $closure, bool $console = false, bool $log = true): void
     {

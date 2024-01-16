@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Kiwilan\HttpPool\Utils\PrintConsole;
 use Kiwilan\Steward\Services\FactoryService;
-use Kiwilan\Steward\Services\ProcessService;
 use Kiwilan\Steward\StewardConfig;
+use Kiwilan\Steward\Utils\Process;
 
 class FactoryMediaLocal
 {
@@ -26,7 +26,7 @@ class FactoryMediaLocal
     public function associate(Collection $models, string $field = 'picture', bool $multiple = false): void
     {
         $verbose = StewardConfig::factoryVerbose();
-        ProcessService::executionTime(function () use ($models, $field, $multiple, $verbose) {
+        Process::executionTime(function () use ($models, $field, $multiple, $verbose) {
             $console = PrintConsole::make();
 
             $chunkMax = StewardConfig::factoryMaxHandle();

@@ -3,27 +3,6 @@
 namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Enums\SocialEnum;
-use Kiwilan\Steward\Services\Social\Modules\SocialDailymotion;
-use Kiwilan\Steward\Services\Social\Modules\SocialDefault;
-use Kiwilan\Steward\Services\Social\Modules\SocialFacebook;
-use Kiwilan\Steward\Services\Social\Modules\SocialFlickr;
-use Kiwilan\Steward\Services\Social\Modules\SocialGiphy;
-use Kiwilan\Steward\Services\Social\Modules\SocialImgur;
-use Kiwilan\Steward\Services\Social\Modules\SocialInstagram;
-use Kiwilan\Steward\Services\Social\Modules\SocialKickstarter;
-use Kiwilan\Steward\Services\Social\Modules\SocialLinkedin;
-use Kiwilan\Steward\Services\Social\Modules\SocialPinterest;
-use Kiwilan\Steward\Services\Social\Modules\SocialReddit;
-use Kiwilan\Steward\Services\Social\Modules\SocialSnapchat;
-use Kiwilan\Steward\Services\Social\Modules\SocialSoundcloud;
-use Kiwilan\Steward\Services\Social\Modules\SocialSpotify;
-use Kiwilan\Steward\Services\Social\Modules\SocialTed;
-use Kiwilan\Steward\Services\Social\Modules\SocialTiktok;
-use Kiwilan\Steward\Services\Social\Modules\SocialTumblr;
-use Kiwilan\Steward\Services\Social\Modules\SocialTwitch;
-use Kiwilan\Steward\Services\Social\Modules\SocialTwitter;
-use Kiwilan\Steward\Services\Social\Modules\SocialVimeo;
-use Kiwilan\Steward\Services\Social\Modules\SocialYoutube;
 use Kiwilan\Steward\Services\Social\SocialModule;
 
 class SocialService
@@ -84,27 +63,27 @@ class SocialService
         $this->type = SocialEnum::find($this->url);
 
         return match ($this->type) {
-            SocialEnum::dailymotion => SocialDailymotion::make($this->url),
-            SocialEnum::instagram => SocialInstagram::make($this->url),
-            SocialEnum::facebook => SocialFacebook::make($this->url),
-            SocialEnum::flickr => SocialFlickr::make($this->url),
-            SocialEnum::giphy => SocialGiphy::make($this->url),
-            SocialEnum::imgur => SocialImgur::make($this->url),
-            SocialEnum::kickstarter => SocialKickstarter::make($this->url),
-            SocialEnum::linkedin => SocialLinkedin::make($this->url),
-            SocialEnum::pinterest => SocialPinterest::make($this->url),
-            SocialEnum::reddit => SocialReddit::make($this->url),
-            SocialEnum::snapchat => SocialSnapchat::make($this->url),
-            SocialEnum::soundcloud => SocialSoundcloud::make($this->url),
-            SocialEnum::spotify => SocialSpotify::make($this->url),
-            SocialEnum::ted => SocialTed::make($this->url),
-            SocialEnum::tumblr => SocialTumblr::make($this->url),
-            SocialEnum::tiktok => SocialTiktok::make($this->url),
-            SocialEnum::twitch => SocialTwitch::make($this->url),
-            SocialEnum::twitter => SocialTwitter::make($this->url),
-            SocialEnum::vimeo => SocialVimeo::make($this->url),
-            SocialEnum::youtube => SocialYoutube::make($this->url),
-            default => SocialDefault::make($this->url),
+            SocialEnum::dailymotion => \Kiwilan\Steward\Services\Social\Modules\SocialDailymotion::make($this->url),
+            SocialEnum::instagram => \Kiwilan\Steward\Services\Social\Modules\SocialInstagram::make($this->url),
+            SocialEnum::facebook => \Kiwilan\Steward\Services\Social\Modules\SocialFacebook::make($this->url),
+            SocialEnum::flickr => \Kiwilan\Steward\Services\Social\Modules\SocialFlickr::make($this->url),
+            SocialEnum::giphy => \Kiwilan\Steward\Services\Social\Modules\SocialGiphy::make($this->url),
+            SocialEnum::imgur => \Kiwilan\Steward\Services\Social\Modules\SocialImgur::make($this->url),
+            SocialEnum::kickstarter => \Kiwilan\Steward\Services\Social\Modules\SocialKickstarter::make($this->url),
+            SocialEnum::linkedin => \Kiwilan\Steward\Services\Social\Modules\SocialLinkedin::make($this->url),
+            SocialEnum::pinterest => \Kiwilan\Steward\Services\Social\Modules\SocialPinterest::make($this->url),
+            SocialEnum::reddit => \Kiwilan\Steward\Services\Social\Modules\SocialReddit::make($this->url),
+            SocialEnum::snapchat => \Kiwilan\Steward\Services\Social\Modules\SocialSnapchat::make($this->url),
+            SocialEnum::soundcloud => \Kiwilan\Steward\Services\Social\Modules\SocialSoundcloud::make($this->url),
+            SocialEnum::spotify => \Kiwilan\Steward\Services\Social\Modules\SocialSpotify::make($this->url),
+            SocialEnum::ted => \Kiwilan\Steward\Services\Social\Modules\SocialTed::make($this->url),
+            SocialEnum::tumblr => \Kiwilan\Steward\Services\Social\Modules\SocialTumblr::make($this->url),
+            SocialEnum::tiktok => \Kiwilan\Steward\Services\Social\Modules\SocialTiktok::make($this->url),
+            SocialEnum::twitch => \Kiwilan\Steward\Services\Social\Modules\SocialTwitch::make($this->url),
+            SocialEnum::twitter => \Kiwilan\Steward\Services\Social\Modules\SocialTwitter::make($this->url),
+            SocialEnum::vimeo => \Kiwilan\Steward\Services\Social\Modules\SocialVimeo::make($this->url),
+            SocialEnum::youtube => \Kiwilan\Steward\Services\Social\Modules\SocialYoutube::make($this->url),
+            default => \Kiwilan\Steward\Services\Social\Modules\SocialDefault::make($this->url),
         };
     }
 }
