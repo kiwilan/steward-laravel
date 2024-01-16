@@ -111,7 +111,7 @@ class FactoryService
     }
 
     /**
-     * @param  string|null  $basePath If null, use `database_path('seeders/media')`
+     * @param  string|null  $basePath  If null, use `database_path('seeders/media')`
      */
     public function mediaLocal(string $path, ?string $basePath = null): FactoryMediaLocal
     {

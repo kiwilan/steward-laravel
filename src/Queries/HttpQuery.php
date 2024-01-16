@@ -16,8 +16,8 @@ class HttpQuery extends BaseQuery
      * Works with `spatie/laravel-query-builder` for API and Laravel Builder for front.
      * Docs: https://spatie.be/docs/laravel-query-builder/v5/introduction
      *
-     * @param  string|Builder  $model Class string or Builder, like `Book::class` or `Book::query()` or `Book::where('id', 1)`
-     * @param  Request  $request from `Illuminate\Http\Request`
+     * @param  string|Builder  $model  Class string or Builder, like `Book::class` or `Book::query()` or `Book::where('id', 1)`
+     * @param  Request  $request  from `Illuminate\Http\Request`
      */
     public static function for(string|Builder $model, Request $request): self
     {
@@ -38,7 +38,7 @@ class HttpQuery extends BaseQuery
      * Set default sort colunm, default is `$queryDefaultSort`
      * and `$queryDefaultSortDirection` for direction into model.
      *
-     * @param  string  $defaultSort Any `fillable`, default is `id`
+     * @param  string  $defaultSort  Any `fillable`, default is `id`
      */
     public function defaultSort(string $defaultSort = 'id'): self
     {

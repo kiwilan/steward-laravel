@@ -10,15 +10,15 @@ use ReflectionClass;
  *
  * Example with `WikipediaItem`:
  *
- * @property string $meta_class              like `\App\Models\WikipediaItem::class`
- * @property string $meta_class_namespaced   like `\App\Models\WikipediaItem`
- * @property string $meta_class_name         like `WikipediaItem`
- * @property string $meta_class_name_plural  like `WikipediaItems`
- * @property string $meta_class_snake        like `wikipedia_item`
+ * @property string $meta_class like `\App\Models\WikipediaItem::class`
+ * @property string $meta_class_namespaced like `\App\Models\WikipediaItem`
+ * @property string $meta_class_name like `WikipediaItem`
+ * @property string $meta_class_name_plural like `WikipediaItems`
+ * @property string $meta_class_snake like `wikipedia_item`
  * @property string $meta_class_snake_plural like `wikipedia_items`
- * @property string $meta_class_slug         like `wikipedia-item`
- * @property string $meta_class_slug_plural  like `wikipedia-items`
- * @property string $meta_first_char         like `w`
+ * @property string $meta_class_slug like `wikipedia-item`
+ * @property string $meta_class_slug_plural like `wikipedia-items`
+ * @property string $meta_first_char like `w`
  */
 trait HasMetaClass
 {

@@ -65,7 +65,7 @@ class GoogleBookService
     /**
      * Set isbn fields to scan.
      *
-     * @param  string[]  $isbnFields List of isbn fields into `$subject`, set more relevant first, default `['isbn']`
+     * @param  string[]  $isbnFields  List of isbn fields into `$subject`, set more relevant first, default `['isbn']`
      */
     public function setIsbnFields(array $isbnFields = ['isbn']): self
     {
@@ -77,7 +77,7 @@ class GoogleBookService
     /**
      * Set unique identifier of the model.
      *
-     * @param  string  $identifier Default is `id`
+     * @param  string  $identifier  Default is `id`
      */
     public function setIdentifier(string $identifier = 'id'): self
     {

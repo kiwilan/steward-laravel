@@ -18,8 +18,8 @@ class FilamentForm
     /**
      * Generate metalink and meta title from current field.
      *
-     * @param  string  $field It will be `name` by default.
-     * @param  string|false  $metaLink It will be `slug` by default.
+     * @param  string  $field  It will be `name` by default.
+     * @param  string|false  $metaLink  It will be `slug` by default.
      *
      * @deprecated
      */
@@ -115,7 +115,7 @@ class FilamentForm
     /**
      * @deprecated
      *
-     * @param  string  $current_action 'create' or 'edit'
+     * @param  string  $current_action  'create' or 'edit'
      * @return Closure
      */
     public static function disabledOn(string $current_action)

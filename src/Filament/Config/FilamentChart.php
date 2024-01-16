@@ -102,7 +102,7 @@ class FilamentChart
     /**
      * Create a new chart by month on one year.
      *
-     * @param  string  $table The table name
+     * @param  string  $table  The table name
      */
     public static function statsByMonth(string $table): ChartByMonth
     {

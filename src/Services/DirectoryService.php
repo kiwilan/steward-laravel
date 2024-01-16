@@ -23,7 +23,7 @@ class DirectoryService
     /**
      * Parse files in directory (recursive).
      *
-     * @param  string[]|false  $ignore Parser will ignore files or directories in this array.
+     * @param  string[]|false  $ignore  Parser will ignore files or directories in this array.
      * @return string[]
      */
     public function parse(string $directory, array|false $ignore = ['.gitignore', '.DS_Store', '$RECYCLE.BIN'], bool $skipHiddenFiles = true, bool $skipDirs = true): array
@@ -70,7 +70,7 @@ class DirectoryService
     /**
      * Works like `parse()` but return `SplFileInfo` array.
      *
-     * @param  string[]|false  $ignore Parser will ignore files or directories in this array.
+     * @param  string[]|false  $ignore  Parser will ignore files or directories in this array.
      * @return SplFileInfo[]
      */
     public function parseFileInfo(string $directory, array|false $ignore = ['.gitignore', '.DS_Store', '$RECYCLE.BIN'], bool $skipHiddenFiles = true): array

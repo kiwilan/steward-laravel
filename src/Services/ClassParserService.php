@@ -10,7 +10,7 @@ use SplFileInfo;
 class ClassParserService
 {
     /**
-     * @param  string  $classString Class string, like `Book::class`
+     * @param  string  $classString  Class string, like `Book::class`
      */
     public static function make(string $classString): ClassParserItem
     {
@@ -18,7 +18,7 @@ class ClassParserService
     }
 
     /**
-     * @param  string|Collection<int,SplFileInfo|string>  $pathOrFiles Path to directory or collection of SplFileInfo
+     * @param  string|Collection<int,SplFileInfo|string>  $pathOrFiles  Path to directory or collection of SplFileInfo
      * @return Collection<int,ClassParserItem>
      */
     public static function toCollection(string|Collection $pathOrFiles): Collection

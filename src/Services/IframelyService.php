@@ -20,7 +20,7 @@ class IframelyService
     }
 
     /**
-     * @param  string  $api Iframely instance to use, can be set from `steward.iframely.api`
+     * @param  string  $api  Iframely instance to use, can be set from `steward.iframely.api`
      */
     public static function make(?string $api = null): self
     {
@@ -49,8 +49,8 @@ class IframelyService
     }
 
     /**
-     * @param  string  $media_url The media url to get the embed code.
-     * @param  string  $endpoint Can be `oembed` or `iframely`
+     * @param  string  $media_url  The media url to get the embed code.
+     * @param  string  $endpoint  Can be `oembed` or `iframely`
      */
     public function get(string $media_url, string $endpoint = 'oembed'): array
     {

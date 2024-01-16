@@ -139,8 +139,8 @@ trait LiveUpload
     /**
      * Delete existing upload.
      *
-     * @param  string  $field The field name, like `avatar`.
-     * @param  string  $name The file name, like `my-avatar.jpg`.
+     * @param  string  $field  The field name, like `avatar`.
+     * @param  string  $name  The file name, like `my-avatar.jpg`.
      */
     public function deleteUpload(string $field, string $name): void
     {

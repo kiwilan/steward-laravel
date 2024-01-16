@@ -27,7 +27,7 @@ class MetaClassItem
     /**
      * Create a new MetaClass instance.
      *
-     * @param  string  $classString like `WikipediaItem::class`
+     * @param  string  $classString  like `WikipediaItem::class`
      */
     public static function make(string $classString, ?ReflectionClass $reflect = null): self
     {
@@ -58,7 +58,7 @@ class MetaClassItem
     /**
      * Check if current instance has a given trait.
      *
-     * @param  string  $trait like `Publishable::class`
+     * @param  string  $trait  like `Publishable::class`
      */
     public function useTrait(string $trait): bool
     {

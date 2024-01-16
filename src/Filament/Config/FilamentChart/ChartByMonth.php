@@ -35,7 +35,7 @@ class ChartByMonth
     /**
      * Create a new chart instance.
      *
-     * @param  string  $table The table name
+     * @param  string  $table  The table name
      */
     public static function make(string $table): self
     {

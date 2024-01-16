@@ -24,8 +24,8 @@ class FactoryMediaDownloader
     }
 
     /**
-     * @param  SeedsApiCategoryEnum|null  $category default is `all`
-     * @param  SeedsApiSizeEnum|null  $size default is `medium`
+     * @param  SeedsApiCategoryEnum|null  $category  default is `all`
+     * @param  SeedsApiSizeEnum|null  $size  default is `medium`
      */
     public function config(
         ?SeedsApiCategoryEnum $category = null,
@@ -40,7 +40,7 @@ class FactoryMediaDownloader
     }
 
     /**
-     * @param  Collection<int,Model>|string  $models Collection of models or class name of model.
+     * @param  Collection<int,Model>|string  $models  Collection of models or class name of model.
      */
     public function associate(Collection|string $models, string $field = 'picture', bool $multiple = false): void
     {
