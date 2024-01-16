@@ -42,18 +42,6 @@ php artisan vendor:publish --tag="steward-config"
 
 See [steward-for-laravel.netlify.app](https://steward-for-laravel.netlify.app) for documentation.
 
-<!-- ### Vite plugin
-
-```bash
-npm install --save-dev @kiwilan/vite-plugin-steward-laravel
-```
-
-```bash
-pnpm add @kiwilan/vite-plugin-steward-laravel -D
-```
-
-Check [@kiwilan/vite-plugin-steward-laravel](https://github.com/kiwilan/steward-laravel/tree/main/lib) for usage. -->
-
 ## Testing
 
 ```bash
