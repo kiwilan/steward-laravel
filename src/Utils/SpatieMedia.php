@@ -1,17 +1,13 @@
 <?php
 
-namespace Kiwilan\Steward\Services;
+namespace Kiwilan\Steward\Utils;
 
-use BackedEnum;
 use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Enums\SpatieMediaMethodEnum;
-use Kiwilan\Steward\Utils\Picture;
 use UnitEnum;
 
 /**
  * MediaService to manage media files.
- *
- * @deprecated Use Kiwilan\Steward\Utils\SpatieMedia instead.
  *
  * @property Model $model
  * @property string $name
@@ -20,37 +16,44 @@ use UnitEnum;
  * @property ?string $extension
  * @property ?SpatieMediaMethodEnum $method
  */
-class MediaService
+class SpatieMedia
 {
-    public function __construct(
-        public Model $model,
-        public string $name,
-        public mixed $disk,
-        public ?string $collection = null,
-        public ?string $extension = null,
-        public ?SpatieMediaMethodEnum $method = null,
+    protected function __construct(
+        protected Model $model,
+        protected string $name,
+        protected mixed $disk,
+        protected ?string $collection = null,
+        protected ?string $extension = null,
+        protected ?SpatieMediaMethodEnum $method = null,
     ) {
     }
 
     /**
      * Add a media file to the model.
      *
-     * @param  string|UnitEnum  $disk
+     * @param  ?string  $disk - Default is `disks.public.root`.
+     * @param  ?string  $collection - Default is `library`, which is a subfolder of `disk`.
+     * @param  ?string  $extension - Default is `webp`, can be overridden by `config('bookshelves.cover_extension')`.
+     * @param  ?SpatieMediaMethodEnum  $method - Default is `addMediaFromBase64`.
      */
     public static function make(
         Model $model,
         string $name,
-        mixed $disk = 'media',
+        ?string $disk = null,
         ?string $collection = null,
         ?string $extension = null,
         ?SpatieMediaMethodEnum $method = null
     ): self {
-        if ($disk instanceof BackedEnum) {
-            $disk = $disk->value;
+        if (! $disk) {
+            $disk = config('filesystems.disks.public.root');
+
+            if (! file_exists($disk)) {
+                mkdir($disk, 0775, true);
+            }
         }
 
         if (! $collection) {
-            $collection = $disk;
+            $collection = 'library';
         }
 
         if (! $extension) {
@@ -61,10 +64,16 @@ class MediaService
             $method = SpatieMediaMethodEnum::addMediaFromBase64;
         }
 
-        return new MediaService($model, $name, $disk, $collection, $extension, $method);
+        $path = $disk.'/'.$collection;
+
+        if (! file_exists($path)) {
+            mkdir($path, 0775, true);
+        }
+
+        return new self($model, $name, $disk, $collection, $extension, $method);
     }
 
-    public function setMedia(?string $data): self
+    public function addMedia(...$data): self
     {
         if ($data) {
             $this->model->{$this->method->value}($data)
