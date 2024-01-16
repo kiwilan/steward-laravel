@@ -9,6 +9,7 @@ use DOMXPath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Kiwilan\Steward\Utils\SpatieMedia;
 
 class MarkdownToHtmlService
 {
@@ -87,9 +88,12 @@ class MarkdownToHtmlService
 
         if (File::exists($this->path_image)) {
             $image = base64_encode(File::get($this->path_image));
-            MediaService::make($model, $model->{$model_name_attr}, 'media', $featured_image_name)
-                ->setMedia($image)
-                ->setColor()
+            SpatieMedia::make($model)
+                ->addMediaFromBase64($image)
+                ->name($model->{$model_name_attr})
+                ->collection('media')
+                ->color()
+                ->save()
             ;
         }
 
@@ -98,9 +102,12 @@ class MarkdownToHtmlService
 
             if (File::exists($path_src)) {
                 $src = base64_encode(File::get($path_src));
-                MediaService::make($model, $name, 'media', $inside_images_name)
-                    ->setMedia($src)
-                    ->setColor()
+                SpatieMedia::make($model)
+                    ->addMediaFromBase64($src)
+                    ->name($name)
+                    ->collection('media')
+                    ->color()
+                    ->save()
                 ;
             }
         }
