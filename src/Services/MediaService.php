@@ -5,6 +5,7 @@ namespace Kiwilan\Steward\Services;
 use BackedEnum;
 use Illuminate\Database\Eloquent\Model;
 use Kiwilan\Steward\Enums\SpatieMediaMethodEnum;
+use Kiwilan\Steward\Utils\Picture;
 use UnitEnum;
 
 /**
@@ -81,7 +82,7 @@ class MediaService
         $image = $this->model->getFirstMediaPath($this->collection);
 
         if ($image) {
-            $color = PictureService::colorThief($image);
+            $color = Picture::color($image);
             // @phpstan-ignore-next-line
             $media = $this->model->getFirstMedia($this->collection);
             $media->setCustomProperty('color', $color);

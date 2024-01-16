@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Imagick;
 use ImagickPixel;
 use Kiwilan\Steward\Settings\GeneralSettings;
-use Spatie\Image\Image;
-use Spatie\Image\Manipulations;
+use Kiwilan\Steward\Utils\Picture;
 
 class ProcessFavicon implements ShouldQueue
 {
@@ -173,15 +172,15 @@ class ProcessFavicon implements ShouldQueue
         }
     }
 
-    private function iconResize(string $path, int $width, int $height, string $name, string $extension)
+    private function iconResize(string $path, int $width, int $height, string $name, string $extension): string
     {
-        $image = Image::load($path);
-        $image->manipulate(function (Manipulations $manipulations) use ($width, $height) {
-            return $manipulations
-                ->width($width)
-                ->height($height)
-                ->optimize()
-            ;
-        })->save(storage_path("app/public/{$name}.{$extension}"));
+        $path = storage_path("app/public/{$name}.{$extension}");
+        Picture::load($path)
+            ->crop($width, $height)
+            ->optimize()
+            ->save()
+        ;
+
+        return $path;
     }
 }

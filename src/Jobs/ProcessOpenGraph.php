@@ -10,8 +10,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Kiwilan\Steward\Settings\GeneralSettings;
-use Spatie\Image\Image;
-use Spatie\Image\Manipulations;
+use Kiwilan\Steward\Utils\Picture;
+use Spatie\Image\Enums\CropPosition;
 
 class ProcessOpenGraph implements ShouldQueue
 {
@@ -36,22 +36,23 @@ class ProcessOpenGraph implements ShouldQueue
         $this->setOpenGraph($settings->default_image);
     }
 
-    private function setOpenGraph(string $path)
+    private function setOpenGraph(string $path): ?string
     {
         $path = storage_path("app/public/{$path}");
 
         if (! $path || ! File::exists($path)) {
-            return;
+            return null;
         }
 
         Log::info('Generating default');
 
-        $image = Image::load($path);
-        $image->manipulate(function (Manipulations $manipulations) {
-            return $manipulations
-                ->crop(Manipulations::CROP_CENTER, 1200, 630)
-                ->optimize()
-            ;
-        })->save(public_path('default.jpg'));
+        $path = public_path('default.jpg');
+        Picture::load($path)
+            ->crop(1200, 630, CropPosition::Center)
+            ->optimize()
+            ->save($path)
+        ;
+
+        return $path;
     }
 }

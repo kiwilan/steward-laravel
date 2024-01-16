@@ -1,9 +1,9 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Image;
+namespace Kiwilan\Steward\Utils\Picture;
 
 use GdImage;
-use Kiwilan\Steward\Services\PictureService;
+use Kiwilan\Steward\Utils\Picture;
 
 /**
  * PHP Simple Color Thief
@@ -144,7 +144,7 @@ class ColorThief
         imagecopyresampled($newImg, $this->handle, 0, 0, 0, 0, 1, 1, imagesx($this->handle), imagesy($this->handle));
         $hexaColor = dechex(imagecolorat($newImg, 0, 0));
 
-        if (! PictureService::isHex($hexaColor)) {
+        if (! Picture::isHex($hexaColor)) {
             return $this->default;
         }
 

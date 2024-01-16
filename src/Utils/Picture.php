@@ -1,20 +1,25 @@
 <?php
 
-namespace Kiwilan\Steward\Services;
+namespace Kiwilan\Steward\Utils;
 
 use Kiwilan\Steward\Utils\Picture\ColorThief;
+use Spatie\Image\Image;
 
-/**
- * @deprecated
- */
-class PictureService
+class Picture
 {
     /**
      * Detecte dominant color of an image.
      */
-    public static function colorThief(mixed $image, string $default = 'fff'): string
+    public static function color(mixed $image, string $default = 'fff', bool $addHashtag = true): string
     {
-        return ColorThief::make($image, $default)->color();
+        $color = ColorThief::make($image, $default)->color();
+
+        return $addHashtag ? "#{$color}" : $color;
+    }
+
+    public static function load(string $path): Image
+    {
+        return Image::load($path);
     }
 
     /**
