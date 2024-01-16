@@ -5,7 +5,7 @@ namespace Kiwilan\Steward\Services\Factory\Text;
 class MeaningProvider
 {
     /**
-     * @param  string  $type `category` | `tag`
+     * @param  string  $type  `category` | `tag`
      */
     public static function find(string $type = 'category'): string
     {

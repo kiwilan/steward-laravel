@@ -12,7 +12,7 @@ class DatayableService
     public string $type;
 
     /**
-     * @param  string  $type `social` or `financial`
+     * @param  string  $type  `social` or `financial`
      */
     public static function make(string $type): self
     {

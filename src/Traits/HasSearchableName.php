@@ -42,7 +42,7 @@ trait HasSearchableName
     }
 
     /**
-     * @param  string  $model Model name like `User::class`
+     * @param  string  $model  Model name like `User::class`
      * @return array<int, mixed>
      */
     public static function searchAsSearchable(string $search, bool $asObject = true): array

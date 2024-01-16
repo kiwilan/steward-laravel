@@ -12,7 +12,7 @@ use Kiwilan\Steward\Enums\PublishStatusEnum;
 /**
  * Trait Publishable.
  *
- * @property BackedEnum $status       can be override by `publishableStatus`
+ * @property BackedEnum $status can be override by `publishableStatus`
  * @property DateTime $published_at can be override by `publishablePublishedAt`
  *
  * @method void publish() Publish the model

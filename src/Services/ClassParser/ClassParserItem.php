@@ -36,7 +36,7 @@ class ClassParserItem
     /**
      * Parse class to get some informations about.
      *
-     * @param  string  $class Can be path to file or class string
+     * @param  string  $class  Can be path to file or class string
      */
     public static function make(string $class): self
     {

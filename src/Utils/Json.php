@@ -11,7 +11,7 @@ class Json
     protected mixed $contents = null;
 
     /**
-     * @param  mixed  $data Can be a file path, json string, or array
+     * @param  mixed  $data  Can be a file path, json string, or array
      */
     public function __construct(
         readonly protected mixed $data,
@@ -49,8 +49,8 @@ class Json
     }
 
     /**
-     * @param  string  $saveTo Path to save the json file
-     * @param  bool  $console Print save path to console
+     * @param  string  $saveTo  Path to save the json file
+     * @param  bool  $console  Print save path to console
      */
     public function save(string $saveTo, bool $console = true): void
     {

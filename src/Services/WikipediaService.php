@@ -142,7 +142,7 @@ class WikipediaService
     /**
      * Set unique identifier of the model.
      *
-     * @param  string  $identifier Default is `id`
+     * @param  string  $identifier  Default is `id`
      */
     public function setIdentifier(string $identifier = 'id'): self
     {

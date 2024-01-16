@@ -34,7 +34,7 @@ class NotifyService
     }
 
     /**
-     * @param  NotifyApplication|string  $application default `NotifyApplication::discord`, can be string of application like `discord`
+     * @param  NotifyApplication|string  $application  default `NotifyApplication::discord`, can be string of application like `discord`
      */
     public function application(NotifyApplication|string|null $application = null): self
     {
