@@ -2,6 +2,12 @@
 
 namespace Kiwilan\Steward\Utils\Downloader;
 
+/**
+ * Downloader to download a file or a stream of zip files.
+ *
+ * - Use `Downloader::direct()` to download a file directly.
+ * - Use `Downloader::stream()` to download a stream of zip files.
+ */
 class Downloader
 {
     protected function __construct(
@@ -12,15 +18,7 @@ class Downloader
     ) {
     }
 
-    /**
-     * Initialize the downloader.
-     */
-    public static function make(): self
-    {
-        return new self();
-    }
-
-    public function direct(string $path): DownloaderDirect
+    public static function direct(string $path): DownloaderDirect
     {
         $download = new DownloaderDirect($path);
         $download->filename = basename($path);
@@ -28,7 +26,7 @@ class Downloader
         return $download;
     }
 
-    public function stream(string $filename): DownloaderZipStream
+    public static function stream(string $filename): DownloaderZipStream
     {
         $zip = new DownloaderZipStream();
         $zip->filename = "{$filename}.zip";

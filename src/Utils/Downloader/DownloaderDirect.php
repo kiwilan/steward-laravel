@@ -2,6 +2,9 @@
 
 namespace Kiwilan\Steward\Utils\Downloader;
 
+/**
+ * Downloader to download a file.
+ */
 class DownloaderDirect extends Downloader
 {
     protected function __construct(
@@ -10,6 +13,9 @@ class DownloaderDirect extends Downloader
         parent::__construct(basename($path));
     }
 
+    /**
+     * Set the value of mimeType. If null, it will be automatically determined from the filename.
+     */
     public function autoMimeType(): self
     {
         $this->mimeType = mime_content_type($this->path);
@@ -17,6 +23,9 @@ class DownloaderDirect extends Downloader
         return $this;
     }
 
+    /**
+     * Trigger the download.
+     */
     public function get(): void
     {
         $this->size = filesize($this->path);

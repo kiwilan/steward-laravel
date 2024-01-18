@@ -2,6 +2,9 @@
 
 namespace Kiwilan\Steward\Utils\Downloader;
 
+/**
+ * Downloader to download a stream of zip files.
+ */
 class DownloaderZipStream extends Downloader
 {
     /**
@@ -14,7 +17,7 @@ class DownloaderZipStream extends Downloader
     }
 
     /**
-     * Set the value of files.
+     * Set files to be downloaded, use `DownloaderZipStreamItem` to create a file.
      *
      * @param  DownloaderZipStreamItem[]  $files
      */
@@ -25,6 +28,9 @@ class DownloaderZipStream extends Downloader
         return $this;
     }
 
+    /**
+     * Trigger the download.
+     */
     public function get(): void
     {
         ini_set('max_execution_time', $this->maxExecutionTime);
