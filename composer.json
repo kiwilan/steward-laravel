@@ -33,10 +33,10 @@
     "require-dev": {
         "filament/filament": "^3.0.36",
         "knuckleswtf/scribe": "^4.16",
+        "larastan/larastan": "^2.7.0",
         "laravel/pint": "^1.0",
         "maatwebsite/excel": "^3.1",
         "nunomaduro/collision": "^7.8.1",
-        "larastan/larastan": "^2.7.0",
         "nunomaduro/laravel-mojito": "^0.2.10",
         "orchestra/testbench": "^8.0",
         "pestphp/pest": "^2.0",
@@ -45,6 +45,7 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
+        "spatie/laravel-medialibrary": "^11.0.0",
         "spatie/laravel-ray": "^1.26",
         "spatie/lighthouse-php": "^1.0",
         "vlucas/phpdotenv": "^5.5"

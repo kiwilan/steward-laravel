@@ -163,6 +163,7 @@ class SpatieMedia
             $this->disk = '';
         }
 
+        /** @var \Spatie\MediaLibrary\MediaCollections\FileAdder $spatie */
         $media = $spatie->usingName($this->name)
             ->usingFileName("{$this->name}.{$this->extension}")
             ->toMediaCollection($this->collection, $this->disk)
