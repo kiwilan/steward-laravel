@@ -56,7 +56,7 @@ class Commandable extends Command
         }
     }
 
-    public function optionInt(string $option, ?int $default = null): int
+    public function optionInt(string $option, ?int $default = null): ?int
     {
         $value = $this->option($option);
 
