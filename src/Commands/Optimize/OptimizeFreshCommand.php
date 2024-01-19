@@ -37,19 +37,28 @@ class OptimizeFreshCommand extends Commandable
         ]);
 
         $this->info('Reloading .env...');
-        File::delete(base_path('bootstrap/cache/config.php'));
-        $this->call('config:cache');
         $this->call('config:clear');
-        $this->call('cache:clear');
-        $this->call('view:clear');
 
-        // sudo chown -R $USER:www-data .
-        // sudo chgrp -R www-data storage bootstrap/cache
-        // sudo chmod -R ug+rwx storage bootstrap/cache
-        // git checkout .
+        $this->info('Clearing cache (alternative to `cache:clear`)...');
+        $configs = [
+            base_path('bootstrap/cache/config.php'),
+            base_path('bootstrap/cache/events.php'),
+            base_path('bootstrap/cache/packages.php'),
+            base_path('bootstrap/cache/routes-v7.php'),
+            base_path('bootstrap/cache/services.php'),
+        ];
+
+        foreach ($configs as $config) {
+            if (File::exists($config)) {
+                File::delete($config);
+            }
+        }
+
+        $this->call('view:clear');
 
         $this->info('Optimize app...');
         $this->call('optimize:clear');
+        $this->call('config:cache');
         $this->call('optimize');
         $this->call('event:cache');
 
