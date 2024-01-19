@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Kiwilan\Steward\Commands\Commandable;
 
-class OptimizeFeshCommand extends Commandable
+class OptimizeFreshCommand extends Commandable
 {
     /**
      * The name and signature of the console command.

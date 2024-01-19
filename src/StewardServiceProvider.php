@@ -37,7 +37,7 @@ class StewardServiceProvider extends PackageServiceProvider
                 \Kiwilan\Steward\Commands\Submission\SubmissionGdprCommand::class,
                 \Kiwilan\Steward\Commands\Submission\SubmissionSendCommand::class,
                 \Kiwilan\Steward\Commands\TagCleanCommand::class,
-                \Kiwilan\Steward\Commands\Optimize\OptimizeFeshCommand::class,
+                \Kiwilan\Steward\Commands\Optimize\OptimizeFreshCommand::class,
                 \Kiwilan\Steward\Commands\ClearFreshCommand::class,
                 \Kiwilan\Steward\Commands\Jobs\JobsListCommand::class,
                 \Kiwilan\Steward\Commands\Jobs\JobsClearCommand::class,
