@@ -56,9 +56,10 @@ class OptimizeFreshCommand extends Commandable
 
         $this->call('view:clear');
 
+        $this->call('config:cache');
+
         $this->info('Optimize app...');
         $this->call('optimize:clear');
-        $this->call('config:cache');
         $this->call('optimize');
         $this->call('event:cache');
 
