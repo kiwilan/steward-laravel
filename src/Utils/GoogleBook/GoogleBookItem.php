@@ -1,16 +1,15 @@
 <?php
 
-namespace Kiwilan\Steward\Services\GoogleBook;
+namespace Kiwilan\Steward\Utils\GoogleBook;
 
 use DateTime;
-use Kiwilan\HttpPool\Response\HttpPoolResponse;
-use Kiwilan\Steward\Services\GoogleBook\Http\GoogleBookIndustryIdentifier;
-use Kiwilan\Steward\Services\GoogleBook\Http\GoogleBookResponse;
+use Kiwilan\Steward\Utils\GoogleBook\Models\GoogleBookIndustryIdentifier;
+use Kiwilan\Steward\Utils\GoogleBook\Models\GoogleBookModel;
 
 /**
  * GoogleBook item.
  */
-class GoogleBook
+class GoogleBookItem
 {
     /** @var GoogleBookIndustryIdentifier[] */
     protected array $industryIdentifiers = [];
@@ -38,26 +37,12 @@ class GoogleBook
     ) {
     }
 
-    public static function make(HttpPoolResponse $response): ?self
+    public static function make(GoogleBookModel $model, string $request): self
     {
-        if (! $response->isSuccess()) {
-            return null;
-        }
+        $self = new self($request, $model->getId());
+        $self->parseModel($model);
 
-        $options = GoogleBookResponse::toCollection($response);
-
-        if ($options->isEmpty()) {
-            return null;
-        }
-
-        $current = $options->first();
-        $self = new GoogleBook(
-            requestUrl: $current->getRequestUrl(),
-            identifier: $response->getId(),
-            originalIsbn: $current->getOriginalIsbn(),
-        );
-
-        return $self->create($current);
+        return $self;
     }
 
     public function getRequestUrl(): string
@@ -150,11 +135,11 @@ class GoogleBook
         return $this->categories;
     }
 
-    private function create(GoogleBookResponse $response): self
+    private function parseModel(GoogleBookModel $model): self
     {
-        $this->bookId = $response->getId();
+        $this->bookId = $model->getId();
 
-        $volumeInfo = $response->getVolumeInfo();
+        $volumeInfo = $model->getVolumeInfo();
 
         if ($volumeInfo) {
             $this->publishedDate = $volumeInfo->getPublishedDate()
@@ -169,7 +154,7 @@ class GoogleBook
             $this->previewLink = $volumeInfo->getPreviewLink();
         }
 
-        $saleInfo = $response->getSaleInfo();
+        $saleInfo = $model->getSaleInfo();
 
         $this->retailPriceAmount = intval($saleInfo?->getRetailPrice()?->getAmount());
         $this->retailPriceCurrencyCode = intval($saleInfo?->getRetailPrice()?->getCurrencyCode());

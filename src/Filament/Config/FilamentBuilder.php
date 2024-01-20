@@ -48,8 +48,7 @@ class FilamentBuilder
             ->field($this->field)
             ->minItems($this->minItems)
             ->maxItems($this->maxItems)
-            ->get()
-        ;
+            ->get();
     }
 
     public function field(string $field = 'content'): self

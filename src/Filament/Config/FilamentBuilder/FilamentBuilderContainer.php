@@ -27,8 +27,7 @@ class FilamentBuilderContainer
                 ...$this->content,
             ])
             ->collapsible()
-            ->columnSpan($this->columnSpan)
-        ;
+            ->columnSpan($this->columnSpan);
 
         if ($this->minItems) {
             $container->minItems($this->minItems);

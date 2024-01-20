@@ -66,8 +66,7 @@ class FilamentForm
                     $set($metaTitle, $state);
                 }
             })
-            ->columnSpan($width)
-        ;
+            ->columnSpan($width);
     }
 
     /**
@@ -108,8 +107,7 @@ class FilamentForm
                     $set($metaField, $state);
                 }
             })
-            ->columnSpan($width)
-        ;
+            ->columnSpan($width);
     }
 
     /**
@@ -228,8 +226,7 @@ class FilamentForm
                         $data['created_until'],
                         fn (Builder $query, $date): Builder => $query->whereDate($field, '<=', $date),
                     )
-            )
-        ;
+            );
     }
 
     /**
@@ -276,8 +273,7 @@ class FilamentForm
             ->image()
             ->maxSize(1024)
             ->directory($type->name)
-            ->disabled($disabled)
-        ;
+            ->disabled($disabled);
     }
 
     /**
@@ -289,8 +285,7 @@ class FilamentForm
             ->helperText('Show this block on the page')
             ->label('Display')
             ->default(true)
-            ->columnSpan(2)
-        ;
+            ->columnSpan(2);
     }
 
     /**
@@ -303,7 +298,6 @@ class FilamentForm
             ->icon('heroicon-o-eye')
             ->openUrlInNewTab()
             ->color('warning')
-            ->label('Voir')
-        ;
+            ->label('Voir');
     }
 }

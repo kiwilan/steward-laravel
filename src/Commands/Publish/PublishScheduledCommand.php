@@ -50,8 +50,7 @@ class PublishScheduledCommand extends Commandable
             $models_udpated = $item->getModel()::query()
                 ->where('status', '=', PublishStatusEnum::scheduled)
                 ->where($date_column, '<', Carbon::now())
-                ->get()
-            ;
+                ->get();
 
             $models_udpated->each(function ($model_updated) {
                 $model_updated->update(['status' => PublishStatusEnum::published]);

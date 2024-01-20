@@ -76,8 +76,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('heading')
             ->icon('heroicon-o-bookmark')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function paragraph(): Block
@@ -101,8 +100,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('paragraph')
             ->icon('heroicon-o-bars-3-bottom-left')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function richParagraph(): Block
@@ -116,8 +114,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('rich_paragraph')
             ->icon('heroicon-s-bars-arrow-up')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function image(): Block
@@ -133,8 +130,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('image')
             ->icon('heroicon-o-photo')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function embedded(): Block
@@ -166,8 +162,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('embedded_media')
             ->icon('heroicon-o-camera')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function codeBlock(): Block
@@ -183,8 +178,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('code_block')
             ->icon('heroicon-s-code')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function gallery(): Block
@@ -199,8 +193,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('gallery')
             ->icon('heroicon-o-camera')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function divider(): Block
@@ -212,8 +205,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('divider')
             ->icon('heroicon-o-minus')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function button(): Block
@@ -230,8 +222,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('button')
             ->icon('heroicon-o-cursor-arrow-rays')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function spacer(): Block
@@ -250,8 +241,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('spacer')
             ->icon('heroicon-o-arrows-up-down')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function alert(): Block
@@ -283,8 +273,7 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('alert')
             ->icon('heroicon-o-exclamation-triangle')
-            ->get()
-        ;
+            ->get();
     }
 
     public static function html(): Block
@@ -297,7 +286,6 @@ class WordpressBuilder implements FilamentBuilderModule
         ])
             ->name('html')
             ->icon('heroicon-o-document')
-            ->get()
-        ;
+            ->get();
     }
 }

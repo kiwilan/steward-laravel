@@ -18,7 +18,6 @@ class FilamentTemplate
             ->maxItems(1)
             ->columnSpan(2)
             ->label($label)
-            ->addActionLabel("Add {$label}")
-        ;
+            ->addActionLabel("Add {$label}");
     }
 }

@@ -24,8 +24,7 @@ class FilamentBuilderBlock
         $block = Forms\Components\Builder\Block::make($this->name)
             ->schema([
                 ...$this->fields,
-            ])
-        ;
+            ]);
 
         if ($this->icon) {
             $block->icon($this->icon);

@@ -11,7 +11,6 @@ class EditActionRounded
         return EditAction::make()
             ->button()
             ->outlined()
-            ->icon('')
-        ;
+            ->icon('');
     }
 }

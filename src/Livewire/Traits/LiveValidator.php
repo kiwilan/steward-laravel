@@ -37,8 +37,7 @@ trait LiveValidator
                 $this->notify($messages)
                     ->title('Validation error')
                     ->icon('heroicon-o-exclamation-circle', 'danger')
-                    ->send()
-                ;
+                    ->send();
             }
         }
     }

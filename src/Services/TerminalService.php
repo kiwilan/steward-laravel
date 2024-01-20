@@ -125,8 +125,7 @@ class TerminalService
             ->filter()
             ->prepend('')
             ->push('')->push($this->countOutput)->push('')
-            ->toArray()
-        ;
+            ->toArray();
     }
 
     /**

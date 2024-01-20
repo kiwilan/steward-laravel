@@ -65,8 +65,7 @@ class BookExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMapping
                 fn ($field) => Lang::has("crud.books.attributes.{$field}")
                     ? __("crud.books.attributes.{$field}")
                     : __("admin.attributes.{$field}")
-            )->toArray()
-        ;
+            )->toArray();
     }
 
     /**

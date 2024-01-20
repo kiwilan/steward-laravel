@@ -52,7 +52,6 @@ class NameInput
                     $set($metaTitle, $state);
                 }
             })
-            ->columnSpan($width)
-        ;
+            ->columnSpan($width);
     }
 }

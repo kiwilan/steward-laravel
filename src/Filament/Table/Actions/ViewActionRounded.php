@@ -11,7 +11,6 @@ class ViewActionRounded
         return ViewAction::make()
             ->button()
             ->outlined()
-            ->icon('')
-        ;
+            ->icon('');
     }
 }

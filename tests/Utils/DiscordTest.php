@@ -10,8 +10,7 @@ it('can notify', function () {
 
     $sended = Discord::make($url)
         ->message('Notify test')
-        ->send()
-    ;
+        ->send();
 
     expect($sended)->toBeTrue();
 });

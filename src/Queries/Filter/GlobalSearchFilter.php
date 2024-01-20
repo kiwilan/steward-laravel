@@ -18,8 +18,7 @@ class GlobalSearchFilter implements Filter
         $relations = $fields->filter(fn ($field) => str_contains($field, '.'))
             ->map(fn ($field) => explode('.', $field)[0])
             ->unique()
-            ->toArray()
-        ;
+            ->toArray();
 
         $query->with($relations)
             ->where(function (Builder $query) use ($fields, $value) {
@@ -34,7 +33,6 @@ class GlobalSearchFilter implements Filter
                         $query->orWhere($field, 'like', "%{$value}%");
                     }
                 }
-            })
-        ;
+            });
     }
 }

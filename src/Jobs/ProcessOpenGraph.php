@@ -50,8 +50,7 @@ class ProcessOpenGraph implements ShouldQueue
         Picture::load($path)
             ->crop(1200, 630, CropPosition::Center)
             ->optimize()
-            ->save($path)
-        ;
+            ->save($path);
 
         return $path;
     }

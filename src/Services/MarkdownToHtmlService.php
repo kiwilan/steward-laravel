@@ -93,8 +93,7 @@ class MarkdownToHtmlService
                 ->name($model->{$model_name_attr})
                 ->collection('media')
                 ->color()
-                ->save()
-            ;
+                ->save();
         }
 
         foreach ($this->image_paths as $name) {
@@ -107,8 +106,7 @@ class MarkdownToHtmlService
                     ->name($name)
                     ->collection('media')
                     ->color()
-                    ->save()
-                ;
+                    ->save();
             }
         }
         // @phpstan-ignore-next-line

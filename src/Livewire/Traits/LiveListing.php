@@ -112,7 +112,6 @@ trait LiveListing
     {
         return $model::query()
             ->pluck($field, $id)
-            ->toArray()
-        ;
+            ->toArray();
     }
 }

@@ -9,14 +9,16 @@ use Illuminate\Support\Facades\Storage;
 use Kiwilan\HttpPool\HttpPool;
 use Kiwilan\HttpPool\Response\HttpPoolResponse;
 use Kiwilan\HttpPool\Utils\PrintConsole;
-use Kiwilan\Steward\Services\Wikipedia\WikipediaItem;
-use Kiwilan\Steward\Services\Wikipedia\WikipediaQuery;
+use Kiwilan\Steward\Utils\Wikipedia\WikipediaItem;
+use Kiwilan\Steward\Utils\Wikipedia\WikipediaQuery;
 
 /**
  * Use Wikipedia to get some data about authors and series.
  * Documentation (in french) from https://korben.info/comment-utiliser-lapi-de-recherche-de-wikipedia.html.
  *
  * For each Wikipedia search, need to execute two API calls to search to get page id and to parse page id data.
+ *
+ * @deprecated  Use `Kiwilan\Steward\Utils\Wikipedia` instead.
  */
 class WikipediaService
 {
@@ -179,8 +181,7 @@ class WikipediaService
             ->setIdentifierKey('identifier')
             ->setUrlKey('queryUrl')
             ->allowPrintConsole()
-            ->execute()
-        ;
+            ->execute();
 
         $queryItems = $this->setQueryItems($http->getResponses());
 
@@ -190,8 +191,7 @@ class WikipediaService
             ->setIdentifierKey('identifier')
             ->setUrlKey('pageUrl')
             ->allowPrintConsole()
-            ->execute()
-        ;
+            ->execute();
 
         $queryItems = $queryItems->filter(fn ($item) => $item);
         $pageIdItems = $this->setPageIdItems($http->getResponses(), $queryItems);

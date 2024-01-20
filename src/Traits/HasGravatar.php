@@ -47,8 +47,7 @@ trait HasGravatar
             ->size(200)
             ->rating('g')
             ->default($this->getGravatarDefaultImage())
-            ->get()
-        ;
+            ->get();
     }
 
     public static function bootHasGravatar()

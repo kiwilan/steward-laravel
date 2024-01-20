@@ -20,8 +20,7 @@ it('can notify', function (string $application) {
         ->to(explode(':', $test))
         ->application($application)
         ->message('Notify test')
-        ->send()
-    ;
+        ->send();
 
     expect($notify->isSuccess())->toBeTrue();
 })->with(['discord', 'slack']);
@@ -30,8 +29,7 @@ it('can notify from config', function (string $application) {
     $notify = NotifyService::make()
         ->application($application)
         ->message('Notify test from config')
-        ->send()
-    ;
+        ->send();
 
     expect($notify->isSuccess())->toBeTrue();
 })->with(['discord', 'slack']);

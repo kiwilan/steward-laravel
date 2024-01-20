@@ -70,8 +70,7 @@ class MediaService
             $this->model->{$this->method->value}($data)
                 ->setName($this->name)
                 ->setFileName($this->name.'.'.$this->extension)
-                ->toMediaCollection($this->collection, $this->disk)
-            ;
+                ->toMediaCollection($this->collection, $this->disk);
             $this->model->refresh();
         }
 

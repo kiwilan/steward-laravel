@@ -46,8 +46,7 @@ class NotifyCommand extends Commandable
 
         $notify = NotifyService::make()
             ->message($this->message)
-            ->send()
-        ;
+            ->send();
 
         $this->newLine();
 

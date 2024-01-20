@@ -131,8 +131,7 @@ class MediaCleanCommand extends Commandable
             /** Parse all entries in database */
             $rows = DB::table($table)
                 ->select('*')
-                ->get()
-            ;
+                ->get();
 
             // Extract all entries with media
             foreach ($rows as $row) {

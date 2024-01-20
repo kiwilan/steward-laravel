@@ -69,8 +69,7 @@ class FactoryMediaLocal
                 ->where($id, '=', $model->{$id})
                 ->update([
                     $field => $media,
-                ])
-            ;
+                ]);
         }
         DB::commit();
     }

@@ -12,7 +12,6 @@ class Display
             ->helperText('Show this block on the page')
             ->label('Display')
             ->default(true)
-            ->columnSpan(2)
-        ;
+            ->columnSpan(2);
     }
 }

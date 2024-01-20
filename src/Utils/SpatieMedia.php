@@ -166,8 +166,7 @@ class SpatieMedia
         /** @var \Spatie\MediaLibrary\MediaCollections\FileAdder $spatie */
         $media = $spatie->usingName($this->name)
             ->usingFileName("{$this->name}.{$this->extension}")
-            ->toMediaCollection($this->collection, $this->disk)
-        ;
+            ->toMediaCollection($this->collection, $this->disk);
 
         if ($this->color) {
             $this->model->refresh();

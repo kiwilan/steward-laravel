@@ -50,8 +50,7 @@ trait HasRole
     public function scopeHaveDashboardAccess(Builder $builder): Builder
     {
         return $builder->where($this->getRoleColumn(), '!=', $this->getEnumClass()::user->value)
-            ->where('is_blocked', '!=', true)
-        ;
+            ->where('is_blocked', '!=', true);
     }
 
     public function isDashboardAllowed(): bool

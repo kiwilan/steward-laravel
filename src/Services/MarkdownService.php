@@ -372,7 +372,6 @@ class MarkdownService
             // ->addExtension(new \League\CommonMark\Extension\Strikethrough\StrikethroughExtension())
             // ->addExtension(new \League\CommonMark\Extension\TableOfContents\TableOfContentsExtension())
             ->addExtension(new \League\CommonMark\Extension\Table\TableExtension())
-            ->addExtension(new \League\CommonMark\Extension\TaskList\TaskListExtension())
-        ;
+            ->addExtension(new \League\CommonMark\Extension\TaskList\TaskListExtension());
     }
 }

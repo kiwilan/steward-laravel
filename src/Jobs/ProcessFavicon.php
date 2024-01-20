@@ -178,8 +178,7 @@ class ProcessFavicon implements ShouldQueue
         Picture::load($path)
             ->crop($width, $height)
             ->optimize()
-            ->save()
-        ;
+            ->save();
 
         return $path;
     }

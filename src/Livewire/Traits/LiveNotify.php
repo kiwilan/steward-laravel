@@ -89,7 +89,6 @@ class LiveNotifyItem
             ->icon($this->icon)
             ->iconColor($this->iconColor)
             ->body($this->message)
-            ->send()
-        ;
+            ->send();
     }
 }

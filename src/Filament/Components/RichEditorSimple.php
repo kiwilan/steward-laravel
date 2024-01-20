@@ -15,7 +15,6 @@ class RichEditorSimple
         ],
     ): Forms\Components\RichEditor {
         return Forms\Components\RichEditor::make($field)
-            ->toolbarButtons($toolbar)
-        ;
+            ->toolbarButtons($toolbar);
     }
 }

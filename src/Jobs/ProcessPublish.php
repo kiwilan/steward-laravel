@@ -53,8 +53,7 @@ class ProcessPublish implements ShouldQueue
             ->icon($this->unpublish ? 'heroicon-o-archive' : 'heroicon-o-paper-airplane')
             ->iconColor('success')
             ->body($this->unpublish ? "All {$name} have been unpublished." : "All {$name} have been published.")
-            ->sendToDatabase($this->recipients)
-        ;
+            ->sendToDatabase($this->recipients);
     }
 
     /**
@@ -69,7 +68,6 @@ class ProcessPublish implements ShouldQueue
             ->icon($this->unpublish ? 'heroicon-o-archive' : 'heroicon-o-paper-airplane')
             ->iconColor('danger')
             ->body($exception->getMessage())
-            ->sendToDatabase($this->recipients)
-        ;
+            ->sendToDatabase($this->recipients);
     }
 }

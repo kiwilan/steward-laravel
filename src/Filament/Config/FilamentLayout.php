@@ -28,8 +28,7 @@ class FilamentLayout
     {
         return FilamentLayoutColumn::make($sections)
             ->width($width)
-            ->get()
-        ;
+            ->get();
     }
 
     /**
@@ -53,7 +52,6 @@ class FilamentLayout
             ->schema($schema)
             ->columns([
                 'xl' => $this->width,
-            ])
-        ;
+            ]);
     }
 }

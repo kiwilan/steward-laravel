@@ -32,7 +32,6 @@ class AutoPicture
             ->image()
             ->maxSize(1024)
             ->directory($type->name)
-            ->disabled($disabled)
-        ;
+            ->disabled($disabled);
     }
 }

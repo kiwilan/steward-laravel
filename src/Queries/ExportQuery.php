@@ -96,8 +96,7 @@ class ExportQuery
                     'Content-Disposition' => "attachment; filename={$filename}",
                     'Pragma: no-cache',
                     'Expires: 0',
-                ])
-        ;
+                ]);
     }
 
     private function exportExcel(): BinaryFileResponse|bool

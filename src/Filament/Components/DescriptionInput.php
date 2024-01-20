@@ -42,7 +42,6 @@ class DescriptionInput
                     $set($metaField, $state);
                 }
             })
-            ->columnSpan($width)
-        ;
+            ->columnSpan($width);
     }
 }

@@ -122,7 +122,8 @@ function series(): Collection
         $items->push($class);
     }
 
-    return $items->splice(0, 25);
+    // return $items->splice(0, 25);
+    return $items->splice(0, 1);
 }
 
 /**

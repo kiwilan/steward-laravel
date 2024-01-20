@@ -78,8 +78,7 @@ class FactoryText
     public function imageUrl(): string
     {
         return SeedsApi::make()
-            ->fetchPictureRandomUrl()
-        ;
+            ->fetchPictureRandomUrl();
     }
 
     private function text(int|false $limit = 3, bool $asText = false): string

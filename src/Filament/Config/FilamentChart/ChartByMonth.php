@@ -147,8 +147,7 @@ class ChartByMonth
             ->selectRaw('
                 count(id) as total,
                 date_format('.$this->field.", '%b %Y') as period
-            ")
-        ;
+            ");
 
         if (! empty($this->where)) {
             foreach ($this->where as $value) {
@@ -165,10 +164,8 @@ class ChartByMonth
                 ->orWhere(function ($query) {
                     $query->whereYear($this->field, '=', $this->year)
                         ->whereMonth($this->field, '>=', $this->startMonth)
-                        ->whereMonth($this->field, '<=', $this->endMonth)
-                    ;
-                })
-            ;
+                        ->whereMonth($this->field, '<=', $this->endMonth);
+                });
         });
 
         $group = $query->groupBy('period');

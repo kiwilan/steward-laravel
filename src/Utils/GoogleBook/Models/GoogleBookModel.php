@@ -1,15 +1,14 @@
 <?php
 
-namespace Kiwilan\Steward\Services\GoogleBook\Http;
+namespace Kiwilan\Steward\Utils\GoogleBook\Models;
 
 use Illuminate\Support\Collection;
-use Kiwilan\HttpPool\Response\HttpPoolResponse;
 
-class GoogleBookResponse
+class GoogleBookModel
 {
     protected function __construct(
         protected string $requestUrl,
-        protected ?string $originalIsbn = null,
+        protected ?string $isbn = null,
         protected ?string $kind = null,
         protected ?string $id = null,
         protected ?string $etag = null,
@@ -20,31 +19,21 @@ class GoogleBookResponse
     ) {
     }
 
-    /**
-     * Convert GoogleBookResponse to Collection.
-     *
-     * @return Collection<int,GoogleBookResponse>
-     */
-    public static function toCollection(HttpPoolResponse $response): Collection
+    public static function make(array $body, string $request): self
     {
-        /** @var Collection<int,GoogleBookResponse> */
-        $collection = collect([]);
+        $isbn = explode('isbn:', $request)[1] ?? null;
 
-        $body = $response->getBody()->toArray();
-
-        if (! array_key_exists('items', $body)) {
-            return $collection;
-        }
-
-        $searchs = $body['items'];
-
-        foreach ($searchs as $search) {
-            $collection->push(
-                self::make($search, $response->getMetadata()->getRequest()),
-            );
-        }
-
-        return $collection;
+        return new self(
+            requestUrl: $request,
+            isbn: $isbn,
+            kind: $body['kind'] ?? null,
+            id: $body['id'] ?? null,
+            etag: $body['etag'] ?? null,
+            volumeInfo: GoogleBookVolumeInfo::make($body['volumeInfo'] ?? []),
+            saleInfo: GoogleBookVolumeSaleInfo::make($body['saleInfo'] ?? []),
+            accessInfo: GoogleBookAccessInfo::make($body['accessInfo'] ?? []),
+            searchInfo: GoogleBookSearchInfo::make($body['searchInfo'] ?? []),
+        );
     }
 
     public function getRequestUrl(): string
@@ -52,9 +41,9 @@ class GoogleBookResponse
         return $this->requestUrl;
     }
 
-    public function getOriginalIsbn(): ?string
+    public function getIsbn(): ?string
     {
-        return $this->originalIsbn;
+        return $this->isbn;
     }
 
     public function getKind(): ?string
@@ -91,26 +80,9 @@ class GoogleBookResponse
     {
         return $this->searchInfo;
     }
-
-    private static function make(array $search, string $origin): self
-    {
-        $originalIsbn = explode('isbn:', $origin)[1] ?? null;
-
-        return new self(
-            requestUrl: $origin,
-            originalIsbn: $originalIsbn,
-            kind: $search['kind'] ?? null,
-            id: $search['id'] ?? null,
-            etag: $search['etag'] ?? null,
-            volumeInfo: GoogleBookVolumeInfo::make($search['volumeInfo'] ?? []),
-            saleInfo: GoogleBookVolumeSaleInfo::make($search['saleInfo'] ?? []),
-            accessInfo: GoogleBookAccessInfo::make($search['accessInfo'] ?? []),
-            searchInfo: GoogleBookSearchInfo::make($search['searchInfo'] ?? []),
-        );
-    }
 }
 
-class GoogleBookVolumeInfo extends GoogleBookResponse
+class GoogleBookVolumeInfo
 {
     /** @var array<string> */
     protected array $authors = [];
@@ -589,8 +561,12 @@ class GoogleBookAccessInfoAvailable
     ) {
     }
 
-    public static function make(array $search): self
+    public static function make(?array $search): self
     {
+        if (is_null($search)) {
+            return new self();
+        }
+
         return new self(
             isAvailable: $search['isAvailable'] ?? false,
         );

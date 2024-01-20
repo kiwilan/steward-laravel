@@ -6,11 +6,14 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Kiwilan\HttpPool\HttpPool;
 use Kiwilan\HttpPool\Response\HttpPoolResponse;
-use Kiwilan\Steward\Services\GoogleBook\GoogleBook;
-use Kiwilan\Steward\Services\GoogleBook\GoogleBookQuery;
+use Kiwilan\Steward\Utils\GoogleBook\GoogleBook;
+use Kiwilan\Steward\Utils\GoogleBook\GoogleBookItem;
+use Kiwilan\Steward\Utils\GoogleBook\GoogleBookQuery;
 
 /**
  * Use GoogleBook API to improve data.
+ *
+ * @deprecated Use `Kiwilan\Steward\Utils\GoogleBook` instead
  */
 class GoogleBookService
 {
@@ -23,7 +26,7 @@ class GoogleBookService
     /** @var array<string> */
     protected array $isbnFields = ['isbn'];
 
-    /** @var ?Collection<int,GoogleBook> */
+    /** @var ?Collection<int,GoogleBookItem> */
     protected ?Collection $items = null;
 
     protected function __construct(
@@ -41,7 +44,7 @@ class GoogleBookService
      * Example: https://www.googleapis.com/books/v1/volumes?q=isbn:9782700239904.
      *
      * Get all useful data to improve Book, Identifier, Publisher and Tag
-     * If data exist, create GoogleBook associate with Book with useful data to purchase eBook
+     * If data exist, create GoogleBookItem associate with Book with useful data to purchase eBook
      */
     public static function make(Collection $data): self
     {
@@ -95,7 +98,7 @@ class GoogleBookService
     }
 
     /**
-     * @return Collection<int,GoogleBook>
+     * @return Collection<int,GoogleBookItem>
      */
     public function getItems(): Collection
     {
@@ -121,8 +124,7 @@ class GoogleBookService
         $http = HttpPool::make($this->queries)
             ->setIdentifierKey('identifier')
             ->allowPrintConsole()
-            ->execute()
-        ;
+            ->execute();
 
         $this->items = $this->setItems($http->getResponses());
 
@@ -130,14 +132,14 @@ class GoogleBookService
     }
 
     /**
-     * Create `GoogleBook` from `HttpPoolResponse`.
+     * Create `GoogleBookItem` from `HttpPoolResponse`.
      *
      * @param  Collection<int,HttpPoolResponse>  $responses  Response from GoogleBook API
-     * @return Collection<int,GoogleBook>
+     * @return Collection<int,GoogleBookItem>
      */
     private function setItems(Collection $responses)
     {
-        /** @var Collection<int,GoogleBook> */
+        /** @var Collection<int,GoogleBookItem> */
         $items = collect([]);
 
         foreach ($responses as $id => $response) {
@@ -145,7 +147,7 @@ class GoogleBookService
                 $this->print($response, 'googlebook', $id);
             }
 
-            $item = GoogleBook::make($response);
+            $item = GoogleBookItem::make($response);
 
             if ($item) {
                 $items->put($id, $item);

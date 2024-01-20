@@ -89,8 +89,7 @@ class FactoryMediaDownloader
                 ->where($id, '=', $model->{$id})
                 ->update([
                     $field => $media,
-                ])
-            ;
+                ]);
         }
         DB::commit();
     }
@@ -104,8 +103,7 @@ class FactoryMediaDownloader
 
         $medias = MediaProvider::make()
             ->seeds(...$this->config)
-            ->medias()
-        ;
+            ->medias();
 
         $images = collect([]);
 

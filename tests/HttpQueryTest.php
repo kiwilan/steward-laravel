@@ -140,8 +140,7 @@ it('can use options', function () {
     $request = setRequest('/books?filter[uuid]=64d78bfeb54e2');
     $query = HttpQuery::for(Book::class, $request)
         ->filters(['uuid'])
-        ->sorts(['uuid'])
-    ;
+        ->sorts(['uuid']);
 
     $res = $query->get();
     $first = $res->first();
@@ -202,8 +201,7 @@ it('can use export excel', function () {
     $request = setRequest('/test');
 
     $query = HttpQuery::for(Book::class, $request)
-        ->exportable(BookExport::class)
-    ;
+        ->exportable(BookExport::class);
     $path = getcwd().'/tests/exports';
     $exported = $query->export($path);
 

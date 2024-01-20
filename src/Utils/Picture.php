@@ -57,8 +57,7 @@ class Picture
 
         Image::load($temp_file)
             ->height($newHeight)
-            ->save($resize_file)
-        ;
+            ->save($resize_file);
 
         unlink($temp_file);
 

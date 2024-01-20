@@ -88,30 +88,26 @@ trait Publishable
     {
         return $builder
             ->where($this->getPublishableStatus(), PublishStatusEnum::published)
-            ->where($this->getPublishablePublishedAt(), '<=', Carbon::now())
-        ;
+            ->where($this->getPublishablePublishedAt(), '<=', Carbon::now());
     }
 
     public function scopeScheduled(Builder $builder): Builder
     {
         return $builder
-            ->where($this->getPublishableStatus(), PublishStatusEnum::scheduled)
-        ;
+            ->where($this->getPublishableStatus(), PublishStatusEnum::scheduled);
     }
 
     public function scopeDrafted(Builder $builder): Builder
     {
         return $builder
-            ->where($this->getPublishableStatus(), PublishStatusEnum::draft)
-        ;
+            ->where($this->getPublishableStatus(), PublishStatusEnum::draft);
     }
 
     public function scopeShouldBePublished(Builder $builder): Builder
     {
         return $builder
             ->where($this->getPublishableStatus(), PublishStatusEnum::published)
-            ->where($this->getPublishablePublishedAt(), '<=', Carbon::now())
-        ;
+            ->where($this->getPublishablePublishedAt(), '<=', Carbon::now());
     }
 
     /**

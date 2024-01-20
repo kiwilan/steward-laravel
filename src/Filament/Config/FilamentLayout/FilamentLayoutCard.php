@@ -23,8 +23,7 @@ class FilamentLayoutCard
                 ->columnSpan([
                     'sm' => 1,
                     'lg' => $width,
-                ])
-            ;
+                ]);
         }
         $list = array_merge($list, $fields);
 
@@ -33,7 +32,6 @@ class FilamentLayoutCard
             ->columns([
                 'sm' => 1,
                 'lg' => $width,
-            ])
-        ;
+            ]);
     }
 }

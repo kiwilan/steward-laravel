@@ -289,8 +289,7 @@ abstract class BaseQuery
             ->allowedSorts($this->allowSorts)
             ->defaultSort($this->defaultSort)
             ->with($this->with)
-            ->withCount($this->withCount)
-        ;
+            ->withCount($this->withCount);
 
         return $this;
     }

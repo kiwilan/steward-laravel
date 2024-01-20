@@ -29,7 +29,6 @@ class DateFilter
                         $data['created_until'],
                         fn (Builder $query, $date): Builder => $query->whereDate($field, '<=', $date),
                     )
-            )
-        ;
+            );
     }
 }

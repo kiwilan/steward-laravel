@@ -1,11 +1,10 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Wikipedia\Http;
+namespace Kiwilan\Steward\Utils\Wikipedia\Models;
 
 use Illuminate\Support\Collection;
-use Kiwilan\HttpPool\Response\HttpPoolResponse;
 
-class WikipediaSearchResponse
+class WikipediaModelSearch
 {
     protected function __construct(
         protected string $requestUrl,
@@ -20,68 +19,63 @@ class WikipediaSearchResponse
     }
 
     /**
-     * Convert WikipediaSearchResponse to Collection.
+     * Convert WikipediaModelSearch to Collection.
      *
-     * @return Collection<int,WikipediaSearchResponse>
+     * @return WikipediaModelSearch[]
      */
-    public static function toCollection(HttpPoolResponse $response): Collection
+    public static function fromRequest(array $body, string $request): array
     {
-        /** @var Collection<int,WikipediaSearchResponse> */
-        $collection = collect([]);
-
-        $body = $response->getBody()->toArray();
+        $items = [];
 
         if (! array_key_exists('query', $body) || ! array_key_exists('search', $body['query'])) {
-            return $collection;
+            return $items;
         }
 
         $searchs = $body['query']['search'];
 
         foreach ($searchs as $search) {
-            $collection->push(
-                self::make($search, $response->getMetadata()->getRequest()),
-            );
+            $items[] = WikipediaModelSearch::make($search, $request);
         }
 
-        return $collection;
+        return $items;
     }
 
-    public function requestUrl(): string
+    public function getRequestUrl(): string
     {
         return $this->requestUrl;
     }
 
-    public function ns(): ?string
+    public function getNs(): ?string
     {
         return $this->ns;
     }
 
-    public function title(): ?string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function pageid(): ?string
+    public function getPageid(): ?string
     {
         return $this->pageid;
     }
 
-    public function size(): ?string
+    public function getSize(): ?string
     {
         return $this->size;
     }
 
-    public function wordcount(): ?string
+    public function getWordcount(): ?string
     {
         return $this->wordcount;
     }
 
-    public function snippet(): ?string
+    public function getSnippet(): ?string
     {
         return $this->snippet;
     }
 
-    public function timestamp(): ?string
+    public function getTimestamp(): ?string
     {
         return $this->timestamp;
     }

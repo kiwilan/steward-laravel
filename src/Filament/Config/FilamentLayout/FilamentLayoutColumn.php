@@ -52,8 +52,7 @@ class FilamentLayoutColumn
                 'sm' => 2,
                 'xl' => $this->width,
             ])
-            ->hidden($this->hidden)
-        ;
+            ->hidden($this->hidden);
     }
 
     private function setFields(): array
@@ -68,8 +67,7 @@ class FilamentLayoutColumn
                 ->schema($schema)
                 ->columns([
                     'sm' => $this->width,
-                ])
-            ;
+                ]);
         }
 
         return $fields;

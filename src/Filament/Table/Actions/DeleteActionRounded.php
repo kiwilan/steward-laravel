@@ -11,7 +11,6 @@ class DeleteActionRounded
         return DeleteAction::make()
             ->button()
             ->outlined()
-            ->icon('')
-        ;
+            ->icon('');
     }
 }
