@@ -11,14 +11,15 @@ class Converter
 
     public static function saveAsJson(mixed $data, string $path): void
     {
-        $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $data = Converter::prettyJson($data);
+        $dir = dirname($path);
 
-        if (! file_exists($path)) {
-            $dir = dirname($path);
+        if (file_exists($path)) {
+            unlink($path);
+        } elseif (! file_exists($dir)) {
             mkdir($dir, recursive: true);
         }
 
-        unlink($path);
         file_put_contents($path, $data);
     }
 
