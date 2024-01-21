@@ -59,6 +59,9 @@ class Commandable extends Command
     public function optionInt(string $option, ?int $default = null): ?int
     {
         $value = $this->option($option);
+        if (str_contains($value, '=')) {
+            $value = str_replace('=', '', $value);
+        }
 
         if (is_null($value)) {
             return $default;
