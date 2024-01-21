@@ -3,8 +3,8 @@
 namespace Kiwilan\Steward\Commands;
 
 use Illuminate\Console\Command;
-use Kiwilan\Steward\Services\ConverterService;
 use Kiwilan\Steward\Services\RouteService;
+use Kiwilan\Steward\Utils\Converter;
 
 class RoutePrintCommand extends Command
 {
@@ -38,7 +38,7 @@ class RoutePrintCommand extends Command
     public function handle()
     {
         $list = RouteService::make();
-        ConverterService::saveAsJson($list->toArray(), 'routes');
+        Converter::saveAsJson($list->toArray(), storage_path('app/routes.json'));
 
         return Command::SUCCESS;
     }

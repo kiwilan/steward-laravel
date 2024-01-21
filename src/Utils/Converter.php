@@ -9,9 +9,13 @@ class Converter
         return json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 
-    public static function saveAsJson(mixed $data, string $path): void
+    public static function saveAsJson(mixed $data, string $path, bool $pretty = false): void
     {
-        $data = Converter::prettyJson($data);
+        if ($pretty) {
+            $data = Converter::prettyJson($data);
+        } else {
+            $data = json_encode($data);
+        }
         $dir = dirname($path);
 
         if (file_exists($path)) {
