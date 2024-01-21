@@ -5,6 +5,9 @@ namespace Kiwilan\Steward\Services;
 use Illuminate\Support\Facades\File;
 use Kiwilan\HttpPool\Utils\PrintConsole;
 
+/**
+ * @deprecated Use `Kiwilan\HttpPool\Utils\Converter` instead.
+ */
 class ConverterService
 {
     public const CONFIG = [
