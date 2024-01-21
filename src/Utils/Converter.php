@@ -14,7 +14,8 @@ class Converter
         $data = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
         if (! file_exists($path)) {
-            mkdir($path, recursive: true);
+            $dir = dirname($path);
+            mkdir($dir, recursive: true);
         }
 
         unlink($path);
