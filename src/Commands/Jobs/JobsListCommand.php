@@ -66,7 +66,6 @@ class JobsListCommand extends Commandable
                 'id' => $job->id,
                 'queue' => $job->queue,
                 'payload' => json_decode($job->payload)->displayName,
-                'available_at' => date('Y-m-d H:i:s', substr($job->available_at, 0, 10)),
             ];
 
             if ($full) {
@@ -76,7 +75,7 @@ class JobsListCommand extends Commandable
                     'payload' => $job->payload,
                     'attempts' => $job->attempts,
                     'reserved_at' => $job->reserved_at,
-                    'available_at' => $job->available_at,
+                    'available_at' => date('Y-m-d H:i:s', substr($job->available_at, 0, 10)),
                 ];
             }
 
