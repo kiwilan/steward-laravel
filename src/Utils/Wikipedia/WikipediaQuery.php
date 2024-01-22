@@ -322,14 +322,8 @@ class WikipediaQuery
 
     private function search(string $url): ?array
     {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', $url);
-        $body = $response->getBody()->getContents();
+        $client = WikipediaClient::make($url);
 
-        if (! $body) {
-            return null;
-        }
-
-        return (array) json_decode($body, true);
+        return $client->getBody();
     }
 }

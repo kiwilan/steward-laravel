@@ -3,6 +3,7 @@
 namespace Kiwilan\Steward\Utils\GoogleBook;
 
 use Kiwilan\Steward\Utils\GoogleBook\Models\GoogleBookModel;
+use Kiwilan\Steward\Utils\Wikipedia\WikipediaClient;
 
 /**
  * Create GoogleBookQuery from Model and ISBN.
@@ -62,10 +63,8 @@ class GoogleBookQuery
             return $this;
         }
 
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', $this->url);
-        $body = $response->getBody()->getContents();
-        $body = (array) json_decode($body, true);
+        $client = WikipediaClient::make($this->url);
+        $body = $client->getBody();
 
         $totalItems = $body['totalItems'] ?? 0;
         if ($totalItems < 1) {
