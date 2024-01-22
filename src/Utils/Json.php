@@ -72,10 +72,10 @@ class Json
         }
     }
 
-    public function toArray(bool $is_associative = true): ?array
+    public function toArray(bool $is_associative = true): array
     {
         if (! $this->contents) {
-            return $this->contents;
+            return [];
         }
 
         if (is_array($this->contents)) {
