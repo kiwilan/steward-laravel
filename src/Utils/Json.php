@@ -74,7 +74,8 @@ class Json
 
     public function toArray(bool $is_associative = true): array
     {
-        if (! $this->contents) {
+        ray($this->contents);
+        if (is_null($this->contents)) {
             return [];
         }
 
@@ -82,7 +83,12 @@ class Json
             return $this->contents;
         }
 
-        return json_decode($this->contents, $is_associative);
+        $data = json_decode($this->contents, $is_associative);
+        if (is_null($data)) {
+            return [];
+        }
+
+        return $data;
     }
 
     public function toObject(): object
