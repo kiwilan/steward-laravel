@@ -288,7 +288,7 @@ class WikipediaQuery
             }
 
             // check if title is in subject
-            if (str_contains($subject, $title)) {
+            if (str_contains($title, $subject)) {
                 return $result;
             }
 
@@ -298,7 +298,7 @@ class WikipediaQuery
             if (count($titleParts) === 2) {
                 $title = implode(' ', array_reverse($titleParts));
 
-                if (str_contains($subject, $title)) {
+                if (str_contains($title, $subject)) {
                     return $result;
                 }
             }

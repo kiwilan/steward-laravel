@@ -24,6 +24,7 @@ class Wikipedia
         protected bool $withImage = false,
         protected bool $isAvailable = false,
         protected ?WikipediaQuery $query = null,
+        protected ?int $selected = null,
         protected ?WikipediaItem $item = null,
     ) {
     }
@@ -114,6 +115,7 @@ class Wikipedia
         $this->isAvailable = $this->query->isAvailable();
 
         if ($this->isAvailable) {
+            $this->selected = intval($this->query->getModelPage()->getPageId());
             $this->item = WikipediaItem::make(
                 model: $this->query->getModelPage(),
                 identifier: $this->query->getIdentifier(),
