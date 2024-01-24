@@ -118,12 +118,7 @@ abstract class BaseQuery
      */
     public function front(): QueryResponse
     {
-        $this->loadRequest();
-
-        return QueryResponse::make(
-            original: $this->paginate(),
-            defaultSort: $this->defaultSort
-        );
+        return $this->inertia();
     }
 
     /**
