@@ -71,6 +71,9 @@ class Downloader
         return $this;
     }
 
+    /**
+     * Send headers for the download.
+     */
     protected function sendHeaders(): void
     {
         if (headers_sent($filename, $linenum)) {
@@ -90,6 +93,9 @@ class Downloader
         header('Cache-Control: public, must-revalidate, post-check=0, pre-check=0');
     }
 
+    /**
+     * Convert extension to mimetype.
+     */
     private function extensionToMimetype(string $extension): string
     {
         return match ($extension) {
@@ -97,6 +103,8 @@ class Downloader
             'mkv' => 'video/x-matroska',
             'mp4' => 'video/mp4',
             'zip' => 'application/zip',
+            'epub' => 'application/epub+zip',
+            'pdf' => 'application/pdf',
             default => 'application/octet-stream',
         };
     }
