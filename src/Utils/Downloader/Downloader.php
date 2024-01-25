@@ -18,6 +18,11 @@ class Downloader
     ) {
     }
 
+    /**
+     * Create a downloader to download a file directly.
+     *
+     * Name of file can be override with `->name('new_name.pdf')`.
+     */
     public static function direct(string $path): DownloaderDirect
     {
         $download = new DownloaderDirect($path);
@@ -26,6 +31,11 @@ class Downloader
         return $download;
     }
 
+    /**
+     * Create a downloader to download a stream of zip files.
+     *
+     * @param  string  $filename The filename of the zip file to be downloaded. The extension will be automatically added.
+     */
     public static function stream(string $filename): DownloaderZipStream
     {
         $zip = new DownloaderZipStream();

@@ -14,6 +14,18 @@ class DownloaderDirect extends Downloader
     }
 
     /**
+     * Replace filename with a new one., you have to specify the extension.
+     *
+     * Default is the basename of the path.
+     */
+    public function name(string $name): static
+    {
+        $this->filename = $name;
+
+        return $this;
+    }
+
+    /**
      * Set the value of mimeType. If null, it will be automatically determined from the filename.
      */
     public function autoMimeType(): self
