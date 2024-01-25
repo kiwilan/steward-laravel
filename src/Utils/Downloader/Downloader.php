@@ -34,7 +34,7 @@ class Downloader
     /**
      * Create a downloader to download a stream of zip files.
      *
-     * @param  string  $filename The filename of the zip file to be downloaded. The extension will be automatically added.
+     * @param  string  $filename  The filename of the zip file to be downloaded. The extension will be automatically added.
      */
     public static function stream(string $filename): DownloaderZipStream
     {
