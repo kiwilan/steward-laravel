@@ -39,6 +39,18 @@ class Journal
         return new self($message, 'error', $data);
     }
 
+    /**
+     * Handle exception, log as error and send notification to database.
+     */
+    public static function handler(\Throwable $e): self
+    {
+        return new self($e->getMessage(), 'handler', [
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString(),
+        ]);
+    }
+
     private function log(): void
     {
         Log::log($this->level, $this->message, $this->data);
@@ -52,23 +64,31 @@ class Journal
     public function toDatabase(Model|Authenticatable|Collection|array|null $users = null): void
     {
         if (! class_exists('\Filament\Notifications\Notification')) {
-            throw new \Exception('Filament notifications is not installed, check https://filamentphp.com/docs/3.x/notifications/installation');
+            Log::warning('Journal: Filament notifications is not installed, check https://filamentphp.com/docs/3.x/notifications/installation');
+
+            return;
         }
 
         if (! class_exists('\App\Models\User')) {
-            throw new \Exception('User model not found');
+            Log::warning('Journal: Filament notifications is installed, but User model is not found, check https://filamentphp.com/docs/3.x/notifications/installation');
+
+            return;
         }
 
-        $filamentUsers = $this->users;
+        try {
+            $filamentUsers = $this->users;
 
-        if (! $filamentUsers) {
-            $users = '\App\Models\User';
-            $filamentUsers = $users::all()->filter(fn ($user) => $user->canAccessPanel());
+            if (! $filamentUsers) {
+                $users = '\App\Models\User';
+                $filamentUsers = $users::all()->filter(fn ($user) => $user->canAccessPanel());
+            }
+
+            \Filament\Notifications\Notification::make()
+                ->title(ucfirst($this->level))
+                ->body($this->message)
+                ->sendToDatabase($filamentUsers);
+        } catch (\Throwable $th) {
+            Log::error("Journal: {$th->getMessage()}");
         }
-
-        \Filament\Notifications\Notification::make()
-            ->title(ucfirst($this->level))
-            ->body($this->message)
-            ->sendToDatabase($filamentUsers);
     }
 }
