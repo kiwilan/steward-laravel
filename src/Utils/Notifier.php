@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils;
+namespace Kiwilan\Steward\Utils;
 
 use Illuminate\Support\Facades\Log;
 use Kiwilan\Steward\Utils\Notifier\NotifierMail;

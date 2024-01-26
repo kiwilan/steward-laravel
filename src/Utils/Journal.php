@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils;
+namespace Kiwilan\Steward\Utils;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;

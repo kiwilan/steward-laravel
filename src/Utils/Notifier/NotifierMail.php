@@ -2,8 +2,8 @@
 
 namespace Kiwilan\Steward\Utils\Notifier;
 
-use App\Utils\Notifier;
 use Illuminate\Support\Facades\Log;
+use Kiwilan\Steward\Utils\Notifier;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
