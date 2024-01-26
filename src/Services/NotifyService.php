@@ -7,6 +7,9 @@ use Kiwilan\Steward\Services\Notify\Notifying;
 use Kiwilan\Steward\Services\Notify\SlackNotify;
 use Kiwilan\Steward\StewardConfig;
 
+/**
+ * @deprecated
+ */
 class NotifyService
 {
     protected function __construct(

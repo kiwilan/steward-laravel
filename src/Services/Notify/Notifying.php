@@ -6,6 +6,9 @@ use Kiwilan\Steward\Services\NotifyApplication;
 use Kiwilan\Steward\StewardConfig;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @deprecated
+ */
 abstract class Notifying
 {
     protected function __construct(

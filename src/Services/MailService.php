@@ -3,10 +3,10 @@
 namespace Kiwilan\Steward\Services;
 
 use Kiwilan\Steward\Services\Mail\MailServer;
-use Swift_Mailer;
-use Swift_Message;
-use Swift_SmtpTransport;
 
+/**
+ * @deprecated
+ */
 class MailService implements MailServer
 {
     public function __construct(

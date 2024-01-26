@@ -29,6 +29,7 @@ class StewardServiceProvider extends PackageServiceProvider
                 \Kiwilan\Steward\Commands\Log\LogClearCommand::class,
                 \Kiwilan\Steward\Commands\MediaCleanCommand::class,
                 \Kiwilan\Steward\Commands\NotifyCommand::class,
+                \Kiwilan\Steward\Commands\NotifierCommand::class,
                 \Kiwilan\Steward\Commands\Publish\PublishCommand::class,
                 \Kiwilan\Steward\Commands\Publish\PublishScheduledCommand::class,
                 \Kiwilan\Steward\Commands\RoutePrintCommand::class,
