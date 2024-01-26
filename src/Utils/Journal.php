@@ -44,7 +44,7 @@ class Journal
      */
     public static function handler(\Throwable $e): self
     {
-        return new self($e->getMessage(), 'handler', [
+        return new self($e->getMessage(), 'error', [
             'file' => $e->getFile(),
             'line' => $e->getLine(),
             'trace' => $e->getTraceAsString(),
