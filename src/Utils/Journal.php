@@ -47,7 +47,7 @@ class Journal
     /**
      * Send notification to database for Users with access to Filament admin panel with `filament/notifications` package.
      *
-     * @param  Model|Authenticatable|Collection|array|null  $users To send notification to.
+     * @param  Model|Authenticatable|Collection|array|null  $users  To send notification to.
      */
     public function toDatabase(Model|Authenticatable|Collection|array|null $users): void
     {
