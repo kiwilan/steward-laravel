@@ -49,7 +49,7 @@ class Journal
      *
      * @param  Model|Authenticatable|Collection|array|null  $users  To send notification to.
      */
-    public function toDatabase(Model|Authenticatable|Collection|array|null $users): void
+    public function toDatabase(Model|Authenticatable|Collection|array|null $users = null): void
     {
         if (! class_exists('\Filament\Notifications\Notification')) {
             throw new \Exception('Filament notifications is not installed, check https://filamentphp.com/docs/3.x/notifications/installation');
