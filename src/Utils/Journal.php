@@ -63,11 +63,11 @@ class Journal
 
         if (! $filamentUsers) {
             $users = '\App\Models\User';
-            $filamentUsers = $users::all()->map(fn ($user) => $user->canAccessPanel());
+            $filamentUsers = $users::all()->filter(fn ($user) => $user->canAccessPanel());
         }
 
         \Filament\Notifications\Notification::make()
-            ->title($this->level)
+            ->title(ucfirst($this->level))
             ->body($this->message)
             ->sendToDatabase($filamentUsers);
     }
