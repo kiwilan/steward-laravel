@@ -42,7 +42,7 @@ class Journal
     /**
      * Handle exception, log as error and send notification to database.
      *
-     * In local environment, it will return null, to not send notification to database.
+     * In `local` environment, it will return null, to not send notification to database.
      */
     public static function handler(\Throwable $e): ?self
     {
