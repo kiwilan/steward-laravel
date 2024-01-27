@@ -177,7 +177,7 @@ class WordpressBuilder implements FilamentBuilderModule
                 ->required(),
         ])
             ->name('code_block')
-            ->icon('heroicon-s-code')
+            ->icon('heroicon-o-code-bracket-square')
             ->get();
     }
 
