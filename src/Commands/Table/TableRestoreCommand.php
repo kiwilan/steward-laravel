@@ -14,7 +14,7 @@ class TableRestoreCommand extends Commandable
      * @var string
      */
     protected $signature = 'table:restore {table}
-                            {--n|name= : The name of the JSON file.}';
+                            {--j|json= : The name of the JSON file.}';
 
     /**
      * The console command description.
@@ -50,12 +50,12 @@ class TableRestoreCommand extends Commandable
         $files = glob("{$path}/table_{$table}*.json");
         $files = array_combine($files, array_map('filemtime', $files));
 
-        $name = $this->option('name');
+        $json = $this->option('json');
 
-        if ($name) {
-            $file = "{$path}/{$name}.json";
+        if ($json) {
+            $file = "{$path}/{$json}.json";
             if (! file_exists($file)) {
-                $this->error("Table {$name} not found.");
+                $this->error("File {$json} not found.");
 
                 return Command::FAILURE;
             }

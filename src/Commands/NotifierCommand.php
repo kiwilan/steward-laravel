@@ -2,8 +2,8 @@
 
 namespace Kiwilan\Steward\Commands;
 
-use App\Utils\Notifier;
 use Illuminate\Console\Command;
+use Kiwilan\Steward\Utils\Notifier;
 
 class NotifierCommand extends Commandable
 {
