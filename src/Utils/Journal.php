@@ -42,8 +42,12 @@ class Journal
     /**
      * Handle exception, log as error and send notification to database.
      */
-    public static function handler(\Throwable $e): self
+    public static function handler(\Throwable $e): ?self
     {
+        if (config('app.env') === 'local') {
+            return null;
+        }
+
         return new self($e->getMessage(), 'error', [
             'file' => $e->getFile(),
             'line' => $e->getLine(),
