@@ -15,7 +15,7 @@ beforeEach(function () {
     Config::set('mail.encryption', dotenv()['MAIL_ENCRYPTION']);
     Config::set('mail.from.address', dotenv()['MAIL_FROM_ADDRESS']);
     Config::set('mail.from.name', dotenv()['MAIL_FROM_NAME']);
-});
+})->skipOnLinux();
 
 it('can use mail', function () {
     $notifier = Notifier::mail()
@@ -31,7 +31,7 @@ it('can use mail', function () {
         ->send();
 
     expect($notifier)->toBeTrue();
-});
+})->skipOnLinux();
 
 it('can use mail auto', function () {
     $notifier = Notifier::mail()
