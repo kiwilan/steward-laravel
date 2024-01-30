@@ -8,9 +8,22 @@ use Kiwilan\Steward\Tests\Data\Models\Author;
 use Kiwilan\Steward\Tests\Data\Models\Book;
 use Kiwilan\Steward\Tests\TestCase;
 
-// uses(TestCase::class)->in(__DIR__);
 uses(TestCase::class, InteractsWithViews::class)->in('.');
 
+/**
+ * @return array{
+ *  STEWARD_DISCORD_WEBHOOK: string,
+ *  STEWARD_SLACK_WEBHOOK: string,
+ *  MAIL_MAILER: string,
+ *  MAIL_HOST: string,
+ *  MAIL_PORT: string,
+ *  MAIL_USERNAME: string,
+ *  MAIL_PASSWORD: string,
+ *  MAIL_ENCRYPTION: string,
+ *  MAIL_FROM_ADDRESS: string,
+ *  MAIL_FROM_NAME: string,
+ * }
+ */
 function dotenv(): array
 {
     $path = __DIR__.'/../';
@@ -20,12 +33,21 @@ function dotenv(): array
     foreach ($lines as $line) {
         if (! empty($line)) {
             $data = explode('=', $line);
-            ray($data);
             $key = $data[0];
-            $value = $data[1];
+            if ($key === " \n ") {
+                continue;
+            }
+            $value = $data[1] ?? null;
 
             $key = trim($key);
             $value = trim($value);
+
+            if ($key === '') {
+                continue;
+            }
+
+            $value = str_replace('"', '', $value);
+            $value = str_replace("'", '', $value);
 
             $dotenv[$key] = $value;
         }

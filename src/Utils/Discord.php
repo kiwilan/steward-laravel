@@ -4,6 +4,9 @@ namespace Kiwilan\Steward\Utils;
 
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @deprecated Use `Kiwilan\Steward\Utils\Notifier` instead.
+ */
 class Discord
 {
     protected function __construct(

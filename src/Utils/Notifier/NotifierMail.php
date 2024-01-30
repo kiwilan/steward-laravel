@@ -2,7 +2,6 @@
 
 namespace Kiwilan\Steward\Utils\Notifier;
 
-use Illuminate\Support\Facades\Log;
 use Kiwilan\Steward\Utils\Notifier;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
@@ -10,13 +9,12 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
-class NotifierMail
+class NotifierMail extends Notifier
 {
     /**
      * @param  Address[]  $to  Array of `Address` object
      */
     protected function __construct(
-        protected Notifier $notifier,
         protected string $mailer = 'smtp',
         protected string $host = 'mailpit',
         protected int $port = 1025,
@@ -35,9 +33,9 @@ class NotifierMail
     ) {
     }
 
-    public static function make(Notifier $notifier): self
+    public static function make(): self
     {
-        return new self($notifier);
+        return new self();
     }
 
     /**
@@ -99,7 +97,7 @@ class NotifierMail
         $this->encryption = config('mail.encryption');
         $this->username = config('mail.username');
         $this->password = config('mail.password');
-        $this->from = config('mail.from.address');
+        $this->from = new Address(config('mail.from.address'), config('mail.from.name'));
 
         return $this;
     }
@@ -121,7 +119,7 @@ class NotifierMail
 
     public function from(string $from, ?string $name = null): self
     {
-        $this->from = new Address($from, $name);
+        $this->from = new Address($from, $name ?? '');
 
         return $this;
     }
@@ -154,10 +152,12 @@ class NotifierMail
         return $this;
     }
 
-    public function send(): void
+    public function send(): bool
     {
         $this->stransport = Transport::fromDsn("{$this->mailer}://{$this->host}:{$this->port}");
         $this->smailer = new Mailer($this->stransport);
+
+        $this->logSending("{$this->mailer}://{$this->host}:{$this->port}");
 
         $this->semail = (new Email())
             ->to(...$this->to)
@@ -182,10 +182,14 @@ class NotifierMail
         try {
             $this->smailer->send($this->semail);
         } catch (\Throwable $th) {
-            Log::error("Mailer notification failed: {$th->getMessage()}", $this->toArray());
+            $this->logError($th->getMessage());
+
+            return false;
         }
 
-        Log::debug('Mailer notification sent', $this->toArray());
+        $this->logSent();
+
+        return true;
     }
 
     public function toArray(): array
