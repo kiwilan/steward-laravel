@@ -19,8 +19,15 @@ class NotifierDiscord extends Notifier
         return new self($webhook);
     }
 
-    public function message(string $message): self
+    /**
+     * @param  string|string[]  $message
+     */
+    public function message(array|string $message): self
     {
+        if (is_array($message)) {
+            $message = implode(PHP_EOL, $message);
+        }
+
         $this->message = $message;
 
         return $this;
