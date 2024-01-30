@@ -180,12 +180,6 @@ return [
         ],
     ],
 
-    'notify' => [
-        'default' => env('STEWARD_NOTIFY_DEFAULT', 'discord'), // `discord`, `slack`
-        'discord' => env('STEWARD_NOTIFY_DISCORD'), // STEWARD_NOTIFY_DISCORD=ID:TOKEN
-        'slack' => env('STEWARD_NOTIFY_SLACK'), // STEWARD_NOTIFY_SLACK=ID:TOKEN:CHANNEL
-    ],
-
     'livewire' => [
         'pagination' => [
             'theme' => 'tailwind',
