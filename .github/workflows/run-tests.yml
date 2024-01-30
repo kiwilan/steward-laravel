@@ -50,9 +50,16 @@ jobs:
       - name: Create .env
         run: |
           touch .env
-          echo STEWARD_NOTIFY_DISCORD=${{ secrets.STEWARD_NOTIFY_DISCORD }} >> .env
-          echo STEWARD_NOTIFY_SLACK=${{ secrets.STEWARD_NOTIFY_SLACK }} >> .env
-          echo STEWARD_DISCORD=${{ secrets.STEWARD_DISCORD }} >> .env
+          echo MAIL_MAILER=${{ secrets.MAIL_MAILER }} >> .env
+          echo MAIL_HOST=${{ secrets.MAIL_HOST }} >> .env
+          echo MAIL_PORT=${{ secrets.MAIL_PORT }} >> .env
+          echo MAIL_USERNAME=${{ secrets.MAIL_USERNAME }} >> .env
+          echo MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} >> .env
+          echo MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }} >> .env
+          echo MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }} >> .env
+          echo MAIL_FROM_NAME=${{ secrets.MAIL_FROM_NAME }} >> .env
+          echo STEWARD_DISCORD_WEBHOOK=${{ secrets.STEWARD_DISCORD_WEBHOOK }} >> .env
+          echo STEWARD_SLACK_WEBHOOK=${{ secrets.STEWARD_SLACK_WEBHOOK }} >> .env
 
       - name: Execute tests
         run: vendor/bin/pest --coverage
