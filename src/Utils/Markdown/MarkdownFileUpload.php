@@ -1,10 +1,10 @@
 <?php
 
-namespace Kiwilan\Steward\Services;
+namespace Kiwilan\Steward\Utils\Markdown;
 
 use Illuminate\Support\Facades\File;
 
-class FileUploadService
+class MarkdownFileUpload
 {
     protected function __construct(
         public ?string $saveDirectory = null,

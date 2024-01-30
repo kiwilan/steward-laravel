@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Markdown;
+namespace Kiwilan\Steward\Utils\Markdown;
 
 class MarkdownFrontmatter
 {

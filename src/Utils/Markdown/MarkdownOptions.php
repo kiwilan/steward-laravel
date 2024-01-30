@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Markdown;
+namespace Kiwilan\Steward\Utils\Markdown;
 
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;

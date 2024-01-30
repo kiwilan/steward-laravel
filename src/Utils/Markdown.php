@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services;
+namespace Kiwilan\Steward\Utils;
 
 use DateTime;
 use Illuminate\Support\Carbon;
@@ -13,10 +13,7 @@ use League\CommonMark\Environment\Environment;
 use League\CommonMark\MarkdownConverter;
 use League\HTMLToMarkdown\HtmlConverter;
 
-/**
- * @deprecated use Kiwilan\Steward\Utils\Markdown
- */
-class MarkdownService
+class Markdown
 {
     private function __construct(
         protected string $content,
