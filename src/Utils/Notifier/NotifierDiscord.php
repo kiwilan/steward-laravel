@@ -19,20 +19,16 @@ class NotifierDiscord extends Notifier implements INotifier
         return new self($webhook);
     }
 
-    /**
-     * @param  string|string[]  $message
-     */
     public function message(array|string $message): self
     {
-        if (is_array($message)) {
-            $message = implode(PHP_EOL, $message);
-        }
-
-        $this->message = $message;
+        $this->message = $this->arrayToString($message);
 
         return $this;
     }
 
+    /**
+     * Set username, different from default webhook username.
+     */
     public function username(string $username): self
     {
         $this->username = $username;
@@ -40,6 +36,9 @@ class NotifierDiscord extends Notifier implements INotifier
         return $this;
     }
 
+    /**
+     * Set avatar url, different from default webhook avatar url.
+     */
     public function avatarUrl(string $avatarUrl): self
     {
         $this->avatarUrl = $avatarUrl;

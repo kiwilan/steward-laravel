@@ -21,9 +21,9 @@ class NotifierMail extends Notifier implements INotifier
         protected string $encryption = 'tls',
         protected ?string $username = null,
         protected ?string $password = null,
-        protected ?TransportInterface $stransport = null,
-        protected ?Email $semail = null,
-        protected ?Mailer $smailer = null,
+        protected ?TransportInterface $mailTransport = null,
+        protected ?Email $mailEmail = null,
+        protected ?Mailer $mailMailer = null,
         protected array $to = [],
         protected ?Address $from = null,
         protected ?Address $replyTo = null,
@@ -138,16 +138,9 @@ class NotifierMail extends Notifier implements INotifier
         return $this;
     }
 
-    /**
-     * @param  string|string[]  $message
-     */
     public function message(array|string $message): self
     {
-        if (is_array($message)) {
-            $message = implode(PHP_EOL, $message);
-        }
-
-        $this->message = $message;
+        $this->message = $this->arrayToString($message);
 
         return $this;
     }
@@ -157,44 +150,44 @@ class NotifierMail extends Notifier implements INotifier
      */
     public function html(array|string $html): self
     {
-        if (is_array($html)) {
-            $html = implode(PHP_EOL, $html);
-        }
-
-        $this->html = $html;
+        $this->html = $this->arrayToString($html);
 
         return $this;
     }
 
     public function send(): bool
     {
-        $this->stransport = Transport::fromDsn("{$this->mailer}://{$this->host}:{$this->port}");
-        $this->smailer = new Mailer($this->stransport);
+        $this->mailTransport = Transport::fromDsn("{$this->mailer}://{$this->host}:{$this->port}");
+        $this->mailMailer = new Mailer($this->mailTransport);
 
         $this->logSending("{$this->mailer}://{$this->host}:{$this->port}");
 
-        $this->semail = (new Email())
+        $this->mailEmail = (new Email())
             ->to(...$this->to)
             ->from($this->from);
 
         if ($this->replyTo) {
-            $this->semail->replyTo($this->replyTo);
+            $this->mailEmail->replyTo($this->replyTo);
         }
 
         if ($this->subject) {
-            $this->semail->subject($this->subject);
+            $this->mailEmail->subject($this->subject);
         }
 
         if ($this->message) {
-            $this->semail->text($this->message);
+            $this->mailEmail->text($this->message);
         }
 
         if ($this->html) {
-            $this->semail->html($this->html);
+            $this->mailEmail->html($this->html);
+        }
+
+        if (! $this->html) {
+            $this->mailEmail->html($this->message);
         }
 
         try {
-            $this->smailer->send($this->semail);
+            $this->mailMailer->send($this->mailEmail);
         } catch (\Throwable $th) {
             $this->logError($th->getMessage());
 

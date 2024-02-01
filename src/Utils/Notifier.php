@@ -77,6 +77,14 @@ class Notifier
         }
     }
 
+    /**
+     * @param  string|string[]  $array
+     */
+    protected function arrayToString(array|string $array): string
+    {
+        return implode(PHP_EOL, $array);
+    }
+
     protected function sendRequest(
         string $url,
         array $headers = [

@@ -17,16 +17,9 @@ class NotifierSlack extends Notifier implements INotifier
         return new self($webhook);
     }
 
-    /**
-     * @param  string|string[]  $message
-     */
     public function message(array|string $message): self
     {
-        if (is_array($message)) {
-            $message = implode(PHP_EOL, $message);
-        }
-
-        $this->message = $message;
+        $this->message = $this->arrayToString($message);
 
         return $this;
     }
