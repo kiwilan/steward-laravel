@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Utils\Notifier;
 
 use Kiwilan\Steward\Utils\Notifier;
 
-class NotifierDiscord extends Notifier
+class NotifierDiscord extends Notifier implements INotifier
 {
     protected function __construct(
         protected string $webhook,

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Kiwilan\Steward\Utils\Notifier\INotifier;
 
 class Journal
 {
@@ -14,6 +15,7 @@ class Journal
         protected string $level = 'info',
         protected array $data = [],
         protected ?Collection $users = null,
+        protected ?INotifier $notifier = null,
     ) {
         $this->log();
     }
@@ -67,18 +69,18 @@ class Journal
      *
      * @param  Model|Authenticatable|Collection|array|null  $users  To send notification to.
      */
-    public function toDatabase(Model|Authenticatable|Collection|array|null $users = null): void
+    public function toDatabase(Model|Authenticatable|Collection|array|null $users = null): self
     {
         if (! class_exists('\Filament\Notifications\Notification')) {
             Log::warning('Journal: Filament notifications is not installed, check https://filamentphp.com/docs/3.x/notifications/installation');
 
-            return;
+            return $this;
         }
 
         if (! class_exists('\App\Models\User')) {
             Log::warning('Journal: Filament notifications is installed, but User model is not found, check https://filamentphp.com/docs/3.x/notifications/installation');
 
-            return;
+            return $this;
         }
 
         try {
@@ -96,5 +98,26 @@ class Journal
         } catch (\Throwable $th) {
             Log::error("Journal: {$th->getMessage()}");
         }
+
+        return $this;
+    }
+
+    /**
+     * Send notification to email, Slack or Discord.
+     *
+     * @param  string  $type  `mail`, `slack` or `discord`
+     */
+    public function notifier(string $type): self
+    {
+        $this->notifier = match ($type) {
+            'mail' => Notifier::mail()->auto()->message($this->message),
+            'slack' => Notifier::slack(config('steward.slack.webhook'))->message($this->message),
+            'discord' => Notifier::discord(config('steward.discord.webhook'))->message($this->message),
+            default => null,
+        };
+
+        $this->notifier->send();
+
+        return $this;
     }
 }

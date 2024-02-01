@@ -9,7 +9,7 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
-class NotifierMail extends Notifier
+class NotifierMail extends Notifier implements INotifier
 {
     /**
      * @param  Address[]  $to  Array of `Address` object
@@ -138,15 +138,29 @@ class NotifierMail extends Notifier
         return $this;
     }
 
-    public function message(string $message): self
+    /**
+     * @param  string|string[]  $message
+     */
+    public function message(array|string $message): self
     {
+        if (is_array($message)) {
+            $message = implode(PHP_EOL, $message);
+        }
+
         $this->message = $message;
 
         return $this;
     }
 
-    public function html(string $html): self
+    /**
+     * @param  string|string[]  $html
+     */
+    public function html(array|string $html): self
     {
+        if (is_array($html)) {
+            $html = implode(PHP_EOL, $html);
+        }
+
         $this->html = $html;
 
         return $this;
