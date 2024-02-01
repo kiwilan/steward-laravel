@@ -74,7 +74,6 @@ class Json
 
     public function toArray(bool $is_associative = true): array
     {
-        ray($this->contents);
         if (is_null($this->contents)) {
             return [];
         }

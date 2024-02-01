@@ -37,7 +37,6 @@ trait LiveListing
         $defaultSize = config('steward.livewire.pagination.default', 20);
         $this->size = Session::get('size', $defaultSize);
         // $this->sort = ! empty($this->sort) ? $this->sort : $this->defaultSort;
-        ray($this);
 
         $this->sort = 'id';
         $this->sortable = $this->sortable();
