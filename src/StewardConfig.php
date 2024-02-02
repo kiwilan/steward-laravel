@@ -193,21 +193,6 @@ class StewardConfig
         return config('steward.gdpr.matomo.site_id') ?? null;
     }
 
-    public static function notifyDefault(): ?string
-    {
-        return config('steward.notify.default') ?? 'discord';
-    }
-
-    public static function notifyDiscord(): ?string
-    {
-        return config('steward.notify.discord') ?? null;
-    }
-
-    public static function notifySlack(): ?string
-    {
-        return config('steward.notify.slack') ?? null;
-    }
-
     public static function livewirePaginationTheme(): string
     {
         return config('steward.livewire.pagination.theme') ?? 'tailwind';
