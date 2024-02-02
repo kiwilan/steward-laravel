@@ -9,7 +9,7 @@ export default defineConfig({
   external: ['alpinejs', 'vanilla-cookieconsent'],
   outDir: 'dist',
   dts: true,
-  minify: true,
+  minify: false,
   treeshake: true,
   splitting: true,
 })

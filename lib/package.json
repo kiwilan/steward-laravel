@@ -1,62 +1,55 @@
 {
-    "name": "@kiwilan/steward-laravel",
-    "type": "module",
-    "version": "0.1.19",
-    "description": "Plugin for kiwilan/steward-laravel.",
-    "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
-    "license": "MIT",
-    "homepage": "https://github.com/kiwilan/steward-laravel",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/kiwilan/steward-laravel.git"
-    },
-    "bugs": {
-        "url": "https://github.com/kiwilan/steward-laravel/issues"
-    },
-    "keywords": [
-        "steward",
-        "vite"
-    ],
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "exports": {
-        ".": {
-            "require": "./dist/index.cjs",
-            "import": "./dist/index.js"
-        }
-    },
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "build": "tsup --clean",
-        "watch": "tsup --watch",
-        "lint": "eslint .",
-        "lint:fix": "eslint . --fix",
-        "test": "vitest",
-        "coverage": "vitest run --coverage",
-        "clean": "rimraf dist",
-        "local": "rm -f ~/kiwilan-steward-laravel-*.tgz || true && mv ./kiwilan-steward-laravel-*.tgz ~/kiwilan-steward-laravel.tgz",
-        "package": "npm run clean && npm run build && npm pack && npm run local",
-        "release": "npm run clean && npm run build && npm pack --dry-run && npm publish --access public"
-    },
-    "peerDependencies": {
-        "alpinejs": "3.x"
-    },
-    "optionalDependencies": {
-        "vanilla-cookieconsent": "2.9.2"
-    },
-    "devDependencies": {
-        "@antfu/eslint-config": "^2.6.1",
-        "@types/alpinejs": "^3.13.6",
-        "eslint": "^8.56.0",
-        "rimraf": "^5.0.5",
-        "tsup": "^8.0.1",
-        "typescript": "^5.3.3",
-        "vanilla-cookieconsent": "3.0.0-rc.13",
-        "vitest": "^1.1.1"
-    },
-    "dependencies": {
-        "alpinejs": "^3.13.3"
+  "name": "@kiwilan/steward-laravel",
+  "type": "module",
+  "version": "0.1.19",
+  "description": "Plugin for kiwilan/steward-laravel.",
+  "author": "Ewilan Rivière <ewilan.riviere@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/kiwilan/steward-laravel",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kiwilan/steward-laravel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kiwilan/steward-laravel/issues"
+  },
+  "keywords": [
+    "steward",
+    "vite"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --clean",
+    "watch": "tsup --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "clean": "rimraf dist",
+    "local": "rm -f ~/kiwilan-steward-laravel-*.tgz || true && mv ./kiwilan-steward-laravel-*.tgz ~/kiwilan-steward-laravel.tgz",
+    "package": "npm run clean && npm run build && npm pack && npm run local",
+    "release": "npm run clean && npm run build && npm pack --dry-run && npm publish --access public"
+  },
+  "peerDependencies": {
+    "alpinejs": "3.x"
+  },
+  "dependencies": {
+    "alpinejs": "^3.13.3"
+  },
+  "devDependencies": {
+    "@types/alpinejs": "^3.13.6",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
+    "vitest": "^1.1.1"
+  }
 }

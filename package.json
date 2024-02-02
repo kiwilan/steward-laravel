@@ -1,5 +1,6 @@
 {
     "name": "@kiwilan/vite-plugin-steward-laravel",
+    "type": "module",
     "scripts": {
         "dev": "pnpm run --parallel dev",
         "build": "pnpm recursive run build",
@@ -11,5 +12,10 @@
         "package": "pnpm recursive run package",
         "release": "pnpm recursive run release"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "@antfu/eslint-config": "^2.6.1",
+        "eslint": "^8.56.0",
+        "typescript": "^5.3.3"
+    }
 }
