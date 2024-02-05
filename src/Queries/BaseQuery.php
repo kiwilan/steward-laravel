@@ -128,28 +128,10 @@ abstract class BaseQuery
     {
         $this->loadRequest();
 
-        $response = QueryResponse::make(
+        return QueryResponse::make(
             original: $this->paginate(),
             defaultSort: $this->defaultSort
         );
-        if ($this->noPaginate) {
-            $url = $this->request->url();
-            $perPage = count($response->data);
-
-            $response->current_page = 1;
-            $response->first_page_url = $url;
-            $response->from = 1;
-            $response->last_page = 1;
-            $response->last_page_url = $url;
-            $response->next_page_url = null;
-            $response->path = $url;
-            $response->per_page = $perPage;
-            $response->prev_page_url = null;
-            $response->to = $perPage;
-            $response->total = $perPage;
-        }
-
-        return $response;
     }
 
     /**
