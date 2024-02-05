@@ -32,58 +32,48 @@ class QueryResponse
     public static function make(LengthAwarePaginator|Collection $original, string $defaultSort): self
     {
         if ($original instanceof Collection) {
+            $url = request()->url();
+            $items = $original->toArray();
+            $perPage = count($items);
+
             return new self(
                 sort: request()->get('sort', $defaultSort),
                 filter: request()->get('filter'),
-                data: $original->toArray(),
+                data: $items,
+                current_page: 1,
+                first_page_url: $url,
+                from: 1,
+                last_page: 1,
+                last_page_url: $url,
+                links: [],
+                next_page_url: null,
+                path: $url,
+                per_page: $perPage,
+                prev_page_url: null,
+                to: $perPage,
+                total: $perPage,
             );
         }
 
         $array = $original->toArray();
 
-        $url = request()->url();
-        $items = $original->items();
-        $perPage = count($items);
-
-        $self = new self(
+        return new self(
             sort: request()->get('sort', $defaultSort),
             filter: request()->get('filter'),
-            data: $items,
+            data: $original->items(),
             current_page: $original->currentPage(),
-            first_page_url: $array['first_page_url'] ?? $url,
-            from: $original->firstItem() ?? 1,
+            first_page_url: $array['first_page_url'],
+            from: $original->firstItem(),
             last_page: $original->lastPage(),
             last_page_url: $original->url($original->lastPage()),
             links: QueryResponseLink::toArray($array['links'] ?? []),
             next_page_url: $original->nextPageUrl(),
-            path: $original->path() ?? $url,
+            path: $original->path(),
             per_page: $original->perPage(),
             prev_page_url: $original->previousPageUrl(),
-            to: $original->lastItem() ?? $perPage,
+            to: $original->lastItem(),
             total: $original->total(),
         );
-
-        if (! $self->current_page) {
-            $self->current_page = 1;
-        }
-
-        if (! $self->last_page) {
-            $self->last_page = 1;
-        }
-
-        if (! $self->last_page_url) {
-            $self->last_page_url = $url;
-        }
-
-        if (! $self->per_page) {
-            $self->per_page = $perPage;
-        }
-
-        if (! $self->total) {
-            $self->total = $perPage;
-        }
-
-        return $self;
     }
 }
 
