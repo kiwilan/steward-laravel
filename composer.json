@@ -22,7 +22,7 @@
         "illuminate/contracts": "^9.0 || ^10.0",
         "illuminate/database": "^9.0 || ^10.0",
         "illuminate/support": "^9.0 || ^10.0",
-        "kiwilan/notifier-laravel": "^0.3.12",
+        "kiwilan/notifier-laravel": "^0.3.13",
         "kiwilan/php-http-pool": "^0.3.2",
         "league/html-to-markdown": "^5.1",
         "livewire/livewire": "^3.0.1",
