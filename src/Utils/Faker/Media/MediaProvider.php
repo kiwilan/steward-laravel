@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory\Media;
+namespace Kiwilan\Steward\Utils\Faker\Media;
 
 use Kiwilan\Steward\Enums\Api\MediaApiEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
