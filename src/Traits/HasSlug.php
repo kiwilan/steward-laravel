@@ -15,8 +15,8 @@ use Kiwilan\Steward\Services\SlugService;
  * {
  *    use HasSlug;
  *
- *   protected $slugColumn = 'slug_column'; // default is `slug`
- *   protected $slugWith = 'slug_with'; // default is `name`
+ *   protected $slugColumn = 'slug';
+ *   protected $slugWith = 'name';
  * }
  * ```
  */
@@ -45,7 +45,7 @@ trait HasSlug
     {
         static::creating(function ($model) {
             if (! isset($model->{$model->getSlugWith()})) {
-                throw new \Exception("Property {$model->getSlugWith()} does not exist in table `{$model->getTable()}`, you can add `protected \$slugWith = 'name';` to your model.");
+                throw new \Exception("Property {$model->getSlugWith()} is not set or does not exist in model `{$model->getTable()}`");
             }
 
             $model->{$model->getSlugColumn()} = SlugService::makeFromModel($model, $model->getSlugWith(), $model->getSlugColumn())->getSlug();

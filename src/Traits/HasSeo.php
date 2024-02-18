@@ -17,8 +17,8 @@ use Illuminate\Support\Str;
  * {
  *    use HasSeo;
  *
- *   protected $metaTitleFrom = 'from_title_column'; // default is 'name'
- *   protected $metaDescriptionFrom = 'from_description_column'; // default is 'description'
+ *   protected $metaTitleFrom = 'name';
+ *   protected $metaDescriptionFrom = 'description';
  * }
  * ```
  *

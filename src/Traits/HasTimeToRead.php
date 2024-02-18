@@ -13,8 +13,8 @@ namespace Kiwilan\Steward\Traits;
  * {
  *    use HasTimeToRead;
  *
- *   protected $timeToReadWith = 'custom_property'; // default is `body`
- *   protected $timeToReadColumn = 'time_to_read_column'; // default is `time_to_read`
+ *   protected $timeToReadWith = 'body';
+ *   protected $timeToReadColumn = 'time_to_read';
  * }
  * ```
  */
@@ -38,7 +38,7 @@ trait HasTimeToRead
 
     public function getTimeToReadColumn(): string
     {
-        return $this->timeToReadColumn ?? $this->default_timeToReadColumn;
+        return $this->timeToReadColumn ?? $this->defaultTimeToReadColumn;
     }
 
     protected static function bootHasTimeToRead()
