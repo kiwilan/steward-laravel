@@ -1,8 +1,9 @@
 <?php
 
-namespace Kiwilan\Steward\Utils;
+namespace Kiwilan\Steward\Services;
 
 use Closure;
+use Kiwilan\Steward\Utils\Factory;
 
 /**
  * Improve Faker Laravel factory service.
