@@ -1,19 +1,19 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory;
+namespace Kiwilan\Steward\Utils\Faker;
 
-use Kiwilan\Steward\Enums\FactoryTextEnum;
-use Kiwilan\Steward\Utils\Factory;
+use Kiwilan\Steward\Enums\FakerTextEnum;
+use Kiwilan\Steward\Utils\Faker;
 
 /**
  * Generate fake rich text.
  */
-class FactoryRichText
+class FakerRichText
 {
     public function __construct(
-        public Factory $factory,
-        public FactoryTextEnum $type,
-        protected FactoryText $text,
+        public Faker $faker,
+        public FakerTextEnum $type,
+        protected FakerText $text,
         public string $typography = 'html',
         protected int $min = 1,
         protected int $max = 5,
@@ -86,7 +86,7 @@ class FactoryRichText
     {
         $content = null;
 
-        for ($k = 0; $k < $this->factory->faker()->numberBetween($this->min, $this->max); $k++) {
+        for ($k = 0; $k < $this->faker->generator()->numberBetween($this->min, $this->max); $k++) {
             if ($this->typography === 'html') {
                 $content .= "{$this->html()}<br>";
             }
@@ -114,26 +114,26 @@ class FactoryRichText
     {
         $html = '';
 
-        for ($k = 0; $k < $this->factory->faker()->numberBetween(2, 5); $k++) {
+        for ($k = 0; $k < $this->faker->generator()->numberBetween(2, 5); $k++) {
             $paragraph = $this->text->paragraph();
 
-            if ($this->factory->faker()->boolean(25)) {
+            if ($this->faker->generator()->boolean(25)) {
                 $paragraph .= " <strong>{$this->text->sentence()}</strong>";
             }
 
-            if ($this->factory->faker()->boolean(25)) {
+            if ($this->faker->generator()->boolean(25)) {
                 $paragraph .= " <em>{$this->text->sentence()}</em>";
             }
 
-            if ($this->factory->faker()->boolean(25)) {
+            if ($this->faker->generator()->boolean(25)) {
                 $paragraph .= " <code>{$this->text->words()}</code>";
             }
 
-            if ($this->link && $this->factory->faker()->boolean(25)) {
-                $paragraph .= " <a href=\"{$this->factory->faker()->url()}\">{$this->text->words()}</a>";
+            if ($this->link && $this->faker->generator()->boolean(25)) {
+                $paragraph .= " <a href=\"{$this->faker->generator()->url()}\">{$this->text->words()}</a>";
             }
 
-            if ($this->image && $this->factory->faker()->boolean(15)) {
+            if ($this->image && $this->faker->generator()->boolean(15)) {
                 $image = $this->text->imageUrl();
                 $paragraph = "<a href=\"{$image}\" target=\"_blank\"><img src=\"{$image}\" alt=\"{$this->text->sentence()}\" /></a>";
             }
@@ -151,37 +151,37 @@ class FactoryRichText
         $bold_text = " **{$this->text->sentence()}** ";
         $italic_text = " *{$this->text->sentence()}* ";
         $code_text = " `{$this->text->words()}` ";
-        $link_text = " [{$this->text->sentence()}]({$this->factory->faker()->url()}) ";
+        $link_text = " [{$this->text->sentence()}]({$this->faker->generator()->url()}) ";
         $image_text = "  ![{$this->text->sentence()}]({$this->text->imageUrl()})  ";
 
         $html = [];
 
-        if ($this->factory->faker()->boolean(25)) {
+        if ($this->faker->generator()->boolean(25)) {
             $html[] = $bold_text;
         }
 
-        if ($this->factory->faker()->boolean(25)) {
+        if ($this->faker->generator()->boolean(25)) {
             $html[] = $italic_text;
         }
 
-        if ($this->extra && $this->factory->faker()->boolean(25)) {
+        if ($this->extra && $this->faker->generator()->boolean(25)) {
             $html[] = $code_text;
         }
 
-        if ($this->link && $this->factory->faker()->boolean(25)) {
+        if ($this->link && $this->faker->generator()->boolean(25)) {
             $html[] = $link_text;
         }
 
-        if ($this->image && $this->factory->faker()->boolean(25)) {
+        if ($this->image && $this->faker->generator()->boolean(25)) {
             $html[] = $image_text;
         }
 
-        for ($k = 0; $k < $this->factory->faker()->numberBetween($this->min, $this->max); $k++) {
+        for ($k = 0; $k < $this->faker->generator()->numberBetween($this->min, $this->max); $k++) {
             $paragraph = $this->text->sentence();
             $html[] = "{$paragraph}";
         }
 
-        for ($k = 0; $k < $this->factory->faker()->numberBetween($this->min, $this->max); $k++) {
+        for ($k = 0; $k < $this->faker->generator()->numberBetween($this->min, $this->max); $k++) {
             $paragraph = $this->text->paragraph();
             $html[] = "{$paragraph}";
         }

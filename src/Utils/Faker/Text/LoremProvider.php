@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory\Text;
+namespace Kiwilan\Steward\Utils\Faker\Text;
 
 /**
  * Generate Lorem text.

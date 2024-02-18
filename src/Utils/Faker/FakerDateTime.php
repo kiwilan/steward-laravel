@@ -1,24 +1,24 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory;
+namespace Kiwilan\Steward\Utils\Faker;
 
 use DateTime;
 use DateTimeZone;
 use Illuminate\Support\Carbon;
-use Kiwilan\Steward\Utils\Factory;
-use Kiwilan\Steward\Utils\Factory\Utils\FactoryTimestamps;
+use Kiwilan\Steward\Utils\Faker;
+use Kiwilan\Steward\Utils\Faker\Utils\FakerTimestamps;
 
-class FactoryDateTime
+class FakerDateTime
 {
     public function __construct(
-        public Factory $factory,
+        public Faker $faker,
     ) {
     }
 
     /**
      * Generate timestamps.
      */
-    public function timestamps(string $minimum = '-20 years'): FactoryTimestamps
+    public function timestamps(string $minimum = '-20 years'): FakerTimestamps
     {
         $tz = new DateTimeZone('UTC');
 
@@ -33,7 +33,7 @@ class FactoryDateTime
             $updatedAt = Carbon::createFromDate($updatedAtStr, tz: $tz);
         }
 
-        return new FactoryTimestamps(
+        return new FakerTimestamps(
             $createdAt,
             $updatedAt,
         );
@@ -61,12 +61,10 @@ class FactoryDateTime
 
     private function generateDateTime(string $between): DateTime
     {
-        $date = $this->factory->faker()
-            ->dateTimeBetween($between);
+        $date = $this->faker->generator()->dateTimeBetween($between);
 
         while (! $this->validateDateTime($date)) {
-            $date = $this->factory->faker()
-                ->dateTimeBetween($between);
+            $date = $this->faker->generator()->dateTimeBetween($between);
         }
 
         return $date;

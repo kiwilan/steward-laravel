@@ -3,32 +3,32 @@
 namespace Kiwilan\Steward\Services;
 
 use Closure;
-use Kiwilan\Steward\Utils\Factory;
+use Kiwilan\Steward\Utils\Faker;
 
 /**
  * Improve Faker Laravel factory service.
  *
- * @deprecated Use `Kiwilan\Steward\Utils\Factory` instead.
+ * @deprecated Use `Kiwilan\Steward\Utils\Faker` instead.
  */
 class FactoryService
 {
     public static function beforeSeed(): bool
     {
-        return Factory::beforeSeed();
+        return Faker::beforeSeed();
     }
 
     public static function afterSeed(): void
     {
-        Factory::afterSeed();
+        Faker::afterSeed();
     }
 
-    public static function make(string|\UnitEnum|null $mediaPath = null): Factory
+    public static function make(string|\UnitEnum|null $mediaPath = null): Faker
     {
-        return Factory::make($mediaPath);
+        return Faker::make($mediaPath);
     }
 
     public static function noSearch(string $model, Closure $closure): mixed
     {
-        return Factory::noSearch($model, $closure);
+        return Faker::noSearch($model, $closure);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory;
+namespace Kiwilan\Steward\Utils\Faker;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -9,16 +9,16 @@ use Kiwilan\HttpPool\Utils\PrintConsole;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\StewardConfig;
-use Kiwilan\Steward\Utils\Factory;
 use Kiwilan\Steward\Utils\Factory\Media\MediaProvider;
+use Kiwilan\Steward\Utils\Faker;
 
 /**
- * Class FactoryMedia
+ * Class FakerMedia
  */
-class FactoryMediaDownloader
+class FakerMediaDownloader
 {
     public function __construct(
-        public Factory $factory,
+        public Faker $faker,
         public array $config = [],
     ) {
     }
@@ -54,7 +54,7 @@ class FactoryMediaDownloader
         $chunkMax = StewardConfig::factoryMaxHandle();
 
         if (StewardConfig::factoryVerbose()) {
-            $console->print("  FactoryMediaDownloader handle {$chunkMax} items maximum.", 'bright-blue');
+            $console->print("  FakerMediaDownloader handle {$chunkMax} items maximum.", 'bright-blue');
         }
 
         if ($models->count() > $chunkMax) {
@@ -80,7 +80,7 @@ class FactoryMediaDownloader
             $media = null;
 
             if ($multiple) {
-                $media = $this->factory->faker()->randomElements($images, $this->factory->faker()->numberBetween(1, 3));
+                $media = $this->faker->generator()->randomElements($images, $this->faker->generator()->numberBetween(1, 3));
             } else {
                 $media = $images->shift();
             }
@@ -109,7 +109,7 @@ class FactoryMediaDownloader
 
         foreach ($medias as $media) {
             $images->push(
-                Factory::mediaFromResponse($media, $basePath)
+                Faker::mediaFromResponse($media, $basePath)
             );
         }
 

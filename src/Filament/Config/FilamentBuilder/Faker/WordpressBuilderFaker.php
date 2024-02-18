@@ -4,7 +4,7 @@ namespace Kiwilan\Steward\Filament\Config\FilamentBuilder\Faker;
 
 use Faker\Generator;
 use Illuminate\Support\Str;
-use Kiwilan\Steward\Utils\Factory;
+use Kiwilan\Steward\Utils\Faker;
 
 class WordpressBuilderFaker
 {
@@ -43,7 +43,7 @@ class WordpressBuilderFaker
 
     public function paragraph(): array
     {
-        $factory = Factory::make();
+        $factory = Faker::make();
 
         return [
             'data' => [

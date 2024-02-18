@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory;
+namespace Kiwilan\Steward\Utils\Faker;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Kiwilan\HttpPool\Utils\PrintConsole;
 use Kiwilan\Steward\StewardConfig;
-use Kiwilan\Steward\Utils\Factory;
+use Kiwilan\Steward\Utils\Faker;
 use Kiwilan\Steward\Utils\Process;
 
-class FactoryMediaLocal
+class FakerMediaLocal
 {
     public function __construct(
-        public Factory $factory,
+        public Faker $faker,
         public ?string $basePath = null,
         public ?string $path = null,
     ) {
@@ -32,7 +32,7 @@ class FactoryMediaLocal
             $chunkMax = StewardConfig::factoryMaxHandle();
 
             if ($verbose) {
-                $console->print("  FactoryMediaDownloader handle {$chunkMax} items maximum.", 'bright-blue');
+                $console->print("  FakerMediaDownloader handle {$chunkMax} items maximum.", 'bright-blue');
             }
 
             if ($models->count() > $chunkMax) {
@@ -60,7 +60,7 @@ class FactoryMediaLocal
             $images = $images->shuffle();
 
             if ($multiple) {
-                $media = $this->factory->faker()->randomElements($images, $this->factory->faker()->numberBetween(1, 5));
+                $media = $this->faker->generator()->randomElements($images, $this->faker->generator()->numberBetween(1, 5));
             } else {
                 $media = $images->first();
             }
@@ -90,7 +90,7 @@ class FactoryMediaLocal
 
         foreach ($files as $file) {
             $images->push(
-                Factory::mediaFromFile(
+                Faker::mediaFromFile(
                     $file->getRealPath(),
                     $basePath
                 )

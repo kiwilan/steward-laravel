@@ -1,24 +1,24 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory\Text;
+namespace Kiwilan\Steward\Utils\Faker\Text;
 
-use Kiwilan\Steward\Enums\FactoryTextEnum;
+use Kiwilan\Steward\Enums\FakerTextEnum;
 
 class TextProvider
 {
     protected function __construct(
-        protected FactoryTextEnum $type,
+        protected FakerTextEnum $type,
         protected TextProviderInterface $provider,
     ) {
     }
 
-    public static function make(FactoryTextEnum $type = FactoryTextEnum::lorem): TextProvider
+    public static function make(FakerTextEnum $type = FakerTextEnum::lorem): TextProvider
     {
         $provider = match ($type) {
-            FactoryTextEnum::lorem => new LoremProvider(),
-            FactoryTextEnum::sindarin => new SindarinProvider(),
-            FactoryTextEnum::klingon => new KlingonProvider(),
-            FactoryTextEnum::navi => new NaviProvider(),
+            FakerTextEnum::lorem => new LoremProvider(),
+            FakerTextEnum::sindarin => new SindarinProvider(),
+            FakerTextEnum::klingon => new KlingonProvider(),
+            FakerTextEnum::navi => new NaviProvider(),
         };
 
         return new self($type, $provider);
@@ -37,7 +37,7 @@ class TextProvider
      */
     private function generate(int|false $limit = 3, bool $asText = false): string|array
     {
-        if ($this->type === FactoryTextEnum::lorem) {
+        if ($this->type === FakerTextEnum::lorem) {
             return LoremProvider::generate($limit, $asText);
         }
 

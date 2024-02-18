@@ -1,8 +1,8 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory\Text;
+namespace Kiwilan\Steward\Utils\Faker\Text;
 
-use Kiwilan\Steward\Enums\FactoryTextEnum;
+use Kiwilan\Steward\Enums\FakerTextEnum;
 
 /**
  * Generate Lorem text.
@@ -20,13 +20,13 @@ class RandomProvider implements TextProviderInterface
         ];
     }
 
-    public static function select(): FactoryTextEnum
+    public static function select(): FakerTextEnum
     {
         $enums = [
-            FactoryTextEnum::lorem,
-            FactoryTextEnum::sindarin,
-            FactoryTextEnum::klingon,
-            FactoryTextEnum::navi,
+            FakerTextEnum::lorem,
+            FakerTextEnum::sindarin,
+            FakerTextEnum::klingon,
+            FakerTextEnum::navi,
         ];
 
         return $enums[array_rand($enums)];

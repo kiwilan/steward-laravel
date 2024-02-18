@@ -1,22 +1,22 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory;
+namespace Kiwilan\Steward\Utils\Faker;
 
-use Kiwilan\Steward\Utils\Factory;
+use Kiwilan\Steward\Utils\Faker;
 
-class FactoryBuilder
+class FakerBuilder
 {
     public function __construct(
-        public Factory $factory,
+        public Faker $faker,
         protected string $builder,
         protected ?string $name = null,
         protected ?string $builder_faker = null,
     ) {
     }
 
-    public static function make(Factory $factory, string $builder): array
+    public static function make(Faker $factory, string $builder): array
     {
-        $factory_builder = new FactoryBuilder($factory, $builder);
+        $factory_builder = new FakerBuilder($factory, $builder);
         $instance = new $factory_builder->builder();
         $factory_builder->name = $instance::NAME;
         $factory_builder->builder_faker = $instance::FAKER;

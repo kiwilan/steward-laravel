@@ -2,7 +2,7 @@
 
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
-use Kiwilan\Steward\Enums\FactoryTextEnum;
+use Kiwilan\Steward\Enums\FakerTextEnum;
 
 return [
     /*
@@ -157,7 +157,7 @@ return [
     ],
 
     'factory' => [
-        'text' => FactoryTextEnum::lorem,
+        'text' => FakerTextEnum::lorem,
         'media_downloader' => [
             'default_category' => SeedsApiCategoryEnum::all,
             'default_size' => SeedsApiSizeEnum::medium,

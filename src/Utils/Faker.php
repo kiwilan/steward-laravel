@@ -9,29 +9,29 @@ use Illuminate\Support\Facades\File;
 use Kiwilan\HttpPool\Response\HttpPoolResponse;
 use Kiwilan\Steward\Commands\MediaCleanCommand;
 use Kiwilan\Steward\Commands\Scout\ScoutFreshCommand;
-use Kiwilan\Steward\Enums\FactoryTextEnum;
+use Kiwilan\Steward\Enums\FakerTextEnum;
 use Kiwilan\Steward\Services\ClassParser\ClassParserItem;
 use Kiwilan\Steward\Services\DirectoryService;
-use Kiwilan\Steward\Utils\Factory\FactoryDateTime;
-use Kiwilan\Steward\Utils\Factory\FactoryJson;
-use Kiwilan\Steward\Utils\Factory\FactoryMediaDownloader;
-use Kiwilan\Steward\Utils\Factory\FactoryMediaLocal;
-use Kiwilan\Steward\Utils\Factory\FactoryRichText;
-use Kiwilan\Steward\Utils\Factory\FactoryText;
+use Kiwilan\Steward\Utils\Faker\FakerDateTime;
+use Kiwilan\Steward\Utils\Faker\FakerJson;
+use Kiwilan\Steward\Utils\Faker\FakerMediaDownloader;
+use Kiwilan\Steward\Utils\Faker\FakerMediaLocal;
+use Kiwilan\Steward\Utils\Faker\FakerRichText;
+use Kiwilan\Steward\Utils\Faker\FakerText;
 
 /**
  * Improve Faker Laravel factory service.
  */
-class Factory
+class Faker
 {
     public function __construct(
-        protected Generator $faker,
-        protected ?FactoryText $text = null,
-        protected ?FactoryRichText $richText = null,
-        protected ?FactoryDateTime $dateTime = null,
-        protected ?FactoryMediaLocal $mediaLocal = null,
-        protected ?FactoryMediaDownloader $mediaDownloader = null,
-        protected ?FactoryJson $json = null,
+        protected Generator $generator,
+        protected ?FakerText $text = null,
+        protected ?FakerRichText $richText = null,
+        protected ?FakerDateTime $dateTime = null,
+        protected ?FakerMediaLocal $mediaLocal = null,
+        protected ?FakerMediaDownloader $mediaDownloader = null,
+        protected ?FakerJson $json = null,
     ) {
     }
 
@@ -59,14 +59,14 @@ class Factory
 
     public static function make(string|\UnitEnum|null $mediaPath = null): self
     {
-        $faker = \Faker\Factory::create();
-        $service = new Factory($faker);
-        $service->text = $service->setFactoryText();
-        $service->richText = $service->setFactoryRichText();
-        $service->dateTime = $service->setFactoryDate();
-        $service->mediaLocal = $service->setFactoryMediaLocal($mediaPath);
-        $service->mediaDownloader = $service->setFactoryMediaDownloader();
-        $service->json = $service->setFactoryJson();
+        $generator = \Faker\Factory::create();
+        $service = new Faker($generator);
+        $service->text = $service->setFakerText();
+        $service->richText = $service->setFakerRichText();
+        $service->dateTime = $service->setFakerDate();
+        $service->mediaLocal = $service->setFakerMediaLocal($mediaPath);
+        $service->mediaDownloader = $service->setFakerMediaDownloader();
+        $service->json = $service->setFakerJson();
 
         return $service;
     }
@@ -82,30 +82,30 @@ class Factory
         return $model::withoutSyncingToSearch(fn () => $closure());
     }
 
-    public function useText(?FactoryTextEnum $type = null): self
+    public function useText(?FakerTextEnum $type = null): self
     {
-        $this->text = $this->setFactoryText($type);
-        $this->richText = $this->setFactoryRichText($type);
+        $this->text = $this->setFakerText($type);
+        $this->richText = $this->setFakerRichText($type);
 
         return $this;
     }
 
-    public function faker(): Generator
+    public function generator(): Generator
     {
-        return $this->faker;
+        return $this->generator;
     }
 
-    public function text(): FactoryText
+    public function text(): FakerText
     {
         return $this->text;
     }
 
-    public function richText(): FactoryRichText
+    public function richText(): FakerRichText
     {
         return $this->richText;
     }
 
-    public function dateTime(): FactoryDateTime
+    public function dateTime(): FakerDateTime
     {
         return $this->dateTime;
     }
@@ -113,7 +113,7 @@ class Factory
     /**
      * @param  string|null  $basePath  If null, use `database_path('seeders/media')`
      */
-    public function mediaLocal(string $path, ?string $basePath = null): FactoryMediaLocal
+    public function mediaLocal(string $path, ?string $basePath = null): FakerMediaLocal
     {
         if (! $basePath) {
             $this->mediaLocal->basePath = database_path('seeders/media');
@@ -124,58 +124,58 @@ class Factory
         return $this->mediaLocal;
     }
 
-    public function mediaDownloader(): FactoryMediaDownloader
+    public function mediaDownloader(): FakerMediaDownloader
     {
         return $this->mediaDownloader;
     }
 
-    public function json(): FactoryJson
+    public function json(): FakerJson
     {
         return $this->json;
     }
 
     // private function builder(string $builder): array
     // {
-    //     return FactoryBuilder::make($this, $builder);
+    //     return FakerBuilder::make($this, $builder);
     // }
 
-    private function setFactoryText(?FactoryTextEnum $type = null): FactoryText
+    private function setFakerText(?FakerTextEnum $type = null): FakerText
     {
         $type = $type ?? \Kiwilan\Steward\StewardConfig::factoryText();
 
-        return new FactoryText($this, $type);
+        return new FakerText($this, $type);
     }
 
-    private function setFactoryRichText(?FactoryTextEnum $type = null): FactoryRichText
+    private function setFakerRichText(?FakerTextEnum $type = null): FakerRichText
     {
         $type = $type ?? \Kiwilan\Steward\StewardConfig::factoryText();
-        $text = $this->setFactoryText($type);
+        $text = $this->setFakerText($type);
 
-        return new FactoryRichText($this, $type, $text);
+        return new FakerRichText($this, $type, $text);
     }
 
-    private function setFactoryDate(): FactoryDateTime
+    private function setFakerDate(): FakerDateTime
     {
-        return new FactoryDateTime($this);
+        return new FakerDateTime($this);
     }
 
-    private function setFactoryMediaLocal(string|\UnitEnum|null $media_path = null): FactoryMediaLocal
+    private function setFakerMediaLocal(string|\UnitEnum|null $media_path = null): FakerMediaLocal
     {
         if ($media_path && $media_path instanceof \UnitEnum) {
             $media_path = $media_path->name;
         }
 
-        return new FactoryMediaLocal($this, $media_path);
+        return new FakerMediaLocal($this, $media_path);
     }
 
-    private function setFactoryMediaDownloader(): FactoryMediaDownloader
+    private function setFakerMediaDownloader(): FakerMediaDownloader
     {
-        return new FactoryMediaDownloader($this);
+        return new FakerMediaDownloader($this);
     }
 
-    private function setFactoryJson(): FactoryJson
+    private function setFakerJson(): FakerJson
     {
-        return new FactoryJson($this);
+        return new FakerJson($this);
     }
 
     public static function mediaFromResponse(?HttpPoolResponse $response, ?string $basePath = null): ?string
@@ -192,7 +192,7 @@ class Factory
             $ext = 'jpg';
         }
 
-        return Factory::saveFile($data, $ext, $basePath);
+        return Faker::saveFile($data, $ext, $basePath);
     }
 
     public static function mediaFromFile(string $path, ?string $basePath = null): ?string
@@ -200,7 +200,7 @@ class Factory
         $data = File::get($path);
         $ext = pathinfo($path)['extension'];
 
-        return Factory::saveFile($data, $ext, $basePath);
+        return Faker::saveFile($data, $ext, $basePath);
     }
 
     private static function saveFile(string $data, string $ext = 'jpg', ?string $basePath = null): string

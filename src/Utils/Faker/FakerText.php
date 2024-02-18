@@ -1,23 +1,22 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory;
+namespace Kiwilan\Steward\Utils\Faker;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-use Kiwilan\Steward\Enums\FactoryTextEnum;
+use Kiwilan\Steward\Enums\FakerTextEnum;
 use Kiwilan\Steward\Utils\Api\Seeds\SeedsApi;
-use Kiwilan\Steward\Utils\Factory;
-use Kiwilan\Steward\Utils\Factory\Text\MeaningProvider;
-use Kiwilan\Steward\Utils\Factory\Text\TextProvider;
+use Kiwilan\Steward\Utils\Faker;
+use Kiwilan\Steward\Utils\Faker\Text\MeaningProvider;
+use Kiwilan\Steward\Utils\Faker\Text\TextProvider;
 
 /**
  * Generate fake text.
  */
-class FactoryText
+class FakerText
 {
     public function __construct(
-        public Factory $factory,
-        public FactoryTextEnum $type = FactoryTextEnum::lorem,
+        public Faker $faker,
+        public FakerTextEnum $type = FakerTextEnum::lorem,
     ) {
     }
 
@@ -107,7 +106,7 @@ class FactoryText
     {
         $content = '';
 
-        for ($k = 0; $k < $this->factory->faker()->numberBetween(10, 20); $k++) {
+        for ($k = 0; $k < $this->faker->generator()->numberBetween(10, 20); $k++) {
             $sentence = $this->sentence();
 
             if (substr($sentence, -1) === '.') {

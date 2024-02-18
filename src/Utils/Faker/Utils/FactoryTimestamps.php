@@ -1,10 +1,10 @@
 <?php
 
-namespace Kiwilan\Steward\Utils\Factory\Utils;
+namespace Kiwilan\Steward\Utils\Faker\Utils;
 
 use Illuminate\Support\Carbon;
 
-class FactoryTimestamps
+class FakerTimestamps
 {
     public function __construct(
         public Carbon $createdAtCarbon,
