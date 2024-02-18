@@ -9,8 +9,8 @@ use Kiwilan\HttpPool\Utils\PrintConsole;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
 use Kiwilan\Steward\StewardConfig;
-use Kiwilan\Steward\Utils\Factory\Media\MediaProvider;
 use Kiwilan\Steward\Utils\Faker;
+use Kiwilan\Steward\Utils\Faker\Media\MediaProvider;
 
 /**
  * Class FakerMedia
