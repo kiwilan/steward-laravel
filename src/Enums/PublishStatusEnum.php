@@ -40,9 +40,9 @@ enum PublishStatusEnum: string implements HasColor, HasIcon, HasLabel
         return $this->toArray()[$this->value];
     }
 
-    public static function toggleButtons(): \Filament\Forms\Components\ToggleButtons
+    public static function toggleButtons(string $field = 'status'): \Filament\Forms\Components\ToggleButtons
     {
-        return \Filament\Forms\Components\ToggleButtons::make('status')
+        return \Filament\Forms\Components\ToggleButtons::make($field)
             ->options([
                 PublishStatusEnum::draft->name => PublishStatusEnum::draft->getLocaleBaseName(),
                 PublishStatusEnum::scheduled->name => PublishStatusEnum::scheduled->getLocaleBaseName(),
