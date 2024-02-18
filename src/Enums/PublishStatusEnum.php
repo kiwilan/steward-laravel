@@ -44,9 +44,9 @@ enum PublishStatusEnum: string implements HasColor, HasIcon, HasLabel
     {
         return \Filament\Forms\Components\ToggleButtons::make($field)
             ->options([
-                PublishStatusEnum::draft->name => PublishStatusEnum::draft->getLocaleBaseName(),
-                PublishStatusEnum::scheduled->name => PublishStatusEnum::scheduled->getLocaleBaseName(),
-                PublishStatusEnum::published->name => PublishStatusEnum::published->getLocaleBaseName(),
+                PublishStatusEnum::draft->name => PublishStatusEnum::draft->getLocale(),
+                PublishStatusEnum::scheduled->name => PublishStatusEnum::scheduled->getLocale(),
+                PublishStatusEnum::published->name => PublishStatusEnum::published->getLocale(),
             ])
             ->icons([
                 PublishStatusEnum::draft->name => PublishStatusEnum::draft->getIcon(),

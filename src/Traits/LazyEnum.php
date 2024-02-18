@@ -127,6 +127,11 @@ trait LazyEnum
         return $lower ? strtolower(__($locale)) : __($locale);
     }
 
+    public function getLocale(): string
+    {
+        return $this->locale();
+    }
+
     public function equals(...$others): bool
     {
         foreach ($others as $other) {
