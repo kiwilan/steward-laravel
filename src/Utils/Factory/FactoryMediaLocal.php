@@ -1,20 +1,20 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory;
+namespace Kiwilan\Steward\Utils\Factory;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Kiwilan\HttpPool\Utils\PrintConsole;
-use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\StewardConfig;
+use Kiwilan\Steward\Utils\Factory;
 use Kiwilan\Steward\Utils\Process;
 
 class FactoryMediaLocal
 {
     public function __construct(
-        public FactoryService $factory,
+        public Factory $factory,
         public ?string $basePath = null,
         public ?string $path = null,
     ) {
@@ -90,7 +90,7 @@ class FactoryMediaLocal
 
         foreach ($files as $file) {
             $images->push(
-                FactoryService::mediaFromFile(
+                Factory::mediaFromFile(
                     $file->getRealPath(),
                     $basePath
                 )

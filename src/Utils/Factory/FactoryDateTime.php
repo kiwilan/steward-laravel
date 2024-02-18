@@ -1,17 +1,17 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory;
+namespace Kiwilan\Steward\Utils\Factory;
 
 use DateTime;
 use DateTimeZone;
 use Illuminate\Support\Carbon;
-use Kiwilan\Steward\Services\Factory\Utils\FactoryTimestamps;
-use Kiwilan\Steward\Services\FactoryService;
+use Kiwilan\Steward\Utils\Factory;
+use Kiwilan\Steward\Utils\Factory\Utils\FactoryTimestamps;
 
 class FactoryDateTime
 {
     public function __construct(
-        public FactoryService $factory,
+        public Factory $factory,
     ) {
     }
 

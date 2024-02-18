@@ -1,17 +1,17 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory;
+namespace Kiwilan\Steward\Utils\Factory;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Kiwilan\Steward\Services\ClassParser\ClassParserItem;
-use Kiwilan\Steward\Services\FactoryService;
+use Kiwilan\Steward\Utils\Factory;
 
 class FactoryJson
 {
     public function __construct(
-        public FactoryService $factory,
+        public Factory $factory,
         protected ?string $class = null,
         protected ?ClassParserItem $item = null,
         protected ?Model $model = null,

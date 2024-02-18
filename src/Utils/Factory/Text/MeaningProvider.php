@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory\Text;
+namespace Kiwilan\Steward\Utils\Factory\Text;
 
 class MeaningProvider
 {

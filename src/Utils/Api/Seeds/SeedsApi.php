@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Api\Seeds;
+namespace Kiwilan\Steward\Utils\Api\Seeds;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
@@ -8,8 +8,8 @@ use Kiwilan\HttpPool\HttpPool;
 use Kiwilan\HttpPool\Response\HttpPoolResponse;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
-use Kiwilan\Steward\Services\Api\MediaApi;
 use Kiwilan\Steward\StewardConfig;
+use Kiwilan\Steward\Utils\Api\MediaApi;
 
 class SeedsApi implements MediaApi
 {

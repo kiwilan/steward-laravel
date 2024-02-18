@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory\Utils;
+namespace Kiwilan\Steward\Utils\Factory\Utils;
 
 use Illuminate\Support\Carbon;
 

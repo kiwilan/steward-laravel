@@ -1,20 +1,20 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory;
+namespace Kiwilan\Steward\Utils\Factory;
 
-use Kiwilan\Steward\Services\FactoryService;
+use Kiwilan\Steward\Utils\Factory;
 
 class FactoryBuilder
 {
     public function __construct(
-        public FactoryService $factory,
+        public Factory $factory,
         protected string $builder,
         protected ?string $name = null,
         protected ?string $builder_faker = null,
     ) {
     }
 
-    public static function make(FactoryService $factory, string $builder): array
+    public static function make(Factory $factory, string $builder): array
     {
         $factory_builder = new FactoryBuilder($factory, $builder);
         $instance = new $factory_builder->builder();

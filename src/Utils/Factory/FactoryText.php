@@ -1,14 +1,14 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory;
+namespace Kiwilan\Steward\Utils\Factory;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Kiwilan\Steward\Enums\FactoryTextEnum;
-use Kiwilan\Steward\Services\Api\Seeds\SeedsApi;
-use Kiwilan\Steward\Services\Factory\Text\MeaningProvider;
-use Kiwilan\Steward\Services\Factory\Text\TextProvider;
-use Kiwilan\Steward\Services\FactoryService;
+use Kiwilan\Steward\Utils\Api\Seeds\SeedsApi;
+use Kiwilan\Steward\Utils\Factory;
+use Kiwilan\Steward\Utils\Factory\Text\MeaningProvider;
+use Kiwilan\Steward\Utils\Factory\Text\TextProvider;
 
 /**
  * Generate fake text.
@@ -16,7 +16,7 @@ use Kiwilan\Steward\Services\FactoryService;
 class FactoryText
 {
     public function __construct(
-        public FactoryService $factory,
+        public Factory $factory,
         public FactoryTextEnum $type = FactoryTextEnum::lorem,
     ) {
     }

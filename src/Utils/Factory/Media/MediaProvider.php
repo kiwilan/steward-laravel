@@ -1,13 +1,13 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory\Media;
+namespace Kiwilan\Steward\Utils\Factory\Media;
 
 use Kiwilan\Steward\Enums\Api\MediaApiEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
-use Kiwilan\Steward\Services\Api\MediaApi;
-use Kiwilan\Steward\Services\Api\Seeds\SeedsApi;
 use Kiwilan\Steward\StewardConfig;
+use Kiwilan\Steward\Utils\Api\MediaApi;
+use Kiwilan\Steward\Utils\Api\Seeds\SeedsApi;
 
 class MediaProvider
 {

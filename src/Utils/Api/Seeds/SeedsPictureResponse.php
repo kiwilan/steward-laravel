@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Api\Seeds;
+namespace Kiwilan\Steward\Utils\Api\Seeds;
 
 class SeedsPictureResponse
 {

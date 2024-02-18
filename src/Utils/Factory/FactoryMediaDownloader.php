@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory;
+namespace Kiwilan\Steward\Utils\Factory;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Kiwilan\HttpPool\Utils\PrintConsole;
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
-use Kiwilan\Steward\Services\Factory\Media\MediaProvider;
-use Kiwilan\Steward\Services\FactoryService;
 use Kiwilan\Steward\StewardConfig;
+use Kiwilan\Steward\Utils\Factory;
+use Kiwilan\Steward\Utils\Factory\Media\MediaProvider;
 
 /**
  * Class FactoryMedia
@@ -18,7 +18,7 @@ use Kiwilan\Steward\StewardConfig;
 class FactoryMediaDownloader
 {
     public function __construct(
-        public FactoryService $factory,
+        public Factory $factory,
         public array $config = [],
     ) {
     }
@@ -109,7 +109,7 @@ class FactoryMediaDownloader
 
         foreach ($medias as $media) {
             $images->push(
-                FactoryService::mediaFromResponse($media, $basePath)
+                Factory::mediaFromResponse($media, $basePath)
             );
         }
 

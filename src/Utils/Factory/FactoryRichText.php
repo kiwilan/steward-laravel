@@ -1,9 +1,9 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Factory;
+namespace Kiwilan\Steward\Utils\Factory;
 
 use Kiwilan\Steward\Enums\FactoryTextEnum;
-use Kiwilan\Steward\Services\FactoryService;
+use Kiwilan\Steward\Utils\Factory;
 
 /**
  * Generate fake rich text.
@@ -11,7 +11,7 @@ use Kiwilan\Steward\Services\FactoryService;
 class FactoryRichText
 {
     public function __construct(
-        public FactoryService $factory,
+        public Factory $factory,
         public FactoryTextEnum $type,
         protected FactoryText $text,
         public string $typography = 'html',

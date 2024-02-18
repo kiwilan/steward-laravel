@@ -1,6 +1,6 @@
 <?php
 
-namespace Kiwilan\Steward\Services\Api;
+namespace Kiwilan\Steward\Utils\Api;
 
 use Illuminate\Support\Collection;
 use Kiwilan\HttpPool\Response\HttpPoolResponse;
