@@ -39,4 +39,26 @@ enum PublishStatusEnum: string implements HasColor, HasIcon, HasLabel
     {
         return $this->toArray()[$this->value];
     }
+
+    public static function toggleButtons(): \Filament\Forms\Components\ToggleButtons
+    {
+        return \Filament\Forms\Components\ToggleButtons::make('status')
+            ->options([
+                PublishStatusEnum::draft->name => PublishStatusEnum::draft->getLabel(),
+                PublishStatusEnum::scheduled->name => PublishStatusEnum::scheduled->getLabel(),
+                PublishStatusEnum::published->name => PublishStatusEnum::published->getLabel(),
+            ])
+            ->icons([
+                PublishStatusEnum::draft->name => PublishStatusEnum::draft->getIcon(),
+                PublishStatusEnum::scheduled->name => PublishStatusEnum::scheduled->getIcon(),
+                PublishStatusEnum::published->name => PublishStatusEnum::published->getIcon(),
+            ])
+            ->colors([
+                PublishStatusEnum::draft->name => PublishStatusEnum::draft->getColor(),
+                PublishStatusEnum::scheduled->name => PublishStatusEnum::scheduled->getColor(),
+                PublishStatusEnum::published->name => PublishStatusEnum::published->getColor(),
+            ])
+            ->default('draft')
+            ->inline();
+    }
 }
