@@ -4,6 +4,7 @@ namespace Kiwilan\Steward;
 
 use Kiwilan\Steward\Enums\Api\SeedsApiCategoryEnum;
 use Kiwilan\Steward\Enums\Api\SeedsApiSizeEnum;
+use Kiwilan\Steward\Enums\FactoryTextEnum;
 use Kiwilan\Steward\Enums\FakerTextEnum;
 
 class StewardConfig
@@ -133,7 +134,7 @@ class StewardConfig
         return config('steward.components.config') ?? [];
     }
 
-    public static function factoryText(): FakerTextEnum
+    public static function factoryText(): FakerTextEnum|FactoryTextEnum
     {
         return config('steward.factory.text') ?? FakerTextEnum::lorem;
     }
