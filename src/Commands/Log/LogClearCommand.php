@@ -92,6 +92,7 @@ class LogClearCommand extends Commandable
     private function deleteLevel(string $path, string $level): void
     {
         $tempFile = storage_path('logs/temp.log');
+        $level = strtoupper($level);
 
         $handle = fopen($path, 'r');
         $tempHandle = fopen($tempFile, 'w');
