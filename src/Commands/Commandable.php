@@ -56,7 +56,7 @@ class Commandable extends Command
         }
     }
 
-    public function optionArgument(string $option, ?int $default = null): ?string
+    public function optionArgument(string $option, ?string $default = null): ?string
     {
         $value = $this->option($option);
         if (str_contains($value, '=')) {
