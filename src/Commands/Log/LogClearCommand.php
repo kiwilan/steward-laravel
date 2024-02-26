@@ -44,8 +44,8 @@ class LogClearCommand extends Commandable
         $this->path = storage_path('logs/laravel.log');
 
         $all = $this->option('all') ?: false;
-        $log_name = $this->option('log') ?? null;
-        $level = $this->option('level') ?? null;
+        $log_name = $this->optionArgument('log') ?? null;
+        $level = $this->optionArgument('level') ?? null;
 
         if (! $log_name && ! $all && ! $level) {
             $all = true;
