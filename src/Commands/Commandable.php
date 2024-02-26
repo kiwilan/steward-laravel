@@ -56,7 +56,7 @@ class Commandable extends Command
         }
     }
 
-    public function optionInt(string $option, ?int $default = null): ?int
+    public function optionArgument(string $option, ?int $default = null): ?string
     {
         $value = $this->option($option);
         if (str_contains($value, '=')) {
@@ -67,6 +67,11 @@ class Commandable extends Command
             return $default;
         }
 
-        return (int) $value;
+        return $value;
+    }
+
+    public function optionInt(string $option, ?int $default = null): ?int
+    {
+        return (int) $this->optionArgument($option, $default);
     }
 }
