@@ -45,9 +45,9 @@ class MetaTags extends Component
             ];
         }
 
-        $this->title = $this->title ?? $this->props[$this->key]['title'];
-        $this->description = $this->description ?? $this->props[$this->key]['description'];
-        $this->image = $this->image ?? $this->props[$this->key]['image'];
+        $this->title = $this->props[$this->key]['title'] ?? $this->title;
+        $this->description = $this->props[$this->key]['description'] ?? $this->description;
+        $this->image = $this->props[$this->key]['image'] ?? $this->image;
         $this->color = $this->props[$this->key]['color'] ?? $this->color;
 
         if (! str_starts_with($this->color, '#')) {
