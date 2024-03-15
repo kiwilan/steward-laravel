@@ -8,7 +8,7 @@
 <!-- Facebook Meta Tags -->
 <meta
   property="og:url"
-  content="https://vivacia.bookshelves.ink"
+  content="{{ config('app.url') }}"
 >
 <meta
   property="og:type"
@@ -24,7 +24,7 @@
 >
 <meta
   property="og:image"
-  content="https://vivacia.bookshelves.inkDefault Image URL"
+  content="{{ config('app.url') . '/default.jpg' }}"
 >
 
 <!-- Twitter Meta Tags -->
@@ -34,11 +34,11 @@
 >
 <meta
   property="twitter:domain"
-  content="vivacia.bookshelves.ink"
+  content="{{ config('app.url') }}"
 >
 <meta
   property="twitter:url"
-  content="https://vivacia.bookshelves.ink"
+  content="{{ config('app.url') }}"
 >
 <meta
   name="twitter:title"
@@ -50,5 +50,5 @@
 >
 <meta
   name="twitter:image"
-  content="https://vivacia.bookshelves.inkDefault Image URL"
+  content="{{ config('app.url') . '/default.jpg' }}"
 >

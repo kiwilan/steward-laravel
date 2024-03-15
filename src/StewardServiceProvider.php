@@ -88,6 +88,7 @@ class StewardServiceProvider extends PackageServiceProvider
             'stw-listing.search' => \Kiwilan\Steward\Components\Listing\Search::class,
             'stw-listing.sorters' => \Kiwilan\Steward\Components\Listing\Sorters::class,
             'stw-head-meta' => \Kiwilan\Steward\Components\HeadMeta::class,
+            'stw-meta-tags' => \Kiwilan\Steward\Components\MetaTags::class,
         ];
 
         $this->callAfterResolving(BladeCompiler::class, function () use ($components) {
