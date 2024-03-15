@@ -12,9 +12,11 @@ class Steward
 
         return <<<HTML
         <script>
-            window.appEnv = '$appEnv';
-            window.appUrl = '$appUrl';
-            window.appUrlStorage = '$appUrlStorage';
+            if (typeof window !== 'undefined') {
+                window.appEnv = '$appEnv';
+                window.appUrl = '$appUrl';
+                window.appUrlStorage = '$appUrlStorage';
+            }
         </script>
         HTML;
     }

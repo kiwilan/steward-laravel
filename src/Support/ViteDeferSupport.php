@@ -31,12 +31,14 @@ class ViteDeferSupport extends Vite
 
         return <<<HTML
         <script>
-            window.gdprService = '$gdprService';
-            window.gdprCookieName = '$gdprCookieName';
-            window.gdprCookieLifetime = '$gdprCookieLifetime';
-            window.gdrpMatomoEnabled = '$gdrpMatomoEnabled';
-            window.gdprMatomoUrl = '$gdprMatomoUrl';
-            window.gdprMatomoSiteId = '$gdprMatomoSiteId';
+            if (typeof window !== 'undefined') {
+                window.gdprService = '$gdprService';
+                window.gdprCookieName = '$gdprCookieName';
+                window.gdprCookieLifetime = '$gdprCookieLifetime';
+                window.gdrpMatomoEnabled = '$gdrpMatomoEnabled';
+                window.gdprMatomoUrl = '$gdprMatomoUrl';
+                window.gdprMatomoSiteId = '$gdprMatomoSiteId';
+            }
         </script>
         HTML;
     }
