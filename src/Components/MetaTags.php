@@ -48,7 +48,7 @@ class MetaTags extends Component
         $this->title = $this->title ?? $this->props[$this->key]['title'];
         $this->description = $this->description ?? $this->props[$this->key]['description'];
         $this->image = $this->image ?? $this->props[$this->key]['image'];
-        $this->color = $this->color ?? $this->props[$this->key]['color'];
+        $this->color = $this->props[$this->key]['color'] ?? $this->color;
 
         if (! str_starts_with($this->color, '#')) {
             $this->color = "#{$this->color}";
