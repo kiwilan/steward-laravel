@@ -27,6 +27,11 @@
   >
 @else
   <link
+    type="image/x-icon"
+    href="{{ config('app.url') . '/favicon.svg' }}"
+    rel="shortcut icon"
+  >
+  <link
     type="image/png"
     href="{{ config('app.url') . '/favicon-32x32.png' }}"
     rel="icon"
@@ -78,6 +83,11 @@
     media="(prefers-color-scheme: dark)"
   >
 @else
+  <link
+    type="image/x-icon"
+    href="{{ config('app.url') . '/favicon.svg' }}"
+    rel="shortcut icon"
+  >
   <link
     type="image/png"
     href="{{ config('app.url') . '/favicon-32x32.png' }}"
