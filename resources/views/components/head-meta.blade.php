@@ -15,32 +15,32 @@
 @if ($dark)
   <link
     type="image/x-icon"
-    href="{{ asset('/favicon.svg') }}"
+    href="{{ config('app.url') . '/favicon.svg' }}"
     rel="shortcut icon"
     media="(prefers-color-scheme: light)"
   >
   <link
     type="image/x-icon"
-    href="{{ asset('/favicon-dark.svg') }}"
+    href="{{ config('app.url') . '/favicon-dark.svg' }}"
     rel="shortcut icon"
     media="(prefers-color-scheme: dark)"
   >
 @else
   <link
     type="image/png"
-    href="/favicon-32x32.png"
+    href="{{ config('app.url') . '/favicon-32x32.png' }}"
     rel="icon"
     sizes="32x32"
   >
   <link
     type="image/png"
-    href="/favicon-16x16.png"
+    href="{{ config('app.url') . '/favicon-16x16.png' }}"
     rel="icon"
     sizes="16x16"
   >
 @endif
 <link
-  href="{{ asset('/apple-touch-icon.png') }}"
+  href="{{ config('app.url') . '/apple-touch-icon.png' }}"
   rel="apple-touch-icon"
   sizes="180x180"
 >
@@ -51,7 +51,7 @@
 
 <link
   type="image/png"
-  href="{{ asset('/favicon-16x16.png') }}"
+  href="{{ config('app.url') . '/favicon-16x16.png' }}"
   rel="icon"
   sizes="16x16"
 >
@@ -67,26 +67,26 @@
 @if ($dark)
   <link
     type="image/x-icon"
-    href="{{ asset('/favicon.svg') }}"
+    href="{{ config('app.url') . '/favicon.svg' }}"
     rel="shortcut icon"
     media="(prefers-color-scheme: light)"
   >
   <link
     type="image/x-icon"
-    href="{{ asset('/favicon-dark.svg') }}"
+    href="{{ config('app.url') . '/favicon-dark.svg' }}"
     rel="shortcut icon"
     media="(prefers-color-scheme: dark)"
   >
 @else
   <link
     type="image/png"
-    href="/favicon-32x32.png"
+    href="{{ config('app.url') . '/favicon-32x32.png' }}"
     rel="icon"
     sizes="32x32"
   >
   <link
     type="image/png"
-    href="/favicon-16x16.png"
+    href="{{ config('app.url') . '/favicon-16x16.png' }}"
     rel="icon"
     sizes="16x16"
   >
