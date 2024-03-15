@@ -11,8 +11,6 @@ class HeadMeta extends Component
      */
     public function __construct(
         public bool $dark = true,
-        public string $tile = '#da532c',
-        public string $theme = '#ffffff',
     ) {
     }
 

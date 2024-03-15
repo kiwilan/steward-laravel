@@ -60,14 +60,6 @@
   rel="icon"
   sizes="16x16"
 >
-<meta
-  name="msapplication-TileColor"
-  content="{{ $tile }}"
->
-<meta
-  name="theme-color"
-  content="{{ $theme }}"
->
 
 @if ($dark)
   <link

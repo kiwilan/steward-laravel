@@ -19,6 +19,7 @@ class MetaTags extends Component
         public ?string $url = null,
         public ?string $domain = null,
         public ?string $author = null,
+        public ?string $color = '#000000',
     ) {
     }
 
@@ -40,12 +41,18 @@ class MetaTags extends Component
                 'title' => config('app.name'),
                 'description' => null,
                 'image' => config('app.url').'/default.jpg',
+                'color' => '#000000',
             ];
         }
 
         $this->title = $this->title ?? $this->props[$this->key]['title'];
         $this->description = $this->description ?? $this->props[$this->key]['description'];
         $this->image = $this->image ?? $this->props[$this->key]['image'];
+        $this->color = $this->color ?? $this->props[$this->key]['color'];
+
+        if (! str_starts_with($this->color, '#')) {
+            $this->color = "#{$this->color}";
+        }
 
         if (strlen($this->title) > 70) {
             $this->title = substr($this->title, 0, 70).'...';

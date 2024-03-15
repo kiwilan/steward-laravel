@@ -61,11 +61,18 @@
   >
 @endif
 
+@if ($color)
+  <meta
+    name="msapplication-TileColor"
+    content="{{ $color }}"
+  >
+  <meta
+    name="theme-color"
+    content="{{ $color }}"
+  >
+@endif
+
 <meta
   property="og:type"
   content="website"
->
-<meta
-  name="twitter:card"
-  content="{{ $twitter }}"
 >
