@@ -19,9 +19,9 @@
     "require": {
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.5",
-        "illuminate/contracts": "^9.0 || ^10.0",
-        "illuminate/database": "^9.0 || ^10.0",
-        "illuminate/support": "^9.0 || ^10.0",
+        "illuminate/contracts": "^9.0 || ^10.0 || ^11.0",
+        "illuminate/database": "^9.0 || ^10.0 || ^11.0",
+        "illuminate/support": "^9.0 || ^10.0 || ^11.0",
         "kiwilan/notifier-laravel": "^0.3.14",
         "kiwilan/php-http-pool": "^0.3.2",
         "league/html-to-markdown": "^5.1",
