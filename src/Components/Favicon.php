@@ -4,13 +4,14 @@ namespace Kiwilan\Steward\Components;
 
 use Illuminate\View\Component;
 
-class HeadMeta extends Component
+class Favicon extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
         public bool $dark = true,
+        public string $url = 'http://localhost:8000',
     ) {
     }
 
@@ -21,6 +22,8 @@ class HeadMeta extends Component
      */
     public function render()
     {
-        return view('steward::components.head-meta');
+        $this->url = config('app.url');
+
+        return view('steward::components.favicon');
     }
 }

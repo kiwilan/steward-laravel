@@ -2,11 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-  <x-stw-head-meta
-    :dark="$dark"
-    :tile="$tile"
-    :theme="$theme"
-  />
+  <x-stw-favicon :dark="$dark" />
 
   @steward
 
