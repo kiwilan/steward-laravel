@@ -31,12 +31,18 @@ class OptimizeFreshCommand extends Commandable
     {
         $this->title();
 
-        $this->info('Removing logs...');
+        $this->info('Run `log:clear`...');
         $this->call('log:clear', [
             '--all' => true,
         ]);
 
-        $this->info('Reloading .env...');
+        $this->info('Run `view:clear`...');
+        $this->call('view:clear');
+
+        $this->info('Run `optimize:clear`...');
+        $this->call('optimize:clear');
+
+        $this->info('Run `config:clear`...');
         $this->call('config:clear');
 
         $this->info('Clearing cache (alternative to `cache:clear`)...');
@@ -50,18 +56,19 @@ class OptimizeFreshCommand extends Commandable
 
         foreach ($configs as $config) {
             if (File::exists($config)) {
+                $this->info('Delete '.$config);
                 File::delete($config);
             }
         }
 
-        $this->call('view:clear');
-
         $this->call('config:cache');
 
         $this->info('Optimize app...');
-        $this->call('optimize:clear');
-        $this->call('optimize');
+        // $this->call('optimize');
+        $this->call('config:cache');
+        $this->call('route:cache');
         $this->call('event:cache');
+        // $this->call('view:cache');
 
         $this->info('Done.');
 
