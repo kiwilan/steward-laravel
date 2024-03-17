@@ -41,3 +41,16 @@
   name="theme-color"
   content="#ffffff"
 >
+
+{{-- <link
+  type="image/x-icon"
+  href="{{ $url }}'/favicon.svg'"
+  rel="shortcut icon"
+  media="(prefers-color-scheme: light)"
+>
+<link
+  type="image/x-icon"
+  href="{{ $url }}'/favicon-dark.svg'"
+  rel="shortcut icon"
+  media="(prefers-color-scheme: dark)"
+> --}}
