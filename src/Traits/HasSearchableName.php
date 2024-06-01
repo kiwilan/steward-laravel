@@ -66,4 +66,11 @@ trait HasSearchableName
 
         return $results;
     }
+
+    public function saveWithoutSyncingToSearch(): void
+    {
+        $this::withoutSyncingToSearch(function () {
+            $this->saveQuietly();
+        });
+    }
 }
