@@ -42,6 +42,8 @@ class StewardServiceProvider extends PackageServiceProvider
                 \Kiwilan\Steward\Commands\ClearFreshCommand::class,
                 \Kiwilan\Steward\Commands\Jobs\JobsListCommand::class,
                 \Kiwilan\Steward\Commands\Jobs\JobsClearCommand::class,
+                \Kiwilan\Steward\Commands\Model\ModelBackupCommand::class,
+                \Kiwilan\Steward\Commands\Model\ModelRestoreCommand::class,
             ]);
     }
 
