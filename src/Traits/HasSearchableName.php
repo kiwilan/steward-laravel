@@ -73,4 +73,11 @@ trait HasSearchableName
             $this->saveQuietly();
         });
     }
+
+    public function updateWithoutSyncingToSearch(array $attributes = [], array $options = []): bool
+    {
+        return $this::withoutSyncingToSearch(function () use ($attributes, $options) {
+            return $this->update($attributes, $options);
+        });
+    }
 }
