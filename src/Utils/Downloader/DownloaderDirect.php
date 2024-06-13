@@ -9,6 +9,7 @@ class DownloaderDirect extends Downloader
 {
     protected function __construct(
         protected string $path,
+        protected ?int $speed = null,
     ) {
         parent::__construct(basename($path));
     }
@@ -36,6 +37,16 @@ class DownloaderDirect extends Downloader
     }
 
     /**
+     * Change the speed of the download, lower is faster.
+     */
+    public function speed(int $speed): self
+    {
+        $this->speed = $speed;
+
+        return $this;
+    }
+
+    /**
      * Trigger the download.
      */
     public function get(): void
@@ -50,6 +61,9 @@ class DownloaderDirect extends Downloader
             echo fread($file, 1024 * 8);
             ob_flush();
             flush();
+            if ($this->speed) {
+                usleep($this->speed);
+            }
         }
 
         fclose($file);
