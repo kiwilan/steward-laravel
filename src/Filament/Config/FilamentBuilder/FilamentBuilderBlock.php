@@ -11,8 +11,7 @@ class FilamentBuilderBlock
         protected string $name = 'block',
         protected ?string $icon = null,
         protected int $columns = 2,
-    ) {
-    }
+    ) {}
 
     public static function make(array $fields): self
     {

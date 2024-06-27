@@ -16,8 +16,7 @@ class SeedsPictureResponse
         public ?string $date = null,
         public ?SeedsPictureResponseCredits $credits = null,
         public ?SeedsPictureResponseLinks $links = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @return SeedsPictureResponse[]
@@ -74,8 +73,7 @@ class SeedsPictureResponseCredits
         public ?string $provider = null,
         public ?string $author = null,
         public ?string $url = null,
-    ) {
-    }
+    ) {}
 }
 
 class SeedsPictureResponseLinks
@@ -83,6 +81,5 @@ class SeedsPictureResponseLinks
     public function __construct(
         public ?string $show = null,
         public ?string $render = null,
-    ) {
-    }
+    ) {}
 }

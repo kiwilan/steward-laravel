@@ -15,8 +15,7 @@ class Downloader
         protected ?int $size = null,
         protected string $mimeType = 'application/octet-stream',
         protected int $maxExecutionTime = 36000,
-    ) {
-    }
+    ) {}
 
     /**
      * Create a downloader to download a file directly.

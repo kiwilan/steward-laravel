@@ -20,8 +20,7 @@ class FakerRichText
         protected bool $image = true,
         protected bool $link = true,
         protected bool $extra = true,
-    ) {
-    }
+    ) {}
 
     public function useHtml(): self
     {

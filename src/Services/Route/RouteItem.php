@@ -17,8 +17,7 @@ class RouteItem
         protected ?array $middleware = null,
         protected ?string $example = null,
         protected ?array $parameters = null,
-    ) {
-    }
+    ) {}
 
     public function name(): ?string
     {

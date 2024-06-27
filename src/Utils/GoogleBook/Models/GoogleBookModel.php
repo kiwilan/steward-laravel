@@ -16,8 +16,7 @@ class GoogleBookModel
         protected ?GoogleBookVolumeSaleInfo $saleInfo = null,
         protected ?GoogleBookAccessInfo $accessInfo = null,
         protected ?GoogleBookSearchInfo $searchInfo = null,
-    ) {
-    }
+    ) {}
 
     public static function make(array $body, string $request): self
     {
@@ -108,8 +107,7 @@ class GoogleBookVolumeInfo
         protected ?string $previewLink = null,
         protected ?string $infoLink = null,
         protected ?string $canonicalVolumeLink = null,
-    ) {
-    }
+    ) {}
 
     public static function make(array $search): self
     {
@@ -237,8 +235,7 @@ class GoogleBookIndustryIdentifier
     protected function __construct(
         protected ?string $type = null,
         protected ?string $identifier = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Convert GoogleBookIndustryIdentifier to Collection.
@@ -276,8 +273,7 @@ class GoogleBookReadingModes
     protected function __construct(
         protected bool $text = false,
         protected bool $image = false,
-    ) {
-    }
+    ) {}
 
     public static function make(array $search): self
     {
@@ -310,8 +306,7 @@ class GoogleBookVolumeSaleInfo
         protected ?GoogleBookVolumeSaleInfoPrice $listPrice = null,
         protected ?GoogleBookVolumeSaleInfoPrice $retailPrice = null,
         protected ?string $buyLink = null,
-    ) {
-    }
+    ) {}
 
     public static function make(array $search): self
     {
@@ -369,8 +364,7 @@ class GoogleBookVolumeSaleInfoPrice
     protected function __construct(
         protected ?float $amount = null,
         protected ?string $currencyCode = null,
-    ) {
-    }
+    ) {}
 
     public static function make(?array $search): self
     {
@@ -402,8 +396,7 @@ class GoogleBookVolumeSaleInfoOffer
         protected ?GoogleBookVolumeSaleInfoOfferPrice $listPrice = null,
         protected ?GoogleBookVolumeSaleInfoOfferPrice $retailPrice = null,
         protected ?bool $giftable = null,
-    ) {
-    }
+    ) {}
 
     public static function make(?array $search): self
     {
@@ -445,8 +438,7 @@ class GoogleBookVolumeSaleInfoOfferPrice
     protected function __construct(
         protected ?float $amount = null,
         protected ?string $currencyCode = null,
-    ) {
-    }
+    ) {}
 
     public static function make(?array $search): self
     {
@@ -484,8 +476,7 @@ class GoogleBookAccessInfo
         protected ?string $webReaderLink = null,
         protected bool $accessViewStatus = false,
         protected bool $quoteSharingAllowed = false,
-    ) {
-    }
+    ) {}
 
     public static function make(array $search): self
     {
@@ -558,8 +549,7 @@ class GoogleBookAccessInfoAvailable
 {
     protected function __construct(
         protected bool $isAvailable = false,
-    ) {
-    }
+    ) {}
 
     public static function make(?array $search): self
     {
@@ -582,8 +572,7 @@ class GoogleBookSearchInfo
 {
     protected function __construct(
         protected ?string $textSnippet = null,
-    ) {
-    }
+    ) {}
 
     public static function make(array $search): self
     {

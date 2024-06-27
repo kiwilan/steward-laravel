@@ -21,8 +21,7 @@ class MarkdownToHtmlService
         public ?string $path_file = null,
         public ?string $path_image = null,
         public ?string $html = null,
-    ) {
-    }
+    ) {}
 
     public static function make(object $md, string $type): MarkdownToHtmlService|false
     {

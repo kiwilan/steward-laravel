@@ -10,8 +10,7 @@ class BashCommand
     public function __construct(
         public string $command,
         public array $args = [],
-    ) {
-    }
+    ) {}
 
     public function execute(): string|false
     {

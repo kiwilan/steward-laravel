@@ -13,8 +13,7 @@ abstract class SocialModule
         //
         protected ?string $html = null,
         protected bool $html_is_custom = false,
-    ) {
-    }
+    ) {}
 
     public function getMediaId(): ?string
     {

@@ -18,8 +18,7 @@ class ApplicationQuery extends Strategy
     public function __construct(
         public mixed $routeName,
         public ?array $urlParams = []
-    ) {
-    }
+    ) {}
 
     /**
      * @see https://scribe.knuckles.wtf/laravel/advanced/plugins

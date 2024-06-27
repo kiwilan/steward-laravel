@@ -14,8 +14,7 @@ class Tiptap extends Component
         public string $label = '',
         public array $options = [],
         public bool $footer = false,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

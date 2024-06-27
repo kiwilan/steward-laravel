@@ -18,8 +18,7 @@ class RouteService
         protected array $routes = [],
         protected array $skip = [],
         protected ?Collection $list = null,
-    ) {
-    }
+    ) {}
 
     public static function make(array $skip = []): self
     {

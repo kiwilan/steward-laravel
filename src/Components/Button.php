@@ -14,8 +14,7 @@ class Button extends Component
         public ?string $href = null,
         public bool $external = false,
         public mixed $slot = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

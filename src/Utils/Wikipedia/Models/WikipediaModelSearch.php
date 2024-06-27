@@ -15,8 +15,7 @@ class WikipediaModelSearch
         protected ?string $wordcount = null,
         protected ?string $snippet = null,
         protected ?string $timestamp = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Convert WikipediaModelSearch to Collection.

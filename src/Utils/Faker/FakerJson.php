@@ -16,8 +16,7 @@ class FakerJson
         protected ?ClassParserItem $item = null,
         protected ?Model $model = null,
         protected array $transFields = [],
-    ) {
-    }
+    ) {}
 
     public function get(string $class): bool
     {

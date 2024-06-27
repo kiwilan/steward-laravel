@@ -11,8 +11,7 @@ class InternetAccess
         protected ?string $status = null,
         protected ?int $status_code = null,
         protected bool $is_available = false
-    ) {
-    }
+    ) {}
 
     /**
      * Check if the internet is available.

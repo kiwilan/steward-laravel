@@ -29,8 +29,7 @@ class ChartByMonth
         protected ?Collection $data = null,
         protected ?int $startMonth = null,
         protected ?int $endMonth = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create a new chart instance.

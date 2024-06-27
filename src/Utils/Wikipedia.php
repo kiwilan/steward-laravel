@@ -26,8 +26,7 @@ class Wikipedia
         protected ?WikipediaQuery $query = null,
         protected ?int $selected = null,
         protected ?WikipediaItem $item = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create WikipediaService from Model and create WikipediaQuery for each entity only if hasn't WikipediaItem.

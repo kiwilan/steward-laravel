@@ -8,8 +8,7 @@ class WikipediaModelPageThumbnail
         protected ?string $source = null,
         protected ?string $width = null,
         protected ?string $height = null,
-    ) {
-    }
+    ) {}
 
     public static function make(array $thumbnail): self
     {

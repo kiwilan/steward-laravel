@@ -10,8 +10,7 @@ class WordpressBuilderFaker
 {
     public function __construct(
         protected Generator $faker,
-    ) {
-    }
+    ) {}
 
     public static function make(): array
     {

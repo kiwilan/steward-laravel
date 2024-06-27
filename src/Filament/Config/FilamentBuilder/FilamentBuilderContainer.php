@@ -12,8 +12,7 @@ class FilamentBuilderContainer
         protected ?int $minItems = null,
         protected ?int $maxItems = null,
         protected int $columnSpan = 2,
-    ) {
-    }
+    ) {}
 
     public static function make(array $content): self
     {

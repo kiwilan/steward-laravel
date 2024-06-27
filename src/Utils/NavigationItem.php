@@ -14,8 +14,7 @@ class NavigationItem
         public ?string $icon = null,
         public bool $external = false,
         public ?UserRoleEnum $role = null,
-    ) {
-    }
+    ) {}
 
     public function current(): bool
     {

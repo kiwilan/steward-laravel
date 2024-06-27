@@ -21,8 +21,7 @@ class MetaClassItem
         protected ?string $classSlugPlural = null,
         protected ?string $firstChar = null,
         protected array $traits = [],
-    ) {
-    }
+    ) {}
 
     /**
      * Create a new MetaClass instance.

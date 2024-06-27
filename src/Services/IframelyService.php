@@ -16,8 +16,7 @@ class IframelyService
         protected Client $client,
         protected ?string $api_key = null,
         protected bool $omit_script = false,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  string  $api  Iframely instance to use, can be set from `steward.iframely.api`

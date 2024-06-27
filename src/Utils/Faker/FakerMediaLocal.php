@@ -17,8 +17,7 @@ class FakerMediaLocal
         public Faker $faker,
         public ?string $basePath = null,
         public ?string $path = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  Collection<int, Model>  $models

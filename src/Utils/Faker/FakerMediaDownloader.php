@@ -20,8 +20,7 @@ class FakerMediaDownloader
     public function __construct(
         public Faker $faker,
         public array $config = [],
-    ) {
-    }
+    ) {}
 
     /**
      * @param  SeedsApiCategoryEnum|null  $category  default is `all`

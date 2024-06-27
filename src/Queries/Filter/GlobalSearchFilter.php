@@ -9,8 +9,7 @@ class GlobalSearchFilter implements Filter
 {
     public function __construct(
         public array $fields,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Builder $query, $value, string $property)
     {

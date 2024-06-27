@@ -13,8 +13,7 @@ class Checkbox extends Component
         public string $name = 'checkbox',
         public string $label = '',
         public bool $checked = false,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

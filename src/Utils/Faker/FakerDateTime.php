@@ -12,8 +12,7 @@ class FakerDateTime
 {
     public function __construct(
         public Faker $faker,
-    ) {
-    }
+    ) {}
 
     /**
      * Generate timestamps.

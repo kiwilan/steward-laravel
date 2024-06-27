@@ -29,8 +29,7 @@ class LiveNotifyItem
         protected ?string $message = 'Notification message',
         protected string $icon = 'heroicon-o-information-circle',
         protected string $iconColor = 'primary',
-    ) {
-    }
+    ) {}
 
     /**
      * Set notification title.

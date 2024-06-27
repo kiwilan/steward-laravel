@@ -15,8 +15,7 @@ class DateTimeZoneBuilder
         protected ?int $offset = null,
         protected ?string $pretty_offset = null,
         protected ?string $label = null,
-    ) {
-    }
+    ) {}
 
     public static function make(bool $sort_utc = false): array
     {

@@ -14,8 +14,7 @@ class SlugService
         protected bool $isEmpty = false,
         protected ?string $name = null,
         protected ?string $slug = null,
-    ) {
-    }
+    ) {}
 
     public static function make(?string $origin = null): string
     {

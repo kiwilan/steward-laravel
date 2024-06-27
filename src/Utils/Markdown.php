@@ -26,8 +26,7 @@ class Markdown
         protected array $images = [],
         protected ?array $components = null,
         protected array $headers = [],
-    ) {
-    }
+    ) {}
 
     public static function make(
         string $pathOrContent,

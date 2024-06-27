@@ -14,8 +14,7 @@ class GoogleBookQuery
         protected string $isbn,
         protected ?string $url = null,
         protected ?GoogleBookModel $model = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create new GoogleBookQuery from GoogleBook.

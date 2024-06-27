@@ -9,8 +9,7 @@ class FakerTimestamps
     public function __construct(
         public Carbon $createdAtCarbon,
         public Carbon $updatedAtCarbon,
-    ) {
-    }
+    ) {}
 
     public function getCreatedAt(): string
     {

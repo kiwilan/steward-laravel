@@ -20,8 +20,7 @@ class SpatieMedia
         protected ?string $extension = null,
         protected ?SpatieMediaMethodEnum $method = null,
         protected array $allowedMimeTypes = []
-    ) {
-    }
+    ) {}
 
     /**
      * Add a media file to the model.

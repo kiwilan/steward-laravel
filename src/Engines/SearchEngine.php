@@ -29,8 +29,7 @@ class SearchEngine
         protected int $count = 0,
         protected ?Collection $results = null,
         protected ?string $resource = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Search for models.

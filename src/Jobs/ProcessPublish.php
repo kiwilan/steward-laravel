@@ -27,8 +27,7 @@ class ProcessPublish implements ShouldQueue
         public string $model,
         public bool $unpublish = false,
         public array $recipients = [],
-    ) {
-    }
+    ) {}
 
     /**
      * Execute the job.

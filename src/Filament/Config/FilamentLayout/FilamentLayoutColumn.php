@@ -14,8 +14,7 @@ class FilamentLayoutColumn
         protected array $sections = [],
         protected int $width = 2,
         protected bool|Closure $hidden = false,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  FilamentLayoutSection[]  $sections

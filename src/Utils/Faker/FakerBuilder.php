@@ -11,8 +11,7 @@ class FakerBuilder
         protected string $builder,
         protected ?string $name = null,
         protected ?string $builder_faker = null,
-    ) {
-    }
+    ) {}
 
     public static function make(Faker $factory, string $builder): array
     {

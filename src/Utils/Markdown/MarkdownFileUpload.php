@@ -9,8 +9,7 @@ class MarkdownFileUpload
     protected function __construct(
         public ?string $saveDirectory = null,
         public ?string $baseUrl = null,
-    ) {
-    }
+    ) {}
 
     public static function make(?string $saveDirectory = null, ?string $baseUrl = null): self
     {
@@ -106,6 +105,5 @@ class FileServiceItem
         public ?string $name = null,
         public ?string $savePath = null,
         public ?string $localUrl = null,
-    ) {
-    }
+    ) {}
 }

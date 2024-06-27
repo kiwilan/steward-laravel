@@ -34,8 +34,7 @@ class GoogleBookItem
         protected ?string $buyLink = null,
         protected ?string $isbn10 = null,
         protected ?string $isbn13 = null,
-    ) {
-    }
+    ) {}
 
     public static function make(GoogleBookModel $model, string $request): self
     {

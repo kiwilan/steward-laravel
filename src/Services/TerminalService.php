@@ -30,8 +30,7 @@ class TerminalService
         protected string $countOutput = '0',
         protected bool $verbose = false,
         protected array $output = [],
-    ) {
-    }
+    ) {}
 
     public static function make(bool $verbose = false): self
     {

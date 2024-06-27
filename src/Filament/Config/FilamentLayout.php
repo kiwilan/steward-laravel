@@ -13,8 +13,7 @@ class FilamentLayout
         protected Form $form,
         protected int $width = 3,
         protected array $schema = [],
-    ) {
-    }
+    ) {}
 
     public static function make(Form $form): self
     {

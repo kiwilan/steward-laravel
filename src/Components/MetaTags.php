@@ -20,8 +20,7 @@ class MetaTags extends Component
         public ?string $domain = null,
         public ?string $author = null,
         public ?string $color = '#000000',
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.
