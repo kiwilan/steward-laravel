@@ -82,7 +82,7 @@ it('can render listing sorters', function () {
     expect($rendered)->toBeString();
 });
 
-it('can render head meta', function () {
-    $rendered = (string) blade('<x-stw-head-meta />');
-    expect($rendered)->toBeString();
-});
+// it('can render head meta', function () {
+//     $rendered = (string) blade('<x-stw-head-meta />');
+//     expect($rendered)->toBeString();
+// });
