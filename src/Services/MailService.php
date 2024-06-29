@@ -16,8 +16,7 @@ class MailService implements MailServer
         protected int $port = 0,
         protected int $result = 0,
         protected string $error = ''
-    ) {
-    }
+    ) {}
 
     // TODO composer require symfony/mailgun-mailer symfony/http-client
     public static function create(string $username, string $password, string $smtp = 'smtp.mailtrap.io', int $port = 2525): MailService

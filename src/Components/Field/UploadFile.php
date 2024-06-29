@@ -16,8 +16,7 @@ class UploadFile extends Component
         public ?string $accept = 'image/jpeg,image/png,image/webp',
         public ?string $accepted = null,
         public ?string $size = '1MB',
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

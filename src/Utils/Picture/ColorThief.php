@@ -25,8 +25,7 @@ class ColorThief
         protected int $type = 0,
         protected GdImage|false|null $handle = null,
         protected string $color = 'fff',
-    ) {
-    }
+    ) {}
 
     public static function make(mixed $image, string $default = 'fff'): self
     {

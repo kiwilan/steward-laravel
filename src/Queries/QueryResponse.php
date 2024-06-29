@@ -26,8 +26,7 @@ class QueryResponse
         public ?string $prev_page_url = null,
         public ?int $to = null,
         public ?int $total = null,
-    ) {
-    }
+    ) {}
 
     public static function make(LengthAwarePaginator|Collection $original, string $defaultSort): self
     {
@@ -83,8 +82,7 @@ class QueryResponseLink
         public ?string $url,
         public ?string $label,
         public bool $active = false,
-    ) {
-    }
+    ) {}
 
     public static function toArray(array $links): array
     {

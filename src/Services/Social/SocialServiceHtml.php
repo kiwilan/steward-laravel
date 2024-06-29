@@ -11,8 +11,7 @@ class SocialServiceHtml
         protected int $height = 500,
         protected string $title = '',
         protected string $allow = '',
-    ) {
-    }
+    ) {}
 
     public static function make(SocialModule $social): ?string
     {

@@ -25,6 +25,5 @@ class DownloadFile
         public ?string $format = null,
         public ?int $count = null,
         public ?bool $isZip = null,
-    ) {
-    }
+    ) {}
 }

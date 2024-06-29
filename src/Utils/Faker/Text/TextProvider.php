@@ -9,8 +9,7 @@ class TextProvider
     protected function __construct(
         protected FakerTextEnum $type,
         protected TextProviderInterface $provider,
-    ) {
-    }
+    ) {}
 
     public static function make(FakerTextEnum $type = FakerTextEnum::lorem): TextProvider
     {

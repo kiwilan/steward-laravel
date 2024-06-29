@@ -14,8 +14,7 @@ class BladeApp extends Component
         public bool $dark = false,
         public string $tile = '#da532c',
         public string $theme = '#ffffff',
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

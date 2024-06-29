@@ -26,8 +26,7 @@ class Text extends Component
         public mixed $regex = null,
         public mixed $min = null,
         public mixed $max = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

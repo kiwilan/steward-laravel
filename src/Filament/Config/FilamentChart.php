@@ -16,8 +16,7 @@ class FilamentChart
     public array $stats = [];
 
     public function __construct(
-    ) {
-    }
+    ) {}
 
     public static function chartBy(string $table, string $field, ?string $limit_year = null, bool $published = false): FilamentChart
     {

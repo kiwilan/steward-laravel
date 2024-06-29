@@ -13,8 +13,7 @@ class SortModule
         public ?string $scope = null,
         public mixed $value = null,
         public bool $filter = false,
-    ) {
-    }
+    ) {}
 
     public static function make(string $field, ?string $label = null): SortModule
     {

@@ -19,8 +19,7 @@ class ExportQuery
         protected ?string $path = null,
         protected bool $toSave = false,
         protected bool $skipExcel = false,
-    ) {
-    }
+    ) {}
 
     public static function make(Collection $data, QueryBuilder $query, string $name, ?string $export = null, ?string $path = null, bool $skipExcel = false): self
     {

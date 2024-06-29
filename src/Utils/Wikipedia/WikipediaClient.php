@@ -8,8 +8,7 @@ class WikipediaClient
         protected string $url,
         protected ?array $body = null,
         protected bool $isFailed = false,
-    ) {
-    }
+    ) {}
 
     public static function make(string $url, bool $json = true, bool $skipErrors = true): self
     {

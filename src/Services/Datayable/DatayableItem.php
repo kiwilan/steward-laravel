@@ -18,6 +18,5 @@ class DatayableItem
         public bool $with_at = false,
         public bool $is_active = true,
         public bool $is_link = true,
-    ) {
-    }
+    ) {}
 }

@@ -15,8 +15,7 @@ class ScoutService
 
     protected function __construct(
         protected ?string $path = null,
-    ) {
-    }
+    ) {}
 
     public static function make(?string $path = null): self
     {

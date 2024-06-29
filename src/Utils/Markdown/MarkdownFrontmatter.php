@@ -9,8 +9,7 @@ class MarkdownFrontmatter
      */
     protected function __construct(
         protected array $frontMatter,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  array<string, mixed> | null  $frontMatter

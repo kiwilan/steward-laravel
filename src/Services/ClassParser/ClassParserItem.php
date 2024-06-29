@@ -30,8 +30,7 @@ class ClassParserItem
         protected ?Model $model = null,
         protected ?ReflectionClass $reflect = null,
         protected ?MetaClassItem $meta = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Parse class to get some informations about.

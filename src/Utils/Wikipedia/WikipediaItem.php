@@ -24,8 +24,7 @@ class WikipediaItem
         protected ?string $fullText = null,
         protected ?string $pictureUrl = null,
         protected ?string $pictureBase64 = null,
-    ) {
-    }
+    ) {}
 
     public static function make(
         WikipediaModelPage $model,

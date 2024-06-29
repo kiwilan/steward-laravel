@@ -15,8 +15,7 @@ class FilamentBuilder
         protected ?int $minItems = null,
         protected ?int $maxItems = null,
         protected mixed $instance = null,
-    ) {
-    }
+    ) {}
 
     public static function make(string $builder): self
     {

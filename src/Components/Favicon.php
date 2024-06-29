@@ -12,8 +12,7 @@ class Favicon extends Component
     public function __construct(
         public bool $dark = true,
         public string $url = 'http://localhost:8000',
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

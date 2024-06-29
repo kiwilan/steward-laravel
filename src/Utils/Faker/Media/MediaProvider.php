@@ -14,8 +14,7 @@ class MediaProvider
     protected function __construct(
         protected MediaApiEnum $type = MediaApiEnum::seeds,
         protected ?MediaApi $api = null,
-    ) {
-    }
+    ) {}
 
     public static function make(): self
     {

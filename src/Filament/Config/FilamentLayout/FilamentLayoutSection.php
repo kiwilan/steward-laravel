@@ -8,8 +8,7 @@ class FilamentLayoutSection
 {
     protected function __construct(
         protected array $fields = [],
-    ) {
-    }
+    ) {}
 
     /**
      * @param  Component[]  $fields

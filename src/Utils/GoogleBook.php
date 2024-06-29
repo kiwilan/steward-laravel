@@ -18,8 +18,7 @@ class GoogleBook
         protected bool $isAvailable = false,
         protected ?GoogleBookQuery $query = null,
         protected ?GoogleBookItem $item = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create GoogleBook from ISBN, can be ISBN-10 or ISBN-13.

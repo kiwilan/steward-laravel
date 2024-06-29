@@ -27,8 +27,7 @@ class WikipediaQuery
         protected bool $isAvailable = false,
         protected array $searchResults = [],
         protected ?WikipediaModelPage $modelPage = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create WikipediaQuery.

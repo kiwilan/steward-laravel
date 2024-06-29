@@ -17,8 +17,7 @@ class SocialService
         protected bool $is_frame = false,
         protected bool $is_custom = false,
         public ?SocialModule $module = null,
-    ) {
-    }
+    ) {}
 
     public static function make(string $url): self
     {

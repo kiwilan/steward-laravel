@@ -7,6 +7,5 @@ class DownloaderZipStreamItem
     public function __construct(
         public string $fileName,
         public string $path,
-    ) {
-    }
+    ) {}
 }

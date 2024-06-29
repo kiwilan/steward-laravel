@@ -16,8 +16,7 @@ class FilterModule
         public bool $filter = false,
         public ?GlobalSearchFilter $global = null,
         public ?Filter $spatieFilter = null,
-    ) {
-    }
+    ) {}
 
     public static function partial(string $field): FilterModule
     {

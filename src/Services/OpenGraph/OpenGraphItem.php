@@ -21,8 +21,7 @@ class OpenGraphItem
         public ?string $site_name = null,
         public ?string $locale = null,
         public ?string $theme_color = null,
-    ) {
-    }
+    ) {}
 
     public static function make(string $url): OpenGraphItem
     {

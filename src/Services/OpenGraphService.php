@@ -11,8 +11,7 @@ class OpenGraphService
         protected string $url,
         protected ?OpenGraphItem $openGraph = null,
         protected bool $is_twitter = false,
-    ) {
-    }
+    ) {}
 
     public static function make(string $url): ?OpenGraphItem
     {

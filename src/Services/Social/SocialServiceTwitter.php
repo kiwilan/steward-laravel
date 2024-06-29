@@ -12,8 +12,7 @@ class SocialServiceTwitter
         protected ?string $embed_url = null,
         protected ?array $response = [],
         protected bool $is_valid = false,
-    ) {
-    }
+    ) {}
 
     public static function make(string $url): self
     {

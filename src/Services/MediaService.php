@@ -29,8 +29,7 @@ class MediaService
         public ?string $collection = null,
         public ?string $extension = null,
         public ?SpatieMediaMethodEnum $method = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Add a media file to the model.

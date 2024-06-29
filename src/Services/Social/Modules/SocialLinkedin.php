@@ -16,7 +16,5 @@ class SocialLinkedin extends SocialModule implements SocialInterface
         return $module;
     }
 
-    public function regex()
-    {
-    }
+    public function regex() {}
 }

@@ -20,8 +20,7 @@ class RichEditor extends Component
         public array $options = [],
         public bool $footer = false,
         public string $id = '',
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

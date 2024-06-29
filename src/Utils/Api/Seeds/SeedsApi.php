@@ -21,8 +21,7 @@ class SeedsApi implements MediaApi
         protected SeedsApiCategoryEnum $category = SeedsApiCategoryEnum::all,
         protected SeedsApiSizeEnum $size = SeedsApiSizeEnum::medium,
         protected ?int $count = 1,
-    ) {
-    }
+    ) {}
 
     public static function make(): self
     {

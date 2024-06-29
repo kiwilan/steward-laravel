@@ -29,8 +29,7 @@ class Index extends Component
 
         public mixed $filters = null, // slot
         public mixed $sorters = null, // slot
-    ) {
-    }
+    ) {}
 
     public function render(): Closure|View|string
     {

@@ -13,8 +13,7 @@ class Toggle extends Component
         public string $name = 'toggle',
         public ?string $hint = null,
         public string $label = '',
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

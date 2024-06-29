@@ -22,8 +22,7 @@ class WikipediaModelPage
         protected ?WikipediaModelPageThumbnail $thumbnail = null,
         protected ?string $pageimage = null,
         protected ?string $extract = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Convert WikipediaModelPage.

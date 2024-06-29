@@ -17,8 +17,7 @@ class FakerText
     public function __construct(
         public Faker $faker,
         public FakerTextEnum $type = FakerTextEnum::lorem,
-    ) {
-    }
+    ) {}
 
     /**
      * Generate a title.

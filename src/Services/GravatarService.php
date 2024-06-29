@@ -9,8 +9,7 @@ class GravatarService
         protected int $size = 200,
         protected string $rating = 'g', // g, pg, r, x
         protected ?string $email = null,
-    ) {
-    }
+    ) {}
 
     public static function make(): self
     {

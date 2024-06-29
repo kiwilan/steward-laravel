@@ -14,8 +14,7 @@ class Select extends Component
         public string $label = '',
         public ?string $default = null,
         public array $options = [],
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

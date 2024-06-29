@@ -10,8 +10,7 @@ class OpenGraphTwitter
         protected string $origin_url,
         protected SocialServiceTwitter $social,
         protected ?OpenGraphItem $open_graph = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @see https://publish.twitter.com
