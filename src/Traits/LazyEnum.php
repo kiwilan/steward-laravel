@@ -69,6 +69,21 @@ trait LazyEnum
         return $array;
     }
 
+    public static function toLabels(): array
+    {
+        $array = [];
+
+        foreach (static::cases() as $definition) {
+            if (method_exists($definition, 'getLabel')) {
+                $array[$definition->name] = $definition->getLabel();
+            } else {
+                $array[$definition->name] = $definition->name;
+            }
+        }
+
+        return $array;
+    }
+
     public function getLabel(): ?string
     {
         return $this->name;
