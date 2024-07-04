@@ -32,8 +32,7 @@ class Faker
         protected ?FakerMediaLocal $mediaLocal = null,
         protected ?FakerMediaDownloader $mediaDownloader = null,
         protected ?FakerJson $json = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Clear `storage/app/public` and `storage/app/download` directories before seeding.
