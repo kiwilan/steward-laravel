@@ -32,8 +32,12 @@ class Faker
         protected ?FakerMediaLocal $mediaLocal = null,
         protected ?FakerMediaDownloader $mediaDownloader = null,
         protected ?FakerJson $json = null,
-    ) {}
+    ) {
+    }
 
+    /**
+     * Clear `storage/app/public` and `storage/app/download` directories before seeding.
+     */
     public static function beforeSeed(): bool
     {
         $paths = [
@@ -50,12 +54,18 @@ class Faker
         return true;
     }
 
+    /**
+     * Run `scout:fresh` and `media:clean` commands after seeding.
+     */
     public static function afterSeed(): void
     {
         Artisan::call(ScoutFreshCommand::class);
         Artisan::call(MediaCleanCommand::class, ['--force' => true]);
     }
 
+    /**
+     * Create a new instance of the service.
+     */
     public static function make(string|\UnitEnum|null $mediaPath = null): self
     {
         $generator = \Faker\Factory::create();
@@ -70,6 +80,9 @@ class Faker
         return $service;
     }
 
+    /**
+     * Create a new instance of the service without search.
+     */
     public static function noSearch(string $model, Closure $closure): mixed
     {
         $item = ClassParserItem::make($model);
@@ -81,6 +94,9 @@ class Faker
         return $model::withoutSyncingToSearch(fn () => $closure());
     }
 
+    /**
+     * `text()` and `richText()` factories.
+     */
     public function useText(?FakerTextEnum $type = null): self
     {
         $this->text = $this->setFakerText($type);
@@ -89,21 +105,41 @@ class Faker
         return $this;
     }
 
+    /**
+     * Get the generator instance.
+     */
     public function generator(): Generator
     {
         return $this->generator;
     }
 
+    /**
+     * @deprecated Use `generator()` method instead.
+     */
+    public function faker(): Generator
+    {
+        return $this->generator();
+    }
+
+    /**
+     * Get the text factory instance.
+     */
     public function text(): FakerText
     {
         return $this->text;
     }
 
+    /**
+     * Get the rich text factory instance.
+     */
     public function richText(): FakerRichText
     {
         return $this->richText;
     }
 
+    /**
+     * Get the date time factory instance.
+     */
     public function dateTime(): FakerDateTime
     {
         return $this->dateTime;
