@@ -22,7 +22,7 @@ trait HasSearchableName
 {
     public function searchableNameAs(): string
     {
-        $instance = new $this();
+        $instance = new $this;
         $class = new ReflectionClass($instance);
         $name = Str::snake($class->getShortName());
 

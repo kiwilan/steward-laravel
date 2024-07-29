@@ -30,7 +30,7 @@ class Markdown
 
     public static function make(
         string $pathOrContent,
-        MarkdownOptions $options = new MarkdownOptions(),
+        MarkdownOptions $options = new MarkdownOptions,
     ): self {
         $path = null;
         $filename = 'content';
@@ -326,7 +326,7 @@ class Markdown
 
     public function revert(): string
     {
-        $converter = new HtmlConverter();
+        $converter = new HtmlConverter;
 
         return $converter->convert($this->content);
     }
@@ -356,22 +356,22 @@ class Markdown
         $config = $this->options->config();
 
         return (new Environment($config))
-            ->addExtension(new \League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension())
-            ->addExtension(new \League\CommonMark\Extension\GithubFlavoredMarkdownExtension())
-            ->addExtension(new \League\CommonMark\Extension\Attributes\AttributesExtension())
-            ->addExtension(new \League\CommonMark\Extension\Autolink\AutolinkExtension())
-            ->addExtension(new \League\CommonMark\Extension\DefaultAttributes\DefaultAttributesExtension())
-            ->addExtension(new \League\CommonMark\Extension\DescriptionList\DescriptionListExtension())
-            ->addExtension(new \League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension())
-            ->addExtension(new \League\CommonMark\Extension\ExternalLink\ExternalLinkExtension())
-            ->addExtension(new \League\CommonMark\Extension\Footnote\FootnoteExtension())
-            ->addExtension(new \League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension())
+            ->addExtension(new \League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension)
+            ->addExtension(new \League\CommonMark\Extension\GithubFlavoredMarkdownExtension)
+            ->addExtension(new \League\CommonMark\Extension\Attributes\AttributesExtension)
+            ->addExtension(new \League\CommonMark\Extension\Autolink\AutolinkExtension)
+            ->addExtension(new \League\CommonMark\Extension\DefaultAttributes\DefaultAttributesExtension)
+            ->addExtension(new \League\CommonMark\Extension\DescriptionList\DescriptionListExtension)
+            ->addExtension(new \League\CommonMark\Extension\DisallowedRawHtml\DisallowedRawHtmlExtension)
+            ->addExtension(new \League\CommonMark\Extension\ExternalLink\ExternalLinkExtension)
+            ->addExtension(new \League\CommonMark\Extension\Footnote\FootnoteExtension)
+            ->addExtension(new \League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension)
             // ->addExtension(new \League\CommonMark\Extension\InlinesOnly\InlinesOnlyExtension())
-            ->addExtension(new \League\CommonMark\Extension\Mention\MentionExtension())
-            ->addExtension(new \League\CommonMark\Extension\SmartPunct\SmartPunctExtension())
+            ->addExtension(new \League\CommonMark\Extension\Mention\MentionExtension)
+            ->addExtension(new \League\CommonMark\Extension\SmartPunct\SmartPunctExtension)
             // ->addExtension(new \League\CommonMark\Extension\Strikethrough\StrikethroughExtension())
             // ->addExtension(new \League\CommonMark\Extension\TableOfContents\TableOfContentsExtension())
-            ->addExtension(new \League\CommonMark\Extension\Table\TableExtension())
-            ->addExtension(new \League\CommonMark\Extension\TaskList\TaskListExtension());
+            ->addExtension(new \League\CommonMark\Extension\Table\TableExtension)
+            ->addExtension(new \League\CommonMark\Extension\TaskList\TaskListExtension);
     }
 }

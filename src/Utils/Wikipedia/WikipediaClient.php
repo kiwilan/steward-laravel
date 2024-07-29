@@ -14,7 +14,7 @@ class WikipediaClient
     {
         $self = new self($url);
 
-        $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client;
         $options = [
             'http_errors' => $skipErrors,
         ];

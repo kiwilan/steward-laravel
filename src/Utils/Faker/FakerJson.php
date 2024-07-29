@@ -95,7 +95,7 @@ class FakerJson
         $created_model = $this->class::create($data_entity);
 
         /** @var Model */
-        $instance = new $this->class();
+        $instance = new $this->class;
 
         if ($instance->mediable) { // @phpstan-ignore-line
             /** @var object */

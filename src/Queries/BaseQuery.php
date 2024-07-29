@@ -90,11 +90,11 @@ abstract class BaseQuery
         if ($model instanceof Builder) { // Instance of Builder from model
             $instance = $model->getModel();
             $this->class = get_class($instance);
-            $this->instance = new $instance();
+            $this->instance = new $instance;
             $this->builder = $model;
         } else {
             $this->class = $model;
-            $this->instance = new $model();
+            $this->instance = new $model;
             $this->builder = $this->class::query();
 
             if (! $this->instance instanceof Model) {

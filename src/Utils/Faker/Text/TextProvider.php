@@ -14,10 +14,10 @@ class TextProvider
     public static function make(FakerTextEnum $type = FakerTextEnum::lorem): TextProvider
     {
         $provider = match ($type) {
-            FakerTextEnum::lorem => new LoremProvider(),
-            FakerTextEnum::sindarin => new SindarinProvider(),
-            FakerTextEnum::klingon => new KlingonProvider(),
-            FakerTextEnum::navi => new NaviProvider(),
+            FakerTextEnum::lorem => new LoremProvider,
+            FakerTextEnum::sindarin => new SindarinProvider,
+            FakerTextEnum::klingon => new KlingonProvider,
+            FakerTextEnum::navi => new NaviProvider,
         };
 
         return new self($type, $provider);

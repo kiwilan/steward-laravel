@@ -207,7 +207,7 @@ class SearchEngine
      */
     private function modelName(string $class): string
     {
-        $instance = new $class();
+        $instance = new $class;
         $class = new ReflectionClass($instance);
         $name = $class->getShortName();
 

@@ -37,7 +37,7 @@ class PublishCommand extends Commandable
         $unpublish = $this->option('unpublish') ?: false;
 
         $meta = MetaClassItem::make($class);
-        $instance = new $class();
+        $instance = new $class;
 
         if (! $meta->useTrait(\Kiwilan\Steward\Traits\Publishable::class)) {
             $this->error('Class does not use the Publishable trait.');

@@ -118,7 +118,7 @@ function books(): Collection
     $data = json_decode($json, true);
 
     foreach ($data as $item) {
-        $class = new stdClass();
+        $class = new stdClass;
         $class->title = $item['title'];
         $class->language_slug = $item['language_slug'];
         $items->push($class);
@@ -138,7 +138,7 @@ function series(): Collection
     $data = json_decode($json, true);
 
     foreach ($data as $item) {
-        $class = new stdClass();
+        $class = new stdClass;
         $class->title = $item['title'];
         $class->language_slug = $item['language_slug'];
         $items->push($class);
@@ -162,7 +162,7 @@ function booksModel(): Collection
 
     foreach ($data as $item) {
         $id++;
-        $book = new Book();
+        $book = new Book;
         $book->id = $id;
         $book->title = $item['title'];
         $book->language_slug = $item['language_slug'];
@@ -186,7 +186,7 @@ function booksIsbn(): Collection
 
     foreach ($data as $item) {
         $id++;
-        $class = new stdClass();
+        $class = new stdClass;
         $class->id = $id;
         $class->title = $item['title'];
         $class->isbn10 = $item['isbn10'];
@@ -248,7 +248,7 @@ function setRequest(
     array $server = ['CONTENT_TYPE' => 'application/json'],
     mixed $content = null,
 ) {
-    $request = new \Illuminate\Http\Request();
+    $request = new \Illuminate\Http\Request;
 
     return $request->createFromBase(
         \Symfony\Component\HttpFoundation\Request::create(

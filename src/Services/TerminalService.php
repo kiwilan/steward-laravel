@@ -34,7 +34,7 @@ class TerminalService
 
     public static function make(bool $verbose = false): self
     {
-        $self = new self();
+        $self = new self;
 
         $self->list = collect([]);
         $self->verbose = $verbose;

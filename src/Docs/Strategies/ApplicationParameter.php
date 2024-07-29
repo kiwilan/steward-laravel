@@ -60,7 +60,7 @@ class ApplicationParameter extends Strategy
     {
         $random_entity = $model::inRandomOrder()->first();
 
-        $instance = new $model();
+        $instance = new $model;
         $class = new ReflectionClass($instance);
         $name = Str::lower($class->getShortName());
 

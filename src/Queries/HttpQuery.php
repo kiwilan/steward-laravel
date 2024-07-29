@@ -21,7 +21,7 @@ class HttpQuery extends BaseQuery
      */
     public static function for(string|Builder $model, Request $request): self
     {
-        $self = new self();
+        $self = new self;
 
         $self->setup($model, $request);
 

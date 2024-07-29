@@ -15,7 +15,7 @@ class FilamentLayoutSection
      */
     public static function make(array $fields = []): self
     {
-        $column = new FilamentLayoutSection();
+        $column = new FilamentLayoutSection;
         $column->fields = $fields;
 
         return $column;

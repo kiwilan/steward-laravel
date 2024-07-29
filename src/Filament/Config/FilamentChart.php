@@ -49,7 +49,7 @@ class FilamentChart
             array_push($stats, $stat->total);
         }
 
-        $chart_helper = new FilamentChart();
+        $chart_helper = new FilamentChart;
         $chart_helper->labels = $labels;
         $chart_helper->stats = $stats;
 
@@ -87,7 +87,7 @@ class FilamentChart
             array_push($stats, $stat->total);
         }
 
-        $chart_helper = new FilamentChart();
+        $chart_helper = new FilamentChart;
         $chart_helper->labels = $labels;
         $chart_helper->stats = $stats;
 
@@ -137,7 +137,7 @@ class FilamentChart
             return $models_db->get($period)->total ?? 0;
         });
 
-        $chart_helper = new FilamentChart();
+        $chart_helper = new FilamentChart;
         $chart_helper->labels = $periods->toArray();
         $chart_helper->stats = $res->toArray();
 

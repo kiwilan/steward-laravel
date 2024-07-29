@@ -23,7 +23,7 @@ class ClassParserService
      */
     public static function toCollection(string|Collection $pathOrFiles): Collection
     {
-        $self = new self();
+        $self = new self;
 
         $files = collect();
 
