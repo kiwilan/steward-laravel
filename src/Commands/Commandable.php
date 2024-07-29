@@ -74,4 +74,9 @@ class Commandable extends Command
     {
         return (int) $this->optionArgument($option, $default);
     }
+
+    public function optionBool(string $option, ?bool $default = null): ?bool
+    {
+        return (bool) $this->optionArgument($option, $default);
+    }
 }

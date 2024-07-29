@@ -4,6 +4,8 @@ namespace Kiwilan\Steward\Commands\Log;
 
 use Illuminate\Console\Command;
 use Kiwilan\Steward\Commands\Commandable;
+use Kiwilan\Steward\Jobs\LogClearJob;
+use Kiwilan\Steward\Utils\Log\LogClear;
 
 class LogClearCommand extends Commandable
 {
@@ -15,7 +17,8 @@ class LogClearCommand extends Commandable
     protected $signature = 'log:clear
                             {--a|all : clear all log files}
                             {--log= : clear specific log file}
-                            {--l|level= : clear level log like `DEBUG`, `INFO`, `NOTICE`, `WARNING`, `ERROR`, `CRITICAL`, `ALERT`, `EMERGENCY`}';
+                            {--l|level= : clear level log like `DEBUG`, `INFO`, `NOTICE`, `WARNING`, `ERROR`, `CRITICAL`, `ALERT`, `EMERGENCY`}
+                            {--j|job : execute as job}';
 
     /**
      * The console command description.
@@ -25,15 +28,6 @@ class LogClearCommand extends Commandable
     protected $description = 'Clear logs.';
 
     /**
-     * Create a new command instance.
-     */
-    public function __construct(
-        public ?string $path = null,
-    ) {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return int
@@ -41,77 +35,37 @@ class LogClearCommand extends Commandable
     public function handle()
     {
         $this->title();
-        $this->path = storage_path('logs/laravel.log');
+        $logClear = LogClear::make();
 
-        $all = $this->option('all') ?: false;
-        $log_name = $this->optionArgument('log') ?? null;
+        $all = $this->optionBool('all', false);
+        $logName = $this->optionArgument('log') ?? null;
         $level = $this->optionArgument('level') ?? null;
+        $job = $this->optionBool('job', false);
 
-        if (! $log_name && ! $all && ! $level) {
+        if (! $logName && ! $all && ! $level) {
             $all = true;
         }
 
-        if ($all) {
-            $this->info('Clearing all logs...');
-            $this->clearAll();
-        }
+        if ($job) {
+            $this->info('Clearing logs as job...');
+            LogClearJob::dispatch($all, $logName, $level);
+        } else {
+            if ($all) {
+                $this->info('Clearing all logs...');
+                $logClear->clearAll();
+            }
 
-        if ($log_name) {
-            $this->info("Clearing {$log_name} log...");
-            $this->clearLog($log_name);
-        }
+            if ($logName) {
+                $this->info("Clearing {$logName} log...");
+                $logClear->clearLog($logName);
+            }
 
-        if ($level) {
-            $this->info("Clearing level {$level} in logs...");
-            $this->deleteLevels($level);
+            if ($level) {
+                $this->info("Clearing level {$level} in logs...");
+                $logClear->deleteLevels($level);
+            }
         }
 
         return Command::SUCCESS;
-    }
-
-    private function clearLog(string $log_name): void
-    {
-        shell_exec("truncate -s 0 ./storage/logs/{$log_name}.log");
-    }
-
-    private function clearAll(): void
-    {
-        shell_exec('truncate -s 0 ./storage/logs/*.log');
-    }
-
-    private function deleteLevels(string $level): void
-    {
-        $allLogFiles = glob(storage_path('logs/*.log'));
-
-        foreach ($allLogFiles as $logFile) {
-            $this->info("Clearing {$logFile} for level {$level} log...");
-            $this->deleteLevel($logFile, $level);
-        }
-    }
-
-    private function deleteLevel(string $path, string $level): void
-    {
-        $tempFile = storage_path('logs/temp.log');
-        $level = strtoupper($level);
-
-        $handle = fopen($path, 'r');
-        $tempHandle = fopen($tempFile, 'w');
-
-        if ($handle && $tempHandle) {
-            while (($line = fgets($handle)) !== false) {
-                if (strpos($line, "local.$level") === false) {
-                    fwrite($tempHandle, $line);
-                }
-            }
-
-            fclose($handle);
-            fclose($tempHandle);
-
-            // Replace original file with temp file
-            rename($tempFile, $path);
-        } else {
-            // Error handling
-            echo 'Error opening file!';
-        }
     }
 }
