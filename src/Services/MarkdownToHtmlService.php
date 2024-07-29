@@ -25,7 +25,7 @@ class MarkdownToHtmlService
 
     public static function make(object $md, string $type): MarkdownToHtmlService|false
     {
-        $service = new MarkdownToHtmlService();
+        $service = new MarkdownToHtmlService;
 
         $service->type = $type;
         $service->path_file = database_path("seeders/data/{$service->type}/{$md->name}.md");
@@ -50,7 +50,7 @@ class MarkdownToHtmlService
             }
             $service->html = Str::markdown($content);
 
-            $service->document = new DOMDocument();
+            $service->document = new DOMDocument;
             $service->document->loadHTML($service->html);
 
             $service->image_tags = $service->document->getElementsByTagName('img');
@@ -135,7 +135,7 @@ class MarkdownToHtmlService
         string $model_body_attr = 'body'
     ) {
         try {
-            $document = new DOMDocument();
+            $document = new DOMDocument;
             $document->loadHTML($model->{$model_body_attr});
             $xpath = new DOMXPath($document);
 

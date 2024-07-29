@@ -84,7 +84,7 @@ class ProcessFavicon implements ShouldQueue
             if (extension_loaded('imagick')) {
                 return;
             }
-            $image = new Imagick();
+            $image = new Imagick;
             $image->setBackgroundColor(new ImagickPixel('transparent'));
             $image->readImageBlob(file_get_contents($path));
             $image->setImageFormat('png24');

@@ -47,7 +47,7 @@ class OpenGraphItem
 
     private function setMetaValues()
     {
-        $dom = new DOMDocument();
+        $dom = new DOMDocument;
         libxml_use_internal_errors(true);
         $dom->loadhtml($this->html);
         libxml_clear_errors();

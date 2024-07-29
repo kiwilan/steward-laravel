@@ -33,7 +33,7 @@ class SubmissionSendCommand extends Commandable
         $model = \Kiwilan\Steward\StewardConfig::submissionModel();
 
         /** @var Submission $model */
-        $submission = $model::factory(1)->make(parent: new $model());
+        $submission = $model::factory(1)->make(parent: new $model);
         $submission = $submission->first();
 
         if (property_exists($submission, 'name')) {

@@ -26,7 +26,7 @@ trait Mediable
 
     public function getMediableAttribute(): object
     {
-        $mediable = new stdClass();
+        $mediable = new stdClass;
 
         foreach ($this->getMediablesListAttribute() as $field) {
             $mediable->{$field} = $this->mediable($field);

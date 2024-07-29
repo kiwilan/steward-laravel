@@ -44,10 +44,10 @@ class ClassParserItem
         if ($self->isPath($class)) {
             $self->file = new SplFileInfo($class);
             $self->namespace = $self->setNamespace();
-            $self->instance = new $self->namespace();
+            $self->instance = new $self->namespace;
         } else {
             $self->namespace = $class;
-            $self->instance = new $class();
+            $self->instance = new $class;
         }
 
         $self->extends = get_parent_class($self->instance);

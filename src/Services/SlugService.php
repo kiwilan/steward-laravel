@@ -18,7 +18,7 @@ class SlugService
 
     public static function make(?string $origin = null): string
     {
-        $service = new self();
+        $service = new self;
 
         if (! $origin) {
             return $service->unique();

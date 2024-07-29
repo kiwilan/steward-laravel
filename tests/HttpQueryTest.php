@@ -40,7 +40,7 @@ it('can use http query', function () {
     expect($query->getRequest())->toBe($request);
     expect($query->getQuery())->toBeInstanceOf(QueryBuilder::class);
 
-    $model = new Book();
+    $model = new Book;
     $opts = $query->getOptions();
     expect($opts['with'])->toBe($model->getQueryWith());
     expect($opts['withCount'])->toBe($model->getQueryWithCount());

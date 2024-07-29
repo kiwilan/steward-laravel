@@ -20,7 +20,7 @@ trait HasShowRoute
 
     public function getShowRouteAttribute(): ?string
     {
-        $instance = new $this();
+        $instance = new $this;
         $class = new ReflectionClass($instance);
         $static = $class->getName();
         $route_name = Str::kebab($class->getShortName());

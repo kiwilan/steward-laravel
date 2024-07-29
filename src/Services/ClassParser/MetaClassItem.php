@@ -32,7 +32,7 @@ class MetaClassItem
     {
         $self = new self($classString);
 
-        $instance = new $classString();
+        $instance = new $classString;
 
         if (! $reflect) {
             $reflect = new ReflectionClass($instance);

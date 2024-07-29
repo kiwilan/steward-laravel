@@ -37,7 +37,7 @@ class Downloader
      */
     public static function stream(string $filename): DownloaderZipStream
     {
-        $zip = new DownloaderZipStream();
+        $zip = new DownloaderZipStream;
         $zip->filename = "{$filename}.zip";
 
         return $zip;

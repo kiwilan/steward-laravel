@@ -13,7 +13,7 @@ class MarkdownFileUpload
 
     public static function make(?string $saveDirectory = null, ?string $baseUrl = null): self
     {
-        $self = new self();
+        $self = new self;
 
         if (! $saveDirectory) {
             $self->saveDirectory = public_path('storage/uploads');

@@ -26,7 +26,7 @@ class Author extends Model
     {
         return [
             AllowedSort::field('name'),
-            AllowedSort::custom('name-length', new StringLengthSort(), 'name'),
+            AllowedSort::custom('name-length', new StringLengthSort, 'name'),
         ];
     }
 

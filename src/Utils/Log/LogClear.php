@@ -6,7 +6,7 @@ class LogClear
 {
     public static function make(): self
     {
-        $self = new self();
+        $self = new self;
 
         return $self;
     }

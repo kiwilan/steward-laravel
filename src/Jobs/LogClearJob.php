@@ -23,8 +23,7 @@ class LogClearJob implements ShouldQueue
         public bool $all = false,
         public ?string $logName = null,
         public ?string $level = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Execute the job.

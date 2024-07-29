@@ -17,7 +17,7 @@ class DirectoryService
      */
     public static function make(): self
     {
-        return new self();
+        return new self;
     }
 
     /**
@@ -104,7 +104,7 @@ class DirectoryService
      */
     public function clearDirectory(string $path, array $ignore = ['.gitignore']): void
     {
-        $output = new ConsoleOutput();
+        $output = new ConsoleOutput;
         $outputStyle = new OutputFormatterStyle('red', '', ['bold', 'blink']);
         $output->getFormatter()->setStyle('fire', $outputStyle);
 

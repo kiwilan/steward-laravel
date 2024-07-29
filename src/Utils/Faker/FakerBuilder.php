@@ -16,7 +16,7 @@ class FakerBuilder
     public static function make(Faker $factory, string $builder): array
     {
         $factory_builder = new FakerBuilder($factory, $builder);
-        $instance = new $factory_builder->builder();
+        $instance = new $factory_builder->builder;
         $factory_builder->name = $instance::NAME;
         $factory_builder->builder_faker = $instance::FAKER;
 

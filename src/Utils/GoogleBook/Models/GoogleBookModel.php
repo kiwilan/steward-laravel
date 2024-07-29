@@ -369,7 +369,7 @@ class GoogleBookVolumeSaleInfoPrice
     public static function make(?array $search): self
     {
         if (is_null($search)) {
-            return new self();
+            return new self;
         }
 
         return new self(
@@ -401,7 +401,7 @@ class GoogleBookVolumeSaleInfoOffer
     public static function make(?array $search): self
     {
         if (is_null($search)) {
-            return new self();
+            return new self;
         }
 
         return new self(
@@ -443,7 +443,7 @@ class GoogleBookVolumeSaleInfoOfferPrice
     public static function make(?array $search): self
     {
         if (is_null($search)) {
-            return new self();
+            return new self;
         }
 
         return new self(
@@ -554,7 +554,7 @@ class GoogleBookAccessInfoAvailable
     public static function make(?array $search): self
     {
         if (is_null($search)) {
-            return new self();
+            return new self;
         }
 
         return new self(

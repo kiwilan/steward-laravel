@@ -16,7 +16,7 @@ class DatayableService
      */
     public static function make(string $type): self
     {
-        $service = new self();
+        $service = new self;
         $service->type = $type;
 
         switch ($type) {

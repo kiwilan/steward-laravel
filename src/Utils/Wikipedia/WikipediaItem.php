@@ -152,7 +152,7 @@ class WikipediaItem
             return null;
         }
 
-        $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client;
         $response = $client->request('GET', $pictureUrl);
         $picture = $response->getBody()->getContents();
 

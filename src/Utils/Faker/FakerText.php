@@ -34,7 +34,7 @@ class FakerText
         }
 
         /** @var Model */
-        $instance = new $class();
+        $instance = new $class;
 
         return MeaningProvider::find();
         // $exists = $class::where($field, $category)->first();
@@ -63,7 +63,7 @@ class FakerText
         }
 
         /** @var Model */
-        $model = new $class();
+        $model = new $class;
 
         return MeaningProvider::find('tag');
         // $exists = $model->where($field, $tag)->first();

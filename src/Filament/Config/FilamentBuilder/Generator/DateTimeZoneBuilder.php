@@ -44,7 +44,7 @@ class DateTimeZoneBuilder
         $date_time_zones = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
 
         foreach ($date_time_zones as $timezone) {
-            $dtz = new DateTimeZoneBuilder();
+            $dtz = new DateTimeZoneBuilder;
 
             $dtz->region = explode('/', $timezone)[0];
             $dtz->city = explode('/', $timezone)[1] ?? '';
@@ -52,7 +52,7 @@ class DateTimeZoneBuilder
             $dtz->slug = Str::slug("{$dtz->region} {$dtz->city}");
 
             $tz = new DateTimeZone($timezone);
-            $dtz->offset = $tz->getOffset(new DateTime());
+            $dtz->offset = $tz->getOffset(new DateTime);
 
             $offset_prefix = $dtz->offset < 0 ? '-' : '+';
             $offset_formatted = gmdate('H:i', abs($dtz->offset));
