@@ -46,6 +46,10 @@ class DownloaderZipStream extends Downloader
         );
 
         foreach ($this->files as $file) {
+            if (! file_exists($file->path)) {
+                throw new \Exception("File not found: {$file->path}");
+            }
+
             $zip->addFileFromPath(
                 fileName: $file->fileName,
                 path: $file->path,

@@ -51,7 +51,11 @@ class DownloaderDirect extends Downloader
      */
     public function get(): void
     {
-        $this->size = filesize($this->path);
+        try {
+            $this->size = filesize($this->path);
+        } catch (\Throwable $th) {
+            throw new \Exception("File not found: {$this->path}");
+        }
         ini_set('max_execution_time', $this->maxExecutionTime);
 
         $this->sendHeaders();
