@@ -119,6 +119,7 @@ class DbTestCommand extends Commandable
             $serverVersion = $pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
             $connectionStatus = $pdo->getAttribute(\PDO::ATTR_CONNECTION_STATUS);
         } catch (\Exception $e) {
+            $this->error($e->getMessage());
             $this->error('Connection failed.');
 
             return false;
