@@ -144,6 +144,8 @@ class ChartByMonth
 
         $is_sqlite = config('database.default') === 'sqlite';
         if ($is_sqlite) {
+            // date_format('.$this->field.", '%b %Y') as period
+            // strftime("%b %Y", '.$this->field.') as period
             $query = DB::table($this->table)
                 ->selectRaw('
                 count(id) as total,
