@@ -142,11 +142,20 @@ class ChartByMonth
             }
         }
 
-        $query = DB::table($this->table)
-            ->selectRaw('
+        $is_sqlite = config('database.default') === 'sqlite';
+        if ($is_sqlite) {
+            $query = DB::table($this->table)
+                ->selectRaw('
+                count(id) as total,
+                strftime("%b %Y", '.$this->field.') as period
+            ');
+        } else {
+            $query = DB::table($this->table)
+                ->selectRaw('
                 count(id) as total,
                 date_format('.$this->field.", '%b %Y') as period
             ");
+        }
 
         if (! empty($this->where)) {
             foreach ($this->where as $value) {

@@ -20,11 +20,20 @@ class FilamentChart
 
     public static function chartBy(string $table, string $field, ?string $limit_year = null, bool $published = false): FilamentChart
     {
-        $models_db = DB::table($table)
-            ->selectRaw("
+        $is_sqlite = config('database.default') === 'sqlite';
+        if ($is_sqlite) {
+            $models_db = DB::table($table)
+                ->selectRaw("
+                count(id) as total,
+                strftime('%b %Y', {$field}) as year
+            ");
+        } else {
+            $models_db = DB::table($table)
+                ->selectRaw("
                 count(id) as total,
                 date_format({$field}, '%Y') as year
             ");
+        }
 
         if ($published) {
             $models_db = $models_db->where('status', '=', PublishStatusEnum::published->value);
