@@ -47,19 +47,19 @@ class DbTestCommand extends Commandable
         $username = $connection->getConfig('username');
         $password = $connection->getConfig('password');
 
-        $this->comment("Driver: {$driver}");
-        $this->comment("Database: {$database}");
-        $this->comment("Host: {$host}");
-        $this->comment("Port: {$port}");
+        $this->comment("Driver: `{$driver}`");
+        $this->comment("Database: `{$database}`");
+        $this->comment("Host: `{$host}`");
+        $this->comment("Port: `{$port}`");
 
         if ($credentials) {
-            $this->comment("Username: {$username}");
-            $this->comment("Password: {$password}");
+            $this->comment("Username: `{$username}`");
+            $this->comment("Password: `{$password}`");
         }
 
         $this->newLine();
 
-        $this->comment("Try to ping database at {$host}:{$port}...");
+        $this->comment("Try to ping database at `{$host}:{$port}`...");
         $available = $this->pingDatabase($host, $port);
         $this->info($available ? 'Database is available.' : 'Database is not available.');
 
@@ -126,11 +126,11 @@ class DbTestCommand extends Commandable
         }
 
         $this->alert('Connection successful.');
-        $this->comment("Driver name: {$driverName}");
-        $this->comment("Server info: {$serverInfo}");
-        $this->comment("Client version: {$clientVersion}");
-        $this->comment("Server version: {$serverVersion}");
-        $this->comment("Connection status: {$connectionStatus}");
+        $this->comment("Driver name: `{$driverName}`");
+        $this->comment("Server info: `{$serverInfo}`");
+        $this->comment("Client version: `{$clientVersion}`");
+        $this->comment("Server version: `{$serverVersion}`");
+        $this->comment("Connection status: `{$connectionStatus}`");
 
         return true;
     }
