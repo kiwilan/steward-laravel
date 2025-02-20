@@ -130,7 +130,7 @@ class MarkdownService
 
         $front_matter = $matches[0];
 
-        //remove first and last line
+        // remove first and last line
         $front_matter = preg_replace('/---\n/', '', $front_matter);
         // get first line
         $first_line = explode("\n", $matches[0])[1] ?? '';
