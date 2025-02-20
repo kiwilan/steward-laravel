@@ -21,7 +21,7 @@ class SocialInstagram extends SocialModule implements SocialInterface
         $regex = '/(?:https?:\/\/www\.)?instagram\.com\S*?\/p\/(\w{11})\/?/';
 
         if (preg_match($regex, $this->url, $matches)) {
-            $this->media_id = $matches[1] ?? null;
+            $this->media_id = $matches[1];
             $this->embed_url = "https://www.instagram.com/p/{$this->media_id}/embed";
         }
     }

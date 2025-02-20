@@ -62,7 +62,7 @@ class SocialServiceTwitter
         if (preg_match($regex, $this->url, $matches)) {
             $this->media_id = $matches[1]
                 ? $matches[1]
-                : ($matches[0] ?? null);
+                : ($matches[0] ?? null); // @phpstan-ignore-line
             $this->is_valid = true;
         }
 

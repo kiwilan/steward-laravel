@@ -21,7 +21,7 @@ class SocialYoutube extends SocialModule implements SocialInterface
         $regex = "/^(?:http(?:s)?:\\/\\/)?(?:www\\.)?(?:m\\.)?(?:youtu\\.be\\/|youtube\\.com\\/(?:(?:watch)?\\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user|shorts)\\/))([^\\?&\"'>]+)/";
 
         if (preg_match($regex, $this->url, $matches)) {
-            if (isset($matches[1])) {
+            if (isset($matches[1])) { // @phpstan-ignore-line
                 $this->media_id = $matches[1];
                 $this->embed_url = "https://www.youtube.com/embed/{$this->media_id}";
                 // $this->is_frame = true;

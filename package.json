@@ -1,21 +1,21 @@
 {
-    "name": "@kiwilan/vite-plugin-steward-laravel",
-    "type": "module",
-    "scripts": {
-        "dev": "pnpm run --parallel dev",
-        "build": "pnpm recursive run build",
-        "preinstall": "npx only-allow pnpm",
-        "lint": "pnpm recursive run lint",
-        "lint:fix": "pnpm recursive run lint:fix",
-        "test": "pnpm recursive run test",
-        "coverage": "pnpm recursive run coverage",
-        "package": "pnpm recursive run package",
-        "release": "pnpm recursive run release"
-    },
-    "license": "MIT",
-    "devDependencies": {
-        "@antfu/eslint-config": "^2.6.1",
-        "eslint": "^8.56.0",
-        "typescript": "^5.3.3"
-    }
+  "name": "@kiwilan/vite-plugin-steward-laravel",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "pnpm run --parallel dev",
+    "build": "pnpm recursive run build",
+    "preinstall": "npx only-allow pnpm",
+    "lint": "pnpm recursive run lint",
+    "lint:fix": "pnpm recursive run lint:fix",
+    "test": "pnpm recursive run test",
+    "coverage": "pnpm recursive run coverage",
+    "package": "pnpm recursive run package",
+    "release": "pnpm recursive run release"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.6.1",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  }
 }
