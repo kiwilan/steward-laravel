@@ -14,7 +14,7 @@ class Json
      * @param  mixed  $data  Can be a file path, json string, or array
      */
     public function __construct(
-        readonly protected mixed $data,
+        protected readonly mixed $data,
     ) {
         if (is_array($data)) {
             $this->contents = $this->data;
