@@ -77,7 +77,7 @@ class ColorThief
         try {
             $type = getimagesize($this->image)[2];
         } catch (\Throwable $th) {
-            //throw $th;
+            // throw $th;
         }
 
         return $type ?? 0;
