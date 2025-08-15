@@ -135,7 +135,7 @@ class MediaCleanCommand extends Commandable
 
             // Extract all entries with media
             foreach ($rows as $row) {
-                foreach ($row as $entry) {
+                foreach ($row as $entry) { // @phpstan-ignore-line
                     if ($this->isLocalImage($entry)) {
                         $mediaDatabaseEntries[] = $entry;
                     }

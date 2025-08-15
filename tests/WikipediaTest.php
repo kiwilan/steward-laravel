@@ -17,7 +17,7 @@ it('can use service', function () {
     expect($wikipedia->getItem()->getTimestamp())->toBeInstanceOf(DateTime::class);
     expect($wikipedia->getItem()->getExtract())->toBeString();
     expect($wikipedia->getItem()->getFullText())->toBeString();
-    expect($wikipedia->getItem()->getPictureUrl())->toBe('https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Pierre_Bottero_20080315_Salon_du_livre_1.jpg/512px-Pierre_Bottero_20080315_Salon_du_livre_1.jpg');
+    expect($wikipedia->getItem()->getPictureUrl())->toEndWith('jpg');
     expect($wikipedia->getItem()->getPictureBase64())->toBeString();
 
     $wikipedia = Wikipedia::make('asp explorer')

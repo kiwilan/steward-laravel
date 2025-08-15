@@ -5,6 +5,7 @@ namespace Kiwilan\Steward\Filament\Config;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 use Kiwilan\Steward\Enums\PublishStatusEnum;
+use Kiwilan\Steward\Filament\Config\FilamentChart\ChartByDay;
 use Kiwilan\Steward\Filament\Config\FilamentChart\ChartByMonth;
 
 class FilamentChart
@@ -111,6 +112,16 @@ class FilamentChart
     public static function statsByMonth(string $table): ChartByMonth
     {
         return ChartByMonth::make($table);
+    }
+
+    /**
+     * Create a new chart by day on one week.
+     *
+     * @param  string  $table  The table name
+     */
+    public static function statsByDay(string $table): ChartByDay
+    {
+        return ChartByDay::make($table);
     }
 
     public static function getStatsByYear()
