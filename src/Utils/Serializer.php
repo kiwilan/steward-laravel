@@ -10,6 +10,19 @@ class Serializer
     public function __construct(
     ) {}
 
+    public static function exists(string $file_path): bool
+    {
+        DirectoryService::ensureFileExists($file_path);
+
+        try {
+            return file_exists($file_path);
+        } catch (\Throwable $th) {
+            Journal::error("Serializer: failed to check existence of {$file_path}", [$th->getMessage()]);
+        }
+
+        return false;
+    }
+
     /**
      * Serialize the contents of a file.
      */
