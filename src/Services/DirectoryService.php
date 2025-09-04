@@ -21,6 +21,47 @@ class DirectoryService
     }
 
     /**
+     * Ensure that the file exists and is writable (remove it before creating a new one).
+     */
+    public static function ensureFileExists(string $path, bool $recreate = true): void
+    {
+        self::ensureDirectoryExists($path);
+
+        if ($recreate && file_exists($path)) {
+            unlink($path);
+        }
+        if (! file_exists($path)) {
+            touch($path);
+        }
+    }
+
+    /**
+     * Ensure that the directory exists.
+     *
+     * @throws \RuntimeException if the path exists but is not a directory
+     */
+    public static function ensureDirectoryExists(string $path): void
+    {
+        $dirname = dirname($path);
+
+        if (is_dir($dirname)) {
+            return;
+        }
+
+        if (file_exists($dirname) && ! is_dir($dirname)) {
+            throw new \RuntimeException("Path '$dirname' exists but is not a directory.");
+        }
+
+        try {
+            mkdir($dirname, 0755, true);
+        } catch (\Throwable $e) {
+            if (! is_dir($dirname)) {
+                throw $e;
+            }
+        }
+    }
+
+    /**
      * Parse files in directory (recursive).
      *
      * @param  string[]|false  $ignore  Parser will ignore files or directories in this array.
