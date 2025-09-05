@@ -12,7 +12,7 @@ class Serializer
 
     public static function exists(string $file_path): bool
     {
-        DirectoryService::ensureFileExists($file_path);
+        DirectoryService::ensureFileExists($file_path, recreate: false);
 
         try {
             return file_exists($file_path);
