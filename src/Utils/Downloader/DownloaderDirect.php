@@ -68,7 +68,7 @@ class DownloaderDirect extends Downloader
             throw new \RuntimeException("Unable to open file: {$this->path}");
         }
 
-        while (!feof($file)) {
+        while (! feof($file)) {
             $chunk = fread($file, $this->chunkSize);
             if ($chunk === false) {
                 break;

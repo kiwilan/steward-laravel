@@ -75,6 +75,7 @@ class Downloader
     public function chunkSize(int $bytes): static
     {
         $this->chunkSize = max(1024, $bytes);
+
         return $this;
     }
 
@@ -93,7 +94,6 @@ class Downloader
         $encoded = rawurlencode($filename);
 
         header("Content-Disposition: attachment; filename=\"{$encoded}\"; filename*=UTF-8''{$encoded}");
-
 
         if ($this->size) {
             header("Content-Length: {$this->size}");
