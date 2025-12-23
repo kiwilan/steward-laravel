@@ -10,6 +10,8 @@ namespace Kiwilan\Steward\Utils\Downloader;
  */
 class Downloader
 {
+    protected int $chunkSize = 8192;
+
     protected function __construct(
         protected ?string $filename = null,
         protected ?int $size = null,
@@ -70,6 +72,12 @@ class Downloader
         return $this;
     }
 
+    public function chunkSize(int $bytes): static
+    {
+        $this->chunkSize = max(1024, $bytes);
+        return $this;
+    }
+
     /**
      * Send headers for the download.
      */
@@ -80,7 +88,12 @@ class Downloader
         }
         header("Content-Type: {$this->mimeType}");
         header('Content-Description: file transfer');
-        header("Content-Disposition: attachment;filename={$this->filename}");
+
+        $filename = $this->filename;
+        $encoded = rawurlencode($filename);
+
+        header("Content-Disposition: attachment; filename=\"{$encoded}\"; filename*=UTF-8''{$encoded}");
+
 
         if ($this->size) {
             header("Content-Length: {$this->size}");
@@ -90,6 +103,26 @@ class Downloader
         header('Expires: -1');
         header('Cache-Control: no-cache');
         header('Cache-Control: public, must-revalidate, post-check=0, pre-check=0');
+
+        if (function_exists('apache_setenv')) {
+            apache_setenv('no-gzip', '1');
+        }
+        ini_set('zlib.output_compression', 'Off');
+    }
+
+    protected function flushOutput(): void
+    {
+        if (ob_get_level() > 0) {
+            @ob_flush();
+        }
+        flush();
+    }
+
+    protected function clearOutputBuffers(): void
+    {
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
     }
 
     /**

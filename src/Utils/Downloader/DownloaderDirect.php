@@ -31,7 +31,10 @@ class DownloaderDirect extends Downloader
      */
     public function autoMimeType(): self
     {
-        $this->mimeType = mime_content_type($this->path);
+        $mime = mime_content_type($this->path);
+        if ($mime !== false) {
+            $this->mimeType = $mime;
+        }
 
         return $this;
     }
@@ -58,13 +61,22 @@ class DownloaderDirect extends Downloader
         }
         ini_set('max_execution_time', $this->maxExecutionTime);
 
+        $this->clearOutputBuffers();
         $this->sendHeaders();
         $file = fopen($this->path, 'rb');
+        if ($file === false) {
+            throw new \RuntimeException("Unable to open file: {$this->path}");
+        }
 
-        while (! feof($file)) {
-            echo fread($file, 1024 * 8);
-            ob_flush();
-            flush();
+        while (!feof($file)) {
+            $chunk = fread($file, $this->chunkSize);
+            if ($chunk === false) {
+                break;
+            }
+
+            echo $chunk;
+            $this->flushOutput();
+
             if ($this->speed) {
                 usleep($this->speed);
             }

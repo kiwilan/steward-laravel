@@ -39,6 +39,7 @@ class DownloaderZipStream extends Downloader
             throw new \Exception('`maennchen/zipstream-php` is not installed. Install it from GitHub https://github.com/maennchen/ZipStream-PHP');
         }
 
+        $this->clearOutputBuffers();
         $this->sendHeaders();
         $zip = new \ZipStream\ZipStream(
             outputName: str_replace(' ', '.', $this->filename),
